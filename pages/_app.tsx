@@ -1,9 +1,8 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import theme from 'theme'
 
 import Header from 'components/Header'
 
-const extendedTheme = extendTheme(theme)
+const extendedTheme = extendTheme({})
 
 function MyApp({ Component, pageProps }) {
   return (
