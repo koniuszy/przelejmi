@@ -6,10 +6,10 @@ const extendedTheme = extendTheme({})
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider theme={extendedTheme}>
-      <Header />
-      <Component {...pageProps} />
-    </ChakraProvider>
+      <ChakraProvider theme={extendedTheme}>
+        <Header />
+        <Component {...pageProps} />
+      </ChakraProvider>
   )
 }
 

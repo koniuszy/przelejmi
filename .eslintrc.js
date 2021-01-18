@@ -69,6 +69,11 @@ module.exports = {
             position: 'before',
           },
           {
+            pattern: 'fonts/**',
+            group: 'internal',
+            position: 'before',
+          },
+          {
             pattern: 'components/**',
             group: 'internal',
             position: 'after',
