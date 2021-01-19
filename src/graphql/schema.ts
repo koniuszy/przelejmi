@@ -38,7 +38,7 @@ const schema = makeSchema({
         alias: 'prisma',
       },
       {
-        source: path.join(process.cwd(), 'graphql', 'context.ts'),
+        source: path.join(process.cwd(), 'src/graphql', 'context.ts'),
         alias: 'Context',
       },
     ],
