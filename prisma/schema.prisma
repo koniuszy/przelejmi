@@ -10,7 +10,44 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Buyer {
+  id         String     @id @default(uuid())
+  name       String
+  address    String
+  postAdress String
+  nip        Int
+  Scenario   Scenario[]
+}
+
+model Seller {
+  id          String     @id @default(uuid())
+  name        String
+  address     String
+  postAdress  String
+  nip         Int
+  Scenario    Scenario[]
+  email       String
+  bankName    String
+  bankAccount String
+}
+
 model Scenario {
-  id   String @id @default(cuid())
-  name String
+  id          String   @id @default(uuid())
+  name        String
+  paymentType String   @default("transfer")
+  currency    String   @default("PLN")
+  netPerOne   Int      @default(10000)
+  VAT         Int      @default(23)
+  totalGross  Int
+  order       Int      @unique
+  description String
+  amount      Int      @default(1)
+  unit        String   @default("item")
+  notes       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  buyer       Buyer    @relation(fields: [buyerId], references: [id])
+  buyerId     String
+  seller      Seller   @relation(fields: [sellerId], references: [id])
+  sellerId    String
 }

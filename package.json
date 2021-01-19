@@ -8,6 +8,7 @@
     "start": "next start",
     "test": "NODE_ENV=test jest --runInBand",
     "generate": "prisma generate",
+    "pushDb": "npx prisma db push --preview-feature",
     "serve": "NODE_ENV=production npx next start -p 4000"
   },
   "dependencies": {
