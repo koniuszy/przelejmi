@@ -35,9 +35,10 @@ export default function downloadPdf({ language }: { language: 'pl' }) {
   doc.addFileToVFS('RobotoNormal.ttf', RobotoNormal)
   doc.addFont('RobotoNormal.ttf', 'RobotoNormal', 'normal')
 
+  doc.setFont('RobotoNormal')
+  doc.text(invoiceValues.body.totalGross, 30, lineYOffset + 8)
   doc.setFont('RobotoBold')
-  doc.text(translatedMessages.footer.title, 10, lineYOffset + 5)
-  doc.text(invoiceValues.body.totalGross, 30, lineYOffset + 5)
+  doc.text(translatedMessages.footer.title, 10, lineYOffset + 8)
 
   Object.entries(translatedMessages.body).forEach((entry) => {
     const [key, value] = entry
