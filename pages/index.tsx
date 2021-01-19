@@ -1,5 +1,8 @@
 import React, { FC } from 'react'
 
+import { GetStaticProps } from 'next'
+
+import { useQuery, gql } from '@apollo/client'
 import { Text } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Th, Td, TableCaption } from '@chakra-ui/react'
@@ -7,7 +10,21 @@ import Head from 'next/head'
 
 import downloadPdf from 'lib/downloadPdf'
 
-const App: FC = () => {
+const usersQuery = gql`
+  {
+    users {
+      name
+    }
+  }
+`
+
+type SSGProps = {
+  users: { name: string }[]
+}
+
+const App: FC<SSGProps> = (props) => {
+  const { data = { users: props.users } } = useQuery(usersQuery)
+
   return (
     <div>
       <Head>
@@ -16,7 +33,7 @@ const App: FC = () => {
       </Head>
 
       <main>
-        <Text fontSize="4xl" textAlign="center">
+        <Text fontSize="4xl" textAlign="center" pb="5">
           Your scenarios:
         </Text>
 
@@ -58,6 +75,11 @@ const App: FC = () => {
       </main>
     </div>
   )
+}
+
+export const getStaticProps: GetStaticProps<SSGProps> = async (context) => {
+  const users = [{ name: 'sample' }]
+  return { props: { users } }
 }
 
 export default App

@@ -1,3 +1,5 @@
+import { ApolloProvider } from '@apollo/client'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { Box } from '@chakra-ui/react'
 
@@ -5,14 +7,21 @@ import Header from 'components/Header'
 
 const extendedTheme = extendTheme({})
 
+const client = new ApolloClient({
+  uri: `/api/graphql`,
+  cache: new InMemoryCache(),
+})
+
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider theme={extendedTheme}>
-      <Header />
-      <Box px="40" py="10">
-        <Component {...pageProps} />
-      </Box>
-    </ChakraProvider>
+    <ApolloProvider client={client}>
+      <ChakraProvider theme={extendedTheme}>
+        <Header />
+        <Box px="40" py="10">
+          <Component customProp="s" {...pageProps} />
+        </Box>
+      </ChakraProvider>
+    </ApolloProvider>
   )
 }
 
