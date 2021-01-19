@@ -64,19 +64,19 @@ module.exports = {
             position: 'before',
           },
           {
-            pattern: 'lib/**',
+            pattern: 'src/lib/**',
             group: 'internal',
             position: 'before',
           },
           {
-            pattern: 'fonts/**',
-            group: 'internal',
-            position: 'before',
-          },
-          {
-            pattern: 'components/**',
+            pattern: 'src/components/**',
             group: 'internal',
             position: 'after',
+          },
+          {
+            pattern: 'src/**',
+            group: 'internal',
+            position: 'before',
           },
         ],
         pathGroupsExcludedImportTypes: ['react'],

@@ -8,7 +8,7 @@ import { Button } from '@chakra-ui/react'
 import { Table, Thead, Tbody, Tr, Th, Td, TableCaption } from '@chakra-ui/react'
 import Head from 'next/head'
 
-import downloadPdf from 'lib/downloadPdf'
+import downloadPdf from 'src/lib/downloadPdf'
 
 const usersQuery = gql`
   {
@@ -23,8 +23,9 @@ type SSGProps = {
 }
 
 const App: FC<SSGProps> = (props) => {
-  const { data = { users: props.users } } = useQuery(usersQuery)
+  const { data } = useQuery(usersQuery)
 
+  console.log(data)
   return (
     <div>
       <Head>

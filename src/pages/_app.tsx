@@ -1,9 +1,8 @@
 import { ApolloProvider } from '@apollo/client'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import { Box } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme, Box } from '@chakra-ui/react'
 
-import Header from 'components/Header'
+import Header from 'src/components/Header'
 
 const extendedTheme = extendTheme({})
 

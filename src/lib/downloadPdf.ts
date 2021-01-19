@@ -1,11 +1,11 @@
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
-import getInvoiceMessages from 'lib/getInvoiceMessages'
-import getInvoiceValues from 'lib/getInvoiceValues'
+import getInvoiceMessages from 'src/lib/getInvoiceMessages'
+import getInvoiceValues from 'src/lib/getInvoiceValues'
 
-import RobotoBold from 'fonts/RobotoBold'
-import RobotoNormal from 'fonts/RobotoNormal'
+import RobotoBold from 'src/fonts/RobotoBold'
+import RobotoNormal from 'src/fonts/RobotoNormal'
 
 const config = {
   header: {
