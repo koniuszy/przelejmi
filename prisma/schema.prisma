@@ -36,12 +36,11 @@ model Scenario {
   name        String
   paymentType String   @default("transfer")
   currency    String   @default("PLN")
-  netPerOne   Int      @default(10000)
-  VAT         Int      @default(23)
-  totalGross  Int
+  netPerOne   Int
+  VAT         Int
   order       Int      @unique
   description String
-  amount      Int      @default(1)
+  amount      Int
   unit        String   @default("item")
   notes       String
   createdAt   DateTime @default(now())

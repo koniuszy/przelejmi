@@ -108,7 +108,7 @@ input ScenarioCreateInput {
   description: String!
   id: String
   name: String!
-  netPerOne: Int
+  netPerOne: Int!
   notes: String!
   order: Int!
   paymentType: String
@@ -116,7 +116,7 @@ input ScenarioCreateInput {
   totalGross: Int!
   unit: String
   updatedAt: DateTime
-  VAT: Int
+  VAT: Int!
 }
 
 input ScenarioUpdateInput {

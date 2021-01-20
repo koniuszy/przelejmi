@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.7",
+    "@chakra-ui/icons": "^1.0.3",
     "@chakra-ui/react": "^1.1.4",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
@@ -21,6 +22,7 @@
     "@prisma/client": "^2.14.0",
     "apollo-server-micro": "^2.19.2",
     "date-fns": "^2.16.1",
+    "formik": "^2.2.6",
     "framer-motion": "^3.2.1",
     "graphql": "^15.4.0",
     "jspdf": "^2.3.0",
@@ -29,8 +31,7 @@
     "nexus": "^1.0.0",
     "nexus-plugin-prisma": "^0.28.0",
     "react": "^17.0.1",
-    "react-dom": "17.0.1",
-    "react-hook-form": "^6.14.2"
+    "react-dom": "17.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
