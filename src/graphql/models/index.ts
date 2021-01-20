@@ -34,6 +34,6 @@ export const Scenario = objectType({
     t.model.buyer()
     t.model.buyerId()
     t.model.sellerId()
-    t.model.Seller()
+    t.model.seller()
   },
 })

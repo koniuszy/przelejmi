@@ -3,10 +3,9 @@ import React, { FC } from 'react'
 import { GetStaticProps } from 'next'
 
 import { useQuery, gql } from '@apollo/client'
-import { Text } from '@chakra-ui/react'
-import { Button } from '@chakra-ui/react'
-import { Table, Thead, Tbody, Tr, Th, Td, TableCaption } from '@chakra-ui/react'
+import { Table, Thead, Tbody, Tr, Th, Td, TableCaption, Flex, Text, Button } from '@chakra-ui/react'
 import Head from 'next/head'
+import NextLink from 'next/link'
 
 import downloadPdf from 'src/lib/downloadPdf'
 
@@ -70,9 +69,17 @@ const App: FC<SSGProps> = (props) => {
           </Tbody>
         </Table>
 
-        <Button onClick={() => downloadPdf({ language: 'pl' })} colorScheme="teal" size="lg">
-          Download
-        </Button>
+        <Flex justifyContent="space-between">
+          <NextLink href="create-scenario">
+            <Button colorScheme="teal" size="lg">
+              Create a new scenario
+            </Button>
+          </NextLink>
+
+          <Button onClick={() => downloadPdf({ language: 'pl' })} colorScheme="teal" size="lg">
+            Download
+          </Button>
+        </Flex>
       </main>
     </div>
   )

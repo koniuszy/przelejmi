@@ -45,6 +45,7 @@ module.exports = {
     },
   ],
   rules: {
+    'no-duplicate-imports': ['error', { includeExports: true }],
     quotes: [1, 'single'],
     'jsx-quotes': ['warn', 'prefer-double'],
 
