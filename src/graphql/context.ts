@@ -9,7 +9,7 @@ type NextApi = {
 
 const prisma = new PrismaClient()
 
-type Context = {
+export type Context = {
   prisma: PrismaClient
 }
 

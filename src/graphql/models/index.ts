@@ -1,13 +1,40 @@
 import { mutationType, objectType, queryType } from '@nexus/schema'
 
-export const Query = queryType({
+export const Buyer = objectType({
+  name: 'Buyer',
+  definition(t) {
+    t.model.id()
+    t.model.Scenario()
+    t.model.address()
+    t.model.postAddress()
+    t.model.nip()
+    t.model.name()
+  },
+})
+
+export const Seller = objectType({
+  name: 'Seller',
+  definition(t) {
+    t.model.id()
+    t.model.Scenario()
+    t.model.address()
+    t.model.postAddress()
+    t.model.nip()
+    t.model.name()
+    t.model.email()
+    t.model.bankAccount()
+    t.model.bankName()
+  },
+})
+
+export const ScenarioQuery = queryType({
   definition(t) {
     t.crud.scenarios()
     t.crud.scenario()
   },
 })
 
-export const Mutation = mutationType({
+export const ScenarioMutation = mutationType({
   definition(t) {
     t.crud.createOneScenario()
     t.crud.updateOneScenario()

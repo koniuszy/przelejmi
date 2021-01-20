@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "test": "NODE_ENV=test jest --runInBand",
-    "generate": "prisma generate",
-    "pushDb": "npx prisma db push --preview-feature",
+    "generate": "yarn generate:prisma",
+    "generate:prisma": "prisma generate",
+    "generate:nexus": "ts-node --transpile-only -P src/graphql/schema",
+    "push:db": "npx prisma db push --preview-feature",
     "serve": "NODE_ENV=production npx next start -p 4000"
   },
   "dependencies": {

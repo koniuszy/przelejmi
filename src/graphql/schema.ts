@@ -10,12 +10,13 @@ const schema = makeSchema({
   plugins: [
     //@ts-ignore
     nexusSchemaPrisma({
-      outputs: { typegen: path.join(__dirname, 'generated', 'typegen-nexus-plugin-prisma.d.ts') },
+      experimentalCRUD: true,
+      paginationStrategy: 'prisma',
     }),
   ],
   outputs: {
-    typegen: path.join(__dirname, 'generated', 'nexus-typegen.ts'),
-    schema: path.join(__dirname, 'generated', 'schema.graphql'),
+    typegen: path.join(process.cwd(), 'src', 'generated', 'nexus-typegen.ts'),
+    schema: path.join(process.cwd(), 'src', 'generated', 'schema.graphql'),
   },
   typegenAutoConfig: {
     contextType: 'Context.Context',
@@ -25,7 +26,7 @@ const schema = makeSchema({
         alias: 'prisma',
       },
       {
-        source: path.join(__dirname, 'src/graphql', 'context.ts'),
+        source: path.join(process.cwd(), 'src', 'graphql', 'context.ts'),
         alias: 'Context',
       },
     ],

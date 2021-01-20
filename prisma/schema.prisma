@@ -11,19 +11,19 @@ generator client {
 }
 
 model Buyer {
-  id         String     @id @default(uuid())
-  name       String
-  address    String
-  postAdress String
-  nip        Int
-  Scenario   Scenario[]
+  id          String     @id @default(uuid())
+  name        String
+  address     String
+  postAddress String
+  nip         Int
+  Scenario    Scenario[]
 }
 
 model Seller {
   id          String     @id @default(uuid())
   name        String
   address     String
-  postAdress  String
+  postAddress String
   nip         Int
   Scenario    Scenario[]
   email       String
