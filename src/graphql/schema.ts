@@ -12,11 +12,12 @@ const schema = makeSchema({
     nexusSchemaPrisma({
       experimentalCRUD: true,
       paginationStrategy: 'prisma',
+      shouldGenerateArtifacts: true,
     }),
   ],
   outputs: {
-    typegen: path.join(process.cwd(), 'src', 'generated', 'nexus-typegen.ts'),
     schema: path.join(process.cwd(), 'src', 'generated', 'schema.graphql'),
+    typegen: path.join(process.cwd(), 'node_modules/@types/nexus-typegen/index.d.ts'),
   },
   typegenAutoConfig: {
     contextType: 'Context.Context',
