@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react'
 
 import { GetStaticProps } from 'next'
 
+import Head from 'next/head'
 import NextImg from 'next/image'
 
 import {
@@ -41,10 +42,10 @@ enum ClientType {
 type Form = {
   name: string
   address: string
-  postAddress: string
+  postCode: string
   city: string
   country: string
-  nip: number
+  nip: string
 }
 
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
@@ -53,7 +54,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
 
   const { handleSubmit, errors, values, handleChange, isSubmitting, setValues } = useFormik<Form>({
     validateOnBlur: true,
-    initialValues: {},
+    initialValues: { name: '', address: '', postCode: '', city: '', country: '', nip: '' },
     onSubmit: (values) => {
       console.log(values)
     },
@@ -62,98 +63,119 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
       const errors: Record<keyof Form, string> = {}
 
       if (values.name.length > 100) errors.name = 'Name should be shorter'
-      if (isNaN(values.netPerOne) || values.netPerOne < 1) errors.netPerOne = 'Invalid value'
+      if (isNaN(Number(values.nip.replace(/ /g, '')))) errors.nip = 'NIP is invalid'
 
       return errors
     },
   })
 
   return (
-    <Flex>
-      <Box className="imgBox" position="relative" overflow="hidden" mr="100">
-        <img
-          aria-hidden="true"
-          alt="placeholder"
-          src={calmInTrolleyImg.base64}
-          className="nextImgPlaceholder"
-        />
-        <NextImg
-          src={calmInTrolleyImg.src}
-          width={imgWidth}
-          height={calmInTrolleyImg.ratio * imgWidth}
-        />
-      </Box>
+    <>
+      <Head>
+        <title>Create client!</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-      <form>
-        <Flex direction="column">
-          <RadioGroup value={clientType} onChange={(value) => setClientType(value as ClientType)}>
-            <Text>Client type</Text>
-            <Stack pt="3" spacing={5} direction="row">
-              {Object.values(ClientType).map((value) => (
-                <Radio cursor="pointer" colorScheme="green" value={value}>
-                  {value}
-                </Radio>
-              ))}
-            </Stack>
-          </RadioGroup>
+      <Flex>
+        <Box className="nextImgBox">
+          <img
+            aria-hidden="true"
+            alt="placeholder"
+            className="nextImgPlaceholder"
+            src={calmInTrolleyImg.base64}
+          />
+          <NextImg
+            width={imgWidth}
+            src={calmInTrolleyImg.src}
+            objectFit="contain"
+            objectPosition="center"
+            height={calmInTrolleyImg.ratio * imgWidth}
+          />
+        </Box>
 
-          <FormControl mt="10" id="name" isInvalid={!!errors.name}>
-            <FormLabel htmlFor="name">Name</FormLabel>
-            <Input
-              name="name"
-              placeholder="John Smith"
-              onChange={handleChange}
-              value={values.name}
-            />
-            <FormErrorMessage>{errors.name}</FormErrorMessage>
-          </FormControl>
+        <form onSubmit={handleSubmit}>
+          <Flex direction="column">
+            <RadioGroup value={clientType} onChange={(value) => setClientType(value as ClientType)}>
+              <Text>Client type</Text>
+              <Stack pt="3" spacing={5} direction="row">
+                {Object.values(ClientType).map((value) => (
+                  <Radio cursor="pointer" colorScheme="green" value={value}>
+                    {value}
+                  </Radio>
+                ))}
+              </Stack>
+            </RadioGroup>
 
-          <FormControl mt="10" id="address" isInvalid={!!errors.address}>
-            <FormLabel htmlFor="address">Address</FormLabel>
-            <Input
-              name="address"
-              placeholder="John Smith"
-              onChange={handleChange}
-              value={values.address}
-            />
-            <FormErrorMessage>{errors.name}</FormErrorMessage>
-          </FormControl>
+            <FormControl mt="10" id="name" isInvalid={!!errors.name}>
+              <FormLabel htmlFor="name">Name</FormLabel>
+              <Input
+                name="name"
+                placeholder="John Smith"
+                onChange={handleChange}
+                value={values.name}
+              />
+              <FormErrorMessage>{errors.name}</FormErrorMessage>
+            </FormControl>
 
-          <FormControl mt="2" id="postAddress" isInvalid={!!errors.postAddress}>
-            <FormLabel htmlFor="postAddress">Post address</FormLabel>
-            <Input
-              name="postAddress"
-              placeholder="John Smith"
-              onChange={handleChange}
-              value={values.postAddress}
-            />
-            <FormErrorMessage>{errors.postAddress}</FormErrorMessage>
-          </FormControl>
+            {clientType === ClientType.COMPANY && (
+              <FormControl mt="10" id="nip" isInvalid={!!errors.nip}>
+                <FormLabel htmlFor="nip">NIP</FormLabel>
+                <Input
+                  name="nip"
+                  placeholder="12345678"
+                  onChange={handleChange}
+                  value={values.nip}
+                />
+                <FormErrorMessage>{errors.nip}</FormErrorMessage>
+              </FormControl>
+            )}
 
-          <FormControl mt="2" id="city" isInvalid={!!errors.city}>
-            <FormLabel htmlFor="city">City</FormLabel>
-            <Input
-              name="city"
-              placeholder="John Smith"
-              onChange={handleChange}
-              value={values.city}
-            />
-            <FormErrorMessage>{errors.country}</FormErrorMessage>
-          </FormControl>
+            <FormControl mt="10" id="address" isInvalid={!!errors.address}>
+              <FormLabel htmlFor="address">Street name and number</FormLabel>
+              <Input
+                name="address"
+                placeholder="Street 10/2"
+                onChange={handleChange}
+                value={values.address}
+              />
+              <FormErrorMessage>{errors.name}</FormErrorMessage>
+            </FormControl>
 
-          <FormControl mt="2" id="country" isInvalid={!!errors.country}>
-            <FormLabel htmlFor="country">Country</FormLabel>
-            <Input
-              name="country"
-              placeholder="John Smith"
-              onChange={handleChange}
-              value={values.country}
-            />
-            <FormErrorMessage>{errors.country}</FormErrorMessage>
-          </FormControl>
-        </Flex>
-      </form>
-    </Flex>
+            <FormControl mt="2" id="postCode" isInvalid={!!errors.postCode}>
+              <FormLabel htmlFor="postCode">Post code</FormLabel>
+              <Input
+                name="postCode"
+                placeholder="60-687"
+                onChange={handleChange}
+                value={values.postCode}
+              />
+              <FormErrorMessage>{errors.postCode}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl mt="2" id="city" isInvalid={!!errors.city}>
+              <FormLabel htmlFor="city">City</FormLabel>
+              <Input name="city" placeholder="Poznań" onChange={handleChange} value={values.city} />
+              <FormErrorMessage>{errors.country}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl mt="2" id="country" isInvalid={!!errors.country}>
+              <FormLabel htmlFor="country">Country</FormLabel>
+              <Input
+                name="country"
+                placeholder="Polska"
+                onChange={handleChange}
+                value={values.country}
+              />
+              <FormErrorMessage>{errors.country}</FormErrorMessage>
+            </FormControl>
+
+            <Button mt="10" type="submit">
+              Submit
+            </Button>
+          </Flex>
+        </form>
+      </Flex>
+    </>
   )
 }
 

@@ -7,10 +7,14 @@ import Header from 'src/components/Header'
 const extendedTheme = extendTheme({
   styles: {
     global: {
-      '.imgBox': {
+      '.nextImgBox': {
         borderRadius: 15,
+        mr: '100',
+        position: 'relative',
+        overflow: 'hidden',
+        height: 'fit-content',
       },
-      '.imgBox > div': {
+      '.nextImgBox > div': {
         display: 'block !important',
       },
       '.nextImgPlaceholder': {

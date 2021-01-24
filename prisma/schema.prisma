@@ -11,14 +11,14 @@ generator client {
 }
 
 model Client {
-  id          String     @id @default(uuid())
-  name        String
-  address     String
-  postAddress String
-  city        String
-  country     String
-  nip         Int?
-  Scenario    Scenario[]
+  id       String     @id @default(uuid())
+  name     String
+  address  String
+  postCode String
+  city     String
+  country  String
+  nip      Int?
+  Scenario Scenario[]
 }
 
 model Seller {
