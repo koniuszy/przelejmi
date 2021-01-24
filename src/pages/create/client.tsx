@@ -99,7 +99,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               <Text>Client type</Text>
               <Stack pt="3" spacing={5} direction="row">
                 {Object.values(ClientType).map((value) => (
-                  <Radio cursor="pointer" colorScheme="green" value={value}>
+                  <Radio key={value} cursor="pointer" colorScheme="green" value={value}>
                     {value}
                   </Radio>
                 ))}

@@ -1,7 +1,7 @@
 import { mutationType, objectType, queryType } from '@nexus/schema'
 
-export const Buyer = objectType({
-  name: 'Buyer',
+export const Client = objectType({
+  name: 'Client',
   definition(t) {
     t.model.id()
     t.model.Scenario()

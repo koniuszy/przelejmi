@@ -85,7 +85,9 @@ const App: FC = () => {
               <Text>Payment Type</Text>
               <Stack pt="3" spacing={5} direction="row">
                 {Object.values(PaymentType).map((value) => (
-                  <Radio value={value}>{value}</Radio>
+                  <Radio key={value} value={value}>
+                    {value}
+                  </Radio>
                 ))}
               </Stack>
             </RadioGroup>
@@ -99,7 +101,7 @@ const App: FC = () => {
               <Text>Currency</Text>
               <Stack pt="3" spacing={5} direction="row">
                 {Object.values(Currency).map((value) => (
-                  <Radio colorScheme="green" value={value}>
+                  <Radio key={value} colorScheme="green" value={value}>
                     {value}
                   </Radio>
                 ))}
@@ -134,7 +136,9 @@ const App: FC = () => {
               <Text>VAT</Text>
               <Stack pt="3" spacing={5} direction="row">
                 {Object.values(VAT).map((value) => (
-                  <Radio value={value}>{value}</Radio>
+                  <Radio key={value} value={value}>
+                    {value}
+                  </Radio>
                 ))}
               </Stack>
             </RadioGroup>
@@ -159,7 +163,9 @@ const App: FC = () => {
               <Text>Unit type</Text>
               <Stack pt="3" spacing={5} direction="row">
                 {Object.values(Unit).map((value) => (
-                  <Radio value={value}>{value}</Radio>
+                  <Radio key={value} value={value}>
+                    {value}
+                  </Radio>
                 ))}
               </Stack>
             </RadioGroup>
