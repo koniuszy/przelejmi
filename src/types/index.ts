@@ -19,6 +19,11 @@ export enum PaymentType {
   TRANSFER = 'transfer',
 }
 
+export enum ClientType {
+  COMPANY = 'Company',
+  PERSON = 'Person',
+}
+
 export type OptimizedImg = {
   src: string
   base64: string

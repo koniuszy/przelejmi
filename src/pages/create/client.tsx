@@ -24,15 +24,10 @@ import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
 import { useFormik } from 'formik'
 
-import { OptimizedImg } from 'src/types'
+import { ClientType, OptimizedImg } from 'src/types'
 
 type SSGProps = {
   calmInTrolleyImg: OptimizedImg
-}
-
-enum ClientType {
-  COMPANY = 'Company',
-  PERSON = 'Person',
 }
 
 type Form = {
