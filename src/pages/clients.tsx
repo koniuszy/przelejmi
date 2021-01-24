@@ -52,9 +52,6 @@ const App: FC<SSGProps> = ({ initialClients }) => {
               <Th>Type</Th>
               <Th>NIP</Th>
               <Th>Address</Th>
-              <Th>Post code</Th>
-              <Th>City</Th>
-              <Th>Country</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -63,10 +60,9 @@ const App: FC<SSGProps> = ({ initialClients }) => {
                 <Td>{item.name}</Td>
                 <Td>{item.nip ? ClientType.COMPANY : ClientType.PERSON}</Td>
                 <Td>{item.nip}</Td>
-                <Td>{item.address}</Td>
-                <Td>{item.postCode}</Td>
-                <Td>{item.city}</Td>
-                <Td>{item.country}</Td>
+                <Td>
+                  {item.address}, {item.postCode}, {item.city}, {item.country}
+                </Td>
               </Tr>
             ))}
           </Tbody>
