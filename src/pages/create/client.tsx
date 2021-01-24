@@ -13,17 +13,13 @@ import {
   Input,
   FormErrorMessage,
   Button,
-  Grid,
   RadioGroup,
   Stack,
   Radio,
   Text,
-  NumberInput,
-  NumberInputField,
-  InputGroup,
-  InputLeftElement,
 } from '@chakra-ui/react'
 
+import { gql, useMutation } from '@apollo/client'
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
 import { useFormik } from 'formik'
@@ -48,21 +44,34 @@ type Form = {
   nip: string
 }
 
+const createClientQuery = gql`
+  mutation createOneClient($data: ClientCreateInput!) {
+    client: createOneClient(data: $data) {
+      id
+    }
+  }
+`
+
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   const imgWidth = 500
   const [clientType, setClientType] = useState<ClientType>(ClientType.COMPANY)
+  const [createClient, { loading }] = useMutation(createClientQuery)
 
-  const { handleSubmit, errors, values, handleChange, isSubmitting, setValues } = useFormik<Form>({
+  const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
     validateOnBlur: true,
     initialValues: { name: '', address: '', postCode: '', city: '', country: '', nip: '' },
     onSubmit: (values) => {
-      console.log(values)
+      createClient({ variables: { data: { ...values, nip: Number(values.nip) } } })
     },
     validate: (values) => {
       //@ts-ignore
       const errors: Record<keyof Form, string> = {}
 
       if (values.name.length > 100) errors.name = 'Name should be shorter'
+      if (values.address.length > 100) errors.address = 'Address should be shorter'
+      if (values.postCode.length > 10) errors.postCode = 'Post code should be shorter'
+      if (values.city.length > 100) errors.city = 'City should be shorter'
+      if (values.country.length > 100) errors.country = 'Country should be shorter'
       if (isNaN(Number(values.nip.replace(/ /g, '')))) errors.nip = 'NIP is invalid'
 
       return errors
@@ -106,7 +115,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               </Stack>
             </RadioGroup>
 
-            <FormControl mt="10" id="name" isInvalid={!!errors.name}>
+            <FormControl isRequired mt="10" id="name" isInvalid={!!errors.name}>
               <FormLabel htmlFor="name">Name</FormLabel>
               <Input
                 name="name"
@@ -118,7 +127,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
             </FormControl>
 
             {clientType === ClientType.COMPANY && (
-              <FormControl mt="10" id="nip" isInvalid={!!errors.nip}>
+              <FormControl isRequired mt="10" id="nip" isInvalid={!!errors.nip}>
                 <FormLabel htmlFor="nip">NIP</FormLabel>
                 <Input
                   name="nip"
@@ -130,7 +139,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               </FormControl>
             )}
 
-            <FormControl mt="10" id="address" isInvalid={!!errors.address}>
+            <FormControl isRequired mt="10" id="address" isInvalid={!!errors.address}>
               <FormLabel htmlFor="address">Street name and number</FormLabel>
               <Input
                 name="address"
@@ -141,7 +150,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               <FormErrorMessage>{errors.name}</FormErrorMessage>
             </FormControl>
 
-            <FormControl mt="2" id="postCode" isInvalid={!!errors.postCode}>
+            <FormControl isRequired mt="2" id="postCode" isInvalid={!!errors.postCode}>
               <FormLabel htmlFor="postCode">Post code</FormLabel>
               <Input
                 name="postCode"
@@ -152,13 +161,13 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               <FormErrorMessage>{errors.postCode}</FormErrorMessage>
             </FormControl>
 
-            <FormControl mt="2" id="city" isInvalid={!!errors.city}>
+            <FormControl isRequired mt="2" id="city" isInvalid={!!errors.city}>
               <FormLabel htmlFor="city">City</FormLabel>
               <Input name="city" placeholder="Poznań" onChange={handleChange} value={values.city} />
               <FormErrorMessage>{errors.country}</FormErrorMessage>
             </FormControl>
 
-            <FormControl mt="2" id="country" isInvalid={!!errors.country}>
+            <FormControl isRequired mt="2" id="country" isInvalid={!!errors.country}>
               <FormLabel htmlFor="country">Country</FormLabel>
               <Input
                 name="country"
@@ -169,7 +178,13 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               <FormErrorMessage>{errors.country}</FormErrorMessage>
             </FormControl>
 
-            <Button mt="10" type="submit">
+            <Button
+              mt="10"
+              type="submit"
+              colorScheme="teal"
+              disabled={!isValid}
+              isLoading={loading}
+            >
               Submit
             </Button>
           </Flex>

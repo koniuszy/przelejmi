@@ -42,6 +42,7 @@ export const ScenarioMutation = mutationType({
   definition(t) {
     t.crud.createOneScenario()
     t.crud.updateOneScenario()
+    t.crud.createOneClient()
   },
 })
 
