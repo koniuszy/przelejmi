@@ -2,10 +2,12 @@ import React, { FC } from 'react'
 
 import { GetStaticProps } from 'next'
 
-import { useQuery, gql } from '@apollo/client'
-import { Table, Thead, Tbody, Tr, Th, Td, TableCaption, Flex, Text, Button } from '@chakra-ui/react'
 import Head from 'next/head'
 import NextLink from 'next/link'
+
+import { Table, Thead, Tbody, Tr, Th, Td, TableCaption, Flex, Text, Button } from '@chakra-ui/react'
+
+import { useQuery, gql } from '@apollo/client'
 
 import downloadPdf from 'src/lib/downloadPdf'
 

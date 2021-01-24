@@ -18,3 +18,9 @@ export enum PaymentType {
   CASH = 'cash',
   TRANSFER = 'transfer',
 }
+
+export type OptimizedImg = {
+  src: string
+  base64: string
+  ratio: number
+}

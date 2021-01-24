@@ -10,12 +10,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Buyer {
+model Client {
   id          String     @id @default(uuid())
   name        String
   address     String
   postAddress String
-  nip         Int
+  city        String
+  country     String
+  nip         Int?
   Scenario    Scenario[]
 }
 
@@ -45,8 +47,8 @@ model Scenario {
   notes       String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
-  buyer       Buyer    @relation(fields: [buyerId], references: [id])
-  buyerId     String
+  client      Client   @relation(fields: [clientId], references: [id])
+  clientId    String
   seller      Seller   @relation(fields: [sellerId], references: [id])
   sellerId    String
 }

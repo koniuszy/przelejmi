@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
+
+import Head from 'next/head'
 
 import {
   FormControl,
   FormLabel,
   Input,
-  FormHelperText,
-  Select,
   FormErrorMessage,
   Button,
   Grid,
@@ -13,16 +13,14 @@ import {
   Stack,
   Radio,
   Text,
-  Center,
-  Box,
   NumberInput,
   NumberInputField,
   InputGroup,
   InputLeftElement,
 } from '@chakra-ui/react'
+
 import { Scenario } from '@prisma/client'
 import { useFormik } from 'formik'
-import Head from 'next/head'
 
 import { Currency, VAT, PaymentType, Unit } from 'src/types'
 

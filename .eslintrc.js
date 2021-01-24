@@ -65,6 +65,16 @@ module.exports = {
             position: 'before',
           },
           {
+            pattern: 'next/**',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '@chakra-ui/**',
+            group: 'external',
+            position: 'before',
+          },
+          {
             pattern: 'src/lib/**',
             group: 'internal',
             position: 'before',

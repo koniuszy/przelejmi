@@ -19,6 +19,8 @@
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
     "@nexus/schema": "^0.20.1",
+    "@plaiceholder/base64": "^1.0.0",
+    "@plaiceholder/next": "^1.0.0",
     "@prisma/client": "^2.14.0",
     "apollo-server-micro": "^2.19.2",
     "date-fns": "^2.16.1",
