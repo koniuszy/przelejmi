@@ -25,7 +25,9 @@ model Seller {
   id          String     @id @default(uuid())
   name        String
   address     String
-  postAddress String
+  postCode    String
+  city        String
+  country     String
   nip         Int
   Scenario    Scenario[]
   email       String
