@@ -13,23 +13,40 @@ import {
 } from '@chakra-ui/react'
 
 import { gql, useMutation } from '@apollo/client'
+import { Client } from '@prisma/client'
+
+import { CLIENTS_QUERY } from 'src/pages/clients'
 
 const DELETE_CLIENT_MUTATION = gql`
   mutation deleteOneClient($id: String!) {
-    deleteOneClient(where: { id: $id }) {
+    deletedClient: deleteOneClient(where: { id: $id }) {
       id
     }
   }
 `
 
-const DelePopover: FC<{
+const DeletePopover: FC<{
   id: string
   onClose(): void
 }> = ({ id, children, onClose }) => {
   const [deleteClient, { loading }] = useMutation(DELETE_CLIENT_MUTATION)
 
   async function handleDelete() {
-    await deleteClient({ variables: { id } })
+    await deleteClient({
+      variables: { id },
+      optimisticResponse: {
+        deletedClient: {
+          id,
+        },
+      },
+      update(proxy, { data: { deletedClient } }) {
+        const data = proxy.readQuery<{ clientList: Client[] }>({ query: CLIENTS_QUERY })
+        proxy.writeQuery({
+          query: CLIENTS_QUERY,
+          data: data.clientList.filter((clientListItem) => clientListItem.id !== deletedClient.id),
+        })
+      },
+    })
     onClose()
   }
 
@@ -59,4 +76,4 @@ const DelePopover: FC<{
   )
 }
 
-export default DelePopover
+export default DeletePopover

@@ -29,12 +29,12 @@ import { ClientType } from 'src/types'
 import DeleteClientPopover from 'src/components/DeleteClientPopover'
 
 type SSGProps = {
-  initialClients: Client[]
+  initialClientList: Client[]
 }
 
-const CLIENTS_QUERY = gql`
+export const CLIENTS_QUERY = gql`
   {
-    clients {
+    clientList: clients {
       id
       name
       address
@@ -46,8 +46,8 @@ const CLIENTS_QUERY = gql`
   }
 `
 
-const App: FC<SSGProps> = ({ initialClients }) => {
-  const { data } = useQuery<{ clients: Client[] }>(CLIENTS_QUERY)
+const App: FC<SSGProps> = ({ initialClientList }) => {
+  const { data } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
   const [clientDeletionId, setClientDeletionId] = useState<string | null>(null)
 
   return (
@@ -74,7 +74,7 @@ const App: FC<SSGProps> = ({ initialClients }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {(data?.clients || initialClients).map((item) => (
+            {(data?.clientList || initialClientList).map((item) => (
               <Tr key={item.id}>
                 <Td>{item.name}</Td>
                 <Td>{item.nip ? ClientType.COMPANY : ClientType.PERSON}</Td>
@@ -127,9 +127,9 @@ const App: FC<SSGProps> = ({ initialClients }) => {
 export const getStaticProps: GetStaticProps<SSGProps> = async (context) => {
   const prisma = new PrismaClient()
 
-  const initialClients = await prisma.client.findMany()
+  const initialClientList = await prisma.client.findMany()
 
-  return { props: { initialClients }, revalidate: 10 }
+  return { props: { initialClientList }, revalidate: 10 }
 }
 
 export default App
