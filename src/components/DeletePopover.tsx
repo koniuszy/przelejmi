@@ -4,7 +4,6 @@ import {
   Button,
   ButtonGroup,
   Popover,
-  PopoverArrow,
   PopoverBody,
   PopoverCloseButton,
   PopoverContent,
@@ -27,7 +26,6 @@ const DelePopover: FC<{
     <PopoverTrigger>{children}</PopoverTrigger>
     <PopoverContent>
       <PopoverHeader fontWeight="semibold">Confirmation</PopoverHeader>
-      <PopoverArrow />
       <PopoverCloseButton />
       <PopoverBody>Are you sure?</PopoverBody>
       <PopoverFooter w="100%">
