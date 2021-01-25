@@ -26,13 +26,13 @@ import { Client, PrismaClient } from '@prisma/client'
 
 import { ClientType } from 'src/types'
 
-import DeletePopover from 'src/components/DeletePopover'
+import DeleteClientPopover from 'src/components/DeleteClientPopover'
 
 type SSGProps = {
   initialClients: Client[]
 }
 
-const clientsQuery = gql`
+const CLIENTS_QUERY = gql`
   {
     clients {
       id
@@ -47,7 +47,7 @@ const clientsQuery = gql`
 `
 
 const App: FC<SSGProps> = ({ initialClients }) => {
-  const { data } = useQuery<{ clients: Client[] }>(clientsQuery)
+  const { data } = useQuery<{ clients: Client[] }>(CLIENTS_QUERY)
   const [clientDeletionId, setClientDeletionId] = useState<string | null>(null)
 
   return (
@@ -105,12 +105,12 @@ const App: FC<SSGProps> = ({ initialClients }) => {
                         _focus={{ bg: 'red.400' }}
                         icon={<DeleteIcon w={3} h={3} />}
                       >
-                        <DeletePopover
+                        <DeleteClientPopover
                           id={clientDeletionId}
                           onClose={() => setClientDeletionId(null)}
                         >
                           <Text>Delete</Text>
-                        </DeletePopover>
+                        </DeleteClientPopover>
                       </MenuItem>
                     </MenuList>
                   </Menu>
