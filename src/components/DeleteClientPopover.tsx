@@ -70,7 +70,9 @@ const DeletePopover = ({
         <PopoverBody>Are you sure?</PopoverBody>
         <PopoverFooter w="100%">
           <ButtonGroup d="flex" justifyContent="space-between" size="sm">
-            <Button variant="outline">Cancel</Button>
+            <Button onClick={onClose} variant="outline">
+              Cancel
+            </Button>
             <Button isLoading={loading} onClick={handleDelete} color="red.400">
               Delete
             </Button>

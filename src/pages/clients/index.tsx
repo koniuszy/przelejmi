@@ -106,7 +106,10 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
 
                       <DeleteClientPopover
                         id={item.id === clientDeletionId ? clientDeletionId : null}
-                        onClose={() => setClientDeletionId(null)}
+                        onClose={() => {
+                          setClientDeletionId(null)
+                          setOpenActionsRowId(null)
+                        }}
                       >
                         <MenuItem
                           bg="red.500"
