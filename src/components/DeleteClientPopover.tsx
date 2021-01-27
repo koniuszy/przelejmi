@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react'
+import React, { isValidElement, PropsWithChildren, ReactElement } from 'react'
 
 import {
   Button,
@@ -32,7 +32,7 @@ const DeletePopover = ({
 }: PropsWithChildren<{
   id: string | null
   onClose(): void
-}>): ReactNode => {
+}>): ReactElement => {
   const [deleteClient, { loading }] = useMutation(DELETE_CLIENT_MUTATION)
 
   function handleDelete() {
@@ -53,7 +53,7 @@ const DeletePopover = ({
     }).then(onClose)
   }
 
-  if (!id) return children
+  if (!id && isValidElement(children)) return children
 
   return (
     <Popover
