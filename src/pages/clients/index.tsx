@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react'
 import { GetStaticProps } from 'next'
 
 import Head from 'next/head'
+import NextLink from 'next/link'
 
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
@@ -87,9 +88,11 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
                       …
                     </MenuButton>
                     <MenuList>
-                      <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
-                        Edit
-                      </MenuItem>
+                      <NextLink href={`clients/${item.id}`}>
+                        <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
+                          Edit
+                        </MenuItem>
+                      </NextLink>
 
                       <DeleteClientPopover
                         id={item.id === clientDeletionId ? clientDeletionId : null}
