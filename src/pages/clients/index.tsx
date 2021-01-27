@@ -49,6 +49,7 @@ export const CLIENTS_QUERY = gql`
 const App: FC<SSGProps> = ({ initialClientList }) => {
   const { data } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
   const [clientDeletionId, setClientDeletionId] = useState<string | null>(null)
+  const [openActionsRowId, setOpenActionsRowId] = useState<string | null>(null)
 
   return (
     <div>
@@ -87,8 +88,15 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
                     onClose={() => setClientDeletionId(null)}
                     closeOnBlur={!clientDeletionId}
                     closeOnSelect={false}
+                    isOpen={openActionsRowId === item.id}
                   >
-                    <MenuButton cursor="pointer" colorScheme="teal" as={Button} variant={'ghost'}>
+                    <MenuButton
+                      as={Button}
+                      variant="ghost"
+                      cursor="pointer"
+                      colorScheme="teal"
+                      onClick={() => setOpenActionsRowId(item.id)}
+                    >
                       …
                     </MenuButton>
                     <MenuList>
