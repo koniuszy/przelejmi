@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { PropsWithChildren, ReactNode } from 'react'
 
 import {
   Button,
@@ -25,14 +25,18 @@ const DELETE_CLIENT_MUTATION = gql`
   }
 `
 
-const DeletePopover: FC<{
-  id: string
+const DeletePopover = ({
+  id,
+  children,
+  onClose,
+}: PropsWithChildren<{
+  id: string | null
   onClose(): void
-}> = ({ id, children, onClose }) => {
+}>): ReactNode => {
   const [deleteClient, { loading }] = useMutation(DELETE_CLIENT_MUTATION)
 
-  async function handleDelete() {
-    await deleteClient({
+  function handleDelete() {
+    deleteClient({
       variables: { id },
       optimisticResponse: {
         deletedClient: {
@@ -46,9 +50,10 @@ const DeletePopover: FC<{
           data: data.clientList.filter((clientListItem) => clientListItem.id !== deletedClient.id),
         })
       },
-    })
-    onClose()
+    }).then(onClose)
   }
+
+  if (!id) return children
 
   return (
     <Popover
@@ -66,7 +71,7 @@ const DeletePopover: FC<{
         <PopoverFooter w="100%">
           <ButtonGroup d="flex" justifyContent="space-between" size="sm">
             <Button variant="outline">Cancel</Button>
-            <Button isLoading={loading} onDelete={handleDelete} color="red.400">
+            <Button isLoading={loading} onClick={handleDelete} color="red.400">
               Delete
             </Button>
           </ButtonGroup>

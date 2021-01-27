@@ -95,23 +95,20 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
                       <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
                         Edit
                       </MenuItem>
-                      <MenuItem
-                        data-id={item.id}
-                        onClick={(e) => {
-                          const target = e.target as HTMLButtonElement
-                          setClientDeletionId(target.getAttribute('data-id'))
-                        }}
-                        bg="red.500"
-                        _focus={{ bg: 'red.400' }}
-                        icon={<DeleteIcon w={3} h={3} />}
+
+                      <DeleteClientPopover
+                        id={item.id === clientDeletionId ? clientDeletionId : null}
+                        onClose={() => setClientDeletionId(null)}
                       >
-                        <DeleteClientPopover
-                          id={clientDeletionId}
-                          onClose={() => setClientDeletionId(null)}
+                        <MenuItem
+                          bg="red.500"
+                          _focus={{ bg: 'red.400' }}
+                          onClick={() => setClientDeletionId(item.id)}
+                          icon={<DeleteIcon w={3} h={3} />}
                         >
                           <Text>Delete</Text>
-                        </DeleteClientPopover>
-                      </MenuItem>
+                        </MenuItem>
+                      </DeleteClientPopover>
                     </MenuList>
                   </Menu>
                 </Td>
