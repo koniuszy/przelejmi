@@ -21,9 +21,10 @@ import {
   MenuItem,
 } from '@chakra-ui/react'
 
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { Client, PrismaClient } from '@prisma/client'
 
+import { CLIENTS_QUERY } from 'src/graphql/queries'
 import { ClientType } from 'src/types'
 
 import DeleteClientPopover from 'src/components/DeleteClientPopover'
@@ -31,20 +32,6 @@ import DeleteClientPopover from 'src/components/DeleteClientPopover'
 type SSGProps = {
   initialClientList: Client[]
 }
-
-export const CLIENTS_QUERY = gql`
-  {
-    clientList: clients {
-      id
-      name
-      address
-      postCode
-      city
-      country
-      nip
-    }
-  }
-`
 
 const App: FC<SSGProps> = ({ initialClientList }) => {
   const { data } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)

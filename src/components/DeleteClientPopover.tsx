@@ -15,7 +15,7 @@ import {
 import { gql, useMutation } from '@apollo/client'
 import { Client } from '@prisma/client'
 
-import { CLIENTS_QUERY } from 'src/pages/clients'
+import { CLIENTS_QUERY } from 'src/graphql/queries'
 
 const DELETE_CLIENT_MUTATION = gql`
   mutation deleteOneClient($id: String!) {
@@ -47,7 +47,12 @@ const DeletePopover = ({
         const data = proxy.readQuery<{ clientList: Client[] }>({ query: CLIENTS_QUERY })
         proxy.writeQuery({
           query: CLIENTS_QUERY,
-          data: data.clientList.filter((clientListItem) => clientListItem.id !== deletedClient.id),
+          data: {
+            ...data,
+            clientList: data.clientList.filter(
+              (clientListItem) => clientListItem.id !== deletedClient.id
+            ),
+          },
         })
       },
     }).then(onClose)
