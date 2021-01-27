@@ -18,7 +18,7 @@ import { Client } from '@prisma/client'
 import { CLIENTS_QUERY } from 'src/graphql/queries'
 
 const DELETE_CLIENT_MUTATION = gql`
-  mutation deleteOneClient($id: String!) {
+  mutation deleteOneClient($id: Int!) {
     deletedClient: deleteOneClient(where: { id: $id }) {
       id
     }
@@ -30,7 +30,7 @@ const DeletePopover = ({
   children,
   onClose,
 }: PropsWithChildren<{
-  id: string | null
+  id: number | null
   onClose(): void
 }>): ReactElement => {
   const [deleteClient, { loading }] = useMutation(DELETE_CLIENT_MUTATION)

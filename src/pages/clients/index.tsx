@@ -36,8 +36,8 @@ type SSGProps = {
 
 const App: FC<SSGProps> = ({ initialClientList }) => {
   const { data } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
-  const [clientDeletionId, setClientDeletionId] = useState<string | null>(null)
-  const [openActionsRowId, setOpenActionsRowId] = useState<string | null>(null)
+  const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
+  const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
 
   return (
     <div>
