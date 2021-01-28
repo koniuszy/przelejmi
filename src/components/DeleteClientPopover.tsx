@@ -10,10 +10,13 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
+  useToast,
 } from '@chakra-ui/react'
 
 import { gql, useMutation } from '@apollo/client'
 import { Client } from '@prisma/client'
+
+import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import { CLIENTS_QUERY } from 'src/graphql/queries'
 
@@ -33,7 +36,18 @@ const DeletePopover = ({
   id: number | null
   onClose(): void
 }>): ReactElement => {
-  const [deleteClient, { loading }] = useMutation(DELETE_CLIENT_MUTATION)
+  const toast = useToast()
+  const [deleteClient, { loading }] = useMutation(DELETE_CLIENT_MUTATION, {
+    onCompleted() {
+      toast({
+        ...successToastContent,
+        title: 'Client deleted.',
+      })
+    },
+    onError() {
+      toast(errorToastContent)
+    },
+  })
 
   function handleDelete() {
     deleteClient({

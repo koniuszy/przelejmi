@@ -20,11 +20,16 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
+import { Client } from '@prisma/client'
 import { useFormik } from 'formik'
 
+import { errorToastContent, successToastContent } from 'src/lib/toastContent'
+
+import { CREATE_CLIENT_QUERY } from 'src/graphql/mutations'
+import { CLIENTS_QUERY } from 'src/graphql/queries'
 import { ClientType, OptimizedImg } from 'src/types'
 
 type SSGProps = {
@@ -40,20 +45,23 @@ type Form = {
   nip: string
 }
 
-const createClientQuery = gql`
-  mutation createOneClient($data: ClientCreateInput!) {
-    client: createOneClient(data: $data) {
-      id
-    }
-  }
-`
-
 const imgWidth = 500
 
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   const toast = useToast()
   const [clientType, setClientType] = useState<ClientType>(ClientType.COMPANY)
-  const [createClient, { loading }] = useMutation(createClientQuery)
+  const [createClient, { loading, client }] = useMutation<Client>(CREATE_CLIENT_QUERY, {
+    onCompleted(data) {
+      client.writeQuery({ query: CLIENTS_QUERY, data })
+      toast({
+        ...successToastContent,
+        title: 'Client created.',
+      })
+    },
+    onError() {
+      toast(errorToastContent)
+    },
+  })
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
     validateOnBlur: true,
@@ -64,15 +72,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
         variables: {
           data: { ...data, nip: clientType === ClientType.COMPANY ? Number(nip) : null },
         },
-      }).then(() =>
-        toast({
-          title: 'Client created.',
-          description: 'Whoah! That was fast…',
-          status: 'success',
-          duration: 6000,
-          isClosable: true,
-        })
-      )
+      })
     },
     validate(values) {
       //@ts-ignore
