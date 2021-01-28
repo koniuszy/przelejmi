@@ -28,7 +28,7 @@ import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { CREATE_CLIENT_QUERY } from 'src/graphql/mutations'
+import { CREATE_CLIENT_MUTATION } from 'src/graphql/mutations'
 import { CLIENTS_QUERY } from 'src/graphql/queries'
 import { ClientType, OptimizedImg } from 'src/types'
 
@@ -50,18 +50,21 @@ const imgWidth = 500
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   const toast = useToast()
   const [clientType, setClientType] = useState<ClientType>(ClientType.COMPANY)
-  const [createClient, { loading, client }] = useMutation<Client>(CREATE_CLIENT_QUERY, {
-    onCompleted(data) {
-      client.writeQuery({ query: CLIENTS_QUERY, data })
-      toast({
-        ...successToastContent,
-        title: 'Client created.',
-      })
-    },
-    onError() {
-      toast(errorToastContent)
-    },
-  })
+  const [createClient, { loading, client }] = useMutation<{ createdClient: Client }>(
+    CREATE_CLIENT_MUTATION,
+    {
+      onCompleted(data) {
+        client.writeQuery({ query: CLIENTS_QUERY, data })
+        toast({
+          ...successToastContent,
+          title: 'Client created.',
+        })
+      },
+      onError() {
+        toast(errorToastContent)
+      },
+    }
+  )
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
     validateOnBlur: true,

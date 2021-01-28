@@ -35,6 +35,7 @@ export const ScenarioQuery = queryType({
   definition(t) {
     t.crud.scenarios()
     t.crud.scenario()
+
     t.crud.clients()
     t.crud.client()
   },

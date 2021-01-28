@@ -28,7 +28,7 @@ import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { CREATE_CLIENT_QUERY } from 'src/graphql/mutations'
+import { CREATE_CLIENT_MUTATION } from 'src/graphql/mutations'
 import { CLIENTS_QUERY } from 'src/graphql/queries'
 import { ClientType, OptimizedImg } from 'src/types'
 

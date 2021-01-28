@@ -13,7 +13,15 @@ export const errorToastContent = {
 }
 
 export const successToastContent = {
-  description: 'Whoah! That was fast…',
+  description: 'Whoah! ⚡️ That was fast…',
   status: Status.SUCCESS,
+  isClosable: true,
+}
+
+export const warningToastContent = {
+  title: 'Refresh the view',
+  description: 'Thew view might be outdated 🕵🏼‍♂️',
+  status: Status.WARNING,
+  duration: 10000,
   isClosable: true,
 }
