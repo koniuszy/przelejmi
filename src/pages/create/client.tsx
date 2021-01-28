@@ -17,6 +17,7 @@ import {
   Stack,
   Radio,
   Text,
+  useToast,
 } from '@chakra-ui/react'
 
 import { gql, useMutation } from '@apollo/client'
@@ -47,18 +48,33 @@ const createClientQuery = gql`
   }
 `
 
+const imgWidth = 500
+
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
-  const imgWidth = 500
+  const toast = useToast()
   const [clientType, setClientType] = useState<ClientType>(ClientType.COMPANY)
   const [createClient, { loading }] = useMutation(createClientQuery)
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
     validateOnBlur: true,
     initialValues: { name: '', address: '', postCode: '', city: '', country: '', nip: '' },
-    onSubmit: (values) => {
-      createClient({ variables: { data: { ...values, nip: Number(values.nip) } } })
+    onSubmit(values) {
+      const { nip, ...data } = values
+      createClient({
+        variables: {
+          data: { ...data, nip: clientType === ClientType.COMPANY ? Number(nip) : null },
+        },
+      }).then(() =>
+        toast({
+          title: 'Client created.',
+          description: 'Whoah! That was fast…',
+          status: 'success',
+          duration: 6000,
+          isClosable: true,
+        })
+      )
     },
-    validate: (values) => {
+    validate(values) {
       //@ts-ignore
       const errors: Record<keyof Form, string> = {}
 
