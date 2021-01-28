@@ -43,6 +43,7 @@ const DeletePopover = ({
         ...successToastContent,
         title: 'Client deleted.',
       })
+      onClose()
     },
     onError() {
       toast(errorToastContent)
@@ -57,9 +58,9 @@ const DeletePopover = ({
           id,
         },
       },
-      update(proxy, { data: { deletedClient } }) {
-        const data = proxy.readQuery<{ clientList: Client[] }>({ query: CLIENTS_QUERY })
-        proxy.writeQuery({
+      update(cache, { data: { deletedClient } }) {
+        const data = cache.readQuery<{ clientList: Client[] }>({ query: CLIENTS_QUERY })
+        cache.writeQuery({
           query: CLIENTS_QUERY,
           data: {
             ...data,
@@ -69,7 +70,7 @@ const DeletePopover = ({
           },
         })
       },
-    }).then(onClose)
+    })
   }
 
   if (!id && isValidElement(children)) return children
