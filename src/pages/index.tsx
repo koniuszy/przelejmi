@@ -30,7 +30,7 @@ const App: FC<SSGProps> = (props) => {
   return (
     <div>
       <Head>
-        <title>Home page</title>
+        <title>przelejmi | Home page</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

@@ -92,7 +92,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   return (
     <>
       <Head>
-        <title>Create client!</title>
+        <title>przelejmi | Create client</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

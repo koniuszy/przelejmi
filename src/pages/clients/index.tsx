@@ -42,7 +42,7 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
   return (
     <div>
       <Head>
-        <title>Clients</title>
+        <title>przelejmi | Clients</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -124,6 +124,7 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
 export const getStaticProps: GetStaticProps<SSGProps> = async (context) => {
   const prisma = new PrismaClient()
   const initialClientList = await prisma.client.findMany()
+  prisma.$disconnect()
 
   return { props: { initialClientList }, revalidate: 10 }
 }
