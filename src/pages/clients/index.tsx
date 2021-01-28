@@ -83,7 +83,9 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
                       variant="ghost"
                       cursor="pointer"
                       colorScheme="teal"
-                      onClick={() => setOpenActionsRowId(item.id)}
+                      onClick={() =>
+                        setOpenActionsRowId(openActionsRowId === item.id ? null : item.id)
+                      }
                     >
                       …
                     </MenuButton>
@@ -124,7 +126,6 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
 
 export const getStaticProps: GetStaticProps<SSGProps> = async (context) => {
   const prisma = new PrismaClient()
-
   const initialClientList = await prisma.client.findMany()
 
   return { props: { initialClientList }, revalidate: 10 }
