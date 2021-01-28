@@ -72,12 +72,7 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
                   {item.address}, {item.postCode}, {item.city}, {item.country}
                 </Td>
                 <Td>
-                  <Menu
-                    onClose={() => setClientDeletionId(null)}
-                    closeOnBlur={!clientDeletionId}
-                    closeOnSelect={false}
-                    isOpen={openActionsRowId === item.id}
-                  >
+                  <Menu onClose={() => setClientDeletionId(null)} closeOnSelect={false}>
                     <MenuButton
                       as={Button}
                       variant="ghost"
