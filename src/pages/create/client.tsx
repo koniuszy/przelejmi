@@ -49,7 +49,7 @@ const createClientQuery = gql`
 
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   const imgWidth = 500
-  const [clientType, setClientType] = useState<ClientType>(ClientType.COMPANY)
+  const [clientType, setClientType] = useState<ClientType>(ClientType.Company)
   const [createClient, { loading }] = useMutation(createClientQuery)
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
@@ -121,7 +121,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               <FormErrorMessage>{errors.name}</FormErrorMessage>
             </FormControl>
 
-            {clientType === ClientType.COMPANY && (
+            {clientType === ClientType.Company && (
               <FormControl isRequired mt="10" id="nip" isInvalid={!!errors.nip}>
                 <FormLabel htmlFor="nip">NIP</FormLabel>
                 <Input

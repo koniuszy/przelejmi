@@ -34,9 +34,9 @@ const App: FC = () => {
   const { handleSubmit, errors, values, handleChange, isSubmitting, setValues } = useFormik<Form>({
     validateOnBlur: true,
     initialValues: {
-      currency: Currency.PLN,
+      currency: Currency.Pln,
       VAT: VAT['23%'],
-      paymentType: PaymentType.TRANSFER,
+      paymentType: PaymentType.Transfer,
       netPerOne: 10000,
       name: '',
       amount: 1,
@@ -155,7 +155,7 @@ const App: FC = () => {
             </FormControl>
 
             <RadioGroup
-              defaultValue={Unit.HOURS}
+              defaultValue={Unit.Hours}
               display="flex"
               flexDirection="column"
               alignItems="center"

@@ -1,27 +1,27 @@
 export enum Currency {
-  PLN = 'PLN',
-  EUR = 'EUR',
+  Pln = 'PLN',
+  Eur = 'EUR',
 }
 
 export enum VAT {
-  '23%' = '23%',
-  '8%' = '8%',
-  np = 'np',
+  Standard = '23%',
+  Deducted = '8%',
+  NotConcerning = 'np',
 }
 
 export enum Unit {
-  ITEM = 'item',
-  HOURS = 'hours',
+  Item = 'ITEM',
+  Hours = 'HOURS',
 }
 
 export enum PaymentType {
-  CASH = 'cash',
-  TRANSFER = 'transfer',
+  Cash = 'CASH',
+  Transfer = 'TRANSFER',
 }
 
 export enum ClientType {
-  COMPANY = 'Company',
-  PERSON = 'Person',
+  Company = 'COMPANY',
+  Person = 'PERSON',
 }
 
 export type OptimizedImg = {

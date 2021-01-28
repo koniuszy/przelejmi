@@ -77,7 +77,7 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
             {(data?.clientList || initialClientList).map((item) => (
               <Tr key={item.id}>
                 <Td>{item.name}</Td>
-                <Td>{item.nip ? ClientType.COMPANY : ClientType.PERSON}</Td>
+                <Td>{item.nip ? ClientType.Company : ClientType.Person}</Td>
                 <Td>{item.nip}</Td>
                 <Td>
                   {item.address}, {item.postCode}, {item.city}, {item.country}
