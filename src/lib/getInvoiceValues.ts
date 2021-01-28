@@ -17,7 +17,7 @@ export default function getInvoiceValues() {
       paymentType: 'Transfer',
     },
     contractors: {
-      seller: {
+      merchant: {
         title: '',
         name: 'VIKING HOUSE SP Z 0 0',
         address: 'os. Stefana Batorego 39/12',
@@ -27,7 +27,7 @@ export default function getInvoiceValues() {
         bankName: 'mBank',
         bankAccount: 'PL 30 1140 2004 0000 3802 7928 6778',
       },
-      buyer: {
+      client: {
         title: '',
         name: 'Akwadrat Sp. z o.o.',
         address: 'ul. Św. Michała 100',

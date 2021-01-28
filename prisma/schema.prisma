@@ -21,7 +21,7 @@ model Client {
   Scenario Scenario[]
 }
 
-model Seller {
+model Merchant {
   id          String     @id @default(uuid())
   name        String
   address     String
@@ -51,6 +51,6 @@ model Scenario {
   updatedAt   DateTime @default(now()) @updatedAt
   client      Client   @relation(fields: [clientId], references: [id])
   clientId    String
-  seller      Seller   @relation(fields: [sellerId], references: [id])
-  sellerId    String
+  merchant    Merchant @relation(fields: [merchantId], references: [id])
+  merchantId  String
 }

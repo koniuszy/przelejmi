@@ -45,7 +45,7 @@ const App: FC<SSGProps> = (props) => {
             <Tr>
               <Th>Name</Th>
               <Th>Account number</Th>
-              <Th>Buyer</Th>
+              <Th>Client</Th>
               <Th>Body</Th>
               <Th isNumeric>Total Net</Th>
               <Th isNumeric>VAT %</Th>

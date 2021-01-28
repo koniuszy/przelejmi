@@ -14,8 +14,8 @@ export const Client = objectType({
   },
 })
 
-export const Seller = objectType({
-  name: 'Seller',
+export const Merchant = objectType({
+  name: 'Merchant',
   definition(t) {
     t.model.id()
     t.model.Scenario()
@@ -69,7 +69,7 @@ export const Scenario = objectType({
     t.model.updatedAt()
     t.model.client()
     t.model.clientId()
-    t.model.sellerId()
-    t.model.seller()
+    t.model.merchantId()
+    t.model.merchant()
   },
 })

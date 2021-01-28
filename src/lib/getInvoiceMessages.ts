@@ -19,7 +19,7 @@ export default function getMessages({
   const contractorsXOffset = 10
 
   const contractors = {
-    seller: {
+    merchant: {
       title: { text: 'Sprzedawca', x: contractorsXOffset, y: contractorsYOffset },
       name: { text: '', x: contractorsXOffset, y: contractorsYOffset + 5 },
       address: { text: '', x: contractorsXOffset, y: contractorsYOffset + 10 },
@@ -29,7 +29,7 @@ export default function getMessages({
       bankName: { text: '', x: contractorsXOffset, y: contractorsYOffset + 29 },
       bankAccount: { text: '', x: contractorsXOffset, y: contractorsYOffset + 33 },
     },
-    buyer: {
+    client: {
       title: { text: 'Nabywca', x: contractorsXOffset + 90, y: 45 },
       name: { text: '', x: contractorsXOffset + 90, y: 50 },
       address: { text: '', x: contractorsXOffset + 90, y: 55 },

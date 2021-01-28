@@ -9,7 +9,7 @@
     "test": "NODE_ENV=test jest --runInBand",
     "generate": "yarn generate:prisma",
     "generate:prisma": "prisma generate",
-    "push:db": "npx prisma db push --preview-feature",
+    "db:push": "npx prisma db push --preview-feature",
     "serve": "NODE_ENV=production npx next start -p 4000"
   },
   "dependencies": {
