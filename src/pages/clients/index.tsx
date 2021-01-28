@@ -116,6 +116,8 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
                           _focus={{ bg: 'red.400' }}
                           onClick={() => setClientDeletionId(item.id)}
                           icon={<DeleteIcon w={3} h={3} />}
+                          py="0.4rem"
+                          px="0.8rem"
                         >
                           <Text>Delete</Text>
                         </MenuItem>
