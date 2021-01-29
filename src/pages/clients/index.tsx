@@ -32,6 +32,7 @@ import {
   Switch,
   FormControl,
   FormLabel,
+  Heading,
 } from '@chakra-ui/react'
 
 import { useMutation, useQuery } from '@apollo/client'
@@ -141,6 +142,8 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
     updateClient({ variables: { data, id } })
   }
 
+  const clientList = data?.clientList || initialClientList
+
   return (
     <div>
       <Head>
@@ -170,7 +173,20 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
         </Flex>
 
         <Table variant="simple">
-          <TableCaption>List of all your clients</TableCaption>
+          <TableCaption>
+            {clientList.length > 0 ? (
+              'List of all your clients'
+            ) : (
+              <>
+                <Heading as="h2">No clients yet 🤫</Heading>
+                <NextLink href="/create/client">
+                  <Button size="lg" mt={5} colorScheme="teal">
+                    Create
+                  </Button>
+                </NextLink>
+              </>
+            )}
+          </TableCaption>
           <Thead>
             <Tr>
               <Th>Name</Th>
@@ -184,7 +200,7 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {(data?.clientList || initialClientList).map((item) => (
+            {clientList.map((item) => (
               <Tr key={item.id}>
                 <EditableCell
                   defaultValue={item.name}
