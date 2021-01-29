@@ -55,15 +55,16 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
     {
       onCompleted(response) {
         const data = client.readQuery({ query: CLIENTS_QUERY })
+        toast({
+          ...successToastContent,
+          title: 'Client created.',
+        })
+
         if (!data) return
 
         client.writeQuery({
           query: CLIENTS_QUERY,
           data: { ...data, clientList: [...data.clientList, response.createdClient] },
-        })
-        toast({
-          ...successToastContent,
-          title: 'Client created.',
         })
       },
       onError(err) {
