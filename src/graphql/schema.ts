@@ -1,6 +1,6 @@
-import path from 'path'
+import { join } from 'path'
 
-import { makeSchema } from '@nexus/schema'
+import { makeSchema, declarativeWrappingPlugin } from 'nexus'
 import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 
 import * as types from 'src/graphql/models'
@@ -8,29 +8,28 @@ import * as types from 'src/graphql/models'
 const schema = makeSchema({
   types,
   plugins: [
-    //@ts-ignore
+    declarativeWrappingPlugin(),
     nexusSchemaPrisma({
       experimentalCRUD: true,
+      atomicOperations: false,
       paginationStrategy: 'prisma',
-      shouldGenerateArtifacts: true,
     }),
   ],
   outputs: {
-    schema: path.join(process.cwd(), 'src', 'generated', 'schema.graphql'),
-    typegen: path.join(process.cwd(), 'node_modules/@types/nexus-typegen/index.d.ts'),
+    schema: join(process.cwd(), 'src', 'generated', 'schema.graphql'),
+    typegen: join(process.cwd(), 'src', 'generated', 'nexus-typegen.ts'),
   },
-  typegenAutoConfig: {
-    contextType: 'Context.Context',
-    sources: [
+  sourceTypes: {
+    modules: [
       {
-        source: '@prisma/client',
+        module: '@prisma/client',
         alias: 'prisma',
       },
-      {
-        source: path.join(process.cwd(), 'src', 'graphql', 'context.ts'),
-        alias: 'Context',
-      },
     ],
+  },
+  contextType: {
+    module: join(process.cwd(), 'src', 'graphql', 'context.ts'),
+    export: 'Context',
   },
 })
 

@@ -5,7 +5,7 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import {
   Table,
   Thead,
@@ -138,7 +138,15 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
           <Thead>
             <Tr>
               <Th />
-              <Th>Name</Th>
+              <Th>
+                <Flex>
+                  <Center>Name</Center>
+                  <Flex ml="2" direction="column">
+                    <TriangleUpIcon />
+                    <TriangleDownIcon />
+                  </Flex>
+                </Flex>
+              </Th>
               <Th>Type</Th>
               <Th>NIP</Th>
               <Th>Address</Th>

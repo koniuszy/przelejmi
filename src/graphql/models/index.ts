@@ -1,4 +1,4 @@
-import { mutationType, objectType, queryType } from '@nexus/schema'
+import { mutationType, objectType, queryType } from 'nexus'
 
 export const Client = objectType({
   name: 'Client',
@@ -36,7 +36,7 @@ export const ScenarioQuery = queryType({
     t.crud.scenarios()
     t.crud.scenario()
 
-    t.crud.clients()
+    t.crud.clients({ ordering: true, filtering: true })
     t.crud.client()
   },
 })
