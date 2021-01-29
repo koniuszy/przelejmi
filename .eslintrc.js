@@ -16,6 +16,8 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'prettier/@typescript-eslint',
         'plugin:prettier/recommended',
+        'eslint:recommended',
+        'plugin:react/recommended',
       ],
 
       plugins: ['@typescript-eslint', 'prettier'],
@@ -26,6 +28,7 @@ module.exports = {
         ],
         'import/no-anonymous-default-export': 0,
         'no-undef': 'off',
+        'no-unused-vars': 'off',
         'no-unused-expressions': 'off',
         'import/extensions': 'off',
         'jsx-a11y/anchor-is-valid': 'off',
@@ -33,8 +36,18 @@ module.exports = {
         'react/jsx-filename-extension': 'off',
         'react/react-in-jsx-scope': 'off',
         'react-hooks/exhaustive-deps': 'off',
+        'react/prop-types': 'off',
         'react/self-closing-comp': ['error'],
+        'react/jsx-sort-props': [
+          'warn',
+          {
+            callbacksLast: true,
+            shorthandFirst: true,
+            noSortAlphabetically: true,
+          },
+        ],
 
+        '@typescript-eslint/no-unused-vars': ['warn'],
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/indent': 'off',

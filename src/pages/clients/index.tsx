@@ -5,7 +5,7 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 
-import { DeleteIcon, EditIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Table,
   Thead,
@@ -41,6 +41,7 @@ import { ClientType } from 'src/types'
 
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
 import EditableCell from 'src/components/Table/EditableCell'
+import SortTh from 'src/components/Table/SortTh'
 
 type SSGProps = {
   initialClientList: Client[]
@@ -52,7 +53,7 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
   const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
 
-  const { data } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
+  const { data, refetch, variables } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
 
   const [updateClient, updateClientOptions] = useMutation<{ updatedClient: Client }>(
     UPDATE_CLIENT_MUTATION,
@@ -76,12 +77,9 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
     }
   )
 
-  const handleUpdate = (
-    data: Partial<Record<keyof Client, { set: string | number }>>,
-    id: number
-  ) => {
+  const handleUpdate = (data: Partial<Client>, id: number) => {
     const [value] = Object.values(data)
-    if (value.set === '') {
+    if (value === '') {
       toast(errorToastContent)
       toast(warningToastContent)
       return
@@ -138,15 +136,13 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
           <Thead>
             <Tr>
               <Th />
-              <Th>
-                <Flex>
-                  <Center>Name</Center>
-                  <Flex ml="2" direction="column">
-                    <TriangleUpIcon />
-                    <TriangleDownIcon />
-                  </Flex>
-                </Flex>
-              </Th>
+              <SortTh
+                title="Name"
+                isAsc={variables?.orderBy?.name === 'asc'}
+                isDesc={variables?.orderBy?.name === 'desc'}
+                onAsc={() => refetch({ orderBy: { name: 'asc' } })}
+                onDesc={() => refetch({ orderBy: { name: 'desc' } })}
+              />
               <Th>Type</Th>
               <Th>NIP</Th>
               <Th>Address</Th>
@@ -163,41 +159,43 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
                 <EditableCell
                   defaultValue={item.name}
                   isDisabled={!isEditable}
-                  onSubmit={(name) => handleUpdate({ name: { set: name } }, item.id)}
+                  onSubmit={(name) => handleUpdate({ name }, item.id)}
                 />
                 <Td>{item.nip ? ClientType.COMPANY : ClientType.PERSON}</Td>
                 <EditableCell
                   isDisabled={!isEditable}
                   defaultValue={item.nip?.toString()}
-                  onSubmit={(nip) =>
-                    handleUpdate(
-                      { nip: { set: isNaN(Number(nip)) ? 'error' : Number(nip) } },
-                      item.id
-                    )
-                  }
+                  onSubmit={(nip) => {
+                    if (isNaN(Number(nip))) {
+                      toast(errorToastContent)
+                      toast(warningToastContent)
+                      return
+                    }
+                    handleUpdate({ nip: Number(nip) }, item.id)
+                  }}
                 />
                 <EditableCell
                   isDisabled={!isEditable}
                   defaultValue={item.address}
-                  onSubmit={(address) => handleUpdate({ address: { set: address } }, item.id)}
+                  onSubmit={(address) => handleUpdate({ address }, item.id)}
                 />
                 <EditableCell
                   isDisabled={!isEditable}
                   defaultValue={item.postCode}
-                  onSubmit={(postCode) => handleUpdate({ postCode: { set: postCode } }, item.id)}
+                  onSubmit={(postCode) => handleUpdate({ postCode }, item.id)}
                 />
                 <EditableCell
                   isDisabled={!isEditable}
                   defaultValue={item.city}
-                  onSubmit={(city) => handleUpdate({ city: { set: city } }, item.id)}
+                  onSubmit={(city) => handleUpdate({ city }, item.id)}
                 />
                 <EditableCell
                   isDisabled={!isEditable}
                   defaultValue={item.country}
-                  onSubmit={(country) => handleUpdate({ country: { set: country } }, item.id)}
+                  onSubmit={(country) => handleUpdate({ country }, item.id)}
                 />
                 <Td>
-                  <Menu onClose={() => setClientDeletionId(null)} closeOnSelect={false}>
+                  <Menu closeOnSelect={false} onClose={() => setClientDeletionId(null)}>
                     <MenuButton
                       as={Button}
                       variant="ghost"
@@ -228,8 +226,8 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
                           py="0.4rem"
                           px="0.8rem"
                           _focus={{ bg: 'red.400' }}
-                          onClick={() => setClientDeletionId(item.id)}
                           icon={<DeleteIcon w={3} h={3} />}
+                          onClick={() => setClientDeletionId(item.id)}
                         >
                           <Text>Delete</Text>
                         </MenuItem>

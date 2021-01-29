@@ -1,6 +1,6 @@
 import { join } from 'path'
 
-import { makeSchema, declarativeWrappingPlugin } from 'nexus'
+import { makeSchema } from 'nexus'
 import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 
 import * as types from 'src/graphql/models'
@@ -8,7 +8,6 @@ import * as types from 'src/graphql/models'
 const schema = makeSchema({
   types,
   plugins: [
-    declarativeWrappingPlugin(),
     nexusSchemaPrisma({
       experimentalCRUD: true,
       atomicOperations: false,
