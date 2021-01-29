@@ -29,6 +29,9 @@ import {
   Flex,
   Center,
   useToast,
+  Switch,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react'
 
 import { useMutation, useQuery } from '@apollo/client'
@@ -46,12 +49,14 @@ type SSGProps = {
   initialClientList: Client[]
 }
 
-const EditableCell: FC<{ defaultValue: string; onSubmit(newValue: string): void }> = ({
-  defaultValue,
-  onSubmit,
-}) => (
+const EditableCell: FC<{
+  defaultValue: string
+  onSubmit(newValue: string): void
+  isDisabled: boolean
+}> = ({ defaultValue, onSubmit, isDisabled }) => (
   <Td>
     <Editable
+      isDisabled={isDisabled}
       onSubmit={onSubmit}
       defaultValue={defaultValue}
       isPreviewFocusable={false}
@@ -59,26 +64,28 @@ const EditableCell: FC<{ defaultValue: string; onSubmit(newValue: string): void 
     >
       {({ isEditing, onSubmit, onCancel, onEdit }) => (
         <Flex>
-          <Box pr="2">
-            {isEditing ? (
-              <ButtonGroup justifyContent="center" size="sm">
-                <IconButton
-                  colorScheme="green"
-                  aria-label="check"
-                  icon={<CheckIcon />}
-                  onClick={onSubmit}
-                />
-                <IconButton
-                  colorScheme="red"
-                  aria-label="close"
-                  icon={<CloseIcon />}
-                  onClick={onCancel}
-                />
-              </ButtonGroup>
-            ) : (
-              <IconButton aria-label="edit" size="xs" icon={<EditIcon />} onClick={onEdit} />
-            )}
-          </Box>
+          {!isDisabled && (
+            <Box pr="2">
+              {isEditing ? (
+                <ButtonGroup justifyContent="center" size="sm">
+                  <IconButton
+                    colorScheme="green"
+                    aria-label="check"
+                    icon={<CheckIcon />}
+                    onClick={onSubmit}
+                  />
+                  <IconButton
+                    colorScheme="red"
+                    aria-label="close"
+                    icon={<CloseIcon />}
+                    onClick={onCancel}
+                  />
+                </ButtonGroup>
+              ) : (
+                <IconButton aria-label="edit" size="xs" icon={<EditIcon />} onClick={onEdit} />
+              )}
+            </Box>
+          )}
 
           <Center>
             <EditablePreview />
@@ -92,24 +99,45 @@ const EditableCell: FC<{ defaultValue: string; onSubmit(newValue: string): void 
 
 const App: FC<SSGProps> = ({ initialClientList }) => {
   const toast = useToast()
-  const { data } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
-  const [updateClient] = useMutation<{ updatedClient: Client }>(UPDATE_CLIENT_MUTATION, {
-    onCompleted() {
-      toast({ ...successToastContent, title: 'Client updated' })
-    },
-    onError() {
-      toast(errorToastContent)
-      toast(warningToastContent)
-    },
-  })
-
+  const [isEditable, setIsEditable] = useState(false)
   const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
+
+  const { data } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
+
+  const [updateClient, updateClientOptions] = useMutation<{ updatedClient: Client }>(
+    UPDATE_CLIENT_MUTATION,
+    {
+      onCompleted(response) {
+        toast({ ...successToastContent, title: 'Client updated' })
+        updateClientOptions.client.writeQuery({
+          query: CLIENTS_QUERY,
+          data: {
+            ...data,
+            clientList: data.clientList.map((item) =>
+              item.id === response.updatedClient.id ? response.updatedClient : item
+            ),
+          },
+        })
+      },
+      onError() {
+        toast(errorToastContent)
+        toast(warningToastContent)
+      },
+    }
+  )
 
   const handleUpdate = (
     data: Partial<Record<keyof Client, { set: string | number }>>,
     id: number
   ) => {
+    const [value] = Object.values(data)
+    if (value.set === '') {
+      toast(errorToastContent)
+      toast(warningToastContent)
+      return
+    }
+
     updateClient({ variables: { data, id } })
   }
 
@@ -121,9 +149,25 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
       </Head>
 
       <main>
-        <Text fontSize="4xl" textAlign="center" pb="5">
-          Your clients:
-        </Text>
+        <Flex justifyContent="space-between" pb="5">
+          <Text fontSize="4xl" textAlign="center">
+            Your clients:
+          </Text>
+
+          <Center>
+            <FormControl display="flex" alignItems="center">
+              <FormLabel htmlFor="email-alerts" mb="0">
+                Editable
+              </FormLabel>
+              <Switch
+                size="lg"
+                colorScheme="teal"
+                isChecked={isEditable}
+                onChange={(e) => setIsEditable(e.target.checked)}
+              />
+            </FormControl>
+          </Center>
+        </Flex>
 
         <Table variant="simple">
           <TableCaption>List of all your clients</TableCaption>
@@ -143,34 +187,40 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
             {(data?.clientList || initialClientList).map((item) => (
               <Tr key={item.id}>
                 <EditableCell
-                  onSubmit={(name) => handleUpdate({ name: { set: name } }, item.id)}
                   defaultValue={item.name}
+                  isDisabled={!isEditable}
+                  onSubmit={(name) => handleUpdate({ name: { set: name } }, item.id)}
                 />
                 <Td>{item.nip ? ClientType.COMPANY : ClientType.PERSON}</Td>
                 <EditableCell
+                  isDisabled={!isEditable}
+                  defaultValue={item.nip?.toString()}
                   onSubmit={(nip) =>
                     handleUpdate(
                       { nip: { set: isNaN(Number(nip)) ? 'error' : Number(nip) } },
                       item.id
                     )
                   }
-                  defaultValue={item.nip?.toString()}
                 />
                 <EditableCell
-                  onSubmit={(address) => handleUpdate({ address: { set: address } }, item.id)}
+                  isDisabled={!isEditable}
                   defaultValue={item.address}
+                  onSubmit={(address) => handleUpdate({ address: { set: address } }, item.id)}
                 />
                 <EditableCell
-                  onSubmit={(postCode) => handleUpdate({ postCode: { set: postCode } }, item.id)}
+                  isDisabled={!isEditable}
                   defaultValue={item.postCode}
+                  onSubmit={(postCode) => handleUpdate({ postCode: { set: postCode } }, item.id)}
                 />
                 <EditableCell
-                  onSubmit={(city) => handleUpdate({ city: { set: city } }, item.id)}
+                  isDisabled={!isEditable}
                   defaultValue={item.city}
+                  onSubmit={(city) => handleUpdate({ city: { set: city } }, item.id)}
                 />
                 <EditableCell
-                  onSubmit={(country) => handleUpdate({ country: { set: country } }, item.id)}
+                  isDisabled={!isEditable}
                   defaultValue={item.country}
+                  onSubmit={(country) => handleUpdate({ country: { set: country } }, item.id)}
                 />
                 <Td>
                   <Menu onClose={() => setClientDeletionId(null)} closeOnSelect={false}>
