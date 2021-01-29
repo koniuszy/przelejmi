@@ -189,6 +189,7 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
           </TableCaption>
           <Thead>
             <Tr>
+              <Th />
               <Th>Name</Th>
               <Th>Type</Th>
               <Th>NIP</Th>
@@ -200,8 +201,9 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {clientList.map((item) => (
+            {clientList.map((item, index) => (
               <Tr key={item.id}>
+                <Td>{index + 1}.</Td>
                 <EditableCell
                   defaultValue={item.name}
                   isDisabled={!isEditable}
@@ -290,7 +292,7 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
 
 export const getStaticProps: GetStaticProps<SSGProps> = async () => {
   const prisma = new PrismaClient()
-  const initialClientList = await prisma.client.findMany()
+  const initialClientList = await prisma.client.findMany({ take: 20 })
   prisma.$disconnect()
 
   return { props: { initialClientList }, revalidate: 10 }

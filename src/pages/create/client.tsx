@@ -53,14 +53,21 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   const [createClient, { loading, client }] = useMutation<{ createdClient: Client }>(
     CREATE_CLIENT_MUTATION,
     {
-      onCompleted(data) {
-        client.writeQuery({ query: CLIENTS_QUERY, data })
+      onCompleted(response) {
+        const data = client.readQuery({ query: CLIENTS_QUERY })
+        if (!data) return
+
+        client.writeQuery({
+          query: CLIENTS_QUERY,
+          data: { ...data, clientList: [...data.clientList, response.createdClient] },
+        })
         toast({
           ...successToastContent,
           title: 'Client created.',
         })
       },
-      onError() {
+      onError(err) {
+        console.error(err)
         toast(errorToastContent)
       },
     }
