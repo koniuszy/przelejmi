@@ -22,6 +22,7 @@
     "@plaiceholder/base64": "^1.0.0",
     "@plaiceholder/next": "^1.0.0",
     "@prisma/client": "^2.15.0",
+    "@types/react-paginate": "^6.2.1",
     "apollo-server-micro": "^2.19.2",
     "date-fns": "^2.16.1",
     "formik": "^2.2.6",
@@ -33,7 +34,8 @@
     "nexus": "^1.0.0",
     "nexus-plugin-prisma": "^0.28.0",
     "react": "^17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-paginate": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

@@ -5,7 +5,7 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 
-import { CheckIcon, CloseIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Table,
   Thead,
@@ -20,12 +20,6 @@ import {
   Button,
   MenuList,
   MenuItem,
-  Editable,
-  EditablePreview,
-  EditableInput,
-  ButtonGroup,
-  IconButton,
-  Box,
   Flex,
   Center,
   useToast,
@@ -37,6 +31,7 @@ import {
 
 import { useMutation, useQuery } from '@apollo/client'
 import { Client, PrismaClient } from '@prisma/client'
+import ReactPaginate from 'react-paginate'
 
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
@@ -44,59 +39,12 @@ import { UPDATE_CLIENT_MUTATION } from 'src/graphql/mutations'
 import { CLIENTS_QUERY } from 'src/graphql/queries'
 import { ClientType } from 'src/types'
 
-import DeleteClientPopover from 'src/components/DeleteClientPopover'
+import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
+import EditableCell from 'src/components/Table/EditableCell'
 
 type SSGProps = {
   initialClientList: Client[]
 }
-
-const EditableCell: FC<{
-  defaultValue: string
-  onSubmit(newValue: string): void
-  isDisabled: boolean
-}> = ({ defaultValue, onSubmit, isDisabled }) => (
-  <Td>
-    <Editable
-      isDisabled={isDisabled}
-      onSubmit={onSubmit}
-      defaultValue={defaultValue}
-      isPreviewFocusable={false}
-      submitOnBlur={false}
-    >
-      {({ isEditing, onSubmit, onCancel, onEdit }) => (
-        <Flex>
-          {!isDisabled && (
-            <Box pr="2">
-              {isEditing ? (
-                <ButtonGroup justifyContent="center" size="sm">
-                  <IconButton
-                    colorScheme="green"
-                    aria-label="check"
-                    icon={<CheckIcon />}
-                    onClick={onSubmit}
-                  />
-                  <IconButton
-                    colorScheme="red"
-                    aria-label="close"
-                    icon={<CloseIcon />}
-                    onClick={onCancel}
-                  />
-                </ButtonGroup>
-              ) : (
-                <IconButton aria-label="edit" size="xs" icon={<EditIcon />} onClick={onEdit} />
-              )}
-            </Box>
-          )}
-
-          <Center>
-            <EditablePreview />
-          </Center>
-          <EditableInput pl="2" />
-        </Flex>
-      )}
-    </Editable>
-  </Td>
-)
 
 const App: FC<SSGProps> = ({ initialClientList }) => {
   const toast = useToast()
@@ -158,14 +106,14 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
           </Text>
 
           <Center>
-            <FormControl display="flex" alignItems="center">
-              <FormLabel htmlFor="email-alerts" mb="0">
+            <FormControl id="editable" display="flex" alignItems="center">
+              <FormLabel htmlFor="editable" mb="0">
                 Editable
               </FormLabel>
               <Switch
                 size="lg"
                 colorScheme="teal"
-                isChecked={isEditable}
+                defaultChecked={isEditable}
                 onChange={(e) => setIsEditable(e.target.checked)}
               />
             </FormControl>
@@ -269,11 +217,11 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
                       >
                         <MenuItem
                           bg="red.500"
+                          py="0.4rem"
+                          px="0.8rem"
                           _focus={{ bg: 'red.400' }}
                           onClick={() => setClientDeletionId(item.id)}
                           icon={<DeleteIcon w={3} h={3} />}
-                          py="0.4rem"
-                          px="0.8rem"
                         >
                           <Text>Delete</Text>
                         </MenuItem>

@@ -54,12 +54,12 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
     CREATE_CLIENT_MUTATION,
     {
       onCompleted(response) {
-        const data = client.readQuery({ query: CLIENTS_QUERY })
         toast({
           ...successToastContent,
           title: 'Client created.',
         })
 
+        const data = client.readQuery({ query: CLIENTS_QUERY })
         if (!data) return
 
         client.writeQuery({
