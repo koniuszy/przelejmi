@@ -27,6 +27,7 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  useDisclosure,
 } from '@chakra-ui/react'
 
 import { useMutation, useQuery } from '@apollo/client'
@@ -40,18 +41,25 @@ import { CLIENTS_QUERY } from 'src/graphql/queries'
 import { ClientType } from 'src/types'
 
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
+import DrawerFilters, { TriggerFiltersButton } from 'src/components/Table/DrawerFilters'
 import EditableCell from 'src/components/Table/EditableCell'
 import SortTh from 'src/components/Table/SortTh'
 
-type SSGProps = {
-  initialClientList: Client[]
+type Filters = {
+  Countries: string[]
 }
 
-const App: FC<SSGProps> = ({ initialClientList }) => {
+type SSGProps = {
+  initialClientList: Client[]
+  filters: Filters
+}
+
+const App: FC<SSGProps> = ({ initialClientList, filters }) => {
   const toast = useToast()
   const [isEditable, setIsEditable] = useState(false)
   const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
+  const drawerOptions = useDisclosure()
 
   const { data, refetch, variables } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
 
@@ -103,19 +111,25 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
             Your clients:
           </Text>
 
-          <Center>
-            <FormControl id="editable" display="flex" alignItems="center">
-              <FormLabel htmlFor="editable" mb="0">
-                Editable
-              </FormLabel>
-              <Switch
-                size="lg"
-                colorScheme="teal"
-                defaultChecked={isEditable}
-                onChange={(e) => setIsEditable(e.target.checked)}
-              />
-            </FormControl>
-          </Center>
+          <Flex>
+            <Center pr="5">
+              <TriggerFiltersButton onOpen={drawerOptions.onOpen} />
+            </Center>
+
+            <Center>
+              <FormControl id="editable" display="flex" alignItems="center">
+                <FormLabel htmlFor="editable" mb="0">
+                  Editable
+                </FormLabel>
+                <Switch
+                  size="lg"
+                  colorScheme="teal"
+                  defaultChecked={isEditable}
+                  onChange={(e) => setIsEditable(e.target.checked)}
+                />
+              </FormControl>
+            </Center>
+          </Flex>
         </Flex>
 
         <Table variant="simple">
@@ -240,6 +254,8 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
           </Tbody>
         </Table>
       </main>
+
+      <DrawerFilters disclosureOptions={drawerOptions} filters={filters} />
     </div>
   )
 }
@@ -247,9 +263,26 @@ const App: FC<SSGProps> = ({ initialClientList }) => {
 export const getStaticProps: GetStaticProps<SSGProps> = async () => {
   const prisma = new PrismaClient()
   const initialClientList = await prisma.client.findMany({ take: 20 })
+  const distinctCountries = await prisma.client.findMany({
+    distinct: 'country',
+    select: { country: true },
+  })
   prisma.$disconnect()
 
-  return { props: { initialClientList }, revalidate: 10 }
+  return {
+    props: {
+      initialClientList,
+      filters: {
+        Countries: distinctCountries.map(({ country }) => country),
+      },
+    },
+    revalidate: 10,
+  }
 }
 
 export default App
+
+// TODO:
+// filters
+// pagination
+// skeleton: https://chakra-ui.com/docs/feedback/skeleton

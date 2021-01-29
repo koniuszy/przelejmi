@@ -12,8 +12,8 @@ export const CREATE_CLIENT_MUTATION = gql`
 `
 
 export const UPDATE_CLIENT_MUTATION = gql`
-  mutation updateOneClient($data: ClientUpdateInput!, $id: Int!) {
-    updatedClient: updateOneClient(data: $data, where: { id: $id }) {
+  mutation updateOneClient($data: ClientUpdateInput!, $id: Int!, $where: ClientWhereInput) {
+    updatedClient: updateOneClient(data: $data, where: { id: $id }, where: $where) {
       ...ClientContent
     }
   }
