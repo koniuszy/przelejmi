@@ -37,7 +37,7 @@ type SSGProps = {
 }
 
 type Form = {
-  name: string
+  companyName: string
   address: string
   postCode: string
   city: string
@@ -45,7 +45,9 @@ type Form = {
   nip: string
   bankName: string
   bankAccount: string
+  bankAccountEur: string
   email: string
+  issuerName: string
 }
 
 const imgWidth = 500
@@ -79,7 +81,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
     validateOnBlur: true,
     initialValues: {
-      name: '',
+      companyName: '',
       address: '',
       postCode: '',
       city: '',
@@ -87,7 +89,9 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       nip: '',
       bankName: '',
       bankAccount: '',
+      bankAccountEur: '',
       email: '',
+      issuerName: '',
     },
     onSubmit(values) {
       const { nip, ...data } = values
@@ -101,13 +105,14 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       //@ts-ignore
       const errors: Record<keyof Form, string> = {}
 
-      if (values.name.length > 100) errors.name = 'Name should be shorter'
+      if (values.companyName.length > 100) errors.companyName = 'Company name should be shorter'
       if (values.address.length > 100) errors.address = 'Address should be shorter'
       if (values.postCode.length > 10) errors.postCode = 'Post code should be shorter'
       if (values.city.length > 100) errors.city = 'City should be shorter'
       if (values.country.length > 100) errors.country = 'Country should be shorter'
       if (values.bankName.length > 100) errors.bankName = 'Bank name should be shorter'
-      if (values.bankAccount.length > 100) errors.bankAccount = 'Bank account should be shorter'
+      if (values.issuerName.length > 100) errors.issuerName = 'Issuer name should be shorter'
+      //if (values.bankAccount.length !== 26) errors.bankAccount = 'Bank account should be 26 digits'
       if (values.email.length > 100) errors.email = 'Email should be shorter'
       if (isNaN(Number(values.nip.replace(/ /g, '')))) errors.nip = 'NIP is invalid'
 
@@ -139,107 +144,147 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
           />
         </Box>
 
-        <form onSubmit={handleSubmit}>
-          <FormControl isRequired id="name" isInvalid={!!errors.name}>
-            <FormLabel htmlFor="name">Name</FormLabel>
-            <Input
-              name="name"
-              placeholder="John Smith"
-              onChange={handleChange}
-              value={values.name}
-            />
-            <FormErrorMessage>{errors.name}</FormErrorMessage>
-          </FormControl>
-
-          <FormControl isRequired mt="2" id="country" isInvalid={!!errors.country}>
-            <FormLabel htmlFor="country">Country</FormLabel>
-            <Input
-              name="country"
-              placeholder="Polska"
-              onChange={handleChange}
-              value={values.country}
-            />
-            <FormErrorMessage>{errors.country}</FormErrorMessage>
-          </FormControl>
-
-          <Flex direction="row">
-            <FormControl isRequired ml="7" id="nip" isInvalid={!!errors.nip}>
-              <FormLabel htmlFor="nip">NIP</FormLabel>
-              <Input name="nip" placeholder="12345678" onChange={handleChange} value={values.nip} />
-              <FormErrorMessage>{errors.nip}</FormErrorMessage>
-            </FormControl>
-          </Flex>
-
-          <FormControl isRequired id="address" mt="5" isInvalid={!!errors.address}>
-            <FormLabel htmlFor="address">Street name and number</FormLabel>
-            <Input
-              name="address"
-              placeholder="Street 10/2"
-              onChange={handleChange}
-              value={values.address}
-            />
-            <FormErrorMessage>{errors.name}</FormErrorMessage>
-          </FormControl>
-
-          <Flex direction="row">
-            <FormControl isRequired id="bankName" ml="7" isInvalid={!!errors.bankName}>
-              <FormLabel htmlFor="bankName">Bank name</FormLabel>
+        <Flex direction="row">
+          <form onSubmit={handleSubmit}>
+            <FormControl isRequired id="companyName" isInvalid={!!errors.companyName}>
+              <FormLabel htmlFor="companyName">Company name</FormLabel>
               <Input
-                name="bankName"
-                placeholder="Polska"
+                name="companyName"
+                placeholder="John Smith"
                 onChange={handleChange}
-                value={values.bankName}
+                value={values.companyName}
               />
-              <FormErrorMessage>{errors.bankName}</FormErrorMessage>
-            </FormControl>
-          </Flex>
-          <Flex direction="row">
-            <FormControl isRequired mt="2" id="postCode" isInvalid={!!errors.postCode}>
-              <FormLabel htmlFor="postCode">Post code</FormLabel>
-              <Input
-                name="postCode"
-                placeholder="60-687"
-                onChange={handleChange}
-                value={values.postCode}
-              />
-              <FormErrorMessage>{errors.postCode}</FormErrorMessage>
+              <FormErrorMessage>{errors.companyName}</FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired ml="7" id="bankAccount" isInvalid={!!errors.bankName}>
+            <Flex direction="row">
+              <FormControl isRequired mt="5" id="nip" isInvalid={!!errors.nip}>
+                <FormLabel htmlFor="nip">NIP</FormLabel>
+                <Input
+                  name="nip"
+                  placeholder="12345678"
+                  onChange={handleChange}
+                  value={values.nip}
+                />
+                <FormErrorMessage>{errors.nip}</FormErrorMessage>
+              </FormControl>
+
+              <FormControl isRequired mt="5" ml="7" id="country" isInvalid={!!errors.country}>
+                <FormLabel htmlFor="country">Country</FormLabel>
+                <Input
+                  name="country"
+                  placeholder="Polska"
+                  onChange={handleChange}
+                  value={values.country}
+                />
+                <FormErrorMessage>{errors.country}</FormErrorMessage>
+              </FormControl>
+            </Flex>
+
+            <FormControl isRequired id="address" mt="5" isInvalid={!!errors.address}>
+              <FormLabel htmlFor="address">Street name and number</FormLabel>
+              <Input
+                name="address"
+                placeholder="Street 10/2"
+                onChange={handleChange}
+                value={values.address}
+              />
+              <FormErrorMessage>{errors.name}</FormErrorMessage>
+            </FormControl>
+
+            <Flex direction="row">
+              <FormControl isRequired mt="4" id="city" isInvalid={!!errors.city}>
+                <FormLabel htmlFor="city">City</FormLabel>
+                <Input
+                  name="city"
+                  placeholder="Poznań"
+                  onChange={handleChange}
+                  value={values.city}
+                />
+                <FormErrorMessage>{errors.country}</FormErrorMessage>
+              </FormControl>
+
+              <FormControl isRequired mt="4" ml="7" id="postCode" isInvalid={!!errors.postCode}>
+                <FormLabel htmlFor="postCode">Post code</FormLabel>
+                <Input
+                  name="postCode"
+                  placeholder="60-687"
+                  onChange={handleChange}
+                  value={values.postCode}
+                />
+                <FormErrorMessage>{errors.postCode}</FormErrorMessage>
+              </FormControl>
+            </Flex>
+
+            <Flex direction="row">
+              <FormControl isRequired id="bankName" mt="4" isInvalid={!!errors.bankName}>
+                <FormLabel htmlFor="bankName">Bank name</FormLabel>
+                <Input
+                  name="bankName"
+                  placeholder="Mbank"
+                  onChange={handleChange}
+                  value={values.bankName}
+                />
+                <FormErrorMessage>{errors.bankName}</FormErrorMessage>
+              </FormControl>
+
+              <FormControl isRequired id="issuerName" mt="4" ml="7" isInvalid={!!errors.issuerName}>
+                <FormLabel htmlFor="issuerNAme">Issuer name</FormLabel>
+                <Input
+                  name="issuerName"
+                  placeholder="John Smith"
+                  onChange={handleChange}
+                  value={values.issuerName}
+                />
+                <FormErrorMessage>{errors.issuerName}</FormErrorMessage>
+              </FormControl>
+            </Flex>
+
+            <FormControl isRequired mt="4" id="bankAccount" isInvalid={!!errors.bankName}>
               <FormLabel htmlFor="bankAccount">Bank account</FormLabel>
               <Input
                 name="bankAccount"
-                placeholder="Polska"
+                placeholder="04 1140 2004 9892 3802 6728 1373"
                 onChange={handleChange}
                 value={values.bankAccount}
               />
               <FormErrorMessage>{errors.bankAccount}</FormErrorMessage>
             </FormControl>
-          </Flex>
 
-          <Flex direction="row">
-            <FormControl isRequired mt="2" id="city" isInvalid={!!errors.city}>
-              <FormLabel htmlFor="city">City</FormLabel>
-              <Input name="city" placeholder="Poznań" onChange={handleChange} value={values.city} />
-              <FormErrorMessage>{errors.country}</FormErrorMessage>
+            <FormControl isRequired mt="4" id="bankAccountEur" isInvalid={!!errors.bankAccountEur}>
+              <FormLabel htmlFor="bankAccountEur">Bank account in EUR</FormLabel>
+              <Input
+                name="bankAccountEur"
+                placeholder="PL 04 1140 2004 9892 3802 6728 1373"
+                onChange={handleChange}
+                value={values.bankAccountEur}
+              />
+              <FormErrorMessage>{errors.bankAccount}</FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired ml="7" id="Email" isInvalid={!!errors.email}>
+            <FormControl isRequired mt="4" id="Email" isInvalid={!!errors.email}>
               <FormLabel htmlFor="email">Email</FormLabel>
               <Input
                 name="email"
-                placeholder="Polska"
+                placeholder="merchant@example.com"
                 onChange={handleChange}
                 value={values.email}
               />
               <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
-          </Flex>
 
-          <Button mt="10" type="submit" colorScheme="teal" disabled={!isValid} isLoading={loading}>
-            Submit
-          </Button>
-        </form>
+            <Button
+              mt="10"
+              type="submit"
+              colorScheme="teal"
+              width="100%"
+              disabled={!isValid}
+              isLoading={loading}
+            >
+              Submit
+            </Button>
+          </form>
+        </Flex>
       </Flex>
     </>
   )
