@@ -116,6 +116,7 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
           <Flex>
             <Center pr="5">
               <SearchInput
+                keyList={['name', 'nip', 'address', 'postCode', 'city', 'country']}
                 onSearch={(search) => refetch({ where: { ...search, ...(variables.where ?? {}) } })}
               />
             </Center>

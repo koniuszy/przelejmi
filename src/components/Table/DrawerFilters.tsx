@@ -23,7 +23,7 @@ import {
 import debounce from 'lodash.debounce'
 
 import useConstant from 'src/hooks'
-import { FilterOption, GraphqlTypes } from 'src/types'
+import { FilterOption, DBConditions } from 'src/types'
 
 export const TriggerFiltersButton: FC<{ onOpen(): void }> = ({ onOpen }) => (
   <Button
@@ -86,8 +86,8 @@ const DrawerFilters: FC<{
         const { checked, unchecked } = item.groupedOptionList
         const filter =
           checked.length < unchecked.length
-            ? { [GraphqlTypes.in]: checked }
-            : { [GraphqlTypes.notIn]: unchecked }
+            ? { [DBConditions.includes]: checked }
+            : { [DBConditions.notIncludes]: unchecked }
 
         return { ...acc, [item.name]: filter }
       }, {} as Record<string, FilterOption>)

@@ -17,7 +17,7 @@ model Client {
   postCode String
   city     String
   country  String
-  nip      Int?
+  nip      String?
   Scenario Scenario[]
 }
 
