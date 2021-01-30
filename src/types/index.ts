@@ -20,8 +20,8 @@ export enum PaymentType {
 }
 
 export enum ClientType {
-  COMPANY = 'Company',
-  PERSON = 'Person',
+  company = 'Company',
+  person = 'Person',
 }
 
 export type OptimizedImg = {

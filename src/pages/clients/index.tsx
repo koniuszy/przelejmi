@@ -41,22 +41,22 @@ import { CLIENTS_QUERY } from 'src/graphql/queries'
 import { ClientType } from 'src/types'
 
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
-import DrawerFilters, { TriggerFiltersButton } from 'src/components/Table/DrawerFilters'
+import DrawerFilters, { TriggerFiltersButton, Filters } from 'src/components/Table/DrawerFilters'
 import EditableCell from 'src/components/Table/EditableCell'
-import SearchInput from 'src/components/Table/SearchInput'
+import SearchInput, { Search } from 'src/components/Table/SearchInput'
 import SortTh from 'src/components/Table/SortTh'
 
-type Filters = {
+type FilterOptions = {
   country: string[]
   city: string[]
 }
 
 type SSGProps = {
   initialClientList: Client[]
-  filters: Filters
+  filterOptions: FilterOptions
 }
 
-const App: FC<SSGProps> = ({ initialClientList, filters }) => {
+const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
   const toast = useToast()
   const [isEditable, setIsEditable] = useState(false)
   const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
@@ -64,6 +64,7 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
   const drawerOptions = useDisclosure()
 
   const { data, refetch, variables } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
+  console.log(variables)
 
   const [updateClient, updateClientOptions] = useMutation<{ updatedClient: Client }>(
     UPDATE_CLIENT_MUTATION,
@@ -87,7 +88,7 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
     }
   )
 
-  const handleUpdate = (data: Partial<Client>, id: number) => {
+  function handleUpdate(data: Partial<Client>, id: number) {
     const [value] = Object.values(data)
     if (value === '') {
       toast(errorToastContent)
@@ -96,6 +97,12 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
     }
 
     updateClient({ variables: { data, id } })
+  }
+
+  function handleFiltersRefetch(filters: Search | Filters) {
+    const currentFilters = variables.where ?? {}
+    console.log({ old: currentFilters, new: { where: { ...currentFilters, ...filters } } })
+    refetch({ where: { ...currentFilters, ...filters } })
   }
 
   const clientList = data?.clientList || initialClientList
@@ -117,7 +124,7 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
             <Center pr="5">
               <SearchInput
                 keyList={['name', 'nip', 'address', 'postCode', 'city', 'country']}
-                onSearch={(search) => refetch({ where: { ...search, ...(variables.where ?? {}) } })}
+                onSearch={handleFiltersRefetch}
               />
             </Center>
 
@@ -184,18 +191,11 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
                   isDisabled={!isEditable}
                   onSubmit={(name) => handleUpdate({ name }, item.id)}
                 />
-                <Td>{item.nip ? ClientType.COMPANY : ClientType.PERSON}</Td>
+                <Td>{item.nip ? ClientType.company : ClientType.person}</Td>
                 <EditableCell
                   isDisabled={!isEditable}
                   defaultValue={item.nip?.toString()}
-                  onSubmit={(nip) => {
-                    if (isNaN(Number(nip))) {
-                      toast(errorToastContent)
-                      toast(warningToastContent)
-                      return
-                    }
-                    handleUpdate({ nip: Number(nip) }, item.id)
-                  }}
+                  onSubmit={(nip) => handleUpdate({ nip }, item.id)}
                 />
                 <EditableCell
                   isDisabled={!isEditable}
@@ -265,9 +265,9 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
       </main>
 
       <DrawerFilters
-        filters={filters}
+        filters={filterOptions}
         disclosureOptions={drawerOptions}
-        onChange={(filters) => refetch({ where: { ...(variables.where ?? {}), filters } })}
+        onChange={handleFiltersRefetch}
       />
     </div>
   )
@@ -292,9 +292,10 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
   return {
     props: {
       initialClientList,
-      filters: {
+      filterOptions: {
         country: distinctCountryList.map(({ country }) => country),
         city: distinctCityList.map(({ city }) => city),
+        type: Object.values(ClientType),
       },
     },
     revalidate: 10,
@@ -304,7 +305,5 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
 export default App
 
 // TODO:
-// filters
 // pagination
 // skeleton: https://chakra-ui.com/docs/feedback/skeleton
-// search
