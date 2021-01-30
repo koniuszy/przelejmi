@@ -42,9 +42,9 @@ export const TriggerFiltersButton: FC<{ onOpen(): void }> = ({ onOpen }) => (
   </Button>
 )
 
-export type Filters = Record<string, string[]>
+export type Filters = Record<string, FilterOption> | null
 
-function getInitialFilters(filters: Filters) {
+function getInitialFilters(filters: Record<string, string[]>) {
   return Object.entries(filters).map((entry) => {
     const [name, optionList] = entry
     return { name, optionList: optionList.map((name) => ({ name, checked: true })) }
@@ -53,13 +53,14 @@ function getInitialFilters(filters: Filters) {
 
 const DrawerFilters: FC<{
   disclosureOptions: { onClose(): void; onClose(): void; isOpen: boolean }
-  filters: Filters
-  onChange(where: Record<string, FilterOption> | null): void
-}> = ({ filters, disclosureOptions, onChange }) => {
+  filters: Record<string, string[]>
+  prevFilters: Record<string, any>
+  onChange(where: Filters): void
+}> = ({ filters, disclosureOptions, onChange, prevFilters }) => {
   const [filterList, setFilterList] = useState(getInitialFilters(filters))
 
   const debouncedFiltersChange = useConstant(() =>
-    debounce((newFilterList: typeof filterList) => {
+    debounce((newFilterList: typeof filterList, prevFilters) => {
       const touchedFilterList = newFilterList.filter((filterListItem) =>
         filterListItem.optionList.find((item) => !item.checked)
       )
@@ -84,7 +85,7 @@ const DrawerFilters: FC<{
         return { name: item.name, groupedOptionList }
       })
 
-      const where = groupedTouched.reduce((acc, item) => {
+      const parsedFilters = groupedTouched.reduce((acc, item) => {
         const { checked, unchecked } = item.groupedOptionList
         const filter =
           checked.length < unchecked.length
@@ -92,15 +93,15 @@ const DrawerFilters: FC<{
             : { [DBConditions.notIncludes]: unchecked }
 
         return { ...acc, [item.name]: filter }
-      }, {} as Record<string, FilterOption>)
+      }, {} as Filters) as Filters
 
-      onChange(where as Record<string, FilterOption>)
-    }, 100)
+      onChange({ ...prevFilters, ...parsedFilters })
+    }, 200)
   )
 
   function handleOptionListChange(newFilterList: typeof filterList) {
     setFilterList(newFilterList)
-    debouncedFiltersChange(newFilterList)
+    debouncedFiltersChange(newFilterList, prevFilters)
   }
 
   return (

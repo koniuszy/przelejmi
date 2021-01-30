@@ -8,19 +8,28 @@ import debounce from 'lodash.debounce'
 import useConstant from 'src/hooks'
 import { DBConditions } from 'src/types'
 
-export type Search = Record<DBConditions.or, Record<string, { contains: any }>[]>
+export type Search = Record<DBConditions.or, Record<string, { contains: any }>[]> | null
 
 const SearchInput: FC<{
   onSearch(search: Search): void
   keyList: string[]
-}> = ({ onSearch, keyList }) => {
+  prevFilters: Record<string, any>
+}> = ({ onSearch, keyList, prevFilters }) => {
   const debouncedSearch = useConstant(() =>
-    debounce((search) => {
-      const parsedSearch = keyList.map((keyListItem) => ({
-        [keyListItem]: { [DBConditions.contains]: search },
-      }))
+    debounce((search, prevFilters) => {
+      if (!search) {
+        onSearch(null)
 
-      onSearch({ [DBConditions.or]: parsedSearch } as Search)
+        return
+      }
+
+      const parsedSearch = {
+        [DBConditions.or]: keyList.map((keyListItem) => ({
+          [keyListItem]: { [DBConditions.contains]: search },
+        })),
+      } as Search
+
+      onSearch({ ...prevFilters, ...parsedSearch })
     }, 300)
   )
 
@@ -29,7 +38,7 @@ const SearchInput: FC<{
       <InputRightElement pointerEvents="none">
         <Search2Icon />
       </InputRightElement>
-      <Input placeholder="Search" onChange={(e) => debouncedSearch(e.target.value)} />
+      <Input placeholder="Search" onChange={(e) => debouncedSearch(e.target.value, prevFilters)} />
     </InputGroup>
   )
 }

@@ -64,7 +64,6 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
   const drawerOptions = useDisclosure()
 
   const { data, refetch, variables } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
-  console.log(variables)
 
   const [updateClient, updateClientOptions] = useMutation<{ updatedClient: Client }>(
     UPDATE_CLIENT_MUTATION,
@@ -100,9 +99,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
   }
 
   function handleFiltersRefetch(filters: Search | Filters) {
-    const currentFilters = variables.where ?? {}
-    console.log({ old: currentFilters, new: { where: { ...currentFilters, ...filters } } })
-    refetch({ where: { ...currentFilters, ...filters } })
+    refetch({ where: filters })
   }
 
   const clientList = data?.clientList || initialClientList
@@ -124,6 +121,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
             <Center pr="5">
               <SearchInput
                 keyList={['name', 'nip', 'address', 'postCode', 'city', 'country']}
+                prevFilters={variables.where}
                 onSearch={handleFiltersRefetch}
               />
             </Center>
@@ -267,6 +265,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
       <DrawerFilters
         filters={filterOptions}
         disclosureOptions={drawerOptions}
+        prevFilters={variables.where}
         onChange={handleFiltersRefetch}
       />
     </div>
