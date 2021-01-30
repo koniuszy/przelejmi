@@ -46,7 +46,8 @@ import EditableCell from 'src/components/Table/EditableCell'
 import SortTh from 'src/components/Table/SortTh'
 
 type Filters = {
-  Countries: string[]
+  country: string[]
+  city: string[]
 }
 
 type SSGProps = {
@@ -255,25 +256,37 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
         </Table>
       </main>
 
-      <DrawerFilters disclosureOptions={drawerOptions} filters={filters} />
+      <DrawerFilters
+        disclosureOptions={drawerOptions}
+        filters={filters}
+        onSave={(where) => console.log(where)}
+      />
     </div>
   )
 }
 
 export const getStaticProps: GetStaticProps<SSGProps> = async () => {
   const prisma = new PrismaClient()
-  const initialClientList = await prisma.client.findMany({ take: 20 })
-  const distinctCountries = await prisma.client.findMany({
-    distinct: 'country',
-    select: { country: true },
-  })
+  const [initialClientList, distinctCountryList, distinctCityList] = await Promise.all([
+    prisma.client.findMany({ take: 20 }),
+    prisma.client.findMany({
+      distinct: 'country',
+      select: { country: true },
+    }),
+    prisma.client.findMany({
+      distinct: 'city',
+      select: { city: true },
+    }),
+  ])
+
   prisma.$disconnect()
 
   return {
     props: {
       initialClientList,
       filters: {
-        Countries: distinctCountries.map(({ country }) => country),
+        country: distinctCountryList.map(({ country }) => country),
+        city: distinctCityList.map(({ city }) => city),
       },
     },
     revalidate: 10,
