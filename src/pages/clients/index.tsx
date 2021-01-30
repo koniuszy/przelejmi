@@ -43,6 +43,7 @@ import { ClientType } from 'src/types'
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
 import DrawerFilters, { TriggerFiltersButton } from 'src/components/Table/DrawerFilters'
 import EditableCell from 'src/components/Table/EditableCell'
+import SearchInput from 'src/components/Table/SearchInput'
 import SortTh from 'src/components/Table/SortTh'
 
 type Filters = {
@@ -113,6 +114,12 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
           </Text>
 
           <Flex>
+            <Center pr="5">
+              <SearchInput
+                onSearch={(search) => refetch({ where: { ...search, ...(variables.where ?? {}) } })}
+              />
+            </Center>
+
             <Center pr="5">
               <TriggerFiltersButton onOpen={drawerOptions.onOpen} />
             </Center>
@@ -259,7 +266,7 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
       <DrawerFilters
         filters={filters}
         disclosureOptions={drawerOptions}
-        onChange={(where) => refetch({ where })}
+        onChange={(filters) => refetch({ where: { ...(variables.where ?? {}), filters } })}
       />
     </div>
   )
@@ -299,3 +306,4 @@ export default App
 // filters
 // pagination
 // skeleton: https://chakra-ui.com/docs/feedback/skeleton
+// search

@@ -29,3 +29,24 @@ export type OptimizedImg = {
   base64: string
   ratio: number
 }
+
+export enum GraphqlTypes {
+  'in' = 'in',
+  'notIn' = 'notIn',
+
+  'lt' = 'lt',
+  'lte' = 'lte',
+  'gt' = 'gt',
+  'gte' = 'gte',
+
+  'equals' = 'equals',
+  'contains' = 'contains',
+  'startsWith' = 'startsWith',
+  'endsWidth' = 'endsWidth',
+}
+
+export type FilterOption = Record<GraphqlTypes.in | GraphqlTypes.notIn, string | string[]>
+export type SearchOption = Record<
+  GraphqlTypes.contains | GraphqlTypes.equals | GraphqlTypes.startsWith | GraphqlTypes.endsWidth,
+  string | string[]
+>

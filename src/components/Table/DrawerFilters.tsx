@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useState } from 'react'
 
-import { Search2Icon } from '@chakra-ui/icons'
+import { Icon } from '@chakra-ui/icons'
 import {
   Accordion,
   AccordionButton,
@@ -23,17 +23,24 @@ import {
 import debounce from 'lodash.debounce'
 
 import useConstant from 'src/hooks'
+import { FilterOption, GraphqlTypes } from 'src/types'
 
 export const TriggerFiltersButton: FC<{ onOpen(): void }> = ({ onOpen }) => (
-  <Button size="sm" rightIcon={<Search2Icon />} onClick={onOpen}>
+  <Button
+    size="sm"
+    rightIcon={
+      <Icon viewBox="0 0 512 512">
+        <path
+          fill="currentColor"
+          d="M256 0c-141.385 0-256 35.817-256 80v48l192 192v160c0 17.673 28.653 32 64 32s64-14.327 64-32v-160l192-192v-48c0-44.183-114.615-80-256-80zM47.192 69.412c11.972-6.829 28.791-13.31 48.639-18.744 43.972-12.038 100.854-18.668 160.169-18.668s116.197 6.63 160.169 18.668c19.848 5.434 36.667 11.915 48.64 18.744 7.896 4.503 12.162 8.312 14.148 10.588-1.986 2.276-6.253 6.084-14.148 10.588-11.973 6.829-28.792 13.31-48.64 18.744-43.971 12.038-100.854 18.668-160.169 18.668s-116.197-6.63-160.169-18.668c-19.848-5.434-36.667-11.915-48.639-18.744-7.896-4.504-12.162-8.312-14.149-10.588 1.987-2.276 6.253-6.084 14.149-10.588z"
+        />
+      </Icon>
+    }
+    onClick={onOpen}
+  >
     Filters
   </Button>
 )
-
-type FilterOption = Record<
-  'in' | 'notIn' | 'equals' | 'lt' | 'lte' | 'gt' | 'gte' | 'equals' | 'startsWith' | 'endsWidth',
-  string | string[]
->
 
 function getInitialFilters(filters: Record<string, string[]>) {
   return Object.entries(filters).map((entry) => {
@@ -77,7 +84,11 @@ const DrawerFilters: FC<{
 
       const where = groupedTouched.reduce((acc, item) => {
         const { checked, unchecked } = item.groupedOptionList
-        const filter = checked.length < unchecked.length ? { in: checked } : { notIn: unchecked }
+        const filter =
+          checked.length < unchecked.length
+            ? { [GraphqlTypes.in]: checked }
+            : { [GraphqlTypes.notIn]: unchecked }
+
         return { ...acc, [item.name]: filter }
       }, {} as Record<string, FilterOption>)
 
