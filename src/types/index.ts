@@ -30,23 +30,30 @@ export type OptimizedImg = {
   ratio: number
 }
 
-export enum GraphqlTypes {
-  'in' = 'in',
-  'notIn' = 'notIn',
+export enum DBConditions {
+  'includes' = 'in',
+  'notIncludes' = 'notIn',
 
-  'lt' = 'lt',
-  'lte' = 'lte',
-  'gt' = 'gt',
-  'gte' = 'gte',
+  'lessThan' = 'lt',
+  'lessThanOrEqual' = 'lte',
+  'graterThan' = 'gt',
+  'graterThanOrEqual' = 'gte',
 
   'equals' = 'equals',
   'contains' = 'contains',
   'startsWith' = 'startsWith',
   'endsWidth' = 'endsWidth',
+
+  'or' = 'OR',
+  'and' = 'AND',
+  'not' = 'NOT',
 }
 
-export type FilterOption = Record<GraphqlTypes.in | GraphqlTypes.notIn, string | string[]>
+export type FilterOption = Record<
+  DBConditions.includes | DBConditions.notIncludes,
+  string | string[]
+>
 export type SearchOption = Record<
-  GraphqlTypes.contains | GraphqlTypes.equals | GraphqlTypes.startsWith | GraphqlTypes.endsWidth,
+  DBConditions.contains | DBConditions.equals | DBConditions.startsWith | DBConditions.endsWidth,
   string | string[]
 >
