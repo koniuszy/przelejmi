@@ -38,7 +38,7 @@ import { errorToastContent, successToastContent, warningToastContent } from 'src
 
 import { UPDATE_CLIENT_MUTATION } from 'src/graphql/mutations'
 import { CLIENTS_QUERY } from 'src/graphql/queries'
-import { ClientType } from 'src/types'
+import { ClientType, DBConditions } from 'src/types'
 
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
 import DrawerFilters, { TriggerFiltersButton, Filters } from 'src/components/Table/DrawerFilters'
@@ -266,7 +266,32 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
         filters={filterOptions}
         disclosureOptions={drawerOptions}
         prevFilters={variables.where}
-        onChange={handleFiltersRefetch}
+        onChange={(newFilters) => {
+          if (!newFilters) {
+            handleFiltersRefetch(newFilters)
+            return
+          }
+
+          const { type, ...rest } = newFilters
+          let nipFilters = {}
+          if (type) {
+            console.log(type)
+            if (type[DBConditions.notIncludes]) {
+              const [clientType] = type[DBConditions.notIncludes]
+
+              if (clientType === ClientType.company)
+                nipFilters = { nip: { [DBConditions.equals]: null } }
+
+              if (clientType === ClientType.person)
+                nipFilters = { [DBConditions.not]: { nip: { [DBConditions.equals]: null } } }
+            }
+
+            if (type[DBConditions.includes]?.length === 0)
+              nipFilters = { nip: { [DBConditions.includes]: [] } }
+          }
+
+          handleFiltersRefetch({ ...rest, ...nipFilters })
+        }}
       />
     </div>
   )

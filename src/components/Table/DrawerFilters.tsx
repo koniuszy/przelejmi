@@ -23,7 +23,7 @@ import {
 import debounce from 'lodash.debounce'
 
 import useConstant from 'src/hooks'
-import { FilterOption, DBConditions } from 'src/types'
+import { DBConditions } from 'src/types'
 
 export const TriggerFiltersButton: FC<{ onOpen(): void }> = ({ onOpen }) => (
   <Button
@@ -42,7 +42,7 @@ export const TriggerFiltersButton: FC<{ onOpen(): void }> = ({ onOpen }) => (
   </Button>
 )
 
-export type Filters = Record<string, FilterOption> | null
+export type Filters = Record<string, any> | null
 
 function getInitialFilters(filters: Record<string, string[]>) {
   return Object.entries(filters).map((entry) => {
@@ -93,7 +93,7 @@ const DrawerFilters: FC<{
             : { [DBConditions.notIncludes]: unchecked }
 
         return { ...acc, [item.name]: filter }
-      }, {} as Filters) as Filters
+      }, {} as Filters)
 
       onChange({ ...prevFilters, ...parsedFilters })
     }, 200)

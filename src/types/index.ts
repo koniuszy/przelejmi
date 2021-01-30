@@ -48,12 +48,3 @@ export enum DBConditions {
   'and' = 'AND',
   'not' = 'NOT',
 }
-
-export type FilterOption = Record<
-  DBConditions.includes | DBConditions.notIncludes,
-  string | string[]
->
-export type SearchOption = Record<
-  DBConditions.contains | DBConditions.equals | DBConditions.startsWith | DBConditions.endsWidth,
-  string | string[]
->
