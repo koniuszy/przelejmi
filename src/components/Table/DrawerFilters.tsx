@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 
 import { Search2Icon } from '@chakra-ui/icons'
 import {
@@ -19,6 +19,10 @@ import {
   DrawerOverlay,
   Stack,
 } from '@chakra-ui/react'
+
+import debounce from 'lodash.debounce'
+
+import useConstant from 'src/hooks'
 
 export const TriggerFiltersButton: FC<{ onOpen(): void }> = ({ onOpen }) => (
   <Button size="sm" rightIcon={<Search2Icon />} onClick={onOpen}>
@@ -45,40 +49,45 @@ const DrawerFilters: FC<{
 }> = ({ filters, disclosureOptions, onChange }) => {
   const [filterList, setFilterList] = useState(getInitialFilters(filters))
 
-  function handleOptionListChange(newFilterList: typeof filterList) {
-    setFilterList(newFilterList)
-
-    const touchedFilterList = newFilterList.filter((filterListItem) =>
-      filterListItem.optionList.find((item) => !item.checked)
-    )
-
-    if (touchedFilterList.length === 0) {
-      onChange(null)
-      return
-    }
-
-    const groupedTouched = touchedFilterList.map((item) => {
-      const groupedOptionList = item.optionList.reduce(
-        (acc, item) => {
-          acc[item.checked ? 'checked' : 'unchecked'].push(item.name)
-          return acc
-        },
-        {
-          checked: [] as string[],
-          unchecked: [] as string[],
-        }
+  const debouncedFiltersChange = useConstant(() =>
+    debounce((newFilterList: typeof filterList) => {
+      const touchedFilterList = newFilterList.filter((filterListItem) =>
+        filterListItem.optionList.find((item) => !item.checked)
       )
 
-      return { name: item.name, groupedOptionList }
-    })
+      if (touchedFilterList.length === 0) {
+        onChange(null)
+        return
+      }
 
-    const where = groupedTouched.reduce((acc, item) => {
-      const { checked, unchecked } = item.groupedOptionList
-      const filter = checked.length < unchecked.length ? { in: checked } : { notIn: unchecked }
-      return { ...acc, [item.name]: filter }
-    }, {} as Record<string, FilterOption>)
+      const groupedTouched = touchedFilterList.map((item) => {
+        const groupedOptionList = item.optionList.reduce(
+          (acc, item) => {
+            acc[item.checked ? 'checked' : 'unchecked'].push(item.name)
+            return acc
+          },
+          {
+            checked: [] as string[],
+            unchecked: [] as string[],
+          }
+        )
 
-    onChange(where as Record<string, FilterOption>)
+        return { name: item.name, groupedOptionList }
+      })
+
+      const where = groupedTouched.reduce((acc, item) => {
+        const { checked, unchecked } = item.groupedOptionList
+        const filter = checked.length < unchecked.length ? { in: checked } : { notIn: unchecked }
+        return { ...acc, [item.name]: filter }
+      }, {} as Record<string, FilterOption>)
+
+      onChange(where as Record<string, FilterOption>)
+    }, 100)
+  )
+
+  function handleOptionListChange(newFilterList: typeof filterList) {
+    setFilterList(newFilterList)
+    debouncedFiltersChange(newFilterList)
   }
 
   return (
