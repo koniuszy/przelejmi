@@ -24,6 +24,11 @@ export enum ClientType {
   PERSON = 'Person',
 }
 
+export enum MerchantType {
+  COMPANY = 'Company',
+  PERSON = 'Person',
+}
+
 export type OptimizedImg = {
   src: string
   base64: string

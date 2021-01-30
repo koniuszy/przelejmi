@@ -14,8 +14,8 @@ export const Client = objectType({
   },
 })
 
-export const Seller = objectType({
-  name: 'Seller',
+export const Merchant = objectType({
+  name: 'Merchant',
   definition(t) {
     t.model.id()
     t.model.Scenario()
@@ -37,6 +37,8 @@ export const ScenarioQuery = queryType({
     t.crud.scenario()
     t.crud.clients({ ordering: true, filtering: true })
     t.crud.client()
+    t.crud.merchants({ ordering: true, filtering: true })
+    t.crud.merchant()
   },
 })
 
@@ -48,6 +50,10 @@ export const ScenarioMutation = mutationType({
     t.crud.createOneClient()
     t.crud.updateOneClient()
     t.crud.deleteOneClient()
+
+    t.crud.createOneMerchant()
+    t.crud.updateOneMerchant()
+    t.crud.deleteOneMerchant()
   },
 })
 
@@ -69,7 +75,7 @@ export const Scenario = objectType({
     t.model.updatedAt()
     t.model.client()
     t.model.clientId()
-    t.model.sellerId()
-    t.model.seller()
+    t.model.merchantId()
+    t.model.merchant()
   },
 })

@@ -11,3 +11,15 @@ export const ClientContent = gql`
     nip
   }
 `
+
+export const MerchantContent = gql`
+  fragment MerchantContent on Merchant {
+    id
+    name
+    address
+    postCode
+    city
+    country
+    nip
+  }
+`
