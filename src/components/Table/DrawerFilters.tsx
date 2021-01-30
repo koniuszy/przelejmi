@@ -42,7 +42,9 @@ export const TriggerFiltersButton: FC<{ onOpen(): void }> = ({ onOpen }) => (
   </Button>
 )
 
-function getInitialFilters(filters: Record<string, string[]>) {
+export type Filters = Record<string, string[]>
+
+function getInitialFilters(filters: Filters) {
   return Object.entries(filters).map((entry) => {
     const [name, optionList] = entry
     return { name, optionList: optionList.map((name) => ({ name, checked: true })) }
@@ -51,7 +53,7 @@ function getInitialFilters(filters: Record<string, string[]>) {
 
 const DrawerFilters: FC<{
   disclosureOptions: { onClose(): void; onClose(): void; isOpen: boolean }
-  filters: Record<string, string[]>
+  filters: Filters
   onChange(where: Record<string, FilterOption> | null): void
 }> = ({ filters, disclosureOptions, onChange }) => {
   const [filterList, setFilterList] = useState(getInitialFilters(filters))

@@ -8,7 +8,7 @@ import debounce from 'lodash.debounce'
 import useConstant from 'src/hooks'
 import { DBConditions } from 'src/types'
 
-type Search = Record<DBConditions.or, Record<string, { contains: any }>[]>
+export type Search = Record<DBConditions.or, Record<string, { contains: any }>[]>
 
 const SearchInput: FC<{
   onSearch(search: Search): void
@@ -21,7 +21,7 @@ const SearchInput: FC<{
       }))
 
       onSearch({ [DBConditions.or]: parsedSearch } as Search)
-    }, 100)
+    }, 300)
   )
 
   return (
