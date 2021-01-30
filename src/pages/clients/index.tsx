@@ -331,3 +331,4 @@ export default App
 // TODO:
 // pagination
 // skeleton: https://chakra-ui.com/docs/feedback/skeleton
+// types for variables
