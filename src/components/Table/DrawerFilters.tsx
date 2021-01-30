@@ -31,17 +31,55 @@ type FilterOption = Record<
   string | string[]
 >
 
+function getInitialFilters(filters: Record<string, string[]>) {
+  return Object.entries(filters).map((entry) => {
+    const [name, optionList] = entry
+    return { name, optionList: optionList.map((name) => ({ name, checked: true })) }
+  })
+}
+
 const DrawerFilters: FC<{
   disclosureOptions: { onClose(): void; onClose(): void; isOpen: boolean }
   filters: Record<string, string[]>
-  onSave(where: Record<string, FilterOption> | null): void
-}> = ({ filters, disclosureOptions, onSave }) => {
-  const [filterList, setFilterList] = useState(
-    Object.entries(filters).map((entry) => {
-      const [name, optionList] = entry
-      return { name, optionList: optionList.map((name) => ({ name, checked: true })) }
+  onChange(where: Record<string, FilterOption> | null): void
+}> = ({ filters, disclosureOptions, onChange }) => {
+  const [filterList, setFilterList] = useState(getInitialFilters(filters))
+
+  function handleOptionListChange(newFilterList: typeof filterList) {
+    setFilterList(newFilterList)
+
+    const touchedFilterList = newFilterList.filter((filterListItem) =>
+      filterListItem.optionList.find((item) => !item.checked)
+    )
+
+    if (touchedFilterList.length === 0) {
+      onChange(null)
+      return
+    }
+
+    const groupedTouched = touchedFilterList.map((item) => {
+      const groupedOptionList = item.optionList.reduce(
+        (acc, item) => {
+          acc[item.checked ? 'checked' : 'unchecked'].push(item.name)
+          return acc
+        },
+        {
+          checked: [] as string[],
+          unchecked: [] as string[],
+        }
+      )
+
+      return { name: item.name, groupedOptionList }
     })
-  )
+
+    const where = groupedTouched.reduce((acc, item) => {
+      const { checked, unchecked } = item.groupedOptionList
+      const filter = checked.length < unchecked.length ? { in: checked } : { notIn: unchecked }
+      return { ...acc, [item.name]: filter }
+    }, {} as Record<string, FilterOption>)
+
+    onChange(where as Record<string, FilterOption>)
+  }
 
   return (
     <Drawer placement="right" isOpen={disclosureOptions.isOpen} onClose={disclosureOptions.onClose}>
@@ -70,13 +108,16 @@ const DrawerFilters: FC<{
                           !optionList.find((optionListItem) => optionListItem.checked === false)
                         }
                         onChange={(e) =>
-                          setFilterList(
+                          handleOptionListChange(
                             filterList.map((filterListItem) => ({
                               ...filterListItem,
-                              optionList: filterListItem.optionList.map((optionListItem) => ({
-                                ...optionListItem,
-                                checked: e.target.checked,
-                              })),
+                              optionList:
+                                filterListItem.name === name
+                                  ? filterListItem.optionList.map((optionListItem) => ({
+                                      ...optionListItem,
+                                      checked: e.target.checked,
+                                    }))
+                                  : filterListItem.optionList,
                             }))
                           )
                         }
@@ -91,17 +132,19 @@ const DrawerFilters: FC<{
                           key={optionListItem.name}
                           isChecked={optionListItem.checked}
                           onChange={(e) =>
-                            setFilterList(
+                            handleOptionListChange(
                               filterList.map((filterListItem) => ({
                                 ...filterListItem,
-                                optionList: filterListItem.optionList.map((item) =>
-                                  item.name === optionListItem.name
-                                    ? {
+                                optionList:
+                                  filterListItem.name === name
+                                    ? filterListItem.optionList.map((item) => ({
                                         ...item,
-                                        checked: e.target.checked,
-                                      }
-                                    : item
-                                ),
+                                        checked:
+                                          item.name === optionListItem.name
+                                            ? e.target.checked
+                                            : item.checked,
+                                      }))
+                                    : filterListItem.optionList,
                               }))
                             )
                           }
@@ -117,47 +160,15 @@ const DrawerFilters: FC<{
           </DrawerBody>
 
           <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={disclosureOptions.onClose}>
-              Cancel
-            </Button>
             <Button
-              colorScheme="teal"
+              variant="outline"
+              mr={3}
               onClick={() => {
-                const touchedFilterList = filterList.filter((filterListItem) =>
-                  filterListItem.optionList.find((item) => !item.checked)
-                )
-
-                if (touchedFilterList.length === 0) {
-                  onSave(null)
-                  return
-                }
-
-                const groupedTouched = touchedFilterList.map((item) => {
-                  const groupedOptionList = item.optionList.reduce(
-                    (acc, item) => {
-                      acc[item.checked ? 'checked' : 'unchecked'].push(item.name)
-                      return acc
-                    },
-                    {
-                      checked: [] as string[],
-                      unchecked: [] as string[],
-                    }
-                  )
-
-                  return { name: item.name, groupedOptionList }
-                })
-
-                const where = groupedTouched.reduce((acc, item) => {
-                  const { checked, unchecked } = item.groupedOptionList
-                  const filter =
-                    checked.length < unchecked.length ? { in: checked } : { notIn: unchecked }
-                  return { ...acc, [item.name]: filter }
-                }, {} as Record<string, FilterOption>)
-
-                onSave(where as Record<string, FilterOption>)
+                onChange(null)
+                setFilterList(getInitialFilters(filters))
               }}
             >
-              Save
+              Reset
             </Button>
           </DrawerFooter>
         </DrawerContent>

@@ -257,9 +257,9 @@ const App: FC<SSGProps> = ({ initialClientList, filters }) => {
       </main>
 
       <DrawerFilters
-        disclosureOptions={drawerOptions}
         filters={filters}
-        onSave={(where) => console.log(where)}
+        disclosureOptions={drawerOptions}
+        onChange={(where) => refetch({ where })}
       />
     </div>
   )
