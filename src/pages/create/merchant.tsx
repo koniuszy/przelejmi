@@ -69,7 +69,6 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
   })
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
-    validateOnBlur: true,
     initialValues: {
       companyName: '',
       address: '',
@@ -94,11 +93,18 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       //@ts-ignore
       const errors: Record<keyof Form, string> = {}
 
-      if (values.companyName.length > 100) errors.companyName = 'Name should be shorter'
+      if (values.companyName.length > 100) errors.companyName = 'Company name should be shorter'
       if (values.address.length > 100) errors.address = 'Address should be shorter'
       if (values.postCode.length > 10) errors.postCode = 'Post code should be shorter'
       if (values.city.length > 100) errors.city = 'City should be shorter'
       if (values.country.length > 100) errors.country = 'Country should be shorter'
+      if (values.bankName.length > 100) errors.bankName = 'Bank name should be shorter'
+      if (values.issuerName.length > 100) errors.issuerName = 'Issuer name should be shorter'
+      if (values.bankAccountPln.length < 26 || values.bankAccountPln.length > 30)
+        errors.bankAccountPln = 'Bank account should be between 26 and 30 digits'
+      if (values.bankAccountEur.length < 26 || values.bankAccountEur.length > 30)
+        errors.bankAccountEur = 'Bank account should be between 26 and 30 digits'
+      if (values.email.length > 100) errors.email = 'Email should be shorter'
       if (isNaN(Number(values.nip.replace(/ /g, '')))) errors.nip = 'NIP is invalid'
 
       return errors

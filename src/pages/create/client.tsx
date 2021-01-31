@@ -69,7 +69,6 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   })
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
-    validateOnBlur: true,
     initialValues: { name: '', address: '', postCode: '', city: '', country: '', nip: '' },
     onSubmit(values) {
       const { nip, ...data } = values
