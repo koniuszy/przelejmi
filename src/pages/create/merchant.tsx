@@ -76,10 +76,9 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       issuerName: '',
     },
     onSubmit(values) {
-      const { nip, ...data } = values
       createMerchant({
         variables: {
-          data: { ...data, nip: Number(nip) },
+          data: values,
         },
       })
     },

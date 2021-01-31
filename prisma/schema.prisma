@@ -28,7 +28,7 @@ model Merchant {
   postCode       String
   city           String
   country        String
-  nip            Int
+  nip            String
   Scenario       Scenario[]
   email          String
   bankName       String
