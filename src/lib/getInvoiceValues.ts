@@ -17,7 +17,7 @@ export default function getInvoiceValues() {
       paymentType: 'Transfer',
     },
     contractors: {
-      seller: {
+      merchant: {
         title: '',
         name: 'VIKING HOUSE SP Z 0 0',
         address: 'os. Stefana Batorego 39/12',
