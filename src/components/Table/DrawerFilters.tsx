@@ -25,9 +25,13 @@ import debounce from 'lodash.debounce'
 import useConstant from 'src/hooks'
 import { DBConditions } from 'src/types'
 
-export const TriggerFiltersButton: FC<{ onOpen(): void }> = ({ onOpen }) => (
+export const TriggerFiltersButton: FC<{ onOpen(): void; isActive: boolean }> = ({
+  onOpen,
+  isActive,
+}) => (
   <Button
     size="sm"
+    colorScheme={isActive ? 'teal' : 'gray'}
     rightIcon={
       <Icon viewBox="0 0 512 512">
         <path

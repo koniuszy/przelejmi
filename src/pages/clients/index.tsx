@@ -129,7 +129,14 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
             </Center>
 
             <Center pr="5">
-              <TriggerFiltersButton onOpen={drawerOptions.onOpen} />
+              <TriggerFiltersButton
+                isActive={
+                  variables.where &&
+                  Object.keys(variables.where).length > 0 &&
+                  !Object.keys(variables.where).includes('OR')
+                }
+                onOpen={drawerOptions.onOpen}
+              />
             </Center>
 
             <Center>
