@@ -49,7 +49,7 @@ const imgWidth = 500
 
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   const toast = useToast()
-  const [clientType, setClientType] = useState<ClientType>(ClientType.COMPANY)
+  const [clientType, setClientType] = useState<ClientType>(ClientType.company)
   const [createClient, { loading, client }] = useMutation<{ createdClient: Client }>(
     CREATE_CLIENT_MUTATION,
     {
@@ -81,7 +81,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
       const { nip, ...data } = values
       createClient({
         variables: {
-          data: { ...data, nip: clientType === ClientType.COMPANY ? Number(nip) : null },
+          data: { ...data, nip: clientType === ClientType.company ? Number(nip) : null },
         },
       })
     },
@@ -142,20 +142,20 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               <Input
                 name="name"
                 placeholder="John Smith"
-                onChange={handleChange}
                 value={values.name}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.name}</FormErrorMessage>
             </FormControl>
 
-            {clientType === ClientType.COMPANY && (
+            {clientType === ClientType.company && (
               <FormControl isRequired mt="10" id="nip" isInvalid={!!errors.nip}>
                 <FormLabel htmlFor="nip">NIP</FormLabel>
                 <Input
                   name="nip"
                   placeholder="12345678"
-                  onChange={handleChange}
                   value={values.nip}
+                  onChange={handleChange}
                 />
                 <FormErrorMessage>{errors.nip}</FormErrorMessage>
               </FormControl>
@@ -166,8 +166,8 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               <Input
                 name="address"
                 placeholder="Street 10/2"
-                onChange={handleChange}
                 value={values.address}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.name}</FormErrorMessage>
             </FormControl>
@@ -177,15 +177,15 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               <Input
                 name="postCode"
                 placeholder="60-687"
-                onChange={handleChange}
                 value={values.postCode}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.postCode}</FormErrorMessage>
             </FormControl>
 
             <FormControl isRequired mt="2" id="city" isInvalid={!!errors.city}>
               <FormLabel htmlFor="city">City</FormLabel>
-              <Input name="city" placeholder="Poznań" onChange={handleChange} value={values.city} />
+              <Input name="city" placeholder="Poznań" value={values.city} onChange={handleChange} />
               <FormErrorMessage>{errors.country}</FormErrorMessage>
             </FormControl>
 
@@ -194,8 +194,8 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               <Input
                 name="country"
                 placeholder="Polska"
-                onChange={handleChange}
                 value={values.country}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.country}</FormErrorMessage>
             </FormControl>
