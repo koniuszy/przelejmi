@@ -14,8 +14,8 @@ export const Client = objectType({
   },
 })
 
-export const Seller = objectType({
-  name: 'Seller',
+export const Merchant = objectType({
+  name: 'Merchant',
   definition(t) {
     t.model.id()
     t.model.Scenario()
@@ -24,10 +24,12 @@ export const Seller = objectType({
     t.model.city()
     t.model.country()
     t.model.nip()
-    t.model.name()
+    t.model.companyName()
     t.model.email()
-    t.model.bankAccount()
+    t.model.bankAccountPln()
+    t.model.bankAccountEur()
     t.model.bankName()
+    t.model.issuerName()
   },
 })
 
@@ -48,6 +50,8 @@ export const ScenarioMutation = mutationType({
     t.crud.createOneClient()
     t.crud.updateOneClient()
     t.crud.deleteOneClient()
+
+    t.crud.createOneMerchant()
   },
 })
 
@@ -69,7 +73,7 @@ export const Scenario = objectType({
     t.model.updatedAt()
     t.model.client()
     t.model.clientId()
-    t.model.sellerId()
-    t.model.seller()
+    t.model.merchantId()
+    t.model.merchant()
   },
 })

@@ -98,8 +98,8 @@ const Header: FC = () => {
             <NextLink href="/create/client">
               <MenuItem>Client</MenuItem>
             </NextLink>
-            <NextLink href="/create/seller">
-              <MenuItem>Seller</MenuItem>
+            <NextLink href="/create/merchant">
+              <MenuItem>Merchant</MenuItem>
             </NextLink>
           </MenuList>
         </Menu>
