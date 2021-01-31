@@ -1,0 +1,16 @@
+query getMerchants($orderBy: [MerchantOrderByInput!], $where: MerchantWhereInput) {
+  merchantList: merchants(orderBy: $orderBy, where: $where) {
+    id
+    companyName
+    address
+    postCode
+    city
+    country
+    nip
+    bankAccountPln
+    bankAccountEur
+    bankName
+    email
+    issuerName
+  }
+}

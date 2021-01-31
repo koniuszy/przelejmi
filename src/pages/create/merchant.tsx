@@ -47,11 +47,19 @@ const imgWidth = 500
 
 const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
   const toast = useToast()
-  const [createMerchant, { loading }] = useCreateOneMerchantMutation({
+  const [createMerchant, { loading, client }] = useCreateOneMerchantMutation({
     onCompleted(response) {
       toast({
         ...successToastContent,
         title: 'Merchant created.',
+      })
+
+      const data = client.readQuery({ query: GetMerchantsDocument })
+      if (!data) return
+
+      client.writeQuery({
+        query: GetMerchantsDocument,
+        data: { ...data, merchantList: [...data.merchantList, response.createdMerchant] },
       })
     },
     onError(err) {
