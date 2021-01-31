@@ -21,18 +21,20 @@ model Client {
   Scenario Scenario[]
 }
 
-model Seller {
-  id          Int        @id @default(autoincrement())
-  name        String
-  address     String
-  postCode    String
-  city        String
-  country     String
-  nip         Int
-  Scenario    Scenario[]
-  email       String
-  bankName    String
-  bankAccount String
+model Merchant {
+  id             Int        @id @default(autoincrement())
+  companyName    String
+  address        String
+  postCode       String
+  city           String
+  country        String
+  nip            String
+  Scenario       Scenario[]
+  email          String
+  bankName       String
+  bankAccountPln String
+  bankAccountEur String
+  issuerName     String
 }
 
 model Scenario {
@@ -51,6 +53,6 @@ model Scenario {
   updatedAt   DateTime @default(now()) @updatedAt
   client      Client   @relation(fields: [clientId], references: [id])
   clientId    Int
-  seller      Seller   @relation(fields: [sellerId], references: [id])
-  sellerId    Int
+  merchant    Merchant @relation(fields: [merchantId], references: [id])
+  merchantId  Int
 }

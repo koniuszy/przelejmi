@@ -1,0 +1,16 @@
+mutation createOneMerchant($data: MerchantCreateInput!) {
+  createdMerchant: createOneMerchant(data: $data) {
+    id
+    companyName
+    address
+    postCode
+    city
+    country
+    nip
+    bankAccountPln
+    bankAccountEur
+    bankName
+    email
+    issuerName
+  }
+}
