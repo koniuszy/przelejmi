@@ -13,20 +13,11 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
-import { gql, useMutation } from '@apollo/client'
 import { Client } from '@prisma/client'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { CLIENTS_QUERY } from 'src/graphql/queries'
-
-const DELETE_CLIENT_MUTATION = gql`
-  mutation deleteOneClient($id: Int!) {
-    deletedClient: deleteOneClient(where: { id: $id }) {
-      id
-    }
-  }
-`
+import { useDeleteOneClientMutation, GetClientsDocument } from 'src/generated/graphql'
 
 const DeletePopover = ({
   id,
@@ -37,7 +28,7 @@ const DeletePopover = ({
   onClose(): void
 }>): ReactElement => {
   const toast = useToast()
-  const [deleteClient, { loading }] = useMutation(DELETE_CLIENT_MUTATION, {
+  const [deleteClient, { loading }] = useDeleteOneClientMutation({
     onCompleted() {
       toast({
         ...successToastContent,
@@ -59,9 +50,9 @@ const DeletePopover = ({
         },
       },
       update(cache, { data: { deletedClient } }) {
-        const data = cache.readQuery<{ clientList: Client[] }>({ query: CLIENTS_QUERY })
+        const data = cache.readQuery<{ clientList: Client[] }>({ query: GetClientsDocument })
         cache.writeQuery({
-          query: CLIENTS_QUERY,
+          query: GetClientsDocument,
           data: {
             ...data,
             clientList: data.clientList.filter(
@@ -90,10 +81,10 @@ const DeletePopover = ({
         <PopoverBody>Are you sure?</PopoverBody>
         <PopoverFooter w="100%">
           <ButtonGroup d="flex" justifyContent="space-between" size="sm">
-            <Button onClick={onClose} variant="outline">
+            <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button isLoading={loading} onClick={handleDelete} color="red.400">
+            <Button isLoading={loading} color="red.400" onClick={handleDelete}>
               Delete
             </Button>
           </ButtonGroup>
