@@ -43,12 +43,17 @@ const client = new ApolloClient({
 function MyApp({ Component, pageProps }) {
   return (
     <>
+      <NextProgressBar
+        color={extendedTheme.colors.teal[300]}
+        startPosition={0.3}
+        stopDelayMs={0.2}
+        height={3}
+      />
+
       <ApolloProvider client={client}>
         <ChakraProvider theme={extendedTheme}>
           <Header />
           <Box px="40" py="10">
-            <NextProgressBar color="#4FD1C5" startPosition={0} stopDelayMs={0} height={3} />
-
             <Component customProp="s" {...pageProps} />
           </Box>
         </ChakraProvider>
