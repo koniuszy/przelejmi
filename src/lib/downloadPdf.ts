@@ -57,13 +57,13 @@ export default function downloadPdf({ language }: { language: 'pl' }) {
     doc.text(invoiceValues.header[key], value.x + config.header.offset, value.y)
   })
 
-  Object.entries(translatedMessages.contractors.seller).forEach((entry) => {
+  Object.entries(translatedMessages.contractors.merchant).forEach((entry) => {
     const [key, value] = entry
     doc.setFont('RobotoBold')
     doc.text(value.text, value.x, value.y)
 
     doc.setFont('RobotoNormal')
-    doc.text(invoiceValues.contractors.seller[key], value.x, value.y)
+    doc.text(invoiceValues.contractors.merchant[key], value.x, value.y)
   })
 
   Object.entries(translatedMessages.contractors.buyer).forEach((entry) => {
