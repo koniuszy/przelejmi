@@ -15,11 +15,15 @@ export const ClientContent = gql`
 export const MerchantContent = gql`
   fragment MerchantContent on Merchant {
     id
-    name
+    companyName
     address
     postCode
     city
     country
     nip
+    issuerName
+    bankAccountPln
+    bankAccountEur
+    bankName
   }
 `

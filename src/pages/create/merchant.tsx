@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 
 import { GetStaticProps } from 'next'
 
@@ -13,10 +13,6 @@ import {
   Input,
   FormErrorMessage,
   Button,
-  RadioGroup,
-  Stack,
-  Radio,
-  Text,
   useToast,
 } from '@chakra-ui/react'
 
@@ -30,7 +26,7 @@ import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import { CREATE_MERCHANT_MUTATION } from 'src/graphql/mutations'
 import { MERCHANTS_QUERY } from 'src/graphql/queries'
-import { MerchantType, OptimizedImg } from 'src/types'
+import { OptimizedImg } from 'src/types'
 
 type SSGProps = {
   womanWithFoldersImg: OptimizedImg
@@ -44,7 +40,7 @@ type Form = {
   country: string
   nip: string
   bankName: string
-  bankAccount: string
+  bankAccountPln: string
   bankAccountEur: string
   email: string
   issuerName: string
@@ -79,6 +75,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
   )
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
+    validateOnChange: true,
     validateOnBlur: true,
     initialValues: {
       companyName: '',
@@ -88,7 +85,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       country: '',
       nip: '',
       bankName: '',
-      bankAccount: '',
+      bankAccountPln: '',
       bankAccountEur: '',
       email: '',
       issuerName: '',
@@ -104,7 +101,6 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
     validate(values) {
       //@ts-ignore
       const errors: Record<keyof Form, string> = {}
-
       if (values.companyName.length > 100) errors.companyName = 'Company name should be shorter'
       if (values.address.length > 100) errors.address = 'Address should be shorter'
       if (values.postCode.length > 10) errors.postCode = 'Post code should be shorter'
@@ -112,7 +108,10 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       if (values.country.length > 100) errors.country = 'Country should be shorter'
       if (values.bankName.length > 100) errors.bankName = 'Bank name should be shorter'
       if (values.issuerName.length > 100) errors.issuerName = 'Issuer name should be shorter'
-      //if (values.bankAccount.length !== 26) errors.bankAccount = 'Bank account should be 26 digits'
+      if (values.bankAccountPln.length < 26 || values.bankAccountPln.length > 30)
+        errors.bankAccountPln = 'Bank account should be between 26 and 30 digits'
+      if (values.bankAccountEur.length < 26 || values.bankAccountEur.length > 30)
+        errors.bankAccountEur = 'Bank account should be between 26 and 30 digits'
       if (values.email.length > 100) errors.email = 'Email should be shorter'
       if (isNaN(Number(values.nip.replace(/ /g, '')))) errors.nip = 'NIP is invalid'
 
@@ -189,7 +188,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
                 onChange={handleChange}
                 value={values.address}
               />
-              <FormErrorMessage>{errors.name}</FormErrorMessage>
+              <FormErrorMessage>{errors.address}</FormErrorMessage>
             </FormControl>
 
             <Flex direction="row">
@@ -240,15 +239,15 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               </FormControl>
             </Flex>
 
-            <FormControl isRequired mt="4" id="bankAccount" isInvalid={!!errors.bankName}>
-              <FormLabel htmlFor="bankAccount">Bank account</FormLabel>
+            <FormControl isRequired mt="4" id="bankAccountPln" isInvalid={!!errors.bankAccountPln}>
+              <FormLabel htmlFor="bankAccountPln">Bank account in PLN</FormLabel>
               <Input
-                name="bankAccount"
+                name="bankAccountPln"
                 placeholder="04 1140 2004 9892 3802 6728 1373"
                 onChange={handleChange}
-                value={values.bankAccount}
+                value={values.bankAccountPln}
               />
-              <FormErrorMessage>{errors.bankAccount}</FormErrorMessage>
+              <FormErrorMessage>{errors.bankAccountPln}</FormErrorMessage>
             </FormControl>
 
             <FormControl isRequired mt="4" id="bankAccountEur" isInvalid={!!errors.bankAccountEur}>
@@ -259,7 +258,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
                 onChange={handleChange}
                 value={values.bankAccountEur}
               />
-              <FormErrorMessage>{errors.bankAccount}</FormErrorMessage>
+              <FormErrorMessage>{errors.bankAccountEur}</FormErrorMessage>
             </FormControl>
 
             <FormControl isRequired mt="4" id="Email" isInvalid={!!errors.email}>

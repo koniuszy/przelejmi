@@ -24,10 +24,12 @@ export const Merchant = objectType({
     t.model.city()
     t.model.country()
     t.model.nip()
-    t.model.name()
+    t.model.companyName()
     t.model.email()
-    t.model.bankAccount()
+    t.model.bankAccountPln()
+    t.model.bankAccountEur()
     t.model.bankName()
+    t.model.issuerName()
   },
 })
 
