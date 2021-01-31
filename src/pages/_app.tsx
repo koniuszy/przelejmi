@@ -1,6 +1,7 @@
 import { ChakraProvider, extendTheme, Box } from '@chakra-ui/react'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import NextProgressBar from 'nextjs-progressbar'
 
 import Header from 'src/components/Header'
 
@@ -42,6 +43,13 @@ const client = new ApolloClient({
 function MyApp({ Component, pageProps }) {
   return (
     <>
+      <NextProgressBar
+        color={extendedTheme.colors.teal[300]}
+        startPosition={0.3}
+        stopDelayMs={0.2}
+        height={3}
+      />
+
       <ApolloProvider client={client}>
         <ChakraProvider theme={extendedTheme}>
           <Header />
