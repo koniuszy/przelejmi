@@ -30,14 +30,18 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { useMutation, useQuery } from '@apollo/client'
 import { Client, PrismaClient } from '@prisma/client'
 import ReactPaginate from 'react-paginate'
 
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
-import { UPDATE_CLIENT_MUTATION } from 'src/graphql/mutations'
-import { CLIENTS_QUERY } from 'src/graphql/queries'
+import {
+  useGetClientsQuery,
+  useUpdateOneClientMutation,
+  GetClientsDocument,
+  ClientOrderByInput,
+  SortOrder,
+} from 'src/generated/graphql'
 import { ClientType, DBConditions } from 'src/types'
 
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
@@ -63,29 +67,26 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
   const drawerOptions = useDisclosure()
 
-  const { data, refetch, variables } = useQuery<{ clientList: Client[] }>(CLIENTS_QUERY)
+  const { data, refetch, variables } = useGetClientsQuery()
 
-  const [updateClient, updateClientOptions] = useMutation<{ updatedClient: Client }>(
-    UPDATE_CLIENT_MUTATION,
-    {
-      onCompleted(response) {
-        toast({ ...successToastContent, title: 'Client updated' })
-        updateClientOptions.client.writeQuery({
-          query: CLIENTS_QUERY,
-          data: {
-            ...data,
-            clientList: data.clientList.map((item) =>
-              item.id === response.updatedClient.id ? response.updatedClient : item
-            ),
-          },
-        })
-      },
-      onError() {
-        toast(errorToastContent)
-        toast(warningToastContent)
-      },
-    }
-  )
+  const [updateClient, updateClientOptions] = useUpdateOneClientMutation({
+    onCompleted(response) {
+      toast({ ...successToastContent, title: 'Client updated' })
+      updateClientOptions.client.writeQuery({
+        query: GetClientsDocument,
+        data: {
+          ...data,
+          clientList: data.clientList.map((item) =>
+            item.id === response.updatedClient.id ? response.updatedClient : item
+          ),
+        },
+      })
+    },
+    onError() {
+      toast(errorToastContent)
+      toast(warningToastContent)
+    },
+  })
 
   function handleUpdate(data: Partial<Client>, id: number) {
     const [value] = Object.values(data)
@@ -102,7 +103,8 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
     refetch({ where: filters })
   }
 
-  const clientList = data?.clientList || initialClientList
+  const clientList = (data?.clientList || initialClientList) as Client[]
+  const orderBy = (variables.orderBy ?? {}) as ClientOrderByInput
 
   return (
     <div>
@@ -166,10 +168,10 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
               <Th />
               <SortTh
                 title="Name"
-                isAsc={variables?.orderBy?.name === 'asc'}
-                isDesc={variables?.orderBy?.name === 'desc'}
-                onAsc={() => refetch({ orderBy: { name: 'asc' } })}
-                onDesc={() => refetch({ orderBy: { name: 'desc' } })}
+                isAsc={orderBy.name === 'asc'}
+                isDesc={orderBy.name === 'desc'}
+                onAsc={() => refetch({ orderBy: { name: SortOrder.Asc } })}
+                onDesc={() => refetch({ orderBy: { name: SortOrder.Desc } })}
               />
               <Th>Type</Th>
               <Th>NIP</Th>

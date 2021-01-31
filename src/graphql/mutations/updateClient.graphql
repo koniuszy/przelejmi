@@ -1,0 +1,15 @@
+mutation updateOneClient(
+  $data: ClientUpdateInput!
+  $id: Int!
+  $where: ClientWhereUniqueInput = {}
+) {
+  updatedClient: updateOneClient(data: $data, where: $where) {
+    id
+    name
+    address
+    postCode
+    city
+    country
+    nip
+  }
+}

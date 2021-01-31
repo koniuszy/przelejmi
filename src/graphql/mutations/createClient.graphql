@@ -1,0 +1,11 @@
+mutation createOneClient($data: ClientCreateInput!) {
+  createdClient: createOneClient(data: $data) {
+    id
+    name
+    address
+    postCode
+    city
+    country
+    nip
+  }
+}

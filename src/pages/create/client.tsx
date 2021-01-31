@@ -20,16 +20,13 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
-import { useMutation } from '@apollo/client'
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
-import { Client } from '@prisma/client'
 import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { CREATE_CLIENT_MUTATION } from 'src/graphql/mutations'
-import { CLIENTS_QUERY } from 'src/graphql/queries'
+import { useCreateOneClientMutation, GetClientsDocument } from 'src/generated/graphql'
 import { ClientType, OptimizedImg } from 'src/types'
 
 type SSGProps = {
@@ -50,29 +47,26 @@ const imgWidth = 500
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   const toast = useToast()
   const [clientType, setClientType] = useState<ClientType>(ClientType.company)
-  const [createClient, { loading, client }] = useMutation<{ createdClient: Client }>(
-    CREATE_CLIENT_MUTATION,
-    {
-      onCompleted(response) {
-        toast({
-          ...successToastContent,
-          title: 'Client created.',
-        })
+  const [createClient, { loading, client }] = useCreateOneClientMutation({
+    onCompleted(response) {
+      toast({
+        ...successToastContent,
+        title: 'Client created.',
+      })
 
-        const data = client.readQuery({ query: CLIENTS_QUERY })
-        if (!data) return
+      const data = client.readQuery({ query: GetClientsDocument })
+      if (!data) return
 
-        client.writeQuery({
-          query: CLIENTS_QUERY,
-          data: { ...data, clientList: [...data.clientList, response.createdClient] },
-        })
-      },
-      onError(err) {
-        console.error(err)
-        toast(errorToastContent)
-      },
-    }
-  )
+      client.writeQuery({
+        query: GetClientsDocument,
+        data: { ...data, clientList: [...data.clientList, response.createdClient] },
+      })
+    },
+    onError(err) {
+      console.error(err)
+      toast(errorToastContent)
+    },
+  })
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
     validateOnBlur: true,
@@ -81,7 +75,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
       const { nip, ...data } = values
       createClient({
         variables: {
-          data: { ...data, nip: clientType === ClientType.company ? Number(nip) : null },
+          data: { ...data, nip: clientType === ClientType.company ? nip : null },
         },
       })
     },

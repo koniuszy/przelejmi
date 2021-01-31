@@ -1,0 +1,11 @@
+query getClients($orderBy: [ClientOrderByInput!], $where: ClientWhereInput) {
+  clientList: clients(orderBy: $orderBy, where: $where) {
+    id
+    name
+    address
+    postCode
+    city
+    country
+    nip
+  }
+}
