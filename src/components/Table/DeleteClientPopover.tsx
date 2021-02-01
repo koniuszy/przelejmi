@@ -13,11 +13,13 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
-import { Client } from '@prisma/client'
-
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { useDeleteOneClientMutation, GetClientsDocument } from 'src/generated/graphql'
+import {
+  useDeleteOneClientMutation,
+  PaginatedClientListDocument,
+  PaginatedClientListQuery,
+} from 'src/generated/graphql'
 
 const DeletePopover = ({
   id,
@@ -50,14 +52,20 @@ const DeletePopover = ({
         },
       },
       update(cache, { data: { deletedClient } }) {
-        const data = cache.readQuery<{ clientList: Client[] }>({ query: GetClientsDocument })
+        const data = cache.readQuery<PaginatedClientListQuery>({
+          query: PaginatedClientListDocument,
+        })
+
         cache.writeQuery({
-          query: GetClientsDocument,
+          query: PaginatedClientListDocument,
           data: {
             ...data,
-            clientList: data.clientList.filter(
-              (clientListItem) => clientListItem.id !== deletedClient.id
-            ),
+            paginatedClientList: {
+              ...data.paginatedClientList,
+              list: data.paginatedClientList.list.filter(
+                (clientListItem) => clientListItem.id !== deletedClient.id
+              ),
+            },
           },
         })
       },

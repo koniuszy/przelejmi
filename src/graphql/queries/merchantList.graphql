@@ -1,4 +1,4 @@
-query getMerchants($orderBy: [MerchantOrderByInput!], $where: MerchantWhereInput) {
+query merchantList($orderBy: [MerchantOrderByInput!], $where: MerchantWhereInput) {
   merchantList: merchants(orderBy: $orderBy, where: $where) {
     id
     companyName

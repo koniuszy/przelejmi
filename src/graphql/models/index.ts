@@ -1,4 +1,4 @@
-import { mutationType, objectType, queryType } from 'nexus'
+import { mutationType, objectType, queryType, intArg, arg, extendType } from 'nexus'
 
 export const Client = objectType({
   name: 'Client',
@@ -33,32 +33,6 @@ export const Merchant = objectType({
   },
 })
 
-export const ScenarioQuery = queryType({
-  definition(t) {
-    t.crud.scenarios()
-    t.crud.scenario()
-
-    t.crud.clients({ ordering: true, filtering: true })
-    t.crud.client()
-
-    t.crud.merchants({ ordering: true, filtering: true })
-    t.crud.merchant()
-  },
-})
-
-export const ScenarioMutation = mutationType({
-  definition(t) {
-    t.crud.createOneScenario()
-    t.crud.updateOneScenario()
-
-    t.crud.createOneClient()
-    t.crud.updateOneClient()
-    t.crud.deleteOneClient()
-
-    t.crud.createOneMerchant()
-  },
-})
-
 export const Scenario = objectType({
   name: 'Scenario',
   definition(t) {
@@ -79,5 +53,60 @@ export const Scenario = objectType({
     t.model.clientId()
     t.model.merchantId()
     t.model.merchant()
+  },
+})
+
+export const PaginatedClients = objectType({
+  name: 'PaginatedClients',
+  definition(t) {
+    t.int('totalCount')
+    t.list.field('list', { type: 'Client' })
+  },
+})
+
+export const ScenarioQuery = queryType({
+  definition(t) {
+    t.crud.scenarios()
+    t.crud.scenario()
+
+    t.crud.client()
+
+    t.crud.merchants({ ordering: true, filtering: true })
+    t.crud.merchant()
+  },
+})
+
+export const PaginatedClientListQuery = extendType({
+  type: 'Query',
+  definition(t) {
+    t.field('paginatedClients', {
+      type: 'PaginatedClients',
+      args: {
+        take: intArg({ required: true }),
+        skip: intArg({ required: true }),
+        where: arg({ type: 'ClientWhereInput' }),
+        orderBy: arg({ type: 'ClientOrderByInput', list: true }),
+      },
+      async resolve(_root, variables, { prisma }) {
+        const [totalCount, clientList] = await Promise.all([
+          prisma.client.count(variables),
+          prisma.client.findMany(variables),
+        ])
+        return { totalCount, clientList }
+      },
+    })
+  },
+})
+
+export const ScenarioMutation = mutationType({
+  definition(t) {
+    t.crud.createOneScenario()
+    t.crud.updateOneScenario()
+
+    t.crud.createOneClient()
+    t.crud.updateOneClient()
+    t.crud.deleteOneClient()
+
+    t.crud.createOneMerchant()
   },
 })

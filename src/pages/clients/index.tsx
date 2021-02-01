@@ -36,11 +36,11 @@ import ReactPaginate from 'react-paginate'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 import {
-  useGetClientsQuery,
   useUpdateOneClientMutation,
-  GetClientsDocument,
+  PaginatedClientListDocument,
   ClientOrderByInput,
   SortOrder,
+  usePaginatedClientListQuery,
 } from 'src/generated/graphql'
 import { ClientType, DBConditions } from 'src/types'
 
@@ -58,25 +58,26 @@ type FilterOptions = {
 type SSGProps = {
   initialClientList: Client[]
   filterOptions: FilterOptions
+  initialTotalCount: number
 }
 
-const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
+const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount }) => {
   const toast = useToast()
   const [isEditable, setIsEditable] = useState(false)
   const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
   const drawerOptions = useDisclosure()
 
-  const { data, refetch, variables } = useGetClientsQuery()
+  const { data, refetch, variables } = usePaginatedClientListQuery()
 
   const [updateClient, updateClientOptions] = useUpdateOneClientMutation({
     onCompleted(response) {
       toast({ ...successToastContent, title: 'Client updated' })
       updateClientOptions.client.writeQuery({
-        query: GetClientsDocument,
+        query: PaginatedClientListDocument,
         data: {
           ...data,
-          clientList: data.clientList.map((item) =>
+          clientList: data.paginatedClientList.list.map((item) =>
             item.id === response.updatedClient.id ? response.updatedClient : item
           ),
         },
@@ -103,7 +104,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
     refetch({ where: filters })
   }
 
-  const clientList = (data?.clientList || initialClientList) as Client[]
+  const clientList = (data?.paginatedClientList.list || initialClientList) as Client[]
   const orderBy = (variables.orderBy ?? {}) as ClientOrderByInput
 
   return (
@@ -116,7 +117,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
       <main>
         <Flex justifyContent="space-between" pb="5">
           <Text fontSize="4xl" textAlign="center">
-            Your clients:
+            Total clients
           </Text>
 
           <Flex>
@@ -172,7 +173,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
           </TableCaption>
           <Thead>
             <Tr>
-              <Th />
+              <Th>total: {data?.paginatedClientList.totalCount ?? initialTotalCount}</Th>
               <SortTh
                 title="Name"
                 isAsc={orderBy.name === 'asc'}
@@ -308,7 +309,12 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions }) => {
 
 export const getStaticProps: GetStaticProps<SSGProps> = async () => {
   const prisma = new PrismaClient()
-  const [initialClientList, distinctCountryList, distinctCityList] = await Promise.all([
+  const [
+    initialClientList,
+    distinctCountryList,
+    distinctCityList,
+    initialTotalCount,
+  ] = await Promise.all([
     prisma.client.findMany({ take: 20 }),
     prisma.client.findMany({
       distinct: 'country',
@@ -318,6 +324,7 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
       distinct: 'city',
       select: { city: true },
     }),
+    prisma.client.count(),
   ])
 
   prisma.$disconnect()
@@ -325,6 +332,7 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
   return {
     props: {
       initialClientList,
+      initialTotalCount,
       filterOptions: {
         country: distinctCountryList.map(({ country }) => country),
         city: distinctCityList.map(({ city }) => city),

@@ -1,0 +1,14 @@
+query paginatedClientList($orderBy: [ClientOrderByInput!], $where: ClientWhereInput) {
+  paginatedClientList: paginatedClients(orderBy: $orderBy, where: $where) {
+    totalCount
+    list {
+      id
+      name
+      address
+      postCode
+      city
+      country
+      nip
+    }
+  }
+}

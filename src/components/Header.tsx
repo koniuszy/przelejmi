@@ -78,7 +78,7 @@ const Header: FC = () => {
           </NextLink>
         </ButtonGroup>
 
-        <Menu>
+        <Menu style={{ zIndex: 3 }}>
           <MenuButton
             cursor="pointer"
             colorScheme="teal"
