@@ -18,7 +18,8 @@ const SearchInput: FC<{
   const debouncedSearch = useConstant(() =>
     debounce((search, prevFilters) => {
       if (!search) {
-        onSearch(null)
+        const { OR, ...rest } = prevFilters
+        onSearch(rest)
 
         return
       }

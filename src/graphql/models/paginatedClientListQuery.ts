@@ -11,6 +11,7 @@ export const PaginatedClients = objectType({
 export const PaginatedClientListQuery = extendType({
   type: 'Query',
   definition(t) {
+    t.crud.clients({ ordering: true, filtering: true })
     t.field('paginatedClients', {
       type: 'PaginatedClients',
       args: {
@@ -20,11 +21,12 @@ export const PaginatedClientListQuery = extendType({
         orderBy: arg({ type: 'ClientOrderByInput', list: true }),
       },
       async resolve(_root, variables, { prisma }) {
+        console.log(variables, variables.where?.OR)
         const [totalCount, clientList] = await Promise.all([
-          prisma.client.count(variables),
+          prisma.client.count({ where: variables.where }),
           prisma.client.findMany(variables),
         ])
-        return { totalCount, clientList }
+        return { totalCount, list: clientList }
       },
     })
   },

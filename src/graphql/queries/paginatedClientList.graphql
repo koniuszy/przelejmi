@@ -1,5 +1,15 @@
-query paginatedClientList($orderBy: [ClientOrderByInput!], $where: ClientWhereInput) {
-  paginatedClientList: paginatedClients(orderBy: $orderBy, where: $where) {
+query paginatedClientList(
+  $orderBy: [ClientOrderByInput!]
+  $where: ClientWhereInput = {}
+  $skip: Int!
+  $take: Int!
+) {
+  paginatedClientList: paginatedClients(
+    orderBy: $orderBy
+    where: $where
+    take: $take
+    skip: $skip
+  ) {
     totalCount
     list {
       id

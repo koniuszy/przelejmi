@@ -61,6 +61,8 @@ type SSGProps = {
   initialTotalCount: number
 }
 
+const PER_PAGE = 20
+
 const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount }) => {
   const toast = useToast()
   const [isEditable, setIsEditable] = useState(false)
@@ -68,7 +70,9 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
   const drawerOptions = useDisclosure()
 
-  const { data, refetch, variables } = usePaginatedClientListQuery()
+  const { data, refetch, variables } = usePaginatedClientListQuery({
+    variables: { skip: 0, take: PER_PAGE },
+  })
 
   const [updateClient, updateClientOptions] = useUpdateOneClientMutation({
     onCompleted(response) {
@@ -315,7 +319,7 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
     distinctCityList,
     initialTotalCount,
   ] = await Promise.all([
-    prisma.client.findMany({ take: 20 }),
+    prisma.client.findMany({ take: PER_PAGE }),
     prisma.client.findMany({
       distinct: 'country',
       select: { country: true },
