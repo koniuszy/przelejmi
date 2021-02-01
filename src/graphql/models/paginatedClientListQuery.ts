@@ -21,12 +21,11 @@ export const PaginatedClientListQuery = extendType({
         orderBy: arg({ type: 'ClientOrderByInput', list: true }),
       },
       async resolve(_root, variables, { prisma }) {
-        console.log(variables, variables.where?.OR)
-        const [totalCount, clientList] = await Promise.all([
+        const [totalCount, list] = await Promise.all([
           prisma.client.count({ where: variables.where }),
           prisma.client.findMany(variables),
         ])
-        return { totalCount, list: clientList }
+        return { totalCount, list }
       },
     })
   },

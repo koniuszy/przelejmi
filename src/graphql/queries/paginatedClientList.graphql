@@ -1,6 +1,6 @@
 query paginatedClientList(
   $orderBy: [ClientOrderByInput!]
-  $where: ClientWhereInput = {}
+  $where: ClientWhereInput
   $skip: Int!
   $take: Int!
 ) {

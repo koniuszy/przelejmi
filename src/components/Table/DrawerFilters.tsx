@@ -70,7 +70,7 @@ const DrawerFilters: FC<{
       )
 
       if (touchedFilterList.length === 0) {
-        onChange(null)
+        onChange(prevFilters.OR ?? {})
         return
       }
 
