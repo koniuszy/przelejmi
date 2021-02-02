@@ -89,7 +89,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
     updateClient({ variables: { data, id } })
   }
 
-  const clientList = (data?.paginatedClientList.list || initialClientList) as Client[]
+  const clientList = data?.paginatedClientList.list || initialClientList
   const totalRecordsCount = data?.paginatedClientList.totalCount ?? initialTotalCount
 
   return (

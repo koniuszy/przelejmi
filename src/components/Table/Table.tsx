@@ -13,8 +13,6 @@ import {
   Heading,
 } from '@chakra-ui/react'
 
-import { Merchant, Client } from '@prisma/client'
-
 import {
   PaginatedMerchantListQueryVariables,
   MerchantWhereInput,
@@ -22,6 +20,8 @@ import {
   MerchantOrderByInput,
   SortOrder,
   ClientOrderByInput,
+  ClientContentFragment,
+  MerchantContentFragment,
 } from 'src/generated/graphql'
 
 import TableHeader, { TableHeaderProps } from './Header'
@@ -45,7 +45,7 @@ export interface Props {
   variables: PaginatedMerchantListQueryVariables
 }
 
-type Item = Client | Merchant
+type Item = ClientContentFragment | MerchantContentFragment
 
 const Table: FC<
   {
