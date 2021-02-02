@@ -22,10 +22,10 @@ const TableHeader: FC<TableHeaderProps & Props> = ({
   isEditable,
   drawerOptions,
   filterOptions,
-  searchKeys,
   refetch,
   onEditableToggle,
   onDrawerChange,
+  searchKeys,
 }) => {
   function handleFiltersRefetch(filters: Search | Filters) {
     refetch({ where: filters })

@@ -7,13 +7,8 @@ import NextLink from 'next/link'
 
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
-  Table,
-  Thead,
-  Tbody,
   Tr,
-  Th,
   Td,
-  TableCaption,
   Text,
   Menu,
   MenuButton,
@@ -21,7 +16,6 @@ import {
   MenuList,
   MenuItem,
   useToast,
-  Heading,
   useDisclosure,
 } from '@chakra-ui/react'
 
@@ -32,17 +26,13 @@ import { errorToastContent, successToastContent, warningToastContent } from 'src
 import {
   useUpdateClientMutation,
   PaginatedClientListDocument,
-  ClientOrderByInput,
-  SortOrder,
   usePaginatedClientListQuery,
 } from 'src/generated/graphql'
 import { ClientType, DBConditions } from 'src/types'
 
 import DeleteClientPopover from 'src/components/DeleteClientPopover'
+import Table from 'src/components/Table'
 import EditableCell from 'src/components/Table/EditableCell'
-import TableHeader from 'src/components/Table/Header'
-import Pagination from 'src/components/Table/Pagination'
-import SortTh from 'src/components/Table/SortTh'
 
 type FilterOptions = {
   country: string[]
@@ -100,7 +90,6 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
   }
 
   const clientList = (data?.paginatedClientList.list || initialClientList) as Client[]
-  const orderBy = (variables.orderBy ?? {}) as ClientOrderByInput
   const totalRecordsCount = data?.paginatedClientList.totalCount ?? initialTotalCount
 
   return (
@@ -111,160 +100,118 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
       </Head>
 
       <main>
-        <TableHeader
-          title="Total clients"
-          searchKeys={['name', 'nip', 'address', 'postCode', 'city', 'country']}
+        <Table
+          emptyListHeading="No clients yet 🤫"
+          createHref="create/client"
+          perPage={PER_PAGE}
+          totalRecordsCount={totalRecordsCount}
+          list={clientList}
           variables={variables}
-          isEditable={isEditable}
-          filterOptions={filterOptions}
-          drawerOptions={drawerOptions}
           refetch={refetch}
-          onEditableToggle={setIsEditable}
-          onDrawerChange={(newFilters) => {
-            if (!newFilters) {
-              refetch({ where: newFilters })
-              return
-            }
-
-            const { type, ...rest } = newFilters
-            let nipFilters = {}
-            if (type) {
-              if (type[DBConditions.notIncludes]) {
-                const [clientType] = type[DBConditions.notIncludes]
-
-                if (clientType === ClientType.company)
-                  nipFilters = { nip: { [DBConditions.equals]: null } }
-
-                if (clientType === ClientType.person)
-                  nipFilters = { [DBConditions.not]: { nip: { [DBConditions.equals]: null } } }
+          filtersHeaderProps={{
+            title: 'Total clients',
+            isEditable: isEditable,
+            filterOptions: filterOptions,
+            drawerOptions: drawerOptions,
+            onEditableToggle: setIsEditable,
+            onDrawerChange(newFilters) {
+              if (!newFilters) {
+                refetch({ where: newFilters })
+                return
               }
 
-              if (type[DBConditions.includes]?.length === 0)
-                nipFilters = { nip: { [DBConditions.includes]: [] } }
-            }
+              const { type, ...rest } = newFilters
+              let nipFilters = {}
+              if (type) {
+                if (type[DBConditions.notIncludes]) {
+                  const [clientType] = type[DBConditions.notIncludes]
 
-            refetch({ where: { ...rest, ...nipFilters } })
+                  if (clientType === ClientType.company)
+                    nipFilters = { nip: { [DBConditions.equals]: null } }
+
+                  if (clientType === ClientType.person)
+                    nipFilters = { [DBConditions.not]: { nip: { [DBConditions.equals]: null } } }
+                }
+
+                if (type[DBConditions.includes]?.length === 0)
+                  nipFilters = { nip: { [DBConditions.includes]: [] } }
+              }
+
+              refetch({ where: { ...rest, ...nipFilters } })
+            },
           }}
-        />
+          headerList={[
+            `total: ${totalRecordsCount}`,
+            { title: 'name', sortableKey: 'name' },
+            'type',
+            'nip',
+            'address',
+            'post Code',
+            'city',
+            'country',
+            'actions',
+          ]}
+          rowRender={(item: Client, index) => (
+            <Tr key={item.id}>
+              <Td>{index + 1}.</Td>
+              <EditableCell
+                defaultValue={item.name}
+                isDisabled={!isEditable}
+                onSubmit={(name) => handleUpdate({ name }, item.id)}
+              />
+              <Td>{item.nip ? ClientType.company : ClientType.person}</Td>
+              {['nip', 'address', 'post Code', 'city', 'country'].map((key) => (
+                <EditableCell
+                  key={key}
+                  defaultValue={item[key]}
+                  isDisabled={!isEditable}
+                  onSubmit={(value) => handleUpdate({ [key]: value }, item.id)}
+                />
+              ))}
+              <Td>
+                <Menu closeOnSelect={false} onClose={() => setClientDeletionId(null)}>
+                  <MenuButton
+                    as={Button}
+                    variant="ghost"
+                    cursor="pointer"
+                    colorScheme="teal"
+                    onClick={() =>
+                      setOpenActionsRowId(openActionsRowId === item.id ? null : item.id)
+                    }
+                  >
+                    …
+                  </MenuButton>
+                  <MenuList>
+                    <NextLink href={`clients/${item.id}`}>
+                      <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
+                        Edit
+                      </MenuItem>
+                    </NextLink>
 
-        <Table variant="simple">
-          <TableCaption>
-            {clientList.length > 0 ? (
-              <Pagination
-                totalPages={Math.ceil(totalRecordsCount / PER_PAGE)}
-                currentPage={variables.skip ? (variables.skip + PER_PAGE) / PER_PAGE : 1}
-                onPageChange={(newPage) => refetch({ skip: (newPage - 1) * PER_PAGE })}
-              />
-            ) : (
-              <>
-                <Heading as="h2">No clients yet 🤫</Heading>
-                <NextLink href="/create/client">
-                  <Button size="lg" mt={5} colorScheme="teal">
-                    Create
-                  </Button>
-                </NextLink>
-              </>
-            )}
-          </TableCaption>
-          <Thead>
-            <Tr>
-              <Th>total: {totalRecordsCount}</Th>
-              <SortTh
-                title="Name"
-                isAsc={orderBy.name === 'asc'}
-                isDesc={orderBy.name === 'desc'}
-                onAsc={() => refetch({ orderBy: { name: SortOrder.Asc } })}
-                onDesc={() => refetch({ orderBy: { name: SortOrder.Desc } })}
-              />
-              <Th>Type</Th>
-              <Th>NIP</Th>
-              <Th>Address</Th>
-              <Th>Post code</Th>
-              <Th>City</Th>
-              <Th>Country</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {clientList.map((item, index) => (
-              <Tr key={item.id}>
-                <Td>{index + 1}.</Td>
-                <EditableCell
-                  defaultValue={item.name}
-                  isDisabled={!isEditable}
-                  onSubmit={(name) => handleUpdate({ name }, item.id)}
-                />
-                <Td>{item.nip ? ClientType.company : ClientType.person}</Td>
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.nip?.toString()}
-                  onSubmit={(nip) => handleUpdate({ nip }, item.id)}
-                />
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.address}
-                  onSubmit={(address) => handleUpdate({ address }, item.id)}
-                />
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.postCode}
-                  onSubmit={(postCode) => handleUpdate({ postCode }, item.id)}
-                />
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.city}
-                  onSubmit={(city) => handleUpdate({ city }, item.id)}
-                />
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.country}
-                  onSubmit={(country) => handleUpdate({ country }, item.id)}
-                />
-                <Td>
-                  <Menu closeOnSelect={false} onClose={() => setClientDeletionId(null)}>
-                    <MenuButton
-                      as={Button}
-                      variant="ghost"
-                      cursor="pointer"
-                      colorScheme="teal"
-                      onClick={() =>
-                        setOpenActionsRowId(openActionsRowId === item.id ? null : item.id)
-                      }
+                    <DeleteClientPopover
+                      id={item.id === clientDeletionId ? clientDeletionId : null}
+                      onClose={() => {
+                        setClientDeletionId(null)
+                        setOpenActionsRowId(null)
+                      }}
                     >
-                      …
-                    </MenuButton>
-                    <MenuList>
-                      <NextLink href={`clients/${item.id}`}>
-                        <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
-                          Edit
-                        </MenuItem>
-                      </NextLink>
-
-                      <DeleteClientPopover
-                        id={item.id === clientDeletionId ? clientDeletionId : null}
-                        onClose={() => {
-                          setClientDeletionId(null)
-                          setOpenActionsRowId(null)
-                        }}
+                      <MenuItem
+                        bg="red.500"
+                        py="0.4rem"
+                        px="0.8rem"
+                        _focus={{ bg: 'red.400' }}
+                        icon={<DeleteIcon w={3} h={3} />}
+                        onClick={() => setClientDeletionId(item.id)}
                       >
-                        <MenuItem
-                          bg="red.500"
-                          py="0.4rem"
-                          px="0.8rem"
-                          _focus={{ bg: 'red.400' }}
-                          icon={<DeleteIcon w={3} h={3} />}
-                          onClick={() => setClientDeletionId(item.id)}
-                        >
-                          <Text>Delete</Text>
-                        </MenuItem>
-                      </DeleteClientPopover>
-                    </MenuList>
-                  </Menu>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+                        <Text>Delete</Text>
+                      </MenuItem>
+                    </DeleteClientPopover>
+                  </MenuList>
+                </Menu>
+              </Td>
+            </Tr>
+          )}
+        />
       </main>
     </div>
   )

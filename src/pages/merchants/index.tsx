@@ -28,7 +28,6 @@ import {
   PaginatedMerchantListDocument,
   usePaginatedMerchantListQuery,
 } from 'src/generated/graphql'
-import { ClientType } from 'src/types'
 
 import DeleteClientPopover from 'src/components/DeleteClientPopover'
 import Table, { EditableCell } from 'src/components/Table'
@@ -87,7 +86,7 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
     updateMerchant({ variables: { data, id } })
   }
 
-  const merchantList = (data?.paginatedMerchantList.list || initialMerchantList) as Merchant[]
+  const merchantList = data?.paginatedMerchantList.list || initialMerchantList
   const totalRecordsCount = data?.paginatedMerchantList.totalCount ?? initialTotalCount
 
   return (
@@ -100,7 +99,7 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
       <main>
         <Table
           emptyListHeading="No merchants yet 🤫"
-          createHref="create/client"
+          createHref="create/merchant"
           perPage={PER_PAGE}
           totalRecordsCount={totalRecordsCount}
           list={merchantList}
@@ -108,7 +107,6 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
           refetch={refetch}
           filtersHeaderProps={{
             title: 'Total merchants',
-            searchKeys: ['name', 'nip', 'address', 'postCode', 'city', 'country'],
             isEditable,
             filterOptions,
             drawerOptions,
@@ -130,25 +128,40 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
           rowRender={(item: Merchant, index) => (
             <Tr key={item.id}>
               <Td>{index + 1}.</Td>
-              {[
-                'companyName',
-                'issuerName',
-                'address',
-                'postCode',
-                'city',
-                'country',
-                'email',
-                'bankName',
-                'bankAccountPln',
-                'bankAccountEur',
-              ].map((key) => (
-                <EditableCell
-                  key={key}
-                  defaultValue={item[key]}
-                  isDisabled={!isEditable}
-                  onSubmit={(value) => handleUpdate({ [key]: value }, item.id)}
-                />
-              ))}
+              {['companyName', 'issuerName', 'address', 'postCode', 'city', 'country'].map(
+                (key) => (
+                  <EditableCell
+                    key={key}
+                    defaultValue={item[key]}
+                    isDisabled={!isEditable}
+                    onSubmit={(value) => handleUpdate({ [key]: value }, item.id)}
+                  />
+                )
+              )}
+
+              <EditableCell
+                defaultValue={item.email}
+                isDisabled={!isEditable}
+                onSubmit={(email) => handleUpdate({ email }, item.id)}
+              />
+
+              <EditableCell
+                defaultValue={item.bankName}
+                isDisabled={!isEditable}
+                onSubmit={(bankName) => handleUpdate({ bankName }, item.id)}
+              />
+
+              <EditableCell
+                defaultValue={item.bankAccountPln}
+                isDisabled={!isEditable}
+                onSubmit={(bankAccountPln) => handleUpdate({ bankAccountPln }, item.id)}
+              />
+
+              <EditableCell
+                defaultValue={item.bankAccountEur}
+                isDisabled={!isEditable}
+                onSubmit={(bankAccountEur) => handleUpdate({ bankAccountEur }, item.id)}
+              />
 
               <Td>
                 <Menu closeOnSelect={false} onClose={() => setMerchantDeletionId(null)}>

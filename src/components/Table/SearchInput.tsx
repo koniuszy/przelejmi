@@ -8,18 +8,22 @@ import debounce from 'lodash.debounce'
 import useConstant from 'src/hooks'
 import { DBConditions } from 'src/types'
 
-export type Search = Record<DBConditions.or, Record<string, { contains: any }>[]> | null
+export type Search =
+  | Record<DBConditions.or, Record<string, { contains: any }>[]>
+  | Record<string, any>
+
+const searchKeyBlackList = ['__typename', 'type', 'id']
 
 const SearchInput: FC<{
   onSearch(search: Search): void
   keyList: string[]
   prevFilters: Record<string, any>
-}> = ({ onSearch, keyList, prevFilters }) => {
+}> = (props) => {
   const debouncedSearch = useConstant(() =>
-    debounce((search, prevFilters) => {
+    debounce((search: string, prevFilters: Record<string, any>, keyList: string[]) => {
       if (!search) {
         const { OR, ...rest } = prevFilters
-        onSearch(rest)
+        props.onSearch(rest)
 
         return
       }
@@ -30,7 +34,7 @@ const SearchInput: FC<{
         })),
       } as Search
 
-      onSearch({ ...prevFilters, ...parsedSearch })
+      props.onSearch({ ...prevFilters, ...parsedSearch })
     }, 300)
   )
 
@@ -39,7 +43,16 @@ const SearchInput: FC<{
       <InputRightElement pointerEvents="none">
         <Search2Icon />
       </InputRightElement>
-      <Input placeholder="Search" onChange={(e) => debouncedSearch(e.target.value, prevFilters)} />
+      <Input
+        placeholder="Search"
+        onChange={(e) =>
+          debouncedSearch(
+            e.target.value,
+            props.prevFilters,
+            props.keyList.filter((listItem) => !searchKeyBlackList.includes(listItem))
+          )
+        }
+      />
     </InputGroup>
   )
 }
