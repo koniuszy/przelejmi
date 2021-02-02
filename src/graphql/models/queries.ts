@@ -6,8 +6,6 @@ export const ScenarioQuery = queryType({
     t.crud.scenario()
 
     t.crud.client()
-
-    t.crud.merchants({ ordering: true, filtering: true })
     t.crud.merchant()
   },
 })
