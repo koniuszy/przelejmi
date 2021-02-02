@@ -1,0 +1,9 @@
+fragment ClientContent on Client {
+  id
+  name
+  address
+  postCode
+  city
+  country
+  nip
+}

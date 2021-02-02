@@ -1,0 +1,29 @@
+query merchantList(
+  $orderBy: [MerchantOrderByInput!]
+  $where: MerchantWhereInput
+  $skip: Int!
+  $take: Int!
+) {
+  paginatedMerchantList: paginatedMerchants(
+    orderBy: $orderBy
+    where: $where
+    skip: $skip
+    take: $take
+  ) {
+    totalCount
+    list {
+      id
+      companyName
+      address
+      postCode
+      city
+      country
+      nip
+      bankAccountPln
+      bankAccountEur
+      bankName
+      email
+      issuerName
+    }
+  }
+}

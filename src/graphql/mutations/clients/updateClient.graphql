@@ -1,11 +1,5 @@
 mutation updateOneClient($data: ClientUpdateInput!, $id: Int!) {
   updatedClient: updateOneClient(data: $data, where: { id: $id }) {
-    id
-    name
-    address
-    postCode
-    city
-    country
-    nip
+    ...ClientContent
   }
 }
