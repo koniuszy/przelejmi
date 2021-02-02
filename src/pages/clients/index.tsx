@@ -31,7 +31,6 @@ import {
 } from '@chakra-ui/react'
 
 import { Client, PrismaClient } from '@prisma/client'
-import ReactPaginate from 'react-paginate'
 
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
@@ -47,6 +46,7 @@ import { ClientType, DBConditions } from 'src/types'
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
 import DrawerFilters, { TriggerFiltersButton, Filters } from 'src/components/Table/DrawerFilters'
 import EditableCell from 'src/components/Table/EditableCell'
+import Pagination from 'src/components/Table/Pagination'
 import SearchInput, { Search } from 'src/components/Table/SearchInput'
 import SortTh from 'src/components/Table/SortTh'
 
@@ -61,7 +61,7 @@ type SSGProps = {
   initialTotalCount: number
 }
 
-const PER_PAGE = 20
+const PER_PAGE = 10
 
 const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount }) => {
   const toast = useToast()
@@ -95,7 +95,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
 
   function handleUpdate(data: Partial<Client>, id: number) {
     const [value] = Object.values(data)
-    if (value === '') {
+    if (value === '' && data.nip !== value) {
       toast(errorToastContent)
       toast(warningToastContent)
       return
@@ -110,6 +110,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
 
   const clientList = (data?.paginatedClientList.list || initialClientList) as Client[]
   const orderBy = (variables.orderBy ?? {}) as ClientOrderByInput
+  const totalRecordsCount = data?.paginatedClientList.totalCount ?? initialTotalCount
 
   return (
     <div>
@@ -163,7 +164,11 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
         <Table variant="simple">
           <TableCaption>
             {clientList.length > 0 ? (
-              'List of all your clients'
+              <Pagination
+                totalPages={Math.ceil(totalRecordsCount / PER_PAGE)}
+                currentPage={variables.skip ? (variables.skip + PER_PAGE) / PER_PAGE : 1}
+                onPageChange={(newPage) => refetch({ skip: (newPage - 1) * PER_PAGE })}
+              />
             ) : (
               <>
                 <Heading as="h2">No clients yet 🤫</Heading>
@@ -177,7 +182,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
           </TableCaption>
           <Thead>
             <Tr>
-              <Th>total: {data?.paginatedClientList.totalCount ?? initialTotalCount}</Th>
+              <Th>total: {totalRecordsCount}</Th>
               <SortTh
                 title="Name"
                 isAsc={orderBy.name === 'asc'}
@@ -289,7 +294,6 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
           const { type, ...rest } = newFilters
           let nipFilters = {}
           if (type) {
-            console.log(type)
             if (type[DBConditions.notIncludes]) {
               const [clientType] = type[DBConditions.notIncludes]
 
@@ -348,7 +352,3 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
 }
 
 export default App
-
-// TODO:
-// pagination
-// skeleton: https://chakra-ui.com/docs/feedback/skeleton

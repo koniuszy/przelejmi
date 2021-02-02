@@ -78,7 +78,7 @@ const Header: FC = () => {
           </NextLink>
         </ButtonGroup>
 
-        <Menu style={{ zIndex: 3 }}>
+        <Menu>
           <MenuButton
             cursor="pointer"
             colorScheme="teal"
@@ -95,7 +95,7 @@ const Header: FC = () => {
             <NextLink href="/create/scenario">
               <MenuItem>Scenario</MenuItem>
             </NextLink>
-            <NextLink href="/create/client">
+            <NextLink href="/clients/create">
               <MenuItem>Client</MenuItem>
             </NextLink>
             <NextLink href="/create/merchant">

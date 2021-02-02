@@ -26,7 +26,7 @@ import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { useCreateOneClientMutation, GetClientsDocument } from 'src/generated/graphql'
+import { useCreateOneClientMutation, PaginatedClientListDocument } from 'src/generated/graphql'
 import { ClientType, OptimizedImg } from 'src/types'
 
 type SSGProps = {
@@ -54,11 +54,11 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
         title: 'Client created.',
       })
 
-      const data = client.readQuery({ query: GetClientsDocument })
+      const data = client.readQuery({ query: PaginatedClientListDocument })
       if (!data) return
 
       client.writeQuery({
-        query: GetClientsDocument,
+        query: PaginatedClientListDocument,
         data: { ...data, clientList: [...data.clientList, response.createdClient] },
       })
     },

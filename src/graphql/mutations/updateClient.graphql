@@ -1,9 +1,5 @@
-mutation updateOneClient(
-  $data: ClientUpdateInput!
-  $id: Int!
-  $where: ClientWhereUniqueInput = {}
-) {
-  updatedClient: updateOneClient(data: $data, where: $where) {
+mutation updateOneClient($data: ClientUpdateInput!, $id: Int!) {
+  updatedClient: updateOneClient(data: $data, where: { id: $id }) {
     id
     name
     address
