@@ -21,10 +21,10 @@ const EditableCell: FC<{
   <Td>
     <Editable
       isDisabled={isDisabled}
-      onSubmit={onSubmit}
       defaultValue={defaultValue}
       isPreviewFocusable={false}
       submitOnBlur={false}
+      onSubmit={onSubmit}
     >
       {({ isEditing, onSubmit, onCancel, onEdit }) => (
         <Flex>

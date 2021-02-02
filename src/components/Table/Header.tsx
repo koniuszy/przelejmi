@@ -2,26 +2,21 @@ import React, { FC } from 'react'
 
 import { Text, Flex, Center, Switch, FormControl, FormLabel } from '@chakra-ui/react'
 
-import {
-  ClientWhereInput,
-  MerchantWhereInput,
-  PaginatedMerchantListQueryVariables,
-} from 'src/generated/graphql'
-
 import DrawerFilters, { TriggerFiltersButton, Filters } from './DrawerFilters'
 import SearchInput, { Search } from './SearchInput'
+import { Props } from './Table'
 
-const TableHeader: FC<{
+export type TableHeaderProps = {
   title: string
   isEditable: boolean
   searchKeys: string[]
-  variables: PaginatedMerchantListQueryVariables
   drawerOptions: { onClose(): void; isOpen: boolean; onOpen(): void }
   filterOptions: Record<string, string[]>
   onEditableToggle(v: boolean): void
-  refetch({ where }: { where: MerchantWhereInput | ClientWhereInput }): void
   onDrawerChange?(newFilters: Filters): void
-}> = ({
+}
+
+const TableHeader: FC<TableHeaderProps & Props> = ({
   title,
   variables,
   isEditable,

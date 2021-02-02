@@ -7,13 +7,8 @@ import NextLink from 'next/link'
 
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
-  Table,
-  Thead,
-  Tbody,
   Tr,
-  Th,
   Td,
-  TableCaption,
   Text,
   Menu,
   MenuButton,
@@ -21,7 +16,6 @@ import {
   MenuList,
   MenuItem,
   useToast,
-  Heading,
   useDisclosure,
 } from '@chakra-ui/react'
 
@@ -32,17 +26,12 @@ import { errorToastContent, successToastContent, warningToastContent } from 'src
 import {
   useUpdateMerchantMutation,
   PaginatedMerchantListDocument,
-  MerchantOrderByInput,
-  SortOrder,
   usePaginatedMerchantListQuery,
 } from 'src/generated/graphql'
 import { ClientType } from 'src/types'
 
-import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
-import EditableCell from 'src/components/Table/EditableCell'
-import TableHeader from 'src/components/Table/Header'
-import Pagination from 'src/components/Table/Pagination'
-import SortTh from 'src/components/Table/SortTh'
+import DeleteClientPopover from 'src/components/DeleteClientPopover'
+import Table, { EditableCell } from 'src/components/Table'
 
 type FilterOptions = {
   country: string[]
@@ -99,7 +88,6 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
   }
 
   const merchantList = (data?.paginatedMerchantList.list || initialMerchantList) as Merchant[]
-  const orderBy = (variables.orderBy ?? {}) as MerchantOrderByInput
   const totalRecordsCount = data?.paginatedMerchantList.totalCount ?? initialTotalCount
 
   return (
@@ -110,135 +98,102 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
       </Head>
 
       <main>
-        <TableHeader
-          title="Total merchants"
-          searchKeys={['name', 'nip', 'address', 'postCode', 'city', 'country']}
+        <Table
+          emptyListHeading="No merchants yet 🤫"
+          createHref="create/client"
+          perPage={PER_PAGE}
+          totalRecordsCount={totalRecordsCount}
+          list={merchantList}
           variables={variables}
-          isEditable={isEditable}
-          filterOptions={filterOptions}
-          drawerOptions={drawerOptions}
           refetch={refetch}
-          onEditableToggle={setIsEditable}
-        />
+          filtersHeaderProps={{
+            title: 'Total merchants',
+            searchKeys: ['name', 'nip', 'address', 'postCode', 'city', 'country'],
+            isEditable,
+            filterOptions,
+            drawerOptions,
+            onEditableToggle: setIsEditable,
+          }}
+          headerList={[
+            `total: ${totalRecordsCount}`,
+            { title: 'company', sortableKey: 'companyName' },
+            'issuer',
+            'address',
+            'post Code',
+            'city',
+            'country',
+            'email',
+            'bank',
+            'Pln',
+            'Eur',
+          ]}
+          rowRender={(item: Merchant, index) => (
+            <Tr key={item.id}>
+              <Td>{index + 1}.</Td>
+              {[
+                'companyName',
+                'issuerName',
+                'address',
+                'postCode',
+                'city',
+                'country',
+                'email',
+                'bankName',
+                'bankAccountPln',
+                'bankAccountEur',
+              ].map((key) => (
+                <EditableCell
+                  key={key}
+                  defaultValue={item[key]}
+                  isDisabled={!isEditable}
+                  onSubmit={(value) => handleUpdate({ [key]: value }, item.id)}
+                />
+              ))}
 
-        <Table variant="simple">
-          <TableCaption>
-            {merchantList.length > 0 ? (
-              <Pagination
-                totalPages={Math.ceil(totalRecordsCount / PER_PAGE)}
-                currentPage={variables.skip ? (variables.skip + PER_PAGE) / PER_PAGE : 1}
-                onPageChange={(newPage) => refetch({ skip: (newPage - 1) * PER_PAGE })}
-              />
-            ) : (
-              <>
-                <Heading as="h2">No merchants yet 🤫</Heading>
-                <NextLink href="/create/client">
-                  <Button size="lg" mt={5} colorScheme="teal">
-                    Create
-                  </Button>
-                </NextLink>
-              </>
-            )}
-          </TableCaption>
-          <Thead>
-            <Tr>
-              <Th>total: {totalRecordsCount}</Th>
-              <SortTh
-                title="Name"
-                isAsc={orderBy.companyName === 'asc'}
-                isDesc={orderBy.companyName === 'desc'}
-                onAsc={() => refetch({ orderBy: { companyName: SortOrder.Asc } })}
-                onDesc={() => refetch({ orderBy: { companyName: SortOrder.Desc } })}
-              />
-              <Th>Type</Th>
-              <Th>NIP</Th>
-              <Th>Address</Th>
-              <Th>Post code</Th>
-              <Th>City</Th>
-              <Th>Country</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {merchantList.map((item, index) => (
-              <Tr key={item.id}>
-                <Td>{index + 1}.</Td>
-                <EditableCell
-                  defaultValue={item.companyName}
-                  isDisabled={!isEditable}
-                  onSubmit={(companyName) => handleUpdate({ companyName }, item.id)}
-                />
-                <Td>{item.nip ? ClientType.company : ClientType.person}</Td>
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.nip?.toString()}
-                  onSubmit={(nip) => handleUpdate({ nip }, item.id)}
-                />
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.address}
-                  onSubmit={(address) => handleUpdate({ address }, item.id)}
-                />
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.postCode}
-                  onSubmit={(postCode) => handleUpdate({ postCode }, item.id)}
-                />
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.city}
-                  onSubmit={(city) => handleUpdate({ city }, item.id)}
-                />
-                <EditableCell
-                  isDisabled={!isEditable}
-                  defaultValue={item.country}
-                  onSubmit={(country) => handleUpdate({ country }, item.id)}
-                />
-                <Td>
-                  <Menu closeOnSelect={false} onClose={() => setMerchantDeletionId(null)}>
-                    <MenuButton
-                      as={Button}
-                      variant="ghost"
-                      cursor="pointer"
-                      colorScheme="teal"
-                      onClick={() =>
-                        setOpenActionsRowId(openActionsRowId === item.id ? null : item.id)
-                      }
+              <Td>
+                <Menu closeOnSelect={false} onClose={() => setMerchantDeletionId(null)}>
+                  <MenuButton
+                    as={Button}
+                    variant="ghost"
+                    cursor="pointer"
+                    colorScheme="teal"
+                    onClick={() =>
+                      setOpenActionsRowId(openActionsRowId === item.id ? null : item.id)
+                    }
+                  >
+                    …
+                  </MenuButton>
+                  <MenuList>
+                    <NextLink href={`merchant/${item.id}`}>
+                      <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
+                        Edit
+                      </MenuItem>
+                    </NextLink>
+
+                    <DeleteClientPopover
+                      id={item.id === merchantDeletionId ? merchantDeletionId : null}
+                      onClose={() => {
+                        setMerchantDeletionId(null)
+                        setOpenActionsRowId(null)
+                      }}
                     >
-                      …
-                    </MenuButton>
-                    <MenuList>
-                      <NextLink href={`merchant/${item.id}`}>
-                        <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
-                          Edit
-                        </MenuItem>
-                      </NextLink>
-
-                      <DeleteClientPopover
-                        id={item.id === merchantDeletionId ? merchantDeletionId : null}
-                        onClose={() => {
-                          setMerchantDeletionId(null)
-                          setOpenActionsRowId(null)
-                        }}
+                      <MenuItem
+                        bg="red.500"
+                        py="0.4rem"
+                        px="0.8rem"
+                        _focus={{ bg: 'red.400' }}
+                        icon={<DeleteIcon w={3} h={3} />}
+                        onClick={() => setMerchantDeletionId(item.id)}
                       >
-                        <MenuItem
-                          bg="red.500"
-                          py="0.4rem"
-                          px="0.8rem"
-                          _focus={{ bg: 'red.400' }}
-                          icon={<DeleteIcon w={3} h={3} />}
-                          onClick={() => setMerchantDeletionId(item.id)}
-                        >
-                          <Text>Delete</Text>
-                        </MenuItem>
-                      </DeleteClientPopover>
-                    </MenuList>
-                  </Menu>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+                        <Text>Delete</Text>
+                      </MenuItem>
+                    </DeleteClientPopover>
+                  </MenuList>
+                </Menu>
+              </Td>
+            </Tr>
+          )}
+        />
       </main>
     </div>
   )

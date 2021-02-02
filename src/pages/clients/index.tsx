@@ -38,7 +38,7 @@ import {
 } from 'src/generated/graphql'
 import { ClientType, DBConditions } from 'src/types'
 
-import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
+import DeleteClientPopover from 'src/components/DeleteClientPopover'
 import EditableCell from 'src/components/Table/EditableCell'
 import TableHeader from 'src/components/Table/Header'
 import Pagination from 'src/components/Table/Pagination'
