@@ -20,12 +20,7 @@ import {
   Button,
   MenuList,
   MenuItem,
-  Flex,
-  Center,
   useToast,
-  Switch,
-  FormControl,
-  FormLabel,
   Heading,
   useDisclosure,
 } from '@chakra-ui/react'
@@ -44,10 +39,11 @@ import {
 import { ClientType } from 'src/types'
 
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
-import DrawerFilters, { TriggerFiltersButton, Filters } from 'src/components/Table/DrawerFilters'
+import DrawerFilters, { Filters } from 'src/components/Table/DrawerFilters'
 import EditableCell from 'src/components/Table/EditableCell'
+import TableHeader from 'src/components/Table/Header'
 import Pagination from 'src/components/Table/Pagination'
-import SearchInput, { Search } from 'src/components/Table/SearchInput'
+import { Search } from 'src/components/Table/SearchInput'
 import SortTh from 'src/components/Table/SortTh'
 
 type FilterOptions = {
@@ -120,46 +116,16 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
       </Head>
 
       <main>
-        <Flex justifyContent="space-between" pb="5">
-          <Text fontSize="4xl" textAlign="center">
-            Total merchants
-          </Text>
-
-          <Flex>
-            <Center pr="5">
-              <SearchInput
-                keyList={['name', 'nip', 'address', 'postCode', 'city', 'country']}
-                prevFilters={variables.where}
-                onSearch={handleFiltersRefetch}
-              />
-            </Center>
-
-            <Center pr="5">
-              <TriggerFiltersButton
-                isActive={
-                  variables.where &&
-                  Object.keys(variables.where).length > 0 &&
-                  !Object.keys(variables.where).includes('OR')
-                }
-                onOpen={drawerOptions.onOpen}
-              />
-            </Center>
-
-            <Center>
-              <FormControl id="editable" display="flex" alignItems="center">
-                <FormLabel htmlFor="editable" mb="0">
-                  Editable
-                </FormLabel>
-                <Switch
-                  size="lg"
-                  colorScheme="teal"
-                  defaultChecked={isEditable}
-                  onChange={(e) => setIsEditable(e.target.checked)}
-                />
-              </FormControl>
-            </Center>
-          </Flex>
-        </Flex>
+        <TableHeader
+          title="Total merchants"
+          searchKeys={['name', 'nip', 'address', 'postCode', 'city', 'country']}
+          variables={variables}
+          isEditable={isEditable}
+          filterOptions={filterOptions}
+          drawerOptions={drawerOptions}
+          refetch={refetch}
+          onEditableToggle={setIsEditable}
+        />
 
         <Table variant="simple">
           <TableCaption>
