@@ -39,11 +39,9 @@ import {
 import { ClientType, DBConditions } from 'src/types'
 
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
-import DrawerFilters, { Filters } from 'src/components/Table/DrawerFilters'
 import EditableCell from 'src/components/Table/EditableCell'
 import TableHeader from 'src/components/Table/Header'
 import Pagination from 'src/components/Table/Pagination'
-import { Search } from 'src/components/Table/SearchInput'
 import SortTh from 'src/components/Table/SortTh'
 
 type FilterOptions = {
@@ -101,10 +99,6 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
     updateClient({ variables: { data, id } })
   }
 
-  function handleFiltersRefetch(filters: Search | Filters) {
-    refetch({ where: filters })
-  }
-
   const clientList = (data?.paginatedClientList.list || initialClientList) as Client[]
   const orderBy = (variables.orderBy ?? {}) as ClientOrderByInput
   const totalRecordsCount = data?.paginatedClientList.totalCount ?? initialTotalCount
@@ -126,6 +120,31 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
           drawerOptions={drawerOptions}
           refetch={refetch}
           onEditableToggle={setIsEditable}
+          onDrawerChange={(newFilters) => {
+            if (!newFilters) {
+              refetch({ where: newFilters })
+              return
+            }
+
+            const { type, ...rest } = newFilters
+            let nipFilters = {}
+            if (type) {
+              if (type[DBConditions.notIncludes]) {
+                const [clientType] = type[DBConditions.notIncludes]
+
+                if (clientType === ClientType.company)
+                  nipFilters = { nip: { [DBConditions.equals]: null } }
+
+                if (clientType === ClientType.person)
+                  nipFilters = { [DBConditions.not]: { nip: { [DBConditions.equals]: null } } }
+              }
+
+              if (type[DBConditions.includes]?.length === 0)
+                nipFilters = { nip: { [DBConditions.includes]: [] } }
+            }
+
+            refetch({ where: { ...rest, ...nipFilters } })
+          }}
         />
 
         <Table variant="simple">
@@ -247,37 +266,6 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
           </Tbody>
         </Table>
       </main>
-
-      <DrawerFilters
-        filters={filterOptions}
-        disclosureOptions={drawerOptions}
-        prevFilters={variables.where}
-        onChange={(newFilters) => {
-          if (!newFilters) {
-            handleFiltersRefetch(newFilters)
-            return
-          }
-
-          const { type, ...rest } = newFilters
-          let nipFilters = {}
-          if (type) {
-            if (type[DBConditions.notIncludes]) {
-              const [clientType] = type[DBConditions.notIncludes]
-
-              if (clientType === ClientType.company)
-                nipFilters = { nip: { [DBConditions.equals]: null } }
-
-              if (clientType === ClientType.person)
-                nipFilters = { [DBConditions.not]: { nip: { [DBConditions.equals]: null } } }
-            }
-
-            if (type[DBConditions.includes]?.length === 0)
-              nipFilters = { nip: { [DBConditions.includes]: [] } }
-          }
-
-          handleFiltersRefetch({ ...rest, ...nipFilters })
-        }}
-      />
     </div>
   )
 }

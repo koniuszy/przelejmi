@@ -39,11 +39,9 @@ import {
 import { ClientType } from 'src/types'
 
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
-import DrawerFilters, { Filters } from 'src/components/Table/DrawerFilters'
 import EditableCell from 'src/components/Table/EditableCell'
 import TableHeader from 'src/components/Table/Header'
 import Pagination from 'src/components/Table/Pagination'
-import { Search } from 'src/components/Table/SearchInput'
 import SortTh from 'src/components/Table/SortTh'
 
 type FilterOptions = {
@@ -98,10 +96,6 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
     }
 
     updateMerchant({ variables: { data, id } })
-  }
-
-  function handleFiltersRefetch(filters: Search | Filters) {
-    refetch({ where: filters })
   }
 
   const merchantList = (data?.paginatedMerchantList.list || initialMerchantList) as Merchant[]
@@ -246,13 +240,6 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
           </Tbody>
         </Table>
       </main>
-
-      <DrawerFilters
-        filters={filterOptions}
-        disclosureOptions={drawerOptions}
-        prevFilters={variables.where}
-        onChange={handleFiltersRefetch}
-      />
     </div>
   )
 }

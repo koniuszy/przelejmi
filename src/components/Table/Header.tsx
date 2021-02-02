@@ -20,6 +20,7 @@ const TableHeader: FC<{
   filterOptions: Record<string, string[]>
   onEditableToggle(v: boolean): void
   refetch({ where }: { where: MerchantWhereInput | ClientWhereInput }): void
+  onDrawerChange?(newFilters: Filters): void
 }> = ({
   title,
   variables,
@@ -29,6 +30,7 @@ const TableHeader: FC<{
   searchKeys,
   refetch,
   onEditableToggle,
+  onDrawerChange,
 }) => {
   function handleFiltersRefetch(filters: Search | Filters) {
     refetch({ where: filters })
@@ -78,7 +80,7 @@ const TableHeader: FC<{
         filters={filterOptions}
         disclosureOptions={drawerOptions}
         prevFilters={variables.where}
-        onChange={handleFiltersRefetch}
+        onChange={onDrawerChange ?? handleFiltersRefetch}
       />
     </Flex>
   )
