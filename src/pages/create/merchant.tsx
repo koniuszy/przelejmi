@@ -22,7 +22,7 @@ import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { useCreateOneMerchantMutation, GetMerchantsDocument } from 'src/generated/graphql'
+import { useCreateOneMerchantMutation, MerchantListDocument } from 'src/generated/graphql'
 import { OptimizedImg } from 'src/types'
 
 type SSGProps = {
@@ -54,11 +54,11 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
         title: 'Merchant created.',
       })
 
-      const data = client.readQuery({ query: GetMerchantsDocument })
+      const data = client.readQuery({ query: MerchantListDocument })
       if (!data) return
 
       client.writeQuery({
-        query: GetMerchantsDocument,
+        query: MerchantListDocument,
         data: { ...data, merchantList: [...data.merchantList, response.createdMerchant] },
       })
     },
@@ -142,8 +142,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               <Input
                 name="companyName"
                 placeholder="John Smith"
-                onChange={handleChange}
                 value={values.companyName}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.companyName}</FormErrorMessage>
             </FormControl>
@@ -154,8 +154,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
                 <Input
                   name="nip"
                   placeholder="12345678"
-                  onChange={handleChange}
                   value={values.nip}
+                  onChange={handleChange}
                 />
                 <FormErrorMessage>{errors.nip}</FormErrorMessage>
               </FormControl>
@@ -165,8 +165,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
                 <Input
                   name="country"
                   placeholder="Polska"
-                  onChange={handleChange}
                   value={values.country}
+                  onChange={handleChange}
                 />
                 <FormErrorMessage>{errors.country}</FormErrorMessage>
               </FormControl>
@@ -177,8 +177,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               <Input
                 name="address"
                 placeholder="Street 10/2"
-                onChange={handleChange}
                 value={values.address}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.address}</FormErrorMessage>
             </FormControl>
@@ -189,8 +189,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
                 <Input
                   name="city"
                   placeholder="Poznań"
-                  onChange={handleChange}
                   value={values.city}
+                  onChange={handleChange}
                 />
                 <FormErrorMessage>{errors.country}</FormErrorMessage>
               </FormControl>
@@ -200,8 +200,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
                 <Input
                   name="postCode"
                   placeholder="60-687"
-                  onChange={handleChange}
                   value={values.postCode}
+                  onChange={handleChange}
                 />
                 <FormErrorMessage>{errors.postCode}</FormErrorMessage>
               </FormControl>
@@ -213,8 +213,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
                 <Input
                   name="bankName"
                   placeholder="Mbank"
-                  onChange={handleChange}
                   value={values.bankName}
+                  onChange={handleChange}
                 />
                 <FormErrorMessage>{errors.bankName}</FormErrorMessage>
               </FormControl>
@@ -224,8 +224,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
                 <Input
                   name="issuerName"
                   placeholder="John Smith"
-                  onChange={handleChange}
                   value={values.issuerName}
+                  onChange={handleChange}
                 />
                 <FormErrorMessage>{errors.issuerName}</FormErrorMessage>
               </FormControl>
@@ -236,8 +236,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               <Input
                 name="bankAccountPln"
                 placeholder="04 1140 2004 9892 3802 6728 1373"
-                onChange={handleChange}
                 value={values.bankAccountPln}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.bankAccountPln}</FormErrorMessage>
             </FormControl>
@@ -247,8 +247,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               <Input
                 name="bankAccountEur"
                 placeholder="PL 04 1140 2004 9892 3802 6728 1373"
-                onChange={handleChange}
                 value={values.bankAccountEur}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.bankAccountEur}</FormErrorMessage>
             </FormControl>
@@ -258,8 +258,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               <Input
                 name="email"
                 placeholder="merchant@example.com"
-                onChange={handleChange}
                 value={values.email}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
