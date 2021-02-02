@@ -22,8 +22,10 @@ import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { useCreateOneMerchantMutation, MerchantListDocument } from 'src/generated/graphql'
+import { useCreateMerchantMutation, PaginatedMerchantListDocument } from 'src/generated/graphql'
 import { OptimizedImg } from 'src/types'
+
+import { PER_PAGE } from './index'
 
 type SSGProps = {
   womanWithFoldersImg: OptimizedImg
@@ -47,18 +49,31 @@ const imgWidth = 500
 
 const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
   const toast = useToast()
-  const [createMerchant, { loading, client }] = useCreateOneMerchantMutation({
+  const [createMerchant, { loading, client }] = useCreateMerchantMutation({
     onCompleted(response) {
       toast({
         ...successToastContent,
         title: 'Merchant created.',
       })
 
-      const data = client.readQuery({ query: MerchantListDocument })
-      if (!data) return
-
+      const data = client.readQuery({ query: PaginatedMerchantListDocument })
+      if (!data) {
+        client
+          .query({
+            query: PaginatedMerchantListDocument,
+            variables: { skip: 0, take: PER_PAGE },
+          })
+          .then((res) => {
+            if (!res.data.merchantList.length) return
+            client.writeQuery({
+              query: PaginatedMerchantListDocument,
+              data: { ...res, merchantList: [...res.data.merchantList, response.createdMerchant] },
+            })
+          })
+        return
+      }
       client.writeQuery({
-        query: MerchantListDocument,
+        query: PaginatedMerchantListDocument,
         data: { ...data, merchantList: [...data.merchantList, response.createdMerchant] },
       })
     },
@@ -231,8 +246,8 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               </FormControl>
             </Flex>
 
-            <FormControl isRequired mt="4" id="bankAccountPln" isInvalid={!!errors.bankAccountPln}>
-              <FormLabel htmlFor="bankAccountPln">Bank account in PLN</FormLabel>
+            <FormControl isRequired mt="4" id="bankAccount" isInvalid={!!errors.bankAccountPln}>
+              <FormLabel htmlFor="bankAccount">Bank account in PLN</FormLabel>
               <Input
                 name="bankAccountPln"
                 placeholder="04 1140 2004 9892 3802 6728 1373"

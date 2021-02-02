@@ -23,6 +23,7 @@ model Client {
 
 model Merchant {
   id             Int        @id @default(autoincrement())
+  issuerName     String
   companyName    String
   address        String
   postCode       String
@@ -34,7 +35,6 @@ model Merchant {
   bankName       String
   bankAccountPln String
   bankAccountEur String
-  issuerName     String
 }
 
 model Scenario {

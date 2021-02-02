@@ -16,7 +16,7 @@ import {
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import {
-  useDeleteOneClientMutation,
+  useDeleteClientMutation,
   PaginatedClientListDocument,
   PaginatedClientListQuery,
 } from 'src/generated/graphql'
@@ -30,7 +30,7 @@ const DeletePopover = ({
   onClose(): void
 }>): ReactElement => {
   const toast = useToast()
-  const [deleteClient, { loading }] = useDeleteOneClientMutation({
+  const [deleteClient, { loading }] = useDeleteClientMutation({
     onCompleted() {
       toast({
         ...successToastContent,

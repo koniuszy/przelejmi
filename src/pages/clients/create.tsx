@@ -26,8 +26,10 @@ import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { useCreateOneClientMutation, PaginatedClientListDocument } from 'src/generated/graphql'
+import { useCreateClientMutation, PaginatedClientListDocument } from 'src/generated/graphql'
 import { ClientType, OptimizedImg } from 'src/types'
+
+import { PER_PAGE } from './index'
 
 type SSGProps = {
   calmInTrolleyImg: OptimizedImg
@@ -47,7 +49,7 @@ const imgWidth = 500
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   const toast = useToast()
   const [clientType, setClientType] = useState<ClientType>(ClientType.company)
-  const [createClient, { loading, client }] = useCreateOneClientMutation({
+  const [createClient, { loading, client }] = useCreateClientMutation({
     onCompleted(response) {
       toast({
         ...successToastContent,
@@ -55,7 +57,21 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
       })
 
       const data = client.readQuery({ query: PaginatedClientListDocument })
-      if (!data) return
+      if (!data) {
+        client
+          .query({
+            query: PaginatedClientListDocument,
+            variables: { skip: 0, take: PER_PAGE },
+          })
+          .then((res) => {
+            if (!res.data.clientList.length) return
+            client.writeQuery({
+              query: PaginatedClientListDocument,
+              data: { ...res, clientList: [response.createdClient] },
+            })
+          })
+        return
+      }
 
       client.writeQuery({
         query: PaginatedClientListDocument,

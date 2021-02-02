@@ -30,18 +30,18 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { Client, PrismaClient } from '@prisma/client'
+import { Merchant, PrismaClient } from '@prisma/client'
 
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 import {
-  useUpdateClientMutation,
-  PaginatedClientListDocument,
-  ClientOrderByInput,
+  useUpdateMerchantMutation,
+  PaginatedMerchantListDocument,
+  MerchantOrderByInput,
   SortOrder,
-  usePaginatedClientListQuery,
+  usePaginatedMerchantListQuery,
 } from 'src/generated/graphql'
-import { ClientType, DBConditions } from 'src/types'
+import { ClientType } from 'src/types'
 
 import DeleteClientPopover from 'src/components/Table/DeleteClientPopover'
 import DrawerFilters, { TriggerFiltersButton, Filters } from 'src/components/Table/DrawerFilters'
@@ -53,37 +53,36 @@ import SortTh from 'src/components/Table/SortTh'
 type FilterOptions = {
   country: string[]
   city: string[]
-  type: ClientType[]
 }
 
 type SSGProps = {
-  initialClientList: Client[]
+  initialMerchantList: Merchant[]
   filterOptions: FilterOptions
   initialTotalCount: number
 }
 
 export const PER_PAGE = 10
 
-const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount }) => {
+const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCount }) => {
   const toast = useToast()
   const [isEditable, setIsEditable] = useState(false)
-  const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
+  const [merchantDeletionId, setMerchantDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
   const drawerOptions = useDisclosure()
 
-  const { data, refetch, variables } = usePaginatedClientListQuery({
+  const { data, refetch, variables } = usePaginatedMerchantListQuery({
     variables: { skip: 0, take: PER_PAGE },
   })
 
-  const [updateClient, updateClientOptions] = useUpdateClientMutation({
+  const [updateMerchant, updateMerchantOptions] = useUpdateMerchantMutation({
     onCompleted(response) {
-      toast({ ...successToastContent, title: 'Client updated' })
-      updateClientOptions.client.writeQuery({
-        query: PaginatedClientListDocument,
+      toast({ ...successToastContent, title: 'Merchant updated' })
+      updateMerchantOptions.client.writeQuery({
+        query: PaginatedMerchantListDocument,
         data: {
           ...data,
-          clientList: data.paginatedClientList.list.map((item) =>
-            item.id === response.updatedClient.id ? response.updatedClient : item
+          merchantList: data.paginatedMerchantList.list.map((item) =>
+            item.id === response.updatedMerchant.id ? response.updatedMerchant : item
           ),
         },
       })
@@ -94,7 +93,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
     },
   })
 
-  function handleUpdate(data: Partial<Client>, id: number) {
+  function handleUpdate(data: Partial<Merchant>, id: number) {
     const [value] = Object.values(data)
     if (value === '' && data.nip !== value) {
       toast(errorToastContent)
@@ -102,28 +101,28 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
       return
     }
 
-    updateClient({ variables: { data, id } })
+    updateMerchant({ variables: { data, id } })
   }
 
   function handleFiltersRefetch(filters: Search | Filters) {
     refetch({ where: filters })
   }
 
-  const clientList = (data?.paginatedClientList.list || initialClientList) as Client[]
-  const orderBy = (variables.orderBy ?? {}) as ClientOrderByInput
-  const totalRecordsCount = data?.paginatedClientList.totalCount ?? initialTotalCount
+  const merchantList = (data?.paginatedMerchantList.list || initialMerchantList) as Merchant[]
+  const orderBy = (variables.orderBy ?? {}) as MerchantOrderByInput
+  const totalRecordsCount = data?.paginatedMerchantList.totalCount ?? initialTotalCount
 
   return (
     <div>
       <Head>
-        <title>przelejmi | Clients</title>
+        <title>przelejmi | Merchants</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <Flex justifyContent="space-between" pb="5">
           <Text fontSize="4xl" textAlign="center">
-            Total clients
+            Total merchants
           </Text>
 
           <Flex>
@@ -164,7 +163,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
 
         <Table variant="simple">
           <TableCaption>
-            {clientList.length > 0 ? (
+            {merchantList.length > 0 ? (
               <Pagination
                 totalPages={Math.ceil(totalRecordsCount / PER_PAGE)}
                 currentPage={variables.skip ? (variables.skip + PER_PAGE) / PER_PAGE : 1}
@@ -172,7 +171,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
               />
             ) : (
               <>
-                <Heading as="h2">No clients yet 🤫</Heading>
+                <Heading as="h2">No merchants yet 🤫</Heading>
                 <NextLink href="/create/client">
                   <Button size="lg" mt={5} colorScheme="teal">
                     Create
@@ -186,10 +185,10 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
               <Th>total: {totalRecordsCount}</Th>
               <SortTh
                 title="Name"
-                isAsc={orderBy.name === 'asc'}
-                isDesc={orderBy.name === 'desc'}
-                onAsc={() => refetch({ orderBy: { name: SortOrder.Asc } })}
-                onDesc={() => refetch({ orderBy: { name: SortOrder.Desc } })}
+                isAsc={orderBy.companyName === 'asc'}
+                isDesc={orderBy.companyName === 'desc'}
+                onAsc={() => refetch({ orderBy: { companyName: SortOrder.Asc } })}
+                onDesc={() => refetch({ orderBy: { companyName: SortOrder.Desc } })}
               />
               <Th>Type</Th>
               <Th>NIP</Th>
@@ -201,13 +200,13 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
             </Tr>
           </Thead>
           <Tbody>
-            {clientList.map((item, index) => (
+            {merchantList.map((item, index) => (
               <Tr key={item.id}>
                 <Td>{index + 1}.</Td>
                 <EditableCell
-                  defaultValue={item.name}
+                  defaultValue={item.companyName}
                   isDisabled={!isEditable}
-                  onSubmit={(name) => handleUpdate({ name }, item.id)}
+                  onSubmit={(companyName) => handleUpdate({ companyName }, item.id)}
                 />
                 <Td>{item.nip ? ClientType.company : ClientType.person}</Td>
                 <EditableCell
@@ -236,7 +235,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
                   onSubmit={(country) => handleUpdate({ country }, item.id)}
                 />
                 <Td>
-                  <Menu closeOnSelect={false} onClose={() => setClientDeletionId(null)}>
+                  <Menu closeOnSelect={false} onClose={() => setMerchantDeletionId(null)}>
                     <MenuButton
                       as={Button}
                       variant="ghost"
@@ -249,16 +248,16 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
                       …
                     </MenuButton>
                     <MenuList>
-                      <NextLink href={`clients/${item.id}`}>
+                      <NextLink href={`merchant/${item.id}`}>
                         <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
                           Edit
                         </MenuItem>
                       </NextLink>
 
                       <DeleteClientPopover
-                        id={item.id === clientDeletionId ? clientDeletionId : null}
+                        id={item.id === merchantDeletionId ? merchantDeletionId : null}
                         onClose={() => {
-                          setClientDeletionId(null)
+                          setMerchantDeletionId(null)
                           setOpenActionsRowId(null)
                         }}
                       >
@@ -268,7 +267,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
                           px="0.8rem"
                           _focus={{ bg: 'red.400' }}
                           icon={<DeleteIcon w={3} h={3} />}
-                          onClick={() => setClientDeletionId(item.id)}
+                          onClick={() => setMerchantDeletionId(item.id)}
                         >
                           <Text>Delete</Text>
                         </MenuItem>
@@ -286,31 +285,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
         filters={filterOptions}
         disclosureOptions={drawerOptions}
         prevFilters={variables.where}
-        onChange={(newFilters) => {
-          if (!newFilters) {
-            handleFiltersRefetch(newFilters)
-            return
-          }
-
-          const { type, ...rest } = newFilters
-          let nipFilters = {}
-          if (type) {
-            if (type[DBConditions.notIncludes]) {
-              const [clientType] = type[DBConditions.notIncludes]
-
-              if (clientType === ClientType.company)
-                nipFilters = { nip: { [DBConditions.equals]: null } }
-
-              if (clientType === ClientType.person)
-                nipFilters = { [DBConditions.not]: { nip: { [DBConditions.equals]: null } } }
-            }
-
-            if (type[DBConditions.includes]?.length === 0)
-              nipFilters = { nip: { [DBConditions.includes]: [] } }
-          }
-
-          handleFiltersRefetch({ ...rest, ...nipFilters })
-        }}
+        onChange={handleFiltersRefetch}
       />
     </div>
   )
@@ -319,33 +294,32 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
 export const getStaticProps: GetStaticProps<SSGProps> = async () => {
   const prisma = new PrismaClient()
   const [
-    initialClientList,
+    initialMerchantList,
     distinctCountryList,
     distinctCityList,
     initialTotalCount,
   ] = await Promise.all([
-    prisma.client.findMany({ take: PER_PAGE }),
-    prisma.client.findMany({
+    prisma.merchant.findMany({ take: PER_PAGE }),
+    prisma.merchant.findMany({
       distinct: 'country',
       select: { country: true },
     }),
-    prisma.client.findMany({
+    prisma.merchant.findMany({
       distinct: 'city',
       select: { city: true },
     }),
-    prisma.client.count(),
+    prisma.merchant.count(),
   ])
 
   prisma.$disconnect()
 
   return {
     props: {
-      initialClientList,
+      initialMerchantList,
       initialTotalCount,
       filterOptions: {
         country: distinctCountryList.map(({ country }) => country),
         city: distinctCityList.map(({ city }) => city),
-        type: Object.values(ClientType),
       },
     },
     revalidate: 10,

@@ -1,0 +1,17 @@
+mutation createMerchant($data: MerchantCreateInput!) {
+  createdMerchant: createOneMerchant(data: $data) {
+    ...MerchantContent
+  }
+}
+
+mutation deleteMerchant($id: Int!) {
+  deletedMerchant: deleteOneMerchant(where: { id: $id }) {
+    id
+  }
+}
+
+mutation updateMerchant($data: MerchantUpdateInput!, $id: Int!) {
+  updatedMerchant: updateOneMerchant(data: $data, where: { id: $id }) {
+    ...MerchantContent
+  }
+}

@@ -8,7 +8,7 @@ export const PaginatedMerchants = objectType({
   },
 })
 
-export const PaginatedClientListQuery = extendType({
+export const PaginatedMerchantListQuery = extendType({
   type: 'Query',
   definition(t) {
     t.crud.merchants({ ordering: true, filtering: true })

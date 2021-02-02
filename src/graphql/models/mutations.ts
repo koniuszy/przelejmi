@@ -10,5 +10,7 @@ export const ScenarioMutation = mutationType({
     t.crud.deleteOneClient()
 
     t.crud.createOneMerchant()
+    t.crud.deleteOneMerchant()
+    t.crud.updateOneMerchant()
   },
 })

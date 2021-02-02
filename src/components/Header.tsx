@@ -89,16 +89,16 @@ const Header: FC = () => {
             Create
           </MenuButton>
           <MenuList>
-            <NextLink href="/create/invoice">
+            <NextLink href="/invoices/create">
               <MenuItem>Invoice</MenuItem>
             </NextLink>
-            <NextLink href="/create/scenario">
+            <NextLink href="/scenarios/create">
               <MenuItem>Scenario</MenuItem>
             </NextLink>
             <NextLink href="/clients/create">
               <MenuItem>Client</MenuItem>
             </NextLink>
-            <NextLink href="/create/merchant">
+            <NextLink href="/merchants/create">
               <MenuItem>Merchant</MenuItem>
             </NextLink>
           </MenuList>

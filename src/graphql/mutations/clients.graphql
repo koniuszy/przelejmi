@@ -1,0 +1,17 @@
+mutation createClient($data: ClientCreateInput!) {
+  createdClient: createOneClient(data: $data) {
+    ...ClientContent
+  }
+}
+
+mutation deleteClient($id: Int!) {
+  deletedClient: deleteOneClient(where: { id: $id }) {
+    id
+  }
+}
+
+mutation updateClient($data: ClientUpdateInput!, $id: Int!) {
+  updatedClient: updateOneClient(data: $data, where: { id: $id }) {
+    ...ClientContent
+  }
+}

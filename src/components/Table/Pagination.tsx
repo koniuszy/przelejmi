@@ -26,7 +26,7 @@ const Pagination: FC<{
             )
           })}
 
-          {moreThan1Block && <Button disabled>…</Button>}
+          {totalPages > pagesCountInBlock * 2 && <Button disabled>…</Button>}
 
           {moreThan1Block &&
             new Array(

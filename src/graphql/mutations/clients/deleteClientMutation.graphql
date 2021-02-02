@@ -1,5 +1,0 @@
-mutation deleteOneClient($id: Int!) {
-  deletedClient: deleteOneClient(where: { id: $id }) {
-    id
-  }
-}
