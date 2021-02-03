@@ -126,7 +126,7 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
           {client.nip && (
             <>
               <Text pt="5" pb="2" fontWeight="500">
-                Vat ID
+                Vat id
               </Text>
               <Editable
                 border
@@ -145,7 +145,7 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
             onSubmit={(address) => handleUpdate({ address })}
           />
 
-          <Text pt="5" pb="2" fontWeight="500">
+          <Text pt="4" pb="2" fontWeight="500">
             Post code
           </Text>
           <Editable
@@ -154,12 +154,12 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
             onSubmit={(postCode) => handleUpdate({ postCode })}
           />
 
-          <Text pt="5" pb="2" fontWeight="500">
+          <Text pt="4" pb="2" fontWeight="500">
             City
           </Text>
           <Editable border defaultValue={client.city} onSubmit={(city) => handleUpdate({ city })} />
 
-          <Text pt="5" pb="2" fontWeight="500">
+          <Text pt="4" pb="2" fontWeight="500">
             Country
           </Text>
           <Editable

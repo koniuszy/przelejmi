@@ -145,7 +145,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
               </Stack>
             </RadioGroup>
 
-            <FormControl isRequired mt="10" id="name" isInvalid={!!errors.name}>
+            <FormControl isRequired mt="5" id="name" isInvalid={!!errors.name}>
               <FormLabel htmlFor="name">Name</FormLabel>
               <Input
                 name="name"

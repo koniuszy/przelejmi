@@ -5,7 +5,7 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { CopyIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Tr,
   Td,
@@ -31,6 +31,7 @@ import {
 } from 'src/generated/graphql'
 import { ClientType, DBConditions } from 'src/types'
 
+import Clipboard from 'src/components/Clipboard'
 import Confirmation from 'src/components/Confirmation'
 import Editable from 'src/components/Editable'
 import Table from 'src/components/Table'
@@ -220,6 +221,36 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
                         Edit
                       </MenuItem>
                     </NextLink>
+
+                    <Clipboard
+                      value={item.nip}
+                      onCopy={() =>
+                        toast({
+                          ...successToastContent,
+                          title: 'Saved in clipboard',
+                          description: `VAT id: ${item.nip}`,
+                        })
+                      }
+                    >
+                      <MenuItem icon={<CopyIcon w={3} h={3} />}>
+                        <Text>Copy VAT id</Text>
+                      </MenuItem>
+                    </Clipboard>
+
+                    <Clipboard
+                      value={item.address}
+                      onCopy={() =>
+                        toast({
+                          ...successToastContent,
+                          title: 'Saved in clipboard',
+                          description: `Address: ${item.address}`,
+                        })
+                      }
+                    >
+                      <MenuItem icon={<CopyIcon w={3} h={3} />}>
+                        <Text>Copy address</Text>
+                      </MenuItem>
+                    </Clipboard>
 
                     <Confirmation
                       confirmText="delete"
