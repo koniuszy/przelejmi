@@ -32,7 +32,8 @@ import {
 
 import Clipboard from 'src/components/Clipboard'
 import Confirmation from 'src/components/Confirmation'
-import Table, { EditableCell } from 'src/components/Table'
+import Editable from 'src/components/Editable'
+import Table from 'src/components/Table'
 
 type FilterOptions = {
   country: string[]
@@ -127,7 +128,6 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
     <div>
       <Head>
         <title>przelejmi | Merchants</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
@@ -157,30 +157,34 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
           rowRender={(item: Merchant, index) => (
             <Tr key={item.id}>
               <Td>{index + 1}.</Td>
-
-              <EditableCell
-                defaultValue={item.companyName}
-                isDisabled={!isEditable}
-                onSubmit={(companyName) => handleUpdate({ companyName }, item.id)}
-              />
-
-              <EditableCell
-                defaultValue={item.issuerName}
-                isDisabled={!isEditable}
-                onSubmit={(issuerName) => handleUpdate({ issuerName }, item.id)}
-              />
-
-              <EditableCell
-                defaultValue={item.email}
-                isDisabled={!isEditable}
-                onSubmit={(email) => handleUpdate({ email }, item.id)}
-              />
-
-              <EditableCell
-                defaultValue={item.bankName}
-                isDisabled={!isEditable}
-                onSubmit={(bankName) => handleUpdate({ bankName }, item.id)}
-              />
+              <Td>
+                <Editable
+                  defaultValue={item.companyName}
+                  isDisabled={!isEditable}
+                  onSubmit={(companyName) => handleUpdate({ companyName }, item.id)}
+                />
+              </Td>
+              <Td>
+                <Editable
+                  defaultValue={item.issuerName}
+                  isDisabled={!isEditable}
+                  onSubmit={(issuerName) => handleUpdate({ issuerName }, item.id)}
+                />
+              </Td>
+              <Td>
+                <Editable
+                  defaultValue={item.email}
+                  isDisabled={!isEditable}
+                  onSubmit={(email) => handleUpdate({ email }, item.id)}
+                />
+              </Td>
+              <Td>
+                <Editable
+                  defaultValue={item.bankName}
+                  isDisabled={!isEditable}
+                  onSubmit={(bankName) => handleUpdate({ bankName }, item.id)}
+                />
+              </Td>
 
               <Td>
                 <Menu closeOnSelect={false} onClose={() => setMerchantDeletionId(null)}>

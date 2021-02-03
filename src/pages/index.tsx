@@ -31,7 +31,6 @@ const App: FC<SSGProps> = (props) => {
     <div>
       <Head>
         <title>przelejmi | Home page</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
@@ -78,7 +77,7 @@ const App: FC<SSGProps> = (props) => {
             </Button>
           </NextLink>
 
-          <Button onClick={() => downloadPdf({ language: 'pl' })} colorScheme="teal" size="lg">
+          <Button colorScheme="teal" size="lg" onClick={() => downloadPdf({ language: 'pl' })}>
             Download
           </Button>
         </Flex>

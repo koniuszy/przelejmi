@@ -130,7 +130,6 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
     <>
       <Head>
         <title>przelejmi | Create merchant</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Flex>

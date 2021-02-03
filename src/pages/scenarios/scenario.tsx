@@ -19,8 +19,8 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react'
 
-import { Scenario } from 'prisma/prisma-client'
 import { useFormik } from 'formik'
+import { Scenario } from 'prisma/prisma-client'
 
 import { Currency, VAT, PaymentType, Unit } from 'src/types'
 
@@ -59,7 +59,6 @@ const App: FC = () => {
     <>
       <Head>
         <title>przelejmi | Create scenario</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
@@ -70,8 +69,8 @@ const App: FC = () => {
               <Input
                 name="name"
                 placeholder="My own scenario"
-                onChange={handleChange}
                 value={values.name}
+                onChange={handleChange}
               />
               <FormErrorMessage>{errors.name}</FormErrorMessage>
             </FormControl>

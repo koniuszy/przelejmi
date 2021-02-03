@@ -21,6 +21,8 @@ import {
 } from 'src/generated/graphql'
 import { ClientType, OptimizedImg } from 'src/types'
 
+import Editable from 'src/components/Editable'
+
 import { PER_PAGE } from './index'
 
 type SSGProps = {
@@ -42,6 +44,7 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
         title: 'Client updated.',
       })
 
+      console.log({ updateQuery })
       updateQuery((prev) => ({ ...prev, client: response.updatedClient }))
 
       const data = updateClientOptions.client.readQuery({ query: PaginatedClientListDocument })
@@ -81,7 +84,6 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
     <>
       <Head>
         <title>przelejmi | Edit client</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Flex>
@@ -106,7 +108,7 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
             value={client.nip ? ClientType.company : ClientType.person}
             onChange={() => handleUpdate({ nip: client.nip ? null : '0' })}
           >
-            <Text>Client type</Text>
+            <Text fontWeight="500">Client type</Text>
             <Stack pt="3" spacing={5} direction="row">
               {Object.values(ClientType).map((value) => (
                 <Radio key={value} cursor="pointer" colorScheme="green" value={value}>
@@ -115,6 +117,56 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
               ))}
             </Stack>
           </RadioGroup>
+
+          <Text pt="5" pb="2" fontWeight="500">
+            Name
+          </Text>
+          <Editable border defaultValue={client.name} onSubmit={(name) => handleUpdate({ name })} />
+
+          {client.nip && (
+            <>
+              <Text pt="5" pb="2" fontWeight="500">
+                Vat ID
+              </Text>
+              <Editable
+                border
+                defaultValue={client.nip}
+                onSubmit={(nip) => handleUpdate({ nip })}
+              />
+            </>
+          )}
+
+          <Text pt="10" pb="2" fontWeight="500">
+            Street name and number
+          </Text>
+          <Editable
+            border
+            defaultValue={client.address}
+            onSubmit={(address) => handleUpdate({ address })}
+          />
+
+          <Text pt="5" pb="2" fontWeight="500">
+            Post code
+          </Text>
+          <Editable
+            border
+            defaultValue={client.postCode}
+            onSubmit={(postCode) => handleUpdate({ postCode })}
+          />
+
+          <Text pt="5" pb="2" fontWeight="500">
+            City
+          </Text>
+          <Editable border defaultValue={client.city} onSubmit={(city) => handleUpdate({ city })} />
+
+          <Text pt="5" pb="2" fontWeight="500">
+            Country
+          </Text>
+          <Editable
+            border
+            defaultValue={client.country}
+            onSubmit={(country) => handleUpdate({ country })}
+          />
         </Flex>
       </Flex>
     </>

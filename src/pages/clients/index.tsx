@@ -32,8 +32,8 @@ import {
 import { ClientType, DBConditions } from 'src/types'
 
 import Confirmation from 'src/components/Confirmation'
+import Editable from 'src/components/Editable'
 import Table from 'src/components/Table'
-import EditableCell from 'src/components/Table/EditableCell'
 
 type FilterOptions = {
   country: string[]
@@ -127,7 +127,6 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
     <div>
       <Head>
         <title>przelejmi | Clients</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
@@ -185,19 +184,22 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
           rowRender={(item: Client, index) => (
             <Tr key={item.id}>
               <Td>{index + 1}.</Td>
-              <EditableCell
-                defaultValue={item.name}
-                isDisabled={!isEditable}
-                onSubmit={(name) => handleUpdate({ name }, item.id)}
-              />
+              <Td>
+                <Editable
+                  defaultValue={item.name}
+                  isDisabled={!isEditable}
+                  onSubmit={(name) => handleUpdate({ name }, item.id)}
+                />
+              </Td>
               <Td>{item.nip ? ClientType.company : ClientType.person}</Td>
               {['nip', 'address', 'post Code', 'city', 'country'].map((key) => (
-                <EditableCell
-                  key={key}
-                  defaultValue={item[key]}
-                  isDisabled={!isEditable}
-                  onSubmit={(value) => handleUpdate({ [key]: value }, item.id)}
-                />
+                <Td key={key}>
+                  <Editable
+                    defaultValue={item[key]}
+                    isDisabled={!isEditable}
+                    onSubmit={(value) => handleUpdate({ [key]: value }, item.id)}
+                  />
+                </Td>
               ))}
               <Td>
                 <Menu closeOnSelect={false} onClose={() => setClientDeletionId(null)}>

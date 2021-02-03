@@ -113,7 +113,6 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
     <>
       <Head>
         <title>przelejmi | Create client</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Flex>
@@ -136,7 +135,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
         <form onSubmit={handleSubmit}>
           <Flex direction="column">
             <RadioGroup value={clientType} onChange={(value) => setClientType(value as ClientType)}>
-              <Text>Client type</Text>
+              <Text fontWeight="500">Client type</Text>
               <Stack pt="3" spacing={5} direction="row">
                 {Object.values(ClientType).map((value) => (
                   <Radio key={value} cursor="pointer" colorScheme="green" value={value}>
