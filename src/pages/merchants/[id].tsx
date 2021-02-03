@@ -4,7 +4,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 
 import Head from 'next/head'
 
-import { Flex, RadioGroup, Stack, Radio, Text, useToast } from '@chakra-ui/react'
+import { Flex, Text, useToast } from '@chakra-ui/react'
 
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
@@ -13,12 +13,12 @@ import { PrismaClient } from '@prisma/client'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import {
-  PaginatedClientListDocument,
-  ClientContentFragment,
-  useUpdateClientMutation,
-  useClientQuery,
+  useUpdateMerchantMutation,
+  useMerchantQuery,
+  MerchantContentFragment,
+  PaginatedMerchantListDocument,
 } from 'src/generated/graphql'
-import { ClientType, OptimizedImg } from 'src/types'
+import { OptimizedImg } from 'src/types'
 
 import BlurredImg from 'src/components/BlurredImg'
 import Editable from 'src/components/Editable'
@@ -27,43 +27,43 @@ import { PER_PAGE } from './index'
 
 type SSGProps = {
   calmInTrolleyImg: OptimizedImg
-  initialClient: ClientContentFragment
+  initialMerchant: MerchantContentFragment
 }
 
-const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
+const EditMerchant: FC<SSGProps> = ({ calmInTrolleyImg, initialMerchant }) => {
   const toast = useToast()
-  const id = initialClient.id
-  const { data, updateQuery } = useClientQuery({ variables: { where: { id } } })
+  const id = initialMerchant.id
+  const { data, updateQuery } = useMerchantQuery({ variables: { where: { id } } })
 
-  const [updateClient, updateClientOptions] = useUpdateClientMutation({
+  const [updateMerchant, updateMerchantOptions] = useUpdateMerchantMutation({
     onCompleted(response) {
       toast({
         ...successToastContent,
         title: 'Client updated.',
       })
 
-      updateQuery((prev) => ({ ...prev, client: response.updatedClient }))
+      updateQuery((prev) => ({ ...prev, merchant: response.updatedMerchant }))
 
-      const data = updateClientOptions.client.readQuery({ query: PaginatedClientListDocument })
+      const data = updateMerchantOptions.client.readQuery({ query: PaginatedMerchantListDocument })
       if (!data) {
-        updateClientOptions.client
+        updateMerchantOptions.client
           .query({
-            query: PaginatedClientListDocument,
+            query: PaginatedMerchantListDocument,
             variables: { skip: 0, take: PER_PAGE },
           })
           .then((res) => {
-            if (!res.data.clientList?.length) return
-            updateClientOptions.client.writeQuery({
-              query: PaginatedClientListDocument,
-              data: { ...res, clientList: [response.updatedClient] },
+            if (!res.data.merchantList?.length) return
+            updateMerchantOptions.client.writeQuery({
+              query: PaginatedMerchantListDocument,
+              data: { ...res, merchantList: [response.updatedMerchant] },
             })
           })
         return
       }
 
-      updateClientOptions.client.writeQuery({
-        query: PaginatedClientListDocument,
-        data: { ...data, clientList: [...data.clientList, response.updatedClient] },
+      updateMerchantOptions.client.writeQuery({
+        query: PaginatedMerchantListDocument,
+        data: { ...data, merchantList: [...data.merchantList, response.updatedMerchant] },
       })
     },
     onError(err) {
@@ -72,48 +72,38 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
     },
   })
 
-  function handleUpdate(data: Partial<ClientContentFragment>) {
-    updateClient({ variables: { data, id } })
+  function handleUpdate(data: Partial<MerchantContentFragment>) {
+    updateMerchant({ variables: { data, id } })
   }
-  const client = data?.client ?? initialClient
+  const merchant = data?.merchant ?? initialMerchant
 
   return (
     <>
       <Head>
-        <title>przelejmi | Edit client</title>
+        <title>przelejmi | Edit merchant</title>
       </Head>
 
       <Flex>
         <BlurredImg optimizedImg={calmInTrolleyImg} width={500} />
 
         <Flex direction="column">
-          <RadioGroup
-            value={client.nip ? ClientType.company : ClientType.person}
-            onChange={() => handleUpdate({ nip: client.nip ? null : '0' })}
-          >
-            <Text fontWeight="500">Client type</Text>
-            <Stack pt="3" spacing={5} direction="row">
-              {Object.values(ClientType).map((value) => (
-                <Radio key={value} cursor="pointer" colorScheme="green" value={value}>
-                  {value}
-                </Radio>
-              ))}
-            </Stack>
-          </RadioGroup>
-
           <Text pt="5" pb="2" fontWeight="500">
-            Name
+            Company name
           </Text>
-          <Editable border defaultValue={client.name} onSubmit={(name) => handleUpdate({ name })} />
+          <Editable
+            border
+            defaultValue={merchant.companyName}
+            onSubmit={(companyName) => handleUpdate({ companyName })}
+          />
 
-          {client.nip && (
+          {merchant.nip && (
             <>
               <Text pt="5" pb="2" fontWeight="500">
                 Vat id
               </Text>
               <Editable
                 border
-                defaultValue={client.nip}
+                defaultValue={merchant.nip}
                 onSubmit={(nip) => handleUpdate({ nip })}
               />
             </>
@@ -124,7 +114,7 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
           </Text>
           <Editable
             border
-            defaultValue={client.address}
+            defaultValue={merchant.address}
             onSubmit={(address) => handleUpdate({ address })}
           />
 
@@ -133,21 +123,25 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
           </Text>
           <Editable
             border
-            defaultValue={client.postCode}
+            defaultValue={merchant.postCode}
             onSubmit={(postCode) => handleUpdate({ postCode })}
           />
 
           <Text pt="4" pb="2" fontWeight="500">
             City
           </Text>
-          <Editable border defaultValue={client.city} onSubmit={(city) => handleUpdate({ city })} />
+          <Editable
+            border
+            defaultValue={merchant.city}
+            onSubmit={(city) => handleUpdate({ city })}
+          />
 
           <Text pt="4" pb="2" fontWeight="500">
             Country
           </Text>
           <Editable
             border
-            defaultValue={client.country}
+            defaultValue={merchant.country}
             onSubmit={(country) => handleUpdate({ country })}
           />
         </Flex>
@@ -160,7 +154,7 @@ type Params = { id: string }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
   const prisma = new PrismaClient()
-  const idList = await prisma.client.findMany({ select: { id: true } })
+  const idList = await prisma.merchant.findMany({ select: { id: true } })
 
   const paths = idList.map(({ id }) => ({
     params: { id: id.toString() },
@@ -177,21 +171,21 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
   const prisma = new PrismaClient()
 
-  const src = '/calmInTrolley.jpg'
+  const src = '/womanWithFolders.jpg'
   const width = 1920
   const height = 2880
   const img = await getImage(src)
 
-  const [base64, initialClient] = await Promise.all([
+  const [base64, initialMerchant] = await Promise.all([
     getBase64(img),
-    prisma.client.findFirst({ where: { id: { equals: parseInt(params.id) } } }),
+    prisma.merchant.findFirst({ where: { id: { equals: parseInt(params.id) } } }),
   ])
 
   prisma.$disconnect()
 
   return {
     props: {
-      initialClient,
+      initialMerchant,
       calmInTrolleyImg: {
         src,
         base64,
@@ -201,4 +195,4 @@ export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params 
   }
 }
 
-export default EditClient
+export default EditMerchant

@@ -3,10 +3,8 @@ import React, { FC, useState } from 'react'
 import { GetStaticProps } from 'next'
 
 import Head from 'next/head'
-import NextImg from 'next/image'
 
 import {
-  Box,
   Flex,
   FormControl,
   FormLabel,
@@ -29,6 +27,8 @@ import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 import { useCreateClientMutation, PaginatedClientListDocument } from 'src/generated/graphql'
 import { ClientType, OptimizedImg } from 'src/types'
 
+import BlurredImg from 'src/components/BlurredImg'
+
 import { PER_PAGE } from './index'
 
 type SSGProps = {
@@ -43,8 +43,6 @@ type Form = {
   country: string
   nip: string
 }
-
-const imgWidth = 500
 
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   const toast = useToast()
@@ -116,21 +114,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
       </Head>
 
       <Flex>
-        <Box className="nextImgBox">
-          <img
-            aria-hidden="true"
-            alt="placeholder"
-            className="nextImgPlaceholder"
-            src={calmInTrolleyImg.base64}
-          />
-          <NextImg
-            width={imgWidth}
-            src={calmInTrolleyImg.src}
-            objectFit="contain"
-            objectPosition="center"
-            height={calmInTrolleyImg.ratio * imgWidth}
-          />
-        </Box>
+        <BlurredImg width={500} optimizedImg={calmInTrolleyImg} />
 
         <form onSubmit={handleSubmit}>
           <Flex direction="column">

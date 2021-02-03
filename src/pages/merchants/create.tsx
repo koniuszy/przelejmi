@@ -3,10 +3,8 @@ import React, { FC } from 'react'
 import { GetStaticProps } from 'next'
 
 import Head from 'next/head'
-import NextImg from 'next/image'
 
 import {
-  Box,
   Flex,
   FormControl,
   FormLabel,
@@ -24,6 +22,8 @@ import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import { useCreateMerchantMutation, PaginatedMerchantListDocument } from 'src/generated/graphql'
 import { OptimizedImg } from 'src/types'
+
+import BlurredImg from 'src/components/BlurredImg'
 
 import { PER_PAGE } from './index'
 
@@ -44,8 +44,6 @@ type Form = {
   email: string
   issuerName: string
 }
-
-const imgWidth = 500
 
 const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
   const toast = useToast()
@@ -133,21 +131,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       </Head>
 
       <Flex>
-        <Box className="nextImgBox">
-          <img
-            aria-hidden="true"
-            alt="placeholder"
-            className="nextImgPlaceholder"
-            src={womanWithFoldersImg.base64}
-          />
-          <NextImg
-            width={imgWidth}
-            src={womanWithFoldersImg.src}
-            objectFit="contain"
-            objectPosition="center"
-            height={womanWithFoldersImg.ratio * imgWidth}
-          />
-        </Box>
+        <BlurredImg width={500} optimizedImg={womanWithFoldersImg} />
 
         <Flex direction="row">
           <form onSubmit={handleSubmit}>

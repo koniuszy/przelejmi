@@ -1,0 +1,5 @@
+query merchant($where: MerchantWhereUniqueInput!) {
+  merchant(where: $where) {
+    ...MerchantContent
+  }
+}
