@@ -1,24 +1,11 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 
 import { GetStaticPaths, GetStaticProps } from 'next'
 
 import Head from 'next/head'
 import NextImg from 'next/image'
 
-import {
-  Box,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-  Button,
-  RadioGroup,
-  Stack,
-  Radio,
-  Text,
-  useToast,
-} from '@chakra-ui/react'
+import { Box, Flex, RadioGroup, Stack, Radio, Text, useToast } from '@chakra-ui/react'
 
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
@@ -30,7 +17,7 @@ import {
   PaginatedClientListDocument,
   ClientContentFragment,
   useUpdateClientMutation,
-  usePaginatedClientListQuery,
+  useClientQuery,
 } from 'src/generated/graphql'
 import { ClientType, OptimizedImg } from 'src/types'
 
@@ -45,24 +32,28 @@ const imgWidth = 500
 
 const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
   const toast = useToast()
+  const id = initialClient.id
+  const { data, updateQuery } = useClientQuery({ variables: { where: { id } } })
 
-  const [updateClient, { client }] = useUpdateClientMutation({
+  const [updateClient, updateClientOptions] = useUpdateClientMutation({
     onCompleted(response) {
       toast({
         ...successToastContent,
         title: 'Client updated.',
       })
 
-      const data = client.readQuery({ query: PaginatedClientListDocument })
+      updateQuery((prev) => ({ ...prev, client: response.updatedClient }))
+
+      const data = updateClientOptions.client.readQuery({ query: PaginatedClientListDocument })
       if (!data) {
-        client
+        updateClientOptions.client
           .query({
             query: PaginatedClientListDocument,
             variables: { skip: 0, take: PER_PAGE },
           })
           .then((res) => {
-            if (!res.data.clientList.length) return
-            client.writeQuery({
+            if (!res.data.clientList?.length) return
+            updateClientOptions.client.writeQuery({
               query: PaginatedClientListDocument,
               data: { ...res, clientList: [response.updatedClient] },
             })
@@ -70,7 +61,7 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
         return
       }
 
-      client.writeQuery({
+      updateClientOptions.client.writeQuery({
         query: PaginatedClientListDocument,
         data: { ...data, clientList: [...data.clientList, response.updatedClient] },
       })
@@ -80,6 +71,11 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
       toast(errorToastContent)
     },
   })
+
+  function handleUpdate(data: Partial<ClientContentFragment>) {
+    updateClient({ variables: { data, id } })
+  }
+  const client = data?.client ?? initialClient
 
   return (
     <>
@@ -106,7 +102,10 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
         </Box>
 
         <Flex direction="column">
-          <RadioGroup value={clientType} onChange={(value) => setClientType(value as ClientType)}>
+          <RadioGroup
+            value={client.nip ? ClientType.company : ClientType.person}
+            onChange={() => handleUpdate({ nip: client.nip ? null : '0' })}
+          >
             <Text>Client type</Text>
             <Stack pt="3" spacing={5} direction="row">
               {Object.values(ClientType).map((value) => (

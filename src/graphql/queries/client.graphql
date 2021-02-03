@@ -1,5 +1,5 @@
-query client {
-  client {
+query client($where: ClientWhereUniqueInput!) {
+  client(where: $where) {
     ...ClientContent
   }
 }
