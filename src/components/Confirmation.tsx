@@ -17,7 +17,8 @@ const Confirmation: FC<{
   onClose(): void
   onClick(): void
   isLoading: boolean
-}> = ({ id, children, onClose, onClick, isLoading }) => {
+  confirmText: string
+}> = ({ id, children, onClose, onClick, isLoading, confirmText }) => {
   if (!id && isValidElement(children)) return children
 
   return (
@@ -39,7 +40,7 @@ const Confirmation: FC<{
               Cancel
             </Button>
             <Button isLoading={isLoading} color="red.400" onClick={onClick}>
-              Delete
+              {confirmText}
             </Button>
           </ButtonGroup>
         </PopoverFooter>

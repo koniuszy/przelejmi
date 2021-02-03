@@ -220,6 +220,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
                     </NextLink>
 
                     <Confirmation
+                      confirmText="delete"
                       isLoading={deleteClientOptions.loading}
                       id={item.id === clientDeletionId ? clientDeletionId : null}
                       onClick={() => deleteClient({ variables: { id: item.id } })}

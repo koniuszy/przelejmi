@@ -30,7 +30,7 @@ import {
   useDeleteMerchantMutation,
 } from 'src/generated/graphql'
 
-import Clipboard from 'src/components/ClipBoard'
+import Clipboard from 'src/components/Clipboard'
 import Confirmation from 'src/components/Confirmation'
 import Table, { EditableCell } from 'src/components/Table'
 
@@ -233,6 +233,7 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
                     </Clipboard>
 
                     <Confirmation
+                      confirmText="delete"
                       isLoading={deleteMerchantOptions.loading}
                       id={item.id === merchantDeletionId ? merchantDeletionId : null}
                       onClick={() => deleteMerchant({ variables: { id: item.id } })}

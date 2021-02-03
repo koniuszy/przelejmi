@@ -34,7 +34,7 @@ model Merchant {
   email          String
   bankName       String
   bankAccountPln String
-  bankAccountEur String
+  bankAccountEur String?
 }
 
 model Scenario {
