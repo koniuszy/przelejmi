@@ -22,7 +22,7 @@ const schema = makeSchema({
   sourceTypes: {
     modules: [
       {
-        module: '@prisma/client',
+        module: 'prisma/prisma-client',
         alias: 'prisma',
       },
     ],

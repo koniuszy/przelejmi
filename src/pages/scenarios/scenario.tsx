@@ -19,7 +19,7 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react'
 
-import { Scenario } from '@prisma/client'
+import { Scenario } from 'prisma/prisma-client'
 import { useFormik } from 'formik'
 
 import { Currency, VAT, PaymentType, Unit } from 'src/types'

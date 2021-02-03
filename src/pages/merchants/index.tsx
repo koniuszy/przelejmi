@@ -19,7 +19,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { Merchant, PrismaClient } from '@prisma/client'
+import { Merchant, PrismaClient } from 'prisma/prisma-client'
 
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
