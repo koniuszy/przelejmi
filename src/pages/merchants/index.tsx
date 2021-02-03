@@ -27,9 +27,11 @@ import {
   useUpdateMerchantMutation,
   PaginatedMerchantListDocument,
   usePaginatedMerchantListQuery,
+  useDeleteMerchantMutation,
+  PaginatedMerchantListQuery,
 } from 'src/generated/graphql'
 
-import DeleteClientPopover from 'src/components/DeleteClientPopover'
+import Confirmation from 'src/components/Confirmation'
 import Table, { EditableCell } from 'src/components/Table'
 
 type FilterOptions = {
@@ -66,6 +68,37 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
           merchantList: data.paginatedMerchantList.list.map((item) =>
             item.id === response.updatedMerchant.id ? response.updatedMerchant : item
           ),
+        },
+      })
+    },
+    onError() {
+      toast(errorToastContent)
+      toast(warningToastContent)
+    },
+  })
+
+  const [deleteMerchant, deleteMerchantOptions] = useDeleteMerchantMutation({
+    onCompleted(response) {
+      toast({
+        ...successToastContent,
+        title: 'Client deleted.',
+      })
+      setMerchantDeletionId(null)
+
+      const data = deleteMerchantOptions.client.readQuery<PaginatedMerchantListQuery>({
+        query: PaginatedMerchantListDocument,
+      })
+
+      deleteMerchantOptions.client.writeQuery({
+        query: PaginatedMerchantListDocument,
+        data: {
+          ...data,
+          paginatedMerchantList: {
+            ...data.paginatedMerchantList,
+            list: data.paginatedMerchantList.list.filter(
+              (clientListItem) => clientListItem.id !== response.deletedMerchant.id
+            ),
+          },
         },
       })
     },
@@ -115,29 +148,26 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
           headerList={[
             `total: ${totalRecordsCount}`,
             { title: 'company', sortableKey: 'companyName' },
-            'issuer',
-            'address',
-            'post Code',
-            'city',
-            'country',
+            { title: 'issuer', sortableKey: 'issuerName' },
             'email',
             'bank',
-            'Pln',
-            'Eur',
+            'actions',
           ]}
           rowRender={(item: Merchant, index) => (
             <Tr key={item.id}>
               <Td>{index + 1}.</Td>
-              {['companyName', 'issuerName', 'address', 'postCode', 'city', 'country'].map(
-                (key) => (
-                  <EditableCell
-                    key={key}
-                    defaultValue={item[key]}
-                    isDisabled={!isEditable}
-                    onSubmit={(value) => handleUpdate({ [key]: value }, item.id)}
-                  />
-                )
-              )}
+
+              <EditableCell
+                defaultValue={item.companyName}
+                isDisabled={!isEditable}
+                onSubmit={(companyName) => handleUpdate({ companyName }, item.id)}
+              />
+
+              <EditableCell
+                defaultValue={item.issuerName}
+                isDisabled={!isEditable}
+                onSubmit={(issuerName) => handleUpdate({ issuerName }, item.id)}
+              />
 
               <EditableCell
                 defaultValue={item.email}
@@ -149,18 +179,6 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
                 defaultValue={item.bankName}
                 isDisabled={!isEditable}
                 onSubmit={(bankName) => handleUpdate({ bankName }, item.id)}
-              />
-
-              <EditableCell
-                defaultValue={item.bankAccountPln}
-                isDisabled={!isEditable}
-                onSubmit={(bankAccountPln) => handleUpdate({ bankAccountPln }, item.id)}
-              />
-
-              <EditableCell
-                defaultValue={item.bankAccountEur}
-                isDisabled={!isEditable}
-                onSubmit={(bankAccountEur) => handleUpdate({ bankAccountEur }, item.id)}
               />
 
               <Td>
@@ -177,14 +195,16 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
                     …
                   </MenuButton>
                   <MenuList>
-                    <NextLink href={`merchant/${item.id}`}>
+                    <NextLink href={`merchants/${item.id}`}>
                       <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
                         Edit
                       </MenuItem>
                     </NextLink>
 
-                    <DeleteClientPopover
+                    <Confirmation
+                      isLoading={deleteMerchantOptions.loading}
                       id={item.id === merchantDeletionId ? merchantDeletionId : null}
+                      onClick={() => deleteMerchant({ variables: { id: item.id } })}
                       onClose={() => {
                         setMerchantDeletionId(null)
                         setOpenActionsRowId(null)
@@ -200,7 +220,7 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
                       >
                         <Text>Delete</Text>
                       </MenuItem>
-                    </DeleteClientPopover>
+                    </Confirmation>
                   </MenuList>
                 </Menu>
               </Td>

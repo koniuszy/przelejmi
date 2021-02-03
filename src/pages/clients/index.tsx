@@ -27,10 +27,12 @@ import {
   useUpdateClientMutation,
   PaginatedClientListDocument,
   usePaginatedClientListQuery,
+  useDeleteClientMutation,
+  PaginatedClientListQuery,
 } from 'src/generated/graphql'
 import { ClientType, DBConditions } from 'src/types'
 
-import DeleteClientPopover from 'src/components/DeleteClientPopover'
+import Confirmation from 'src/components/Confirmation'
 import Table from 'src/components/Table'
 import EditableCell from 'src/components/Table/EditableCell'
 
@@ -50,6 +52,7 @@ export const PER_PAGE = 10
 
 const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount }) => {
   const toast = useToast()
+
   const [isEditable, setIsEditable] = useState(false)
   const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
@@ -69,6 +72,37 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
           clientList: data.paginatedClientList.list.map((item) =>
             item.id === response.updatedClient.id ? response.updatedClient : item
           ),
+        },
+      })
+    },
+    onError() {
+      toast(errorToastContent)
+      toast(warningToastContent)
+    },
+  })
+
+  const [deleteClient, deleteClientOptions] = useDeleteClientMutation({
+    onCompleted(response) {
+      toast({
+        ...successToastContent,
+        title: 'Client deleted.',
+      })
+      setClientDeletionId(null)
+
+      const data = deleteClientOptions.client.readQuery<PaginatedClientListQuery>({
+        query: PaginatedClientListDocument,
+      })
+
+      deleteClientOptions.client.writeQuery({
+        query: PaginatedClientListDocument,
+        data: {
+          ...data,
+          paginatedClientList: {
+            ...data.paginatedClientList,
+            list: data.paginatedClientList.list.filter(
+              (clientListItem) => clientListItem.id !== response.deletedClient.id
+            ),
+          },
         },
       })
     },
@@ -188,8 +222,10 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
                       </MenuItem>
                     </NextLink>
 
-                    <DeleteClientPopover
+                    <Confirmation
+                      isLoading={deleteClientOptions.loading}
                       id={item.id === clientDeletionId ? clientDeletionId : null}
+                      onClick={() => deleteClient({ variables: { id: item.id } })}
                       onClose={() => {
                         setClientDeletionId(null)
                         setOpenActionsRowId(null)
@@ -205,7 +241,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
                       >
                         <Text>Delete</Text>
                       </MenuItem>
-                    </DeleteClientPopover>
+                    </Confirmation>
                   </MenuList>
                 </Menu>
               </Td>
