@@ -202,13 +202,33 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
                       </MenuItem>
                     </NextLink>
 
-                    <Clipboard value={item.bankAccountPln} description="Bank account in PLN">
+                    <Clipboard
+                      value={item.bankAccountPln}
+                      description="Bank account in PLN"
+                      onCopy={() =>
+                        toast({
+                          ...successToastContent,
+                          title: 'Saved in clipboard',
+                          description: `bank account pln: ${item.bankAccountPln}`,
+                        })
+                      }
+                    >
                       <MenuItem icon={<CopyIcon w={3} h={3} />}>
                         <Text>Copy bank account PLN</Text>
                       </MenuItem>
                     </Clipboard>
 
-                    <Clipboard value={item.bankAccountEur} description="Bank account in EUR">
+                    <Clipboard
+                      value={item.bankAccountEur}
+                      description="Bank account in EUR"
+                      onCopy={() =>
+                        toast({
+                          ...successToastContent,
+                          title: 'Saved in clipboard',
+                          description: `bank account eur: ${item.bankAccountEur}`,
+                        })
+                      }
+                    >
                       <MenuItem icon={<CopyIcon w={3} h={3} />}>
                         <Text>Copy bank account EUR</Text>
                       </MenuItem>

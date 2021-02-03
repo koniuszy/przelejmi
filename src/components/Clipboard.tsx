@@ -1,22 +1,20 @@
 import React, { FC, isValidElement } from 'react'
 
-import { useClipboard, useToast } from '@chakra-ui/react'
+import { useClipboard } from '@chakra-ui/react'
 
-import { successToastContent } from 'src/lib/toastContent'
-
-const Clipboard: FC<{ value: string; description: string }> = ({
+const Clipboard: FC<{ value: string; description: string; onCopy(): void }> = ({
   children,
   value,
   description,
+  onCopy,
 }) => {
-  const toast = useToast({ ...successToastContent, title: 'Saved to clipboard', description })
-  const { onCopy } = useClipboard(value)
+  const clipboard = useClipboard(value)
 
   return (
     <div
       onClick={() => {
+        clipboard.onCopy()
         onCopy()
-        toast()
       }}
     >
       {isValidElement(children) ? children : null}

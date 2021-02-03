@@ -20,7 +20,7 @@ const Pagination: FC<{
             const page = index + 1
             const props = page === currentPage ? activeButtonProps : {}
             return (
-              <Button w={50} onClick={() => onPageChange(page)} {...props} key={index}>
+              <Button w={50} onClick={() => onPageChange(page)} {...props} key={page}>
                 {page}
               </Button>
             )
@@ -40,7 +40,7 @@ const Pagination: FC<{
                 const props = page === currentPage ? activeButtonProps : {}
 
                 return (
-                  <Button w={50} onClick={() => onPageChange(page)} {...props} key={index}>
+                  <Button w={50} onClick={() => onPageChange(page)} {...props} key={page}>
                     {page}
                   </Button>
                 )

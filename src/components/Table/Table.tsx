@@ -99,8 +99,8 @@ const Table: FC<
 
       <Thead>
         <Tr>
-          {headerList.map((headerListItem) => (
-            <React.Fragment key={headerListItem.toString()}>
+          {headerList.map((headerListItem, index) => (
+            <React.Fragment key={index}>
               {typeof headerListItem === 'string' ? (
                 <Th>{headerListItem}</Th>
               ) : (
