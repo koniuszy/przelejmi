@@ -5,7 +5,7 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { CopyIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Tr,
   Td,
@@ -30,6 +30,7 @@ import {
   useDeleteMerchantMutation,
 } from 'src/generated/graphql'
 
+import Clipboard from 'src/components/ClipBoard'
 import Confirmation from 'src/components/Confirmation'
 import Table, { EditableCell } from 'src/components/Table'
 
@@ -200,6 +201,18 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
                         Edit
                       </MenuItem>
                     </NextLink>
+
+                    <Clipboard value={item.bankAccountPln} description="Bank account in PLN">
+                      <MenuItem icon={<CopyIcon w={3} h={3} />}>
+                        <Text>Copy bank account PLN</Text>
+                      </MenuItem>
+                    </Clipboard>
+
+                    <Clipboard value={item.bankAccountEur} description="Bank account in EUR">
+                      <MenuItem icon={<CopyIcon w={3} h={3} />}>
+                        <Text>Copy bank account EUR</Text>
+                      </MenuItem>
+                    </Clipboard>
 
                     <Confirmation
                       isLoading={deleteMerchantOptions.loading}
