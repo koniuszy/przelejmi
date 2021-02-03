@@ -204,7 +204,6 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
 
                     <Clipboard
                       value={item.bankAccountPln}
-                      description="Bank account in PLN"
                       onCopy={() =>
                         toast({
                           ...successToastContent,
@@ -220,7 +219,6 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
 
                     <Clipboard
                       value={item.bankAccountEur}
-                      description="Bank account in EUR"
                       onCopy={() =>
                         toast({
                           ...successToastContent,

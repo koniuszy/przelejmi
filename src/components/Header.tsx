@@ -43,6 +43,7 @@ const Header: FC = () => {
         <ButtonGroup variant="outline" spacing={5}>
           <NextLink href="/invoices">
             <Button
+              w="100px"
               colorScheme="teal"
               variant={router.pathname.includes('invoices') ? 'outline' : 'ghost'}
             >
@@ -52,6 +53,7 @@ const Header: FC = () => {
 
           <NextLink href="/scenarios">
             <Button
+              w="100px"
               colorScheme="teal"
               variant={router.pathname.includes('scenarios') ? 'outline' : 'ghost'}
             >
@@ -61,6 +63,7 @@ const Header: FC = () => {
 
           <NextLink href="/clients">
             <Button
+              w="100px"
               colorScheme="teal"
               variant={router.pathname.includes('clients') ? 'outline' : 'ghost'}
             >
@@ -70,6 +73,7 @@ const Header: FC = () => {
 
           <NextLink href="/merchants">
             <Button
+              w="100px"
               colorScheme="teal"
               variant={router.pathname.includes('merchants') ? 'outline' : 'ghost'}
             >
