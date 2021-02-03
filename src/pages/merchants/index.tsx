@@ -28,7 +28,6 @@ import {
   PaginatedMerchantListDocument,
   usePaginatedMerchantListQuery,
   useDeleteMerchantMutation,
-  PaginatedMerchantListQuery,
 } from 'src/generated/graphql'
 
 import Confirmation from 'src/components/Confirmation'
@@ -63,11 +62,15 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
       toast({ ...successToastContent, title: 'Merchant updated' })
       updateMerchantOptions.client.writeQuery({
         query: PaginatedMerchantListDocument,
+        variables,
         data: {
           ...data,
-          merchantList: data.paginatedMerchantList.list.map((item) =>
-            item.id === response.updatedMerchant.id ? response.updatedMerchant : item
-          ),
+          paginatedMerchantList: {
+            ...data.paginatedMerchantList,
+            list: data.paginatedMerchantList.list.map((item) =>
+              item.id === response.updatedMerchant.id ? response.updatedMerchant : item
+            ),
+          },
         },
       })
     },
@@ -85,12 +88,9 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
       })
       setMerchantDeletionId(null)
 
-      const data = deleteMerchantOptions.client.readQuery<PaginatedMerchantListQuery>({
-        query: PaginatedMerchantListDocument,
-      })
-
       deleteMerchantOptions.client.writeQuery({
         query: PaginatedMerchantListDocument,
+        variables,
         data: {
           ...data,
           paginatedMerchantList: {

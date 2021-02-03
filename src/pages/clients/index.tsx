@@ -28,7 +28,6 @@ import {
   PaginatedClientListDocument,
   usePaginatedClientListQuery,
   useDeleteClientMutation,
-  PaginatedClientListQuery,
 } from 'src/generated/graphql'
 import { ClientType, DBConditions } from 'src/types'
 
@@ -67,9 +66,10 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
       toast({ ...successToastContent, title: 'Client updated' })
       updateClientOptions.client.writeQuery({
         query: PaginatedClientListDocument,
+        variables,
         data: {
           ...data,
-          clientList: data.paginatedClientList.list.map((item) =>
+          paginatedClientList: data.paginatedClientList.list.map((item) =>
             item.id === response.updatedClient.id ? response.updatedClient : item
           ),
         },
@@ -89,18 +89,15 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
       })
       setClientDeletionId(null)
 
-      const data = deleteClientOptions.client.readQuery<PaginatedClientListQuery>({
-        query: PaginatedClientListDocument,
-      })
-
       deleteClientOptions.client.writeQuery({
         query: PaginatedClientListDocument,
+        variables,
         data: {
           ...data,
           paginatedClientList: {
             ...data.paginatedClientList,
             list: data.paginatedClientList.list.filter(
-              (clientListItem) => clientListItem.id !== response.deletedClient.id
+              ({ id }) => id !== response.deletedClient.id
             ),
           },
         },

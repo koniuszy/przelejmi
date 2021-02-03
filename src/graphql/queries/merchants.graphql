@@ -4,7 +4,12 @@ query paginatedMerchantList(
   $skip: Int!
   $take: Int!
 ) {
-  merchantList: paginatedMerchants(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
+  paginatedMerchantList: paginatedMerchants(
+    orderBy: $orderBy
+    where: $where
+    skip: $skip
+    take: $take
+  ) {
     totalCount
     list {
       id
