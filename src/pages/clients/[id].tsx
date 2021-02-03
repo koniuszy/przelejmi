@@ -30,6 +30,7 @@ import {
   PaginatedClientListDocument,
   ClientContentFragment,
   useUpdateClientMutation,
+  usePaginatedClientListQuery,
 } from 'src/generated/graphql'
 import { ClientType, OptimizedImg } from 'src/types'
 
@@ -44,8 +45,8 @@ const imgWidth = 500
 
 const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
   const toast = useToast()
-  const [clientType, setClientType] = useState<ClientType>(ClientType.company)
-  const [updateClient, { loading, client }] = useUpdateClientMutation({
+
+  const [updateClient, { client }] = useUpdateClientMutation({
     onCompleted(response) {
       toast({
         ...successToastContent,

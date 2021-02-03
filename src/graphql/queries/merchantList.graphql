@@ -12,18 +12,7 @@ query paginatedMerchantList(
   ) {
     totalCount
     list {
-      id
-      companyName
-      address
-      postCode
-      city
-      country
-      nip
-      bankAccountPln
-      bankAccountEur
-      bankName
-      email
-      issuerName
+      ...MerchantContent
     }
   }
 }

@@ -1,0 +1,5 @@
+query client {
+  client {
+    ...ClientContent
+  }
+}
