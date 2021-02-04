@@ -127,7 +127,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
   return (
     <>
       <Head>
-        <title>przelejmi | Create merchant</title>
+        <title>Create merchant | przelejmi</title>
       </Head>
 
       <Flex>

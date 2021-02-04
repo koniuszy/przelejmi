@@ -80,7 +80,7 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
   return (
     <>
       <Head>
-        <title>przelejmi | Edit client</title>
+        <title>Edit client | przelejmi</title>
       </Head>
 
       <Flex>

@@ -127,7 +127,7 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
   return (
     <div>
       <Head>
-        <title>przelejmi | Merchants</title>
+        <title>Merchants | przelejmi</title>
       </Head>
 
       <main>

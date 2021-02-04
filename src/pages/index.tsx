@@ -30,7 +30,7 @@ const App: FC<SSGProps> = (props) => {
   return (
     <div>
       <Head>
-        <title>przelejmi | Home page</title>
+        <title>Home page | przelejmi</title>
       </Head>
 
       <main>

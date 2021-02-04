@@ -80,7 +80,7 @@ const EditMerchant: FC<SSGProps> = ({ calmInTrolleyImg, initialMerchant }) => {
   return (
     <>
       <Head>
-        <title>przelejmi | Edit merchant</title>
+        <title>Edit merchant | przelejmi</title>
       </Head>
 
       <Flex>

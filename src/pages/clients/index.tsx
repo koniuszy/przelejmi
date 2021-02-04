@@ -127,7 +127,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
   return (
     <div>
       <Head>
-        <title>przelejmi | Clients</title>
+        <title>Clients | przelejmi</title>
       </Head>
 
       <main>

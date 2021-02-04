@@ -58,7 +58,7 @@ const App: FC = () => {
   return (
     <>
       <Head>
-        <title>przelejmi | Create scenario</title>
+        <title>Create scenario | przelejmi</title>
       </Head>
 
       <main>
