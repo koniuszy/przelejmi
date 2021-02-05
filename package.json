@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn codegen && next build",
     "start": "next start",
     "test": "NODE_ENV=test jest --runInBand",
     "gen": "yarn generate:prisma & rm src/generated/schema.graphql & rm src/generated/nexus-typegen.ts",

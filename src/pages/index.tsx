@@ -26,7 +26,6 @@ type SSGProps = {
 const App: FC<SSGProps> = (props) => {
   const { data } = useQuery(usersQuery)
 
-  console.log(data)
   return (
     <div>
       <Head>

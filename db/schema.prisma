@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -17,7 +17,7 @@ model Client {
   postCode String
   city     String
   country  String
-  nip      String?
+  VAT      String?
   Scenario Scenario[]
 }
 
@@ -29,30 +29,36 @@ model Merchant {
   postCode       String
   city           String
   country        String
-  nip            String
-  Scenario       Scenario[]
+  VAT            String
   email          String
   bankName       String
   bankAccountPln String
   bankAccountEur String?
+  Scenario       Scenario[]
 }
 
 model Scenario {
   id          Int      @id @default(autoincrement())
   name        String
-  paymentType String   @default("transfer")
-  currency    String   @default("PLN")
+  paymentType String
   netPerOne   Int
   VAT         Int
-  order       Int      @unique
-  description String
   amount      Int
-  unit        String   @default("item")
+  unit        String
   notes       String
+  dayPayments Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   client      Client   @relation(fields: [clientId], references: [id])
-  clientId    Int
   merchant    Merchant @relation(fields: [merchantId], references: [id])
+  clientId    Int
   merchantId  Int
+}
+
+model Invoice {
+  id        String   @id
+  issueDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  content   Json
 }
