@@ -29,6 +29,7 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+db/.env
 
 # vercel
 .vercel
@@ -36,4 +37,4 @@ yarn-error.log*
 # graphql
 api.graphql
 .tmp_build/
-generated/
+# generated/
