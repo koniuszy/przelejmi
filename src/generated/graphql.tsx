@@ -17,12 +17,12 @@ export type Scalars = {
 export type Client = {
   __typename?: 'Client';
   Scenario: Array<Scenario>;
+  VATId?: Maybe<Scalars['String']>;
   address: Scalars['String'];
   city: Scalars['String'];
   country: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  nip?: Maybe<Scalars['String']>;
   postCode: Scalars['String'];
 };
 
@@ -35,11 +35,11 @@ export type ClientScenarioArgs = {
 
 export type ClientCreateInput = {
   Scenario?: Maybe<ScenarioCreateNestedManyWithoutClientInput>;
+  VATId?: Maybe<Scalars['String']>;
   address: Scalars['String'];
   city: Scalars['String'];
   country: Scalars['String'];
   name: Scalars['String'];
-  nip?: Maybe<Scalars['String']>;
   postCode: Scalars['String'];
 };
 
@@ -55,31 +55,31 @@ export type ClientCreateOrConnectWithoutScenarioInput = {
 };
 
 export type ClientCreateWithoutScenarioInput = {
+  VATId?: Maybe<Scalars['String']>;
   address: Scalars['String'];
   city: Scalars['String'];
   country: Scalars['String'];
   name: Scalars['String'];
-  nip?: Maybe<Scalars['String']>;
   postCode: Scalars['String'];
 };
 
 export type ClientOrderByInput = {
+  VATId?: Maybe<SortOrder>;
   address?: Maybe<SortOrder>;
   city?: Maybe<SortOrder>;
   country?: Maybe<SortOrder>;
   id?: Maybe<SortOrder>;
   name?: Maybe<SortOrder>;
-  nip?: Maybe<SortOrder>;
   postCode?: Maybe<SortOrder>;
 };
 
 export type ClientUpdateInput = {
   Scenario?: Maybe<ScenarioUpdateManyWithoutClientInput>;
+  VATId?: Maybe<Scalars['String']>;
   address?: Maybe<Scalars['String']>;
   city?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  nip?: Maybe<Scalars['String']>;
   postCode?: Maybe<Scalars['String']>;
 };
 
@@ -92,11 +92,11 @@ export type ClientUpdateOneRequiredWithoutScenarioInput = {
 };
 
 export type ClientUpdateWithoutScenarioInput = {
+  VATId?: Maybe<Scalars['String']>;
   address?: Maybe<Scalars['String']>;
   city?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  nip?: Maybe<Scalars['String']>;
   postCode?: Maybe<Scalars['String']>;
 };
 
@@ -110,12 +110,12 @@ export type ClientWhereInput = {
   NOT?: Maybe<Array<ClientWhereInput>>;
   OR?: Maybe<Array<ClientWhereInput>>;
   Scenario?: Maybe<ScenarioListRelationFilter>;
+  VATId?: Maybe<StringNullableFilter>;
   address?: Maybe<StringFilter>;
   city?: Maybe<StringFilter>;
   country?: Maybe<StringFilter>;
   id?: Maybe<IntFilter>;
   name?: Maybe<StringFilter>;
-  nip?: Maybe<StringNullableFilter>;
   postCode?: Maybe<StringFilter>;
 };
 
@@ -149,8 +149,9 @@ export type IntFilter = {
 export type Merchant = {
   __typename?: 'Merchant';
   Scenario: Array<Scenario>;
+  VATId: Scalars['String'];
   address: Scalars['String'];
-  bankAccountEur: Scalars['String'];
+  bankAccountEur?: Maybe<Scalars['String']>;
   bankAccountPln: Scalars['String'];
   bankName: Scalars['String'];
   city: Scalars['String'];
@@ -159,7 +160,6 @@ export type Merchant = {
   email: Scalars['String'];
   id: Scalars['Int'];
   issuerName: Scalars['String'];
-  nip: Scalars['String'];
   postCode: Scalars['String'];
 };
 
@@ -172,8 +172,9 @@ export type MerchantScenarioArgs = {
 
 export type MerchantCreateInput = {
   Scenario?: Maybe<ScenarioCreateNestedManyWithoutMerchantInput>;
+  VATId: Scalars['String'];
   address: Scalars['String'];
-  bankAccountEur: Scalars['String'];
+  bankAccountEur?: Maybe<Scalars['String']>;
   bankAccountPln: Scalars['String'];
   bankName: Scalars['String'];
   city: Scalars['String'];
@@ -181,7 +182,6 @@ export type MerchantCreateInput = {
   country: Scalars['String'];
   email: Scalars['String'];
   issuerName: Scalars['String'];
-  nip: Scalars['String'];
   postCode: Scalars['String'];
 };
 
@@ -197,8 +197,9 @@ export type MerchantCreateOrConnectWithoutScenarioInput = {
 };
 
 export type MerchantCreateWithoutScenarioInput = {
+  VATId: Scalars['String'];
   address: Scalars['String'];
-  bankAccountEur: Scalars['String'];
+  bankAccountEur?: Maybe<Scalars['String']>;
   bankAccountPln: Scalars['String'];
   bankName: Scalars['String'];
   city: Scalars['String'];
@@ -206,11 +207,11 @@ export type MerchantCreateWithoutScenarioInput = {
   country: Scalars['String'];
   email: Scalars['String'];
   issuerName: Scalars['String'];
-  nip: Scalars['String'];
   postCode: Scalars['String'];
 };
 
 export type MerchantOrderByInput = {
+  VATId?: Maybe<SortOrder>;
   address?: Maybe<SortOrder>;
   bankAccountEur?: Maybe<SortOrder>;
   bankAccountPln?: Maybe<SortOrder>;
@@ -221,12 +222,12 @@ export type MerchantOrderByInput = {
   email?: Maybe<SortOrder>;
   id?: Maybe<SortOrder>;
   issuerName?: Maybe<SortOrder>;
-  nip?: Maybe<SortOrder>;
   postCode?: Maybe<SortOrder>;
 };
 
 export type MerchantUpdateInput = {
   Scenario?: Maybe<ScenarioUpdateManyWithoutMerchantInput>;
+  VATId?: Maybe<Scalars['String']>;
   address?: Maybe<Scalars['String']>;
   bankAccountEur?: Maybe<Scalars['String']>;
   bankAccountPln?: Maybe<Scalars['String']>;
@@ -236,7 +237,6 @@ export type MerchantUpdateInput = {
   country?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   issuerName?: Maybe<Scalars['String']>;
-  nip?: Maybe<Scalars['String']>;
   postCode?: Maybe<Scalars['String']>;
 };
 
@@ -249,6 +249,7 @@ export type MerchantUpdateOneRequiredWithoutScenarioInput = {
 };
 
 export type MerchantUpdateWithoutScenarioInput = {
+  VATId?: Maybe<Scalars['String']>;
   address?: Maybe<Scalars['String']>;
   bankAccountEur?: Maybe<Scalars['String']>;
   bankAccountPln?: Maybe<Scalars['String']>;
@@ -258,7 +259,6 @@ export type MerchantUpdateWithoutScenarioInput = {
   country?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   issuerName?: Maybe<Scalars['String']>;
-  nip?: Maybe<Scalars['String']>;
   postCode?: Maybe<Scalars['String']>;
 };
 
@@ -272,8 +272,9 @@ export type MerchantWhereInput = {
   NOT?: Maybe<Array<MerchantWhereInput>>;
   OR?: Maybe<Array<MerchantWhereInput>>;
   Scenario?: Maybe<ScenarioListRelationFilter>;
+  VATId?: Maybe<StringFilter>;
   address?: Maybe<StringFilter>;
-  bankAccountEur?: Maybe<StringFilter>;
+  bankAccountEur?: Maybe<StringNullableFilter>;
   bankAccountPln?: Maybe<StringFilter>;
   bankName?: Maybe<StringFilter>;
   city?: Maybe<StringFilter>;
@@ -282,7 +283,6 @@ export type MerchantWhereInput = {
   email?: Maybe<StringFilter>;
   id?: Maybe<IntFilter>;
   issuerName?: Maybe<StringFilter>;
-  nip?: Maybe<StringFilter>;
   postCode?: Maybe<StringFilter>;
 };
 
@@ -475,41 +475,41 @@ export type QueryScenariosArgs = {
   take?: Maybe<Scalars['Int']>;
 };
 
+export enum QueryMode {
+  Default = 'default',
+  Insensitive = 'insensitive'
+}
+
 export type Scenario = {
   __typename?: 'Scenario';
-  VAT: Scalars['Int'];
+  VATId: Scalars['Int'];
   amount: Scalars['Int'];
   client: Client;
   clientId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
-  currency: Scalars['String'];
-  description: Scalars['String'];
   id: Scalars['Int'];
   merchant: Merchant;
   merchantId: Scalars['Int'];
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  order: Scalars['Int'];
   paymentType: Scalars['String'];
   unit: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
 export type ScenarioCreateInput = {
-  VAT: Scalars['Int'];
+  VATId: Scalars['Int'];
   amount: Scalars['Int'];
   client: ClientCreateNestedOneWithoutScenarioInput;
   createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Scalars['String']>;
-  description: Scalars['String'];
+  dayPayments: Scalars['Int'];
   merchant: MerchantCreateNestedOneWithoutScenarioInput;
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  order: Scalars['Int'];
-  paymentType?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
+  paymentType: Scalars['String'];
+  unit: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -536,34 +536,30 @@ export type ScenarioCreateOrConnectWithoutmerchantInput = {
 };
 
 export type ScenarioCreateWithoutClientInput = {
-  VAT: Scalars['Int'];
+  VATId: Scalars['Int'];
   amount: Scalars['Int'];
   createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Scalars['String']>;
-  description: Scalars['String'];
+  dayPayments: Scalars['Int'];
   merchant: MerchantCreateNestedOneWithoutScenarioInput;
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  order: Scalars['Int'];
-  paymentType?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
+  paymentType: Scalars['String'];
+  unit: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type ScenarioCreateWithoutMerchantInput = {
-  VAT: Scalars['Int'];
+  VATId: Scalars['Int'];
   amount: Scalars['Int'];
   client: ClientCreateNestedOneWithoutScenarioInput;
   createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Scalars['String']>;
-  description: Scalars['String'];
+  dayPayments: Scalars['Int'];
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  order: Scalars['Int'];
-  paymentType?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
+  paymentType: Scalars['String'];
+  unit: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -577,50 +573,44 @@ export type ScenarioScalarWhereInput = {
   AND?: Maybe<Array<ScenarioScalarWhereInput>>;
   NOT?: Maybe<Array<ScenarioScalarWhereInput>>;
   OR?: Maybe<Array<ScenarioScalarWhereInput>>;
-  VAT?: Maybe<IntFilter>;
+  VATId?: Maybe<IntFilter>;
   amount?: Maybe<IntFilter>;
   clientId?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
-  currency?: Maybe<StringFilter>;
-  description?: Maybe<StringFilter>;
+  dayPayments?: Maybe<IntFilter>;
   id?: Maybe<IntFilter>;
   merchantId?: Maybe<IntFilter>;
   name?: Maybe<StringFilter>;
   netPerOne?: Maybe<IntFilter>;
   notes?: Maybe<StringFilter>;
-  order?: Maybe<IntFilter>;
   paymentType?: Maybe<StringFilter>;
   unit?: Maybe<StringFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
 };
 
 export type ScenarioUpdateInput = {
-  VAT?: Maybe<Scalars['Int']>;
+  VATId?: Maybe<Scalars['Int']>;
   amount?: Maybe<Scalars['Int']>;
   client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
   createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  dayPayments?: Maybe<Scalars['Int']>;
   merchant?: Maybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
-  order?: Maybe<Scalars['Int']>;
   paymentType?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type ScenarioUpdateManyMutationInput = {
-  VAT?: Maybe<Scalars['Int']>;
+  VATId?: Maybe<Scalars['Int']>;
   amount?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  dayPayments?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
-  order?: Maybe<Scalars['Int']>;
   paymentType?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -673,32 +663,28 @@ export type ScenarioUpdateWithWhereUniqueWithoutMerchantInput = {
 };
 
 export type ScenarioUpdateWithoutClientInput = {
-  VAT?: Maybe<Scalars['Int']>;
+  VATId?: Maybe<Scalars['Int']>;
   amount?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  dayPayments?: Maybe<Scalars['Int']>;
   merchant?: Maybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
-  order?: Maybe<Scalars['Int']>;
   paymentType?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type ScenarioUpdateWithoutMerchantInput = {
-  VAT?: Maybe<Scalars['Int']>;
+  VATId?: Maybe<Scalars['Int']>;
   amount?: Maybe<Scalars['Int']>;
   client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
   createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  dayPayments?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
-  order?: Maybe<Scalars['Int']>;
   paymentType?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -720,20 +706,18 @@ export type ScenarioWhereInput = {
   AND?: Maybe<Array<ScenarioWhereInput>>;
   NOT?: Maybe<Array<ScenarioWhereInput>>;
   OR?: Maybe<Array<ScenarioWhereInput>>;
-  VAT?: Maybe<IntFilter>;
+  VATId?: Maybe<IntFilter>;
   amount?: Maybe<IntFilter>;
   client?: Maybe<ClientWhereInput>;
   clientId?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
-  currency?: Maybe<StringFilter>;
-  description?: Maybe<StringFilter>;
+  dayPayments?: Maybe<IntFilter>;
   id?: Maybe<IntFilter>;
   merchant?: Maybe<MerchantWhereInput>;
   merchantId?: Maybe<IntFilter>;
   name?: Maybe<StringFilter>;
   netPerOne?: Maybe<IntFilter>;
   notes?: Maybe<StringFilter>;
-  order?: Maybe<IntFilter>;
   paymentType?: Maybe<StringFilter>;
   unit?: Maybe<StringFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
@@ -741,7 +725,6 @@ export type ScenarioWhereInput = {
 
 export type ScenarioWhereUniqueInput = {
   id?: Maybe<Scalars['Int']>;
-  order?: Maybe<Scalars['Int']>;
 };
 
 export enum SortOrder {
@@ -758,6 +741,7 @@ export type StringFilter = {
   in?: Maybe<Array<Scalars['String']>>;
   lt?: Maybe<Scalars['String']>;
   lte?: Maybe<Scalars['String']>;
+  mode?: Maybe<QueryMode>;
   not?: Maybe<NestedStringFilter>;
   notIn?: Maybe<Array<Scalars['String']>>;
   startsWith?: Maybe<Scalars['String']>;
@@ -772,6 +756,7 @@ export type StringNullableFilter = {
   in?: Maybe<Array<Scalars['String']>>;
   lt?: Maybe<Scalars['String']>;
   lte?: Maybe<Scalars['String']>;
+  mode?: Maybe<QueryMode>;
   not?: Maybe<NestedStringNullableFilter>;
   notIn?: Maybe<Array<Scalars['String']>>;
   startsWith?: Maybe<Scalars['String']>;
@@ -779,12 +764,12 @@ export type StringNullableFilter = {
 
 export type ClientContentFragment = (
   { __typename?: 'Client' }
-  & Pick<Client, 'id' | 'name' | 'address' | 'postCode' | 'city' | 'country' | 'nip'>
+  & Pick<Client, 'id' | 'name' | 'address' | 'postCode' | 'city' | 'country' | 'VATId'>
 );
 
 export type MerchantContentFragment = (
   { __typename?: 'Merchant' }
-  & Pick<Merchant, 'id' | 'companyName' | 'address' | 'postCode' | 'city' | 'country' | 'nip' | 'bankAccountPln' | 'bankAccountEur' | 'bankName' | 'email' | 'issuerName'>
+  & Pick<Merchant, 'id' | 'companyName' | 'address' | 'postCode' | 'city' | 'country' | 'VATId' | 'bankAccountPln' | 'bankAccountEur' | 'bankName' | 'email' | 'issuerName'>
 );
 
 export type CreateClientMutationVariables = Exact<{
@@ -941,7 +926,7 @@ export const ClientContentFragmentDoc = gql`
   postCode
   city
   country
-  nip
+  VATId
 }
     `;
 export const MerchantContentFragmentDoc = gql`
@@ -952,7 +937,7 @@ export const MerchantContentFragmentDoc = gql`
   postCode
   city
   country
-  nip
+  VATId
   bankAccountPln
   bankAccountEur
   bankName

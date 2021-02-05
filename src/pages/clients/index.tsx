@@ -19,8 +19,9 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { Client, PrismaClient } from 'prisma/prisma-client'
+import { Client } from 'prisma/prisma-client'
 
+import prisma from 'src/lib/prismaClient'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 import {
@@ -112,7 +113,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
 
   function handleUpdate(data: Partial<Client>, id: number) {
     const [value] = Object.values(data)
-    if (value === '' && data.nip !== value) {
+    if (value === '' && data.VATId !== value) {
       toast(errorToastContent)
       toast(warningToastContent)
       return
@@ -152,30 +153,32 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
               }
 
               const { type, ...rest } = newFilters
-              let nipFilters = {}
+              let VATIdFilters = {}
               if (type) {
                 if (type[DBConditions.notIncludes]) {
                   const [clientType] = type[DBConditions.notIncludes]
 
                   if (clientType === ClientType.company)
-                    nipFilters = { nip: { [DBConditions.equals]: null } }
+                    VATIdFilters = { VATId: { [DBConditions.equals]: null } }
 
                   if (clientType === ClientType.person)
-                    nipFilters = { [DBConditions.not]: { nip: { [DBConditions.equals]: null } } }
+                    VATIdFilters = {
+                      [DBConditions.not]: { VATId: { [DBConditions.equals]: null } },
+                    }
                 }
 
                 if (type[DBConditions.includes]?.length === 0)
-                  nipFilters = { nip: { [DBConditions.includes]: [] } }
+                  VATIdFilters = { VATId: { [DBConditions.includes]: [] } }
               }
 
-              refetch({ where: { ...rest, ...nipFilters } })
+              refetch({ where: { ...rest, ...VATIdFilters } })
             },
           }}
           headerList={[
             `total: ${totalRecordsCount}`,
             { title: 'name', sortableKey: 'name' },
             'type',
-            'nip',
+            'VATId',
             'address',
             'post Code',
             'city',
@@ -192,8 +195,8 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
                   onSubmit={(name) => handleUpdate({ name }, item.id)}
                 />
               </Td>
-              <Td>{item.nip ? ClientType.company : ClientType.person}</Td>
-              {['nip', 'address', 'post Code', 'city', 'country'].map((key) => (
+              <Td>{item.VATId ? ClientType.company : ClientType.person}</Td>
+              {['VATId', 'address', 'post Code', 'city', 'country'].map((key) => (
                 <Td key={key}>
                   <Editable
                     defaultValue={item[key]}
@@ -223,12 +226,12 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
                     </NextLink>
 
                     <Clipboard
-                      value={item.nip}
+                      value={item.VATId}
                       onCopy={() =>
                         toast({
                           ...successToastContent,
                           title: 'Saved in clipboard',
-                          description: `VAT id: ${item.nip}`,
+                          description: `VAT id: ${item.VATId}`,
                         })
                       }
                     >
@@ -285,7 +288,6 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
 }
 
 export const getStaticProps: GetStaticProps<SSGProps> = async () => {
-  const prisma = new PrismaClient()
   const [
     initialClientList,
     distinctCountryList,
@@ -303,8 +305,6 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
     }),
     prisma.client.count(),
   ])
-
-  prisma.$disconnect()
 
   return {
     props: {

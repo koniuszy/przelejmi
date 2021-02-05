@@ -8,8 +8,8 @@ import { Flex, Text, useToast } from '@chakra-ui/react'
 
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
-import { PrismaClient } from '@prisma/client'
 
+import prisma from 'src/lib/prismaClient'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import {
@@ -96,15 +96,15 @@ const EditMerchant: FC<SSGProps> = ({ calmInTrolleyImg, initialMerchant }) => {
             onSubmit={(companyName) => handleUpdate({ companyName })}
           />
 
-          {merchant.nip && (
+          {merchant.VATId && (
             <>
               <Text pt="5" pb="2" fontWeight="500">
                 Vat id
               </Text>
               <Editable
                 border
-                defaultValue={merchant.nip}
-                onSubmit={(nip) => handleUpdate({ nip })}
+                defaultValue={merchant.VATId}
+                onSubmit={(VATId) => handleUpdate({ VATId })}
               />
             </>
           )}
@@ -153,14 +153,11 @@ const EditMerchant: FC<SSGProps> = ({ calmInTrolleyImg, initialMerchant }) => {
 type Params = { id: string }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const prisma = new PrismaClient()
   const idList = await prisma.merchant.findMany({ select: { id: true } })
 
   const paths = idList.map(({ id }) => ({
     params: { id: id.toString() },
   }))
-
-  prisma.$disconnect()
 
   return {
     paths,
@@ -169,8 +166,6 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 }
 
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
-  const prisma = new PrismaClient()
-
   const src = '/womanWithFolders.jpg'
   const width = 1920
   const height = 2880
@@ -180,8 +175,6 @@ export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params 
     getBase64(img),
     prisma.merchant.findFirst({ where: { id: { equals: parseInt(params.id) } } }),
   ])
-
-  prisma.$disconnect()
 
   return {
     props: {

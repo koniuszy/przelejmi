@@ -22,7 +22,7 @@ export default function getInvoiceValues() {
         name: 'VIKING HOUSE SP Z 0 0',
         address: 'os. Stefana Batorego 39/12',
         postAddress: '60-687 Poznan, Polska / Poland',
-        nip: 'NIP / VAT ID 7811999024',
+        VATId: 'NIP / VAT ID 7811999024',
         email: 'vikinghouseinvestments@gmail.com',
         bankName: 'mBank',
         bankAccount: 'PL 30 1140 2004 0000 3802 7928 6778',
@@ -32,7 +32,7 @@ export default function getInvoiceValues() {
         name: 'Akwadrat Sp. z o.o.',
         address: 'ul. Św. Michała 100',
         postAddress: '61-005 Poznan, Polska / Poland',
-        nip: 'NIP / VAT ID 7822594822',
+        VATId: 'NIP / VAT ID 7822594822',
       },
     },
     body: {

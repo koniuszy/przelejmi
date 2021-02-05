@@ -19,8 +19,9 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { Merchant, PrismaClient } from 'prisma/prisma-client'
+import { Merchant } from 'prisma/prisma-client'
 
+import prisma from 'src/lib/prismaClient'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 import {
@@ -112,7 +113,7 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
 
   function handleUpdate(data: Partial<Merchant>, id: number) {
     const [value] = Object.values(data)
-    if (value === '' && data.nip !== value) {
+    if (value === '' && data.VATId !== value) {
       toast(errorToastContent)
       toast(warningToastContent)
       return
@@ -269,7 +270,6 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
 }
 
 export const getStaticProps: GetStaticProps<SSGProps> = async () => {
-  const prisma = new PrismaClient()
   const [
     initialMerchantList,
     distinctCountryList,
@@ -287,8 +287,6 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
     }),
     prisma.merchant.count(),
   ])
-
-  prisma.$disconnect()
 
   return {
     props: {

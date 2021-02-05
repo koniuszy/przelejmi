@@ -17,7 +17,7 @@ model Client {
   postCode String
   city     String
   country  String
-  VAT      String?
+  VATId    String?
   Scenario Scenario[]
 }
 
@@ -29,7 +29,7 @@ model Merchant {
   postCode       String
   city           String
   country        String
-  VAT            String
+  VATId          String
   email          String
   bankName       String
   bankAccountPln String
@@ -42,7 +42,7 @@ model Scenario {
   name        String
   paymentType String
   netPerOne   Int
-  VAT         Int
+  VATId       Int
   amount      Int
   unit        String
   notes       String

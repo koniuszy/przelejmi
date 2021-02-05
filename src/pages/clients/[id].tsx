@@ -8,8 +8,8 @@ import { Flex, RadioGroup, Stack, Radio, Text, useToast } from '@chakra-ui/react
 
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
-import { PrismaClient } from '@prisma/client'
 
+import prisma from 'src/lib/prismaClient'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import {
@@ -88,8 +88,8 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
 
         <Flex direction="column">
           <RadioGroup
-            value={client.nip ? ClientType.company : ClientType.person}
-            onChange={() => handleUpdate({ nip: client.nip ? null : '0' })}
+            value={client.VATId ? ClientType.company : ClientType.person}
+            onChange={() => handleUpdate({ VATId: client.VATId ? null : '0' })}
           >
             <Text fontWeight="500">Client type</Text>
             <Stack pt="3" spacing={5} direction="row">
@@ -106,15 +106,15 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
           </Text>
           <Editable border defaultValue={client.name} onSubmit={(name) => handleUpdate({ name })} />
 
-          {client.nip && (
+          {client.VATId && (
             <>
               <Text pt="5" pb="2" fontWeight="500">
                 Vat id
               </Text>
               <Editable
                 border
-                defaultValue={client.nip}
-                onSubmit={(nip) => handleUpdate({ nip })}
+                defaultValue={client.VATId}
+                onSubmit={(VATId) => handleUpdate({ VATId })}
               />
             </>
           )}
@@ -159,14 +159,11 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
 type Params = { id: string }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const prisma = new PrismaClient()
   const idList = await prisma.client.findMany({ select: { id: true } })
 
   const paths = idList.map(({ id }) => ({
     params: { id: id.toString() },
   }))
-
-  prisma.$disconnect()
 
   return {
     paths,
@@ -175,8 +172,6 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 }
 
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
-  const prisma = new PrismaClient()
-
   const src = '/calmInTrolley.jpg'
   const width = 1920
   const height = 2880
@@ -186,8 +181,6 @@ export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params 
     getBase64(img),
     prisma.client.findFirst({ where: { id: { equals: parseInt(params.id) } } }),
   ])
-
-  prisma.$disconnect()
 
   return {
     props: {

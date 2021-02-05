@@ -37,7 +37,7 @@ type Form = {
   postCode: string
   city: string
   country: string
-  nip: string
+  VATId: string
   bankName: string
   bankAccountPln: string
   bankAccountEur: string
@@ -88,7 +88,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       postCode: '',
       city: '',
       country: '',
-      nip: '',
+      VATId: '',
       bankAccountPln: '',
       bankAccountEur: '',
       bankName: '',
@@ -118,7 +118,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       if (values.bankAccountEur.length < 26 || values.bankAccountEur.length > 30)
         errors.bankAccountEur = 'Bank account should be between 26 and 30 digits'
       if (values.email.length > 100) errors.email = 'Email should be shorter'
-      if (isNaN(Number(values.nip.replace(/ /g, '')))) errors.nip = 'NIP is invalid'
+      if (isNaN(Number(values.VATId.replace(/ /g, '')))) errors.VATId = 'NIP is invalid'
 
       return errors
     },
@@ -147,15 +147,15 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
             </FormControl>
 
             <Flex direction="row">
-              <FormControl isRequired mt="5" id="nip" isInvalid={!!errors.nip}>
-                <FormLabel htmlFor="nip">NIP</FormLabel>
+              <FormControl isRequired mt="5" id="VATId" isInvalid={!!errors.VATId}>
+                <FormLabel htmlFor="VATId">NIP</FormLabel>
                 <Input
-                  name="nip"
+                  name="VATId"
                   placeholder="12345678"
-                  value={values.nip}
+                  value={values.VATId}
                   onChange={handleChange}
                 />
-                <FormErrorMessage>{errors.nip}</FormErrorMessage>
+                <FormErrorMessage>{errors.VATId}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired mt="5" ml="7" id="country" isInvalid={!!errors.country}>

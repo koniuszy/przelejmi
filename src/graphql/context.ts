@@ -2,12 +2,12 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { PrismaClient } from 'prisma/prisma-client'
 
+import prisma from 'src/lib/prismaClient'
+
 type NextApi = {
   req: NextApiRequest
   res: NextApiResponse
 }
-
-const prisma = new PrismaClient()
 
 export type Context = {
   prisma: PrismaClient

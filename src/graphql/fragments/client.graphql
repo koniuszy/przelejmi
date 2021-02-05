@@ -5,5 +5,5 @@ fragment ClientContent on Client {
   postCode
   city
   country
-  nip
+  VATId
 }

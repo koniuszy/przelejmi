@@ -21,7 +21,7 @@ declare global {
 export interface NexusGenInputs {
   ClientCreateInput: { // input type
     Scenario?: NexusGenInputs['ScenarioCreateNestedManyWithoutClientInput'] | null; // ScenarioCreateNestedManyWithoutClientInput
-    VAT?: string | null; // String
+    VATId?: string | null; // String
     address: string; // String!
     city: string; // String!
     country: string; // String!
@@ -38,7 +38,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ClientWhereUniqueInput']; // ClientWhereUniqueInput!
   }
   ClientCreateWithoutScenarioInput: { // input type
-    VAT?: string | null; // String
+    VATId?: string | null; // String
     address: string; // String!
     city: string; // String!
     country: string; // String!
@@ -46,7 +46,7 @@ export interface NexusGenInputs {
     postCode: string; // String!
   }
   ClientOrderByInput: { // input type
-    VAT?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    VATId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     address?: NexusGenEnums['SortOrder'] | null; // SortOrder
     city?: NexusGenEnums['SortOrder'] | null; // SortOrder
     country?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -56,7 +56,7 @@ export interface NexusGenInputs {
   }
   ClientUpdateInput: { // input type
     Scenario?: NexusGenInputs['ScenarioUpdateManyWithoutClientInput'] | null; // ScenarioUpdateManyWithoutClientInput
-    VAT?: string | null; // String
+    VATId?: string | null; // String
     address?: string | null; // String
     city?: string | null; // String
     country?: string | null; // String
@@ -71,7 +71,7 @@ export interface NexusGenInputs {
     upsert?: NexusGenInputs['ClientUpsertWithoutScenarioInput'] | null; // ClientUpsertWithoutScenarioInput
   }
   ClientUpdateWithoutScenarioInput: { // input type
-    VAT?: string | null; // String
+    VATId?: string | null; // String
     address?: string | null; // String
     city?: string | null; // String
     country?: string | null; // String
@@ -87,7 +87,7 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['ClientWhereInput'][] | null; // [ClientWhereInput!]
     OR?: NexusGenInputs['ClientWhereInput'][] | null; // [ClientWhereInput!]
     Scenario?: NexusGenInputs['ScenarioListRelationFilter'] | null; // ScenarioListRelationFilter
-    VAT?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
+    VATId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     address?: NexusGenInputs['StringFilter'] | null; // StringFilter
     city?: NexusGenInputs['StringFilter'] | null; // StringFilter
     country?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -120,7 +120,7 @@ export interface NexusGenInputs {
   }
   MerchantCreateInput: { // input type
     Scenario?: NexusGenInputs['ScenarioCreateNestedManyWithoutMerchantInput'] | null; // ScenarioCreateNestedManyWithoutMerchantInput
-    VAT: string; // String!
+    VATId: string; // String!
     address: string; // String!
     bankAccountEur?: string | null; // String
     bankAccountPln: string; // String!
@@ -142,7 +142,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['MerchantWhereUniqueInput']; // MerchantWhereUniqueInput!
   }
   MerchantCreateWithoutScenarioInput: { // input type
-    VAT: string; // String!
+    VATId: string; // String!
     address: string; // String!
     bankAccountEur?: string | null; // String
     bankAccountPln: string; // String!
@@ -155,7 +155,7 @@ export interface NexusGenInputs {
     postCode: string; // String!
   }
   MerchantOrderByInput: { // input type
-    VAT?: NexusGenEnums['SortOrder'] | null; // SortOrder
+    VATId?: NexusGenEnums['SortOrder'] | null; // SortOrder
     address?: NexusGenEnums['SortOrder'] | null; // SortOrder
     bankAccountEur?: NexusGenEnums['SortOrder'] | null; // SortOrder
     bankAccountPln?: NexusGenEnums['SortOrder'] | null; // SortOrder
@@ -170,7 +170,7 @@ export interface NexusGenInputs {
   }
   MerchantUpdateInput: { // input type
     Scenario?: NexusGenInputs['ScenarioUpdateManyWithoutMerchantInput'] | null; // ScenarioUpdateManyWithoutMerchantInput
-    VAT?: string | null; // String
+    VATId?: string | null; // String
     address?: string | null; // String
     bankAccountEur?: string | null; // String
     bankAccountPln?: string | null; // String
@@ -190,7 +190,7 @@ export interface NexusGenInputs {
     upsert?: NexusGenInputs['MerchantUpsertWithoutScenarioInput'] | null; // MerchantUpsertWithoutScenarioInput
   }
   MerchantUpdateWithoutScenarioInput: { // input type
-    VAT?: string | null; // String
+    VATId?: string | null; // String
     address?: string | null; // String
     bankAccountEur?: string | null; // String
     bankAccountPln?: string | null; // String
@@ -211,7 +211,7 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['MerchantWhereInput'][] | null; // [MerchantWhereInput!]
     OR?: NexusGenInputs['MerchantWhereInput'][] | null; // [MerchantWhereInput!]
     Scenario?: NexusGenInputs['ScenarioListRelationFilter'] | null; // ScenarioListRelationFilter
-    VAT?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    VATId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     address?: NexusGenInputs['StringFilter'] | null; // StringFilter
     bankAccountEur?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     bankAccountPln?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -274,7 +274,7 @@ export interface NexusGenInputs {
     startsWith?: string | null; // String
   }
   ScenarioCreateInput: { // input type
-    VAT: number; // Int!
+    VATId: number; // Int!
     amount: number; // Int!
     client: NexusGenInputs['ClientCreateNestedOneWithoutScenarioInput']; // ClientCreateNestedOneWithoutScenarioInput!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -306,7 +306,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ScenarioWhereUniqueInput']; // ScenarioWhereUniqueInput!
   }
   ScenarioCreateWithoutClientInput: { // input type
-    VAT: number; // Int!
+    VATId: number; // Int!
     amount: number; // Int!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dayPayments: number; // Int!
@@ -319,7 +319,7 @@ export interface NexusGenInputs {
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioCreateWithoutMerchantInput: { // input type
-    VAT: number; // Int!
+    VATId: number; // Int!
     amount: number; // Int!
     client: NexusGenInputs['ClientCreateNestedOneWithoutScenarioInput']; // ClientCreateNestedOneWithoutScenarioInput!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -340,7 +340,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
     NOT?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
     OR?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
-    VAT?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    VATId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     amount?: NexusGenInputs['IntFilter'] | null; // IntFilter
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -355,7 +355,7 @@ export interface NexusGenInputs {
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
   }
   ScenarioUpdateInput: { // input type
-    VAT?: number | null; // Int
+    VATId?: number | null; // Int
     amount?: number | null; // Int
     client?: NexusGenInputs['ClientUpdateOneRequiredWithoutScenarioInput'] | null; // ClientUpdateOneRequiredWithoutScenarioInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -369,7 +369,7 @@ export interface NexusGenInputs {
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioUpdateManyMutationInput: { // input type
-    VAT?: number | null; // Int
+    VATId?: number | null; // Int
     amount?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dayPayments?: number | null; // Int
@@ -421,7 +421,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ScenarioWhereUniqueInput']; // ScenarioWhereUniqueInput!
   }
   ScenarioUpdateWithoutClientInput: { // input type
-    VAT?: number | null; // Int
+    VATId?: number | null; // Int
     amount?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dayPayments?: number | null; // Int
@@ -434,7 +434,7 @@ export interface NexusGenInputs {
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioUpdateWithoutMerchantInput: { // input type
-    VAT?: number | null; // Int
+    VATId?: number | null; // Int
     amount?: number | null; // Int
     client?: NexusGenInputs['ClientUpdateOneRequiredWithoutScenarioInput'] | null; // ClientUpdateOneRequiredWithoutScenarioInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -460,7 +460,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
     NOT?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
     OR?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
-    VAT?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    VATId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     amount?: NexusGenInputs['IntFilter'] | null; // IntFilter
     client?: NexusGenInputs['ClientWhereInput'] | null; // ClientWhereInput
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
@@ -525,6 +525,7 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Client: { // root type
+    VATId?: string | null; // String
     address: string; // String!
     city: string; // String!
     country: string; // String!
@@ -533,6 +534,7 @@ export interface NexusGenObjects {
     postCode: string; // String!
   }
   Merchant: { // root type
+    VATId: string; // String!
     address: string; // String!
     bankAccountEur?: string | null; // String
     bankAccountPln: string; // String!
@@ -556,7 +558,7 @@ export interface NexusGenObjects {
   }
   Query: {};
   Scenario: { // root type
-    VAT: number; // Int!
+    VATId: number; // Int!
     amount: number; // Int!
     clientId: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -584,6 +586,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 export interface NexusGenFieldTypes {
   Client: { // field return type
     Scenario: NexusGenRootTypes['Scenario'][]; // [Scenario!]!
+    VATId: string | null; // String
     address: string; // String!
     city: string; // String!
     country: string; // String!
@@ -593,6 +596,7 @@ export interface NexusGenFieldTypes {
   }
   Merchant: { // field return type
     Scenario: NexusGenRootTypes['Scenario'][]; // [Scenario!]!
+    VATId: string; // String!
     address: string; // String!
     bankAccountEur: string | null; // String
     bankAccountPln: string; // String!
@@ -634,7 +638,7 @@ export interface NexusGenFieldTypes {
     scenarios: NexusGenRootTypes['Scenario'][]; // [Scenario!]!
   }
   Scenario: { // field return type
-    VAT: number; // Int!
+    VATId: number; // Int!
     amount: number; // Int!
     client: NexusGenRootTypes['Client']; // Client!
     clientId: number; // Int!
@@ -654,6 +658,7 @@ export interface NexusGenFieldTypes {
 export interface NexusGenFieldTypeNames {
   Client: { // field return type name
     Scenario: 'Scenario'
+    VATId: 'String'
     address: 'String'
     city: 'String'
     country: 'String'
@@ -663,6 +668,7 @@ export interface NexusGenFieldTypeNames {
   }
   Merchant: { // field return type name
     Scenario: 'Scenario'
+    VATId: 'String'
     address: 'String'
     bankAccountEur: 'String'
     bankAccountPln: 'String'
@@ -704,7 +710,7 @@ export interface NexusGenFieldTypeNames {
     scenarios: 'Scenario'
   }
   Scenario: { // field return type name
-    VAT: 'Int'
+    VATId: 'Int'
     amount: 'Int'
     client: 'Client'
     clientId: 'Int'

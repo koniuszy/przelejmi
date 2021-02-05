@@ -41,7 +41,7 @@ type Form = {
   postCode: string
   city: string
   country: string
-  nip: string
+  VATId: string
 }
 
 const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
@@ -83,12 +83,12 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
   })
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
-    initialValues: { name: '', address: '', postCode: '', city: '', country: '', nip: '' },
+    initialValues: { name: '', address: '', postCode: '', city: '', country: '', VATId: '' },
     onSubmit(values) {
-      const { nip, ...data } = values
+      const { VATId, ...data } = values
       createClient({
         variables: {
-          data: { ...data, nip: clientType === ClientType.company ? nip : null },
+          data: { ...data, VATId: clientType === ClientType.company ? VATId : null },
         },
       })
     },
@@ -101,7 +101,7 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
       if (values.postCode.length > 10) errors.postCode = 'Post code should be shorter'
       if (values.city.length > 100) errors.city = 'City should be shorter'
       if (values.country.length > 100) errors.country = 'Country should be shorter'
-      if (isNaN(Number(values.nip.replace(/ /g, '')))) errors.nip = 'NIP is invalid'
+      if (isNaN(Number(values.VATId.replace(/ /g, '')))) errors.VATId = 'NIP is invalid'
 
       return errors
     },
@@ -141,15 +141,15 @@ const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => {
             </FormControl>
 
             {clientType === ClientType.company && (
-              <FormControl isRequired mt="10" id="nip" isInvalid={!!errors.nip}>
-                <FormLabel htmlFor="nip">NIP</FormLabel>
+              <FormControl isRequired mt="10" id="VATId" isInvalid={!!errors.VATId}>
+                <FormLabel htmlFor="VATId">NIP</FormLabel>
                 <Input
-                  name="nip"
+                  name="VATId"
                   placeholder="12345678"
-                  value={values.nip}
+                  value={values.VATId}
                   onChange={handleChange}
                 />
-                <FormErrorMessage>{errors.nip}</FormErrorMessage>
+                <FormErrorMessage>{errors.VATId}</FormErrorMessage>
               </FormControl>
             )}
 

@@ -24,7 +24,7 @@ export default function getMessages({
       name: { text: '', x: contractorsXOffset, y: contractorsYOffset + 5 },
       address: { text: '', x: contractorsXOffset, y: contractorsYOffset + 10 },
       postAddress: { text: '', x: contractorsXOffset, y: contractorsYOffset + 14 },
-      nip: { text: '', x: contractorsXOffset, y: contractorsYOffset + 19 },
+      VATId: { text: '', x: contractorsXOffset, y: contractorsYOffset + 19 },
       email: { text: '', x: contractorsXOffset, y: contractorsYOffset + 24 },
       bankName: { text: '', x: contractorsXOffset, y: contractorsYOffset + 29 },
       bankAccount: { text: '', x: contractorsXOffset, y: contractorsYOffset + 33 },
@@ -34,7 +34,7 @@ export default function getMessages({
       name: { text: '', x: contractorsXOffset + 90, y: 50 },
       address: { text: '', x: contractorsXOffset + 90, y: 55 },
       postAddress: { text: '', x: contractorsXOffset + 90, y: 59 },
-      nip: { text: '', x: contractorsXOffset + 90, y: 64 },
+      VATId: { text: '', x: contractorsXOffset + 90, y: 64 },
     },
   }
 

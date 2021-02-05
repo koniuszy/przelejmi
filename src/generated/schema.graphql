@@ -4,6 +4,7 @@
 
 type Client {
   Scenario(cursor: ScenarioWhereUniqueInput, skip: Int, take: Int): [Scenario!]!
+  VATId: String
   address: String!
   city: String!
   country: String!
@@ -14,7 +15,7 @@ type Client {
 
 input ClientCreateInput {
   Scenario: ScenarioCreateNestedManyWithoutClientInput
-  VAT: String
+  VATId: String
   address: String!
   city: String!
   country: String!
@@ -34,7 +35,7 @@ input ClientCreateOrConnectWithoutScenarioInput {
 }
 
 input ClientCreateWithoutScenarioInput {
-  VAT: String
+  VATId: String
   address: String!
   city: String!
   country: String!
@@ -43,7 +44,7 @@ input ClientCreateWithoutScenarioInput {
 }
 
 input ClientOrderByInput {
-  VAT: SortOrder
+  VATId: SortOrder
   address: SortOrder
   city: SortOrder
   country: SortOrder
@@ -54,7 +55,7 @@ input ClientOrderByInput {
 
 input ClientUpdateInput {
   Scenario: ScenarioUpdateManyWithoutClientInput
-  VAT: String
+  VATId: String
   address: String
   city: String
   country: String
@@ -71,7 +72,7 @@ input ClientUpdateOneRequiredWithoutScenarioInput {
 }
 
 input ClientUpdateWithoutScenarioInput {
-  VAT: String
+  VATId: String
   address: String
   city: String
   country: String
@@ -89,7 +90,7 @@ input ClientWhereInput {
   NOT: [ClientWhereInput!]
   OR: [ClientWhereInput!]
   Scenario: ScenarioListRelationFilter
-  VAT: StringNullableFilter
+  VATId: StringNullableFilter
   address: StringFilter
   city: StringFilter
   country: StringFilter
@@ -128,6 +129,7 @@ input IntFilter {
 
 type Merchant {
   Scenario(cursor: ScenarioWhereUniqueInput, skip: Int, take: Int): [Scenario!]!
+  VATId: String!
   address: String!
   bankAccountEur: String
   bankAccountPln: String!
@@ -143,7 +145,7 @@ type Merchant {
 
 input MerchantCreateInput {
   Scenario: ScenarioCreateNestedManyWithoutMerchantInput
-  VAT: String!
+  VATId: String!
   address: String!
   bankAccountEur: String
   bankAccountPln: String!
@@ -168,7 +170,7 @@ input MerchantCreateOrConnectWithoutScenarioInput {
 }
 
 input MerchantCreateWithoutScenarioInput {
-  VAT: String!
+  VATId: String!
   address: String!
   bankAccountEur: String
   bankAccountPln: String!
@@ -182,7 +184,7 @@ input MerchantCreateWithoutScenarioInput {
 }
 
 input MerchantOrderByInput {
-  VAT: SortOrder
+  VATId: SortOrder
   address: SortOrder
   bankAccountEur: SortOrder
   bankAccountPln: SortOrder
@@ -198,7 +200,7 @@ input MerchantOrderByInput {
 
 input MerchantUpdateInput {
   Scenario: ScenarioUpdateManyWithoutMerchantInput
-  VAT: String
+  VATId: String
   address: String
   bankAccountEur: String
   bankAccountPln: String
@@ -220,7 +222,7 @@ input MerchantUpdateOneRequiredWithoutScenarioInput {
 }
 
 input MerchantUpdateWithoutScenarioInput {
-  VAT: String
+  VATId: String
   address: String
   bankAccountEur: String
   bankAccountPln: String
@@ -243,7 +245,7 @@ input MerchantWhereInput {
   NOT: [MerchantWhereInput!]
   OR: [MerchantWhereInput!]
   Scenario: ScenarioListRelationFilter
-  VAT: StringFilter
+  VATId: StringFilter
   address: StringFilter
   bankAccountEur: StringNullableFilter
   bankAccountPln: StringFilter
@@ -349,7 +351,7 @@ enum QueryMode {
 }
 
 type Scenario {
-  VAT: Int!
+  VATId: Int!
   amount: Int!
   client: Client!
   clientId: Int!
@@ -366,7 +368,7 @@ type Scenario {
 }
 
 input ScenarioCreateInput {
-  VAT: Int!
+  VATId: Int!
   amount: Int!
   client: ClientCreateNestedOneWithoutScenarioInput!
   createdAt: DateTime
@@ -403,7 +405,7 @@ input ScenarioCreateOrConnectWithoutmerchantInput {
 }
 
 input ScenarioCreateWithoutClientInput {
-  VAT: Int!
+  VATId: Int!
   amount: Int!
   createdAt: DateTime
   dayPayments: Int!
@@ -417,7 +419,7 @@ input ScenarioCreateWithoutClientInput {
 }
 
 input ScenarioCreateWithoutMerchantInput {
-  VAT: Int!
+  VATId: Int!
   amount: Int!
   client: ClientCreateNestedOneWithoutScenarioInput!
   createdAt: DateTime
@@ -440,7 +442,7 @@ input ScenarioScalarWhereInput {
   AND: [ScenarioScalarWhereInput!]
   NOT: [ScenarioScalarWhereInput!]
   OR: [ScenarioScalarWhereInput!]
-  VAT: IntFilter
+  VATId: IntFilter
   amount: IntFilter
   clientId: IntFilter
   createdAt: DateTimeFilter
@@ -456,7 +458,7 @@ input ScenarioScalarWhereInput {
 }
 
 input ScenarioUpdateInput {
-  VAT: Int
+  VATId: Int
   amount: Int
   client: ClientUpdateOneRequiredWithoutScenarioInput
   createdAt: DateTime
@@ -471,7 +473,7 @@ input ScenarioUpdateInput {
 }
 
 input ScenarioUpdateManyMutationInput {
-  VAT: Int
+  VATId: Int
   amount: Int
   createdAt: DateTime
   dayPayments: Int
@@ -530,7 +532,7 @@ input ScenarioUpdateWithWhereUniqueWithoutMerchantInput {
 }
 
 input ScenarioUpdateWithoutClientInput {
-  VAT: Int
+  VATId: Int
   amount: Int
   createdAt: DateTime
   dayPayments: Int
@@ -544,7 +546,7 @@ input ScenarioUpdateWithoutClientInput {
 }
 
 input ScenarioUpdateWithoutMerchantInput {
-  VAT: Int
+  VATId: Int
   amount: Int
   client: ClientUpdateOneRequiredWithoutScenarioInput
   createdAt: DateTime
@@ -573,7 +575,7 @@ input ScenarioWhereInput {
   AND: [ScenarioWhereInput!]
   NOT: [ScenarioWhereInput!]
   OR: [ScenarioWhereInput!]
-  VAT: IntFilter
+  VATId: IntFilter
   amount: IntFilter
   client: ClientWhereInput
   clientId: IntFilter
