@@ -73,5 +73,10 @@
   },
   "prisma": {
     "schema": "db/schema.prisma"
+  },
+  "resolutions": {
+    "@prisma/cli": "2.16.0",
+    "@prisma/client": "2.16.0",
+    "graphql": "15.5.0"
   }
 }
