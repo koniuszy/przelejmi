@@ -35,7 +35,7 @@
     "next": "10.0.6",
     "nextjs-progressbar": "^0.0.7",
     "nexus": "^1.0.0",
-    "nexus-plugin-prisma": "^0.29.0",
+    "nexus-plugin-prisma": "^0.30.0",
     "prisma": "2.16.0",
     "react": "^17.0.1",
     "react-dom": "17.0.1"
