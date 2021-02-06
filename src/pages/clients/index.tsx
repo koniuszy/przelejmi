@@ -134,7 +134,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
       <main>
         <Table
           emptyListHeading="No clients yet 🤫"
-          createHref="create/client"
+          createHref="clients/create"
           perPage={PER_PAGE}
           totalRecordsCount={totalRecordsCount}
           list={clientList}

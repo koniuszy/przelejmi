@@ -3,8 +3,9 @@ import React, { FC } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
-import { Flex, Text, useToast } from '@chakra-ui/react'
+import { Center, Flex, Spinner, Text, useToast } from '@chakra-ui/react'
 
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
@@ -79,10 +80,6 @@ const EditMerchant: FC<SSGProps> = ({ calmInTrolleyImg, initialMerchant }) => {
 
   return (
     <>
-      <Head>
-        <title>Edit merchant | przelejmi</title>
-      </Head>
-
       <Flex>
         <BlurredImg optimizedImg={calmInTrolleyImg} width={500} />
 
@@ -150,6 +147,25 @@ const EditMerchant: FC<SSGProps> = ({ calmInTrolleyImg, initialMerchant }) => {
   )
 }
 
+const EditMerchantPage: FC<SSGProps> = (props) => {
+  const route = useRouter()
+
+  return (
+    <>
+      <Head>
+        <title>Edit merchant | przelejmi</title>
+      </Head>
+      {route.isFallback ? (
+        <Center>
+          <Spinner />
+        </Center>
+      ) : (
+        <EditMerchant {...props} />
+      )}
+    </>
+  )
+}
+
 type Params = { id: string }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
@@ -188,4 +204,4 @@ export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params 
   }
 }
 
-export default EditMerchant
+export default EditMerchantPage
