@@ -3,11 +3,8 @@ import React, { FC } from 'react'
 import { GetStaticProps } from 'next'
 
 import Head from 'next/head'
-import NextLink from 'next/link'
 
 import { signIn } from 'next-auth/client'
-
-import downloadPdf from 'src/lib/downloadPdf'
 
 type SSGProps = {
   users: { name: string }[]
