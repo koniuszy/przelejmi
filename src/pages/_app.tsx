@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { ChakraProvider, extendTheme, Box } from '@chakra-ui/react'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { Provider } from 'next-auth/client'
 import NextProgressBar from 'nextjs-progressbar'
 
 import Header from 'src/components/Header'
@@ -52,14 +53,16 @@ function MyApp({ Component, pageProps }) {
         height={3}
       />
 
-      <ApolloProvider client={client}>
-        <ChakraProvider theme={extendedTheme}>
-          <Header />
-          <Box px="40" py="10">
-            <Component customProp="s" {...pageProps} />
-          </Box>
-        </ChakraProvider>
-      </ApolloProvider>
+      <Provider session={pageProps.session}>
+        <ApolloProvider client={client}>
+          <ChakraProvider theme={extendedTheme}>
+            <Header />
+            <Box px="40" py="10">
+              <Component {...pageProps} />
+            </Box>
+          </ChakraProvider>
+        </ApolloProvider>
+      </Provider>
     </>
   )
 }
