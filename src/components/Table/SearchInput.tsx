@@ -14,6 +14,15 @@ export type Search =
 
 const searchKeyBlackList = ['__typename', 'type', 'id']
 
+export const SearchInputPlaceholder: FC = () => (
+  <InputGroup>
+    <InputRightElement pointerEvents="none">
+      <Search2Icon />
+    </InputRightElement>
+    <Input readOnly placeholder="Search" />
+  </InputGroup>
+)
+
 const SearchInput: FC<{
   onSearch(search: Search): void
   keyList: string[]

@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { Text, Flex, Center, Switch, FormControl, FormLabel } from '@chakra-ui/react'
 
 import DrawerFilters, { TriggerFiltersButton, Filters } from './DrawerFilters'
-import SearchInput, { Search } from './SearchInput'
+import SearchInput, { Search, SearchInputPlaceholder } from './SearchInput'
 import { Props } from './Table'
 
 export type TableHeaderProps = {
@@ -15,6 +15,33 @@ export type TableHeaderProps = {
   onEditableToggle(v: boolean): void
   onDrawerChange?(newFilters: Filters): void
 }
+
+export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (
+  <Flex justifyContent="space-between" pb="5">
+    <Text fontSize="4xl" textAlign="center">
+      {title}
+    </Text>
+
+    <Flex>
+      <Center pr="5">
+        <SearchInputPlaceholder />
+      </Center>
+
+      <Center pr="5">
+        <TriggerFiltersButton isActive={false} onOpen={() => null} />
+      </Center>
+
+      <Center>
+        <FormControl id="editable" display="flex" alignItems="center">
+          <FormLabel htmlFor="editable" mb="0">
+            Editable
+          </FormLabel>
+          <Switch size="lg" colorScheme="teal" defaultChecked={false} />
+        </FormControl>
+      </Center>
+    </Flex>
+  </Flex>
+)
 
 const TableHeader: FC<TableHeaderProps & Props> = ({
   title,

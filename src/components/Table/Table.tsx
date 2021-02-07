@@ -11,6 +11,8 @@ import {
   TableCaption,
   Button,
   Heading,
+  Stack,
+  Skeleton,
 } from '@chakra-ui/react'
 
 import {
@@ -24,9 +26,21 @@ import {
   MerchantContentFragment,
 } from 'src/generated/graphql'
 
-import TableHeader, { TableHeaderProps } from './Header'
+import TableHeader, { TableHeaderProps, TableHeaderPlaceholder } from './Header'
 import Pagination from './Pagination'
 import SortTh from './SortTh'
+
+export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
+  <>
+    <TableHeaderPlaceholder title={title} />
+    <Stack>
+      <Skeleton mt={4} height="27px" />
+      {new Array(8).fill(null).map((_, index) => (
+        <Skeleton key={index} height="67px" />
+      ))}
+    </Stack>
+  </>
+)
 
 export interface Props {
   refetch({

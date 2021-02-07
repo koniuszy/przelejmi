@@ -15,7 +15,6 @@ import {
   MenuItem,
   useToast,
   useDisclosure,
-  Spinner,
 } from '@chakra-ui/react'
 
 import { Merchant } from 'prisma/prisma-client'
@@ -32,11 +31,12 @@ import {
 import Clipboard from 'src/components/Clipboard'
 import Confirmation from 'src/components/Confirmation'
 import Editable from 'src/components/Editable'
-import Table from 'src/components/Table'
+import Table, { TablePlaceholder } from 'src/components/Table'
 
 export const PER_PAGE = 10
+const TITLE = 'Total merchants'
 
-const App: FC = () => {
+const MerchantTable: FC = () => {
   const toast = useToast()
   const [isEditable, setIsEditable] = useState(false)
   const [merchantDeletionId, setMerchantDeletionId] = useState<number | null>(null)
@@ -109,7 +109,7 @@ const App: FC = () => {
     updateMerchant({ variables: { data, id } })
   }
 
-  if (!data) return <Spinner />
+  if (!data) return <TablePlaceholder title={TITLE} />
 
   const {
     list: merchantList,
@@ -118,146 +118,148 @@ const App: FC = () => {
   } = data.paginatedMerchantList
 
   return (
-    <div>
+    <Table
+      emptyListHeading="No merchants yet 🤫"
+      createHref="merchants/create"
+      perPage={PER_PAGE}
+      totalRecordsCount={totalCount}
+      list={merchantList}
+      variables={variables}
+      refetch={refetch}
+      filtersHeaderProps={{
+        title: TITLE,
+        isEditable,
+        filterOptions: { countryList, cityList },
+        drawerOptions,
+        onEditableToggle: setIsEditable,
+      }}
+      headerList={[
+        `total: ${totalCount}`,
+        { title: 'company', sortableKey: 'companyName' },
+        { title: 'issuer', sortableKey: 'issuerName' },
+        'email',
+        'bank',
+        'actions',
+      ]}
+      rowRender={(item: Merchant, index) => (
+        <Tr key={item.id}>
+          <Td>{index + 1}.</Td>
+          <Td>
+            <Editable
+              defaultValue={item.companyName}
+              isDisabled={!isEditable}
+              onSubmit={(companyName) => handleUpdate({ companyName }, item.id)}
+            />
+          </Td>
+          <Td>
+            <Editable
+              defaultValue={item.issuerName}
+              isDisabled={!isEditable}
+              onSubmit={(issuerName) => handleUpdate({ issuerName }, item.id)}
+            />
+          </Td>
+          <Td>
+            <Editable
+              defaultValue={item.email}
+              isDisabled={!isEditable}
+              onSubmit={(email) => handleUpdate({ email }, item.id)}
+            />
+          </Td>
+          <Td>
+            <Editable
+              defaultValue={item.bankName}
+              isDisabled={!isEditable}
+              onSubmit={(bankName) => handleUpdate({ bankName }, item.id)}
+            />
+          </Td>
+
+          <Td>
+            <Menu closeOnSelect={false} onClose={() => setMerchantDeletionId(null)}>
+              <MenuButton
+                as={Button}
+                variant="ghost"
+                cursor="pointer"
+                colorScheme="teal"
+                onClick={() => setOpenActionsRowId(openActionsRowId === item.id ? null : item.id)}
+              >
+                …
+              </MenuButton>
+              <MenuList>
+                <NextLink href={`merchants/${item.id}`}>
+                  <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
+                    Edit
+                  </MenuItem>
+                </NextLink>
+
+                <Clipboard
+                  value={item.bankAccountPln}
+                  onCopy={() =>
+                    toast({
+                      ...successToastContent,
+                      title: 'Saved in clipboard',
+                      description: `bank account pln: ${item.bankAccountPln}`,
+                    })
+                  }
+                >
+                  <MenuItem icon={<CopyIcon w={3} h={3} />}>
+                    <Text>Copy bank account PLN</Text>
+                  </MenuItem>
+                </Clipboard>
+
+                <Clipboard
+                  value={item.bankAccountEur}
+                  onCopy={() =>
+                    toast({
+                      ...successToastContent,
+                      title: 'Saved in clipboard',
+                      description: `bank account eur: ${item.bankAccountEur}`,
+                    })
+                  }
+                >
+                  <MenuItem icon={<CopyIcon w={3} h={3} />}>
+                    <Text>Copy bank account EUR</Text>
+                  </MenuItem>
+                </Clipboard>
+
+                <Confirmation
+                  confirmText="delete"
+                  isLoading={deleteMerchantOptions.loading}
+                  id={item.id === merchantDeletionId ? merchantDeletionId : null}
+                  onClick={() => deleteMerchant({ variables: { id: item.id } })}
+                  onClose={() => {
+                    setMerchantDeletionId(null)
+                    setOpenActionsRowId(null)
+                  }}
+                >
+                  <MenuItem
+                    bg="red.500"
+                    py="0.4rem"
+                    px="0.8rem"
+                    _focus={{ bg: 'red.400' }}
+                    icon={<DeleteIcon w={3} h={3} />}
+                    onClick={() => setMerchantDeletionId(item.id)}
+                  >
+                    <Text>Delete</Text>
+                  </MenuItem>
+                </Confirmation>
+              </MenuList>
+            </Menu>
+          </Td>
+        </Tr>
+      )}
+    />
+  )
+}
+
+const MerchantPage = () => (
+  <>
+    <main>
       <Head>
         <title>Merchants | przelejmi</title>
       </Head>
+      <MerchantTable />
+    </main>
+  </>
+)
 
-      <main>
-        <Table
-          emptyListHeading="No merchants yet 🤫"
-          createHref="merchants/create"
-          perPage={PER_PAGE}
-          totalRecordsCount={totalCount}
-          list={merchantList}
-          variables={variables}
-          refetch={refetch}
-          filtersHeaderProps={{
-            title: 'Total merchants',
-            isEditable,
-            filterOptions: { countryList, cityList },
-            drawerOptions,
-            onEditableToggle: setIsEditable,
-          }}
-          headerList={[
-            `total: ${totalCount}`,
-            { title: 'company', sortableKey: 'companyName' },
-            { title: 'issuer', sortableKey: 'issuerName' },
-            'email',
-            'bank',
-            'actions',
-          ]}
-          rowRender={(item: Merchant, index) => (
-            <Tr key={item.id}>
-              <Td>{index + 1}.</Td>
-              <Td>
-                <Editable
-                  defaultValue={item.companyName}
-                  isDisabled={!isEditable}
-                  onSubmit={(companyName) => handleUpdate({ companyName }, item.id)}
-                />
-              </Td>
-              <Td>
-                <Editable
-                  defaultValue={item.issuerName}
-                  isDisabled={!isEditable}
-                  onSubmit={(issuerName) => handleUpdate({ issuerName }, item.id)}
-                />
-              </Td>
-              <Td>
-                <Editable
-                  defaultValue={item.email}
-                  isDisabled={!isEditable}
-                  onSubmit={(email) => handleUpdate({ email }, item.id)}
-                />
-              </Td>
-              <Td>
-                <Editable
-                  defaultValue={item.bankName}
-                  isDisabled={!isEditable}
-                  onSubmit={(bankName) => handleUpdate({ bankName }, item.id)}
-                />
-              </Td>
-
-              <Td>
-                <Menu closeOnSelect={false} onClose={() => setMerchantDeletionId(null)}>
-                  <MenuButton
-                    as={Button}
-                    variant="ghost"
-                    cursor="pointer"
-                    colorScheme="teal"
-                    onClick={() =>
-                      setOpenActionsRowId(openActionsRowId === item.id ? null : item.id)
-                    }
-                  >
-                    …
-                  </MenuButton>
-                  <MenuList>
-                    <NextLink href={`merchants/${item.id}`}>
-                      <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
-                        Edit
-                      </MenuItem>
-                    </NextLink>
-
-                    <Clipboard
-                      value={item.bankAccountPln}
-                      onCopy={() =>
-                        toast({
-                          ...successToastContent,
-                          title: 'Saved in clipboard',
-                          description: `bank account pln: ${item.bankAccountPln}`,
-                        })
-                      }
-                    >
-                      <MenuItem icon={<CopyIcon w={3} h={3} />}>
-                        <Text>Copy bank account PLN</Text>
-                      </MenuItem>
-                    </Clipboard>
-
-                    <Clipboard
-                      value={item.bankAccountEur}
-                      onCopy={() =>
-                        toast({
-                          ...successToastContent,
-                          title: 'Saved in clipboard',
-                          description: `bank account eur: ${item.bankAccountEur}`,
-                        })
-                      }
-                    >
-                      <MenuItem icon={<CopyIcon w={3} h={3} />}>
-                        <Text>Copy bank account EUR</Text>
-                      </MenuItem>
-                    </Clipboard>
-
-                    <Confirmation
-                      confirmText="delete"
-                      isLoading={deleteMerchantOptions.loading}
-                      id={item.id === merchantDeletionId ? merchantDeletionId : null}
-                      onClick={() => deleteMerchant({ variables: { id: item.id } })}
-                      onClose={() => {
-                        setMerchantDeletionId(null)
-                        setOpenActionsRowId(null)
-                      }}
-                    >
-                      <MenuItem
-                        bg="red.500"
-                        py="0.4rem"
-                        px="0.8rem"
-                        _focus={{ bg: 'red.400' }}
-                        icon={<DeleteIcon w={3} h={3} />}
-                        onClick={() => setMerchantDeletionId(item.id)}
-                      >
-                        <Text>Delete</Text>
-                      </MenuItem>
-                    </Confirmation>
-                  </MenuList>
-                </Menu>
-              </Td>
-            </Tr>
-          )}
-        />
-      </main>
-    </div>
-  )
-}
-export default App
+export default MerchantPage

@@ -1,1 +1,1 @@
-export { default } from './Table'
+export { default, TablePlaceholder } from './Table'
