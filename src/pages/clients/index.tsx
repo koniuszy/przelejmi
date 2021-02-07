@@ -110,8 +110,11 @@ const App: FC = () => {
 
   if (!data) return <Spinner />
 
-  const clientList = data.paginatedClientList.list
-  const totalRecordsCount = data.paginatedClientList.totalCount
+  const {
+    list: clientList,
+    totalCount,
+    filters: { cityList, countryList },
+  } = data.paginatedClientList
 
   return (
     <div>
@@ -124,14 +127,14 @@ const App: FC = () => {
           emptyListHeading="No clients yet 🤫"
           createHref="clients/create"
           perPage={PER_PAGE}
-          totalRecordsCount={totalRecordsCount}
+          totalRecordsCount={totalCount}
           list={clientList}
           variables={variables}
           refetch={refetch}
           filtersHeaderProps={{
             title: 'Total clients',
             isEditable: isEditable,
-            filterOptions: { ...data.paginatedClientList.filters, type: Object.values(ClientType) },
+            filterOptions: { cityList, countryList, type: Object.values(ClientType) },
             drawerOptions: drawerOptions,
             onEditableToggle: setIsEditable,
             onDrawerChange(newFilters) {
@@ -163,7 +166,7 @@ const App: FC = () => {
             },
           }}
           headerList={[
-            `total: ${totalRecordsCount}`,
+            `total: ${totalCount}`,
             { title: 'name', sortableKey: 'name' },
             'type',
             'VATId',

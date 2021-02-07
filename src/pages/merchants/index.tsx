@@ -111,7 +111,11 @@ const App: FC = () => {
 
   if (!data) return <Spinner />
 
-  const { list: merchantList, totalCount, filters } = data.paginatedMerchantList
+  const {
+    list: merchantList,
+    totalCount,
+    filters: { countryList, cityList },
+  } = data.paginatedMerchantList
 
   return (
     <div>
@@ -131,7 +135,7 @@ const App: FC = () => {
           filtersHeaderProps={{
             title: 'Total merchants',
             isEditable,
-            filterOptions: filters,
+            filterOptions: { countryList, cityList },
             drawerOptions,
             onEditableToggle: setIsEditable,
           }}
