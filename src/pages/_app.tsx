@@ -9,6 +9,9 @@ import NextProgressBar from 'nextjs-progressbar'
 import Header from 'src/components/Header'
 
 const extendedTheme = extendTheme({
+  config: {
+    initialColorMode: 'dark',
+  },
   styles: {
     global: {
       '.nextImgBox': {
