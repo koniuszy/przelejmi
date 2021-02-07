@@ -129,7 +129,7 @@ const Header: FC = () => {
                 <MenuItem
                   color="red"
                   _hover={{ color: 'white', bg: 'red' }}
-                  onClick={() => signOut()}
+                  onClick={() => signOut({ callbackUrl: '/' })}
                 >
                   Sign out
                 </MenuItem>
