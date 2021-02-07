@@ -240,7 +240,7 @@ const ClientsTable: FC = () => {
                 </Clipboard>
 
                 <Confirmation
-                  confirmText="delete"
+                  confirmText="Delete"
                   isLoading={deleteClientOptions.loading}
                   id={item.id === clientDeletionId ? clientDeletionId : null}
                   onClick={() => deleteClient({ variables: { id: item.id } })}
@@ -250,10 +250,10 @@ const ClientsTable: FC = () => {
                   }}
                 >
                   <MenuItem
-                    bg="red.500"
                     py="0.4rem"
                     px="0.8rem"
-                    _focus={{ bg: 'red.400' }}
+                    color="red"
+                    _focus={{ color: 'white', bg: 'red' }}
                     icon={<DeleteIcon w={3} h={3} />}
                     onClick={() => setClientDeletionId(item.id)}
                   >

@@ -230,7 +230,7 @@ const App: FC = () => {
                     </Clipboard>
 
                     <Confirmation
-                      confirmText="delete"
+                      confirmText="Delete"
                       isLoading={deleteMerchantOptions.loading}
                       id={item.id === merchantDeletionId ? merchantDeletionId : null}
                       onClick={() => deleteMerchant({ variables: { id: item.id } })}
@@ -240,10 +240,10 @@ const App: FC = () => {
                       }}
                     >
                       <MenuItem
-                        bg="red.500"
                         py="0.4rem"
                         px="0.8rem"
-                        _focus={{ bg: 'red.400' }}
+                        color="red"
+                        _focus={{ color: 'white', bg: 'red' }}
                         icon={<DeleteIcon w={3} h={3} />}
                         onClick={() => setMerchantDeletionId(item.id)}
                       >

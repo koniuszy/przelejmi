@@ -39,7 +39,7 @@ const Confirmation: FC<{
             <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button isLoading={isLoading} color="red.400" onClick={onClick}>
+            <Button isLoading={isLoading} onClick={onClick}>
               {confirmText}
             </Button>
           </ButtonGroup>
