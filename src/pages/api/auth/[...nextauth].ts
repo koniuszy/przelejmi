@@ -6,14 +6,25 @@ import Providers from 'next-auth/providers'
 
 import prisma from 'src/lib/prismaClient'
 
+const whiteList = [
+  'michal.stefan.konczak@gmail.com',
+  'ms.magdalena.kozlowska@gmail.com',
+  'bogusz.konczak@gmail.com',
+]
+
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
+    adapter: Adapters.Prisma.Adapter({ prisma }),
     providers: [
-      Providers.GitHub({
-        clientId: process.env.GITHUB_CLIENT_ID,
-        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      Providers.Google({
+        clientId: process.env.GOOGLE_ID,
+        clientSecret: process.env.GOOGLE_SECRET,
       }),
     ],
-    adapter: Adapters.Prisma.Adapter({ prisma }),
+    callbacks: {
+      async signIn(user, account, profile) {
+        return profile.verified_email && whiteList.includes(profile.email)
+      },
+    },
   })
 export default authHandler

@@ -4,6 +4,8 @@ import { GetStaticProps } from 'next'
 
 import Head from 'next/head'
 
+import { Button } from '@chakra-ui/react'
+
 import { signIn } from 'next-auth/client'
 
 type SSGProps = {
@@ -18,7 +20,7 @@ const App: FC<SSGProps> = (props) => {
       </Head>
 
       <main>
-        <button onClick={() => signIn()}>sign in</button>
+        <Button onClick={() => signIn()}>sign in</Button>
       </main>
     </div>
   )

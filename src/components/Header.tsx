@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import {
   Center,
   Flex,
@@ -14,10 +14,21 @@ import {
   Text,
   Button,
   ButtonGroup,
+  Avatar,
+  AvatarBadge,
 } from '@chakra-ui/react'
+
+import { useSession, signOut, signIn } from 'next-auth/client'
 
 const Header: FC = () => {
   const router = useRouter()
+  const [session, isSessionLoading] = useSession()
+
+  useEffect(() => {
+    if (!isSessionLoading && !session?.user) {
+      signIn('google')
+    }
+  }, [isSessionLoading])
 
   return (
     <header>
@@ -108,25 +119,25 @@ const Header: FC = () => {
           </MenuList>
         </Menu>
 
-        <ButtonGroup isAttached>
-          <NextLink href="/profile">
-            <Button
-              colorScheme="teal"
-              variant={router.pathname.includes('profile') ? 'outline' : 'ghost'}
-            >
-              Profile
-            </Button>
-          </NextLink>
-
-          <NextLink href="/placeholder">
-            <Button
-              colorScheme="teal"
-              variant={router.pathname.includes('placeholder') ? 'outline' : 'ghost'}
-            >
-              placeholder
-            </Button>
-          </NextLink>
-        </ButtonGroup>
+        <Avatar zIndex={2} size="sm" name={session?.user.name} src={session?.user.image}>
+          <AvatarBadge _hover={{ bg: 'gray.700' }} bg="black" cursor="pointer">
+            <Menu>
+              <MenuButton color="white" as={ChevronDownIcon}>
+                Actions
+              </MenuButton>
+              <MenuList color="white">
+                <MenuItem>Preferences</MenuItem>
+                <MenuItem
+                  color="red"
+                  _hover={{ color: 'white', bg: 'red' }}
+                  onClick={() => signOut()}
+                >
+                  Sign out
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </AvatarBadge>
+        </Avatar>
       </Flex>
     </header>
   )

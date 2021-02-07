@@ -89,7 +89,7 @@ const Table: FC<
           <>
             <Heading as="h2">{emptyListHeading}</Heading>
             <NextLink href={createHref}>
-              <Button size="lg" mt={5} colorScheme="teal">
+              <Button mt={5} colorScheme="teal">
                 Create
               </Button>
             </NextLink>
