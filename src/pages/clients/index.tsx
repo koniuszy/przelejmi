@@ -1,7 +1,5 @@
 import React, { FC, useState } from 'react'
 
-import { GetStaticProps } from 'next'
-
 import Head from 'next/head'
 import NextLink from 'next/link'
 
@@ -17,11 +15,11 @@ import {
   MenuItem,
   useToast,
   useDisclosure,
+  Spinner,
 } from '@chakra-ui/react'
 
 import { Client } from 'prisma/prisma-client'
 
-import prisma from 'src/lib/prismaClient'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 import {
@@ -37,21 +35,9 @@ import Confirmation from 'src/components/Confirmation'
 import Editable from 'src/components/Editable'
 import Table from 'src/components/Table'
 
-type FilterOptions = {
-  country: string[]
-  city: string[]
-  type: ClientType[]
-}
-
-type SSGProps = {
-  initialClientList: Client[]
-  filterOptions: FilterOptions
-  initialTotalCount: number
-}
-
 export const PER_PAGE = 10
 
-const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount }) => {
+const App: FC = () => {
   const toast = useToast()
 
   const [isEditable, setIsEditable] = useState(false)
@@ -122,8 +108,10 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
     updateClient({ variables: { data, id } })
   }
 
-  const clientList = data?.paginatedClientList.list || initialClientList
-  const totalRecordsCount = data?.paginatedClientList.totalCount ?? initialTotalCount
+  if (!data) return <Spinner />
+
+  const clientList = data.paginatedClientList.list
+  const totalRecordsCount = data.paginatedClientList.totalCount
 
   return (
     <div>
@@ -143,7 +131,7 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
           filtersHeaderProps={{
             title: 'Total clients',
             isEditable: isEditable,
-            filterOptions: filterOptions,
+            filterOptions: { ...data.paginatedClientList.filters, type: Object.values(ClientType) },
             drawerOptions: drawerOptions,
             onEditableToggle: setIsEditable,
             onDrawerChange(newFilters) {
@@ -285,39 +273,6 @@ const App: FC<SSGProps> = ({ initialClientList, filterOptions, initialTotalCount
       </main>
     </div>
   )
-}
-
-export const getStaticProps: GetStaticProps<SSGProps> = async () => {
-  const [
-    initialClientList,
-    distinctCountryList,
-    distinctCityList,
-    initialTotalCount,
-  ] = await Promise.all([
-    prisma.client.findMany({ take: PER_PAGE }),
-    prisma.client.findMany({
-      distinct: 'country',
-      select: { country: true },
-    }),
-    prisma.client.findMany({
-      distinct: 'city',
-      select: { city: true },
-    }),
-    prisma.client.count(),
-  ])
-
-  return {
-    props: {
-      initialClientList,
-      initialTotalCount,
-      filterOptions: {
-        country: distinctCountryList.map(({ country }) => country),
-        city: distinctCityList.map(({ city }) => city),
-        type: Object.values(ClientType),
-      },
-    },
-    revalidate: 10,
-  }
 }
 
 export default App

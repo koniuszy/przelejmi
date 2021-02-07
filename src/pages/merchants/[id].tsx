@@ -28,13 +28,12 @@ import { PER_PAGE } from './index'
 
 type SSGProps = {
   calmInTrolleyImg: OptimizedImg
-  initialMerchant: MerchantContentFragment
+  merchantId: number
 }
 
-const EditMerchant: FC<SSGProps> = ({ calmInTrolleyImg, initialMerchant }) => {
+const EditMerchant: FC<SSGProps> = ({ calmInTrolleyImg, merchantId }) => {
   const toast = useToast()
-  const id = initialMerchant.id
-  const { data, updateQuery } = useMerchantQuery({ variables: { where: { id } } })
+  const { data, updateQuery } = useMerchantQuery({ variables: { where: { id: merchantId } } })
 
   const [updateMerchant, updateMerchantOptions] = useUpdateMerchantMutation({
     onCompleted(response) {
@@ -74,9 +73,12 @@ const EditMerchant: FC<SSGProps> = ({ calmInTrolleyImg, initialMerchant }) => {
   })
 
   function handleUpdate(data: Partial<MerchantContentFragment>) {
-    updateMerchant({ variables: { data, id } })
+    updateMerchant({ variables: { data, id: merchantId } })
   }
-  const merchant = data?.merchant ?? initialMerchant
+
+  if (!data) return <Spinner />
+
+  const { merchant } = data
 
   return (
     <>
@@ -187,14 +189,11 @@ export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params 
   const height = 2880
   const img = await getImage(src)
 
-  const [base64, initialMerchant] = await Promise.all([
-    getBase64(img),
-    prisma.merchant.findFirst({ where: { id: { equals: parseInt(params.id) } } }),
-  ])
+  const base64 = await getBase64(img)
 
   return {
     props: {
-      initialMerchant,
+      merchantId: Number(params.id),
       calmInTrolleyImg: {
         src,
         base64,

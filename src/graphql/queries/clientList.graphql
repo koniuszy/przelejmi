@@ -11,6 +11,10 @@ query paginatedClientList(
     skip: $skip
   ) {
     totalCount
+    filters {
+      countryList
+      cityList
+    }
     list {
       ...ClientContent
     }

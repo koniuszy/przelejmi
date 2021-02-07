@@ -28,13 +28,12 @@ import { PER_PAGE } from './index'
 
 type SSGProps = {
   calmInTrolleyImg: OptimizedImg
-  initialClient: ClientContentFragment
+  clientId: number
 }
 
-const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
+const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, clientId }) => {
   const toast = useToast()
-  const id = initialClient.id
-  const { data, updateQuery } = useClientQuery({ variables: { where: { id } } })
+  const { data, updateQuery } = useClientQuery({ variables: { where: { id: clientId } } })
 
   const [updateClient, updateClientOptions] = useUpdateClientMutation({
     onCompleted(response) {
@@ -74,9 +73,11 @@ const EditClient: FC<SSGProps> = ({ calmInTrolleyImg, initialClient }) => {
   })
 
   function handleUpdate(data: Partial<ClientContentFragment>) {
-    updateClient({ variables: { data, id } })
+    updateClient({ variables: { data, id: clientId } })
   }
-  const client = data?.client ?? initialClient
+  if (!data) return <Spinner />
+
+  const { client } = data
 
   return (
     <Flex>
@@ -191,14 +192,11 @@ export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params 
   const height = 2880
   const img = await getImage(src)
 
-  const [base64, initialClient] = await Promise.all([
-    getBase64(img),
-    prisma.client.findFirst({ where: { id: { equals: parseInt(params.id) } } }),
-  ])
+  const base64 = await getBase64(img)
 
   return {
     props: {
-      initialClient,
+      clientId: Number(params.id),
       calmInTrolleyImg: {
         src,
         base64,

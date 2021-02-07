@@ -11,6 +11,10 @@ query paginatedMerchantList(
     take: $take
   ) {
     totalCount
+    filters {
+      countryList
+      cityList
+    }
     list {
       ...MerchantContent
     }

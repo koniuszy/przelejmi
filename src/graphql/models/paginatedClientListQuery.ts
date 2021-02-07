@@ -1,9 +1,18 @@
 import { objectType, intArg, arg, extendType } from 'nexus'
 
+export const PaginatedClientsFilters = objectType({
+  name: 'PaginatedClientsFilters',
+  definition(t) {
+    t.list.string('countryList')
+    t.list.string('cityList')
+  },
+})
+
 export const PaginatedClients = objectType({
   name: 'PaginatedClients',
   definition(t) {
     t.int('totalCount')
+    t.field('filters', { type: 'PaginatedClientsFilters' })
     t.list.field('list', { type: 'Client' })
   },
 })
@@ -21,11 +30,26 @@ export const PaginatedClientListQuery = extendType({
         orderBy: arg({ type: 'ClientOrderByInput', list: true }),
       },
       async resolve(_root, variables, { prisma }) {
-        const [totalCount, list] = await Promise.all([
+        const [totalCount, list, countryList, cityList] = await Promise.all([
           prisma.client.count({ where: variables.where }),
           prisma.client.findMany(variables),
+          prisma.client.findMany({
+            distinct: 'country',
+            select: { country: true },
+          }),
+          prisma.client.findMany({
+            distinct: 'city',
+            select: { city: true },
+          }),
         ])
-        return { totalCount, list }
+        return {
+          totalCount,
+          list,
+          filters: {
+            countryList: countryList.map(({ country }) => country),
+            cityList: cityList.map(({ city }) => city),
+          },
+        }
       },
     })
   },

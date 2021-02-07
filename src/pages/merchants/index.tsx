@@ -1,7 +1,5 @@
 import React, { FC, useState } from 'react'
 
-import { GetStaticProps } from 'next'
-
 import Head from 'next/head'
 import NextLink from 'next/link'
 
@@ -17,11 +15,11 @@ import {
   MenuItem,
   useToast,
   useDisclosure,
+  Spinner,
 } from '@chakra-ui/react'
 
-import { Merchant, PrismaClient } from 'prisma/prisma-client'
+import { Merchant } from 'prisma/prisma-client'
 
-import prisma from 'src/lib/prismaClient'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 import {
@@ -36,20 +34,9 @@ import Confirmation from 'src/components/Confirmation'
 import Editable from 'src/components/Editable'
 import Table from 'src/components/Table'
 
-type FilterOptions = {
-  country: string[]
-  city: string[]
-}
-
-type SSGProps = {
-  initialMerchantList: Merchant[]
-  filterOptions: FilterOptions
-  initialTotalCount: number
-}
-
 export const PER_PAGE = 10
 
-const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCount }) => {
+const App: FC = () => {
   const toast = useToast()
   const [isEditable, setIsEditable] = useState(false)
   const [merchantDeletionId, setMerchantDeletionId] = useState<number | null>(null)
@@ -122,8 +109,9 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
     updateMerchant({ variables: { data, id } })
   }
 
-  const merchantList = data?.paginatedMerchantList.list || initialMerchantList
-  const totalRecordsCount = data?.paginatedMerchantList.totalCount ?? initialTotalCount
+  if (!data) return <Spinner />
+
+  const { list: merchantList, totalCount, filters } = data.paginatedMerchantList
 
   return (
     <div>
@@ -136,19 +124,19 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
           emptyListHeading="No merchants yet 🤫"
           createHref="merchants/create"
           perPage={PER_PAGE}
-          totalRecordsCount={totalRecordsCount}
+          totalRecordsCount={totalCount}
           list={merchantList}
           variables={variables}
           refetch={refetch}
           filtersHeaderProps={{
             title: 'Total merchants',
             isEditable,
-            filterOptions,
+            filterOptions: filters,
             drawerOptions,
             onEditableToggle: setIsEditable,
           }}
           headerList={[
-            `total: ${totalRecordsCount}`,
+            `total: ${totalCount}`,
             { title: 'company', sortableKey: 'companyName' },
             { title: 'issuer', sortableKey: 'issuerName' },
             'email',
@@ -268,37 +256,4 @@ const App: FC<SSGProps> = ({ initialMerchantList, filterOptions, initialTotalCou
     </div>
   )
 }
-
-export const getStaticProps: GetStaticProps<SSGProps> = async () => {
-  const [
-    initialMerchantList,
-    distinctCountryList,
-    distinctCityList,
-    initialTotalCount,
-  ] = await Promise.all([
-    prisma.merchant.findMany({ take: PER_PAGE }),
-    prisma.merchant.findMany({
-      distinct: 'country',
-      select: { country: true },
-    }),
-    prisma.merchant.findMany({
-      distinct: 'city',
-      select: { city: true },
-    }),
-    prisma.merchant.count(),
-  ])
-
-  return {
-    props: {
-      initialMerchantList,
-      initialTotalCount,
-      filterOptions: {
-        country: distinctCountryList.map(({ country }) => country),
-        city: distinctCityList.map(({ city }) => city),
-      },
-    },
-    revalidate: 10,
-  }
-}
-
 export default App
