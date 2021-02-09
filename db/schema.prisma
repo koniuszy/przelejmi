@@ -37,14 +37,19 @@ model Merchant {
   Scenario       Scenario[]
 }
 
+enum Unit {
+  ITEM
+  HOURS
+}
+
 model Scenario {
   id          Int      @id @default(autoincrement())
   name        String
   paymentType String
   netPerOne   Int
-  VATId       Int
+  VAT         String
   amount      Int
-  unit        String
+  unit        Unit
   notes       String
   dayPayments Int
   createdAt   DateTime @default(now())
