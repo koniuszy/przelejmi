@@ -113,12 +113,18 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
       if (values.country.length > 100) errors.country = 'Country should be shorter'
       if (values.bankName.length > 100) errors.bankName = 'Bank name should be shorter'
       if (values.issuerName.length > 100) errors.issuerName = 'Issuer name should be shorter'
-      if (values.bankAccountPln.length < 26 || values.bankAccountPln.length > 30)
+      if (
+        values.bankAccountPln &&
+        (values.bankAccountPln.length < 26 || values.bankAccountPln.length > 30)
+      )
         errors.bankAccountPln = 'Bank account should be between 26 and 30 digits'
-      if (values.bankAccountEur.length < 26 || values.bankAccountEur.length > 30)
+      if (
+        values.bankAccountEur &&
+        (values.bankAccountEur.length < 26 || values.bankAccountEur.length > 30)
+      )
         errors.bankAccountEur = 'Bank account should be between 26 and 30 digits'
       if (values.email.length > 100) errors.email = 'Email should be shorter'
-      if (isNaN(Number(values.VATId.replace(/ /g, '')))) errors.VATId = 'NIP is invalid'
+      if (isNaN(Number(values.VATId.replace(/ /g, '')))) errors.VATId = 'VATid is invalid'
 
       return errors
     },
@@ -148,7 +154,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
 
             <Flex direction="row">
               <FormControl isRequired mt="5" id="VATId" isInvalid={!!errors.VATId}>
-                <FormLabel htmlFor="VATId">NIP</FormLabel>
+                <FormLabel htmlFor="VATId">VAT Id</FormLabel>
                 <Input
                   name="VATId"
                   placeholder="12345678"
@@ -229,7 +235,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               </FormControl>
             </Flex>
 
-            <FormControl isRequired mt="4" id="bankAccount" isInvalid={!!errors.bankAccountPln}>
+            <FormControl mt="4" id="bankAccount" isInvalid={!!errors.bankAccountPln}>
               <FormLabel htmlFor="bankAccount">Bank account in PLN</FormLabel>
               <Input
                 name="bankAccountPln"
@@ -240,7 +246,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               <FormErrorMessage>{errors.bankAccountPln}</FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired mt="4" id="bankAccountEur" isInvalid={!!errors.bankAccountEur}>
+            <FormControl mt="4" id="bankAccountEur" isInvalid={!!errors.bankAccountEur}>
               <FormLabel htmlFor="bankAccountEur">Bank account in EUR</FormLabel>
               <Input
                 name="bankAccountEur"
@@ -251,7 +257,7 @@ const CreateMerchant: FC<SSGProps> = ({ womanWithFoldersImg }) => {
               <FormErrorMessage>{errors.bankAccountEur}</FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired mt="4" id="Email" isInvalid={!!errors.email}>
+            <FormControl mt="4" id="Email" isInvalid={!!errors.email}>
               <FormLabel htmlFor="email">Email</FormLabel>
               <Input
                 name="email"

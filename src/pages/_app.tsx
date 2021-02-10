@@ -14,6 +14,9 @@ const extendedTheme = extendTheme({
   },
   styles: {
     global: {
+      html: {
+        overflow: 'hidden',
+      },
       '.nextImgBox': {
         borderRadius: 15,
         mr: '100',

@@ -40,7 +40,7 @@ export const Scenario = objectType({
     t.model.name()
     t.model.paymentType()
     t.model.netPerOne()
-    t.model.VATId()
+    t.model.VAT()
     t.model.amount()
     t.model.unit()
     t.model.notes()
