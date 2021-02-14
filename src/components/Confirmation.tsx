@@ -10,6 +10,7 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
+  Text,
 } from '@chakra-ui/react'
 
 const Confirmation: FC<{
@@ -39,8 +40,8 @@ const Confirmation: FC<{
             <Button variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button isLoading={isLoading} onClick={onClick}>
-              {confirmText}
+            <Button color="red" isLoading={isLoading} onClick={onClick}>
+              <Text>{confirmText}</Text>
             </Button>
           </ButtonGroup>
         </PopoverFooter>

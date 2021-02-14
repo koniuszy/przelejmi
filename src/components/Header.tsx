@@ -25,7 +25,6 @@ const Header: FC = () => {
   const [session, isSessionLoading] = useSession()
 
   useEffect(() => {
-    console.log(session)
     if (!isSessionLoading && !session?.user) {
       signIn('google')
     }

@@ -41,9 +41,7 @@ const App: FC = () => {
       name: '',
       amount: 1,
     },
-    onSubmit: (values) => {
-      console.log(values)
-    },
+    onSubmit: (values) => {},
     validate: (values) => {
       //@ts-ignore
       const errors: Record<keyof Form, string> = {}
