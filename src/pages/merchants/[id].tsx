@@ -24,6 +24,7 @@ type SSGProps = {
 const MerchantDetailsPage: FC<SSGProps> = (props) => {
   const route = useRouter()
 
+  console.log(props.merchantId, route.isFallback)
   return (
     <>
       <Head>

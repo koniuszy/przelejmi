@@ -36,7 +36,7 @@ export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (
           <FormLabel htmlFor="editable" mb="0">
             Editable
           </FormLabel>
-          <Switch size="lg" colorScheme="teal" defaultChecked={false} />
+          <Switch defaultChecked colorScheme="teal" />
         </FormControl>
       </Center>
     </Flex>
@@ -89,7 +89,6 @@ const TableHeader: FC<TableHeaderProps & Props> = ({
               Editable
             </FormLabel>
             <Switch
-              size="lg"
               colorScheme="teal"
               defaultChecked={isEditable}
               onChange={(e) => onEditableToggle(e.target.checked)}

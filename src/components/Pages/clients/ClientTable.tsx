@@ -40,7 +40,7 @@ const TITLE = 'Total clients'
 const ClientTable: FC = () => {
   const toast = useToast()
 
-  const [isEditable, setIsEditable] = useState(false)
+  const [isEditable, setIsEditable] = useState(true)
   const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
   const drawerOptions = useDisclosure()

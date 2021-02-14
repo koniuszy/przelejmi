@@ -38,7 +38,7 @@ export const PER_PAGE = 10
 
 const App: FC = () => {
   const toast = useToast()
-  const [isEditable, setIsEditable] = useState(false)
+  const [isEditable, setIsEditable] = useState(true)
   const [merchantDeletionId, setMerchantDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
   const drawerOptions = useDisclosure()

@@ -39,7 +39,7 @@ const MerchantTable: FC = () => {
   const toast = useToast()
   const drawerOptions = useDisclosure()
 
-  const [isEditable, setIsEditable] = useState(false)
+  const [isEditable, setIsEditable] = useState(true)
   const [merchantDeletionId, setMerchantDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
 

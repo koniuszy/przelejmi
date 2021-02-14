@@ -1,9 +1,6 @@
 import React, { FC } from 'react'
 
-import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons'
 import {
-  ButtonGroup,
-  IconButton,
   Editable as ChakraEditable,
   Flex,
   Box,
@@ -26,42 +23,20 @@ const Editable: FC<{
   onSubmit(value: string): void
   isDisabled?: boolean
   border?: boolean
-}> = ({ defaultValue, onSubmit, isDisabled, border }) => (
+}> = ({ defaultValue, onSubmit, border, isDisabled }) => (
   <FieldBox border={border}>
-    <ChakraEditable defaultValue={defaultValue} submitOnBlur={false} onSubmit={onSubmit}>
-      {({ isEditing, onSubmit, onCancel, onEdit }) => (
-        <Flex>
-          {!isDisabled && (
-            <Center>
-              <Box pr="2">
-                {isEditing ? (
-                  <ButtonGroup justifyContent="center" size="sm">
-                    <IconButton
-                      colorScheme="green"
-                      aria-label="check"
-                      icon={<CheckIcon />}
-                      onClick={onSubmit}
-                    />
-                    <IconButton
-                      colorScheme="red"
-                      aria-label="close"
-                      icon={<CloseIcon />}
-                      onClick={onCancel}
-                    />
-                  </ButtonGroup>
-                ) : (
-                  <IconButton aria-label="edit" size="xs" icon={<EditIcon />} onClick={onEdit} />
-                )}
-              </Box>
-            </Center>
-          )}
-
-          <Center>
-            <EditablePreview />
-          </Center>
-          <EditableInput pl="2" />
-        </Flex>
-      )}
+    <ChakraEditable
+      isDisabled={isDisabled}
+      defaultValue={defaultValue}
+      submitOnBlur={false}
+      onSubmit={onSubmit}
+    >
+      <Flex>
+        <Center>
+          <EditablePreview />
+        </Center>
+        <EditableInput pl="2" />
+      </Flex>
     </ChakraEditable>
   </FieldBox>
 )
