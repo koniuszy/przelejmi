@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import { Center, Flex, Spinner, Text, useToast } from '@chakra-ui/react'
+import { Flex, Spinner, Text, useToast } from '@chakra-ui/react'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
