@@ -1,5 +1,3 @@
-import Head from 'next/head'
-
 import { ChakraProvider, extendTheme, Box, Flex } from '@chakra-ui/react'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
