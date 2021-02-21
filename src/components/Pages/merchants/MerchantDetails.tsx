@@ -34,6 +34,7 @@ const MerchantDetailsForm: FC<{
       onMerchantUpdate((prev) => ({ ...prev, merchant: response.updatedMerchant }))
 
       const data = updateMerchantOptions.client.readQuery({ query: PaginatedMerchantListDocument })
+
       if (!data) {
         updateMerchantOptions.client
           .query({

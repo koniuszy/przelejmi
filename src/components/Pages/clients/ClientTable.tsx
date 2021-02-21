@@ -45,7 +45,7 @@ const ClientTable: FC = () => {
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
   const drawerOptions = useDisclosure()
 
-  const { data, refetch, variables } = usePaginatedClientListQuery({
+  const { data, refetch, variables, loading, previousData } = usePaginatedClientListQuery({
     variables: { skip: 0, take: PER_PAGE },
   })
 
@@ -99,6 +99,7 @@ const ClientTable: FC = () => {
 
   function handleUpdate(data: Partial<Client>, id: number) {
     const [value] = Object.values(data)
+
     if (value === '' && data.VATId !== value) {
       toast(errorToastContent)
       toast(warningToastContent)
@@ -108,13 +109,16 @@ const ClientTable: FC = () => {
     updateClient({ variables: { data, id } })
   }
 
-  if (!data) return <TablePlaceholder title={TITLE} />
+  console.log(loading)
+
+  const results = data ?? previousData
+  if (!results) return <TablePlaceholder title={TITLE} />
 
   const {
     list: clientList,
     totalCount,
     filters: { __typename, ...filters },
-  } = data.paginatedClientList
+  } = results.paginatedClientList
 
   return (
     <Table
@@ -139,6 +143,7 @@ const ClientTable: FC = () => {
       filtersHeaderProps={{
         title: TITLE,
         isEditable: isEditable,
+        isLoading: loading,
         filterOptions: {
           ...filters,
           type: Object.values(ClientType),
@@ -153,6 +158,7 @@ const ClientTable: FC = () => {
 
           const { type, ...rest } = newFilters
           let VATIdFilters = {}
+
           if (type) {
             if (type[DBConditions.notIncludes]) {
               const [clientType] = type[DBConditions.notIncludes]

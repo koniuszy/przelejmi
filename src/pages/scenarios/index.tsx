@@ -100,6 +100,7 @@ const App: FC = () => {
 
   function handleUpdate(data: Partial<Merchant>, id: number) {
     const [value] = Object.values(data)
+
     if (value === '' && data.VATId !== value) {
       toast(errorToastContent)
       toast(warningToastContent)

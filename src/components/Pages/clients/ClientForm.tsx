@@ -47,6 +47,7 @@ const ClientForm: FC<{
       })
 
       const data = client.readQuery({ query: PaginatedClientListDocument })
+
       if (!data) {
         client
           .query({

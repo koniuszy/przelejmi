@@ -60,6 +60,13 @@ module.exports = {
   rules: {
     'no-duplicate-imports': ['error', { includeExports: true }],
     quotes: [1, 'single'],
+    'padding-line-between-statements': [
+      'warn',
+      { blankLine: 'always', prev: '*', next: 'block' },
+      { blankLine: 'always', prev: 'block', next: '*' },
+      { blankLine: 'always', prev: '*', next: 'block-like' },
+      { blankLine: 'always', prev: 'block-like', next: '*' },
+    ],
     'jsx-quotes': ['warn', 'prefer-double'],
 
     'import/order': [

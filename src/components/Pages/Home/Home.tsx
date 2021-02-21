@@ -67,6 +67,7 @@ const Home: FC = () => {
                 signOut({ callbackUrl: '/' })
                 return
               }
+
               signIn()
             }}
           >

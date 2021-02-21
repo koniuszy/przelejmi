@@ -43,7 +43,7 @@ const MerchantTable: FC = () => {
   const [merchantDeletionId, setMerchantDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
 
-  const { data, refetch, variables } = usePaginatedMerchantListQuery({
+  const { data, refetch, variables, previousData, loading } = usePaginatedMerchantListQuery({
     variables: { skip: 0, take: PER_PAGE },
   })
 
@@ -100,6 +100,7 @@ const MerchantTable: FC = () => {
 
   function handleUpdate(data: Partial<Merchant>, id: number) {
     const [value] = Object.values(data)
+
     if (value === '' && data.VATId !== value) {
       toast(errorToastContent)
       toast(warningToastContent)
@@ -109,13 +110,15 @@ const MerchantTable: FC = () => {
     updateMerchant({ variables: { data, id } })
   }
 
-  if (!data) return <TablePlaceholder title={TITLE} />
+  const results = data || previousData
+
+  if (!results) return <TablePlaceholder title={TITLE} />
 
   const {
     list: merchantList,
     totalCount,
     filters: { __typename, ...filters },
-  } = data.paginatedMerchantList
+  } = results.paginatedMerchantList
 
   return (
     <Table
@@ -127,6 +130,7 @@ const MerchantTable: FC = () => {
       variables={variables}
       refetch={refetch}
       filtersHeaderProps={{
+        isLoading: loading,
         title: TITLE,
         isEditable,
         filterOptions: { ...filters },

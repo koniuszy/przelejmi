@@ -34,6 +34,7 @@ const ClientDetails: FC<{
       updateQuery((prev) => ({ ...prev, client: response.updatedClient }))
 
       const data = updateClientOptions.client.readQuery({ query: PaginatedClientListDocument })
+
       if (!data) {
         updateClientOptions.client
           .query({

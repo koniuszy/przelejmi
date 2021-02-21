@@ -44,4 +44,5 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
     },
   }
 }
+
 export default CreateMerchantPage
