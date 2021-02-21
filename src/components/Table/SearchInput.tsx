@@ -31,7 +31,7 @@ const SearchInput: FC<{
   const debouncedSearch = useConstant(() =>
     debounce((search: string, prevFilters: Record<string, any>, keyList: string[]) => {
       if (!search) {
-        const { OR, ...rest } = prevFilters
+        const { OR, ...rest } = prevFilters ?? {}
         props.onSearch(rest)
 
         return

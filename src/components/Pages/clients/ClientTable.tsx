@@ -113,7 +113,7 @@ const ClientTable: FC = () => {
   const {
     list: clientList,
     totalCount,
-    filters: { cityList, countryList },
+    filters: { __typename, ...filters },
   } = data.paginatedClientList
 
   return (
@@ -139,7 +139,10 @@ const ClientTable: FC = () => {
       filtersHeaderProps={{
         title: TITLE,
         isEditable: isEditable,
-        filterOptions: { cityList, countryList, type: Object.values(ClientType) },
+        filterOptions: {
+          ...filters,
+          type: Object.values(ClientType),
+        },
         drawerOptions: drawerOptions,
         onEditableToggle: setIsEditable,
         onDrawerChange(newFilters) {

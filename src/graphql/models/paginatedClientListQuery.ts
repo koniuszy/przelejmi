@@ -3,8 +3,8 @@ import { objectType, intArg, arg, extendType } from 'nexus'
 export const PaginatedClientsFilters = objectType({
   name: 'PaginatedClientsFilters',
   definition(t) {
-    t.list.string('countryList')
-    t.list.string('cityList')
+    t.list.string('country')
+    t.list.string('city')
   },
 })
 
@@ -46,8 +46,8 @@ export const PaginatedClientListQuery = extendType({
           totalCount,
           list,
           filters: {
-            countryList: countryList.map(({ country }) => country),
-            cityList: cityList.map(({ city }) => city),
+            country: countryList.map(({ country }) => country),
+            city: cityList.map(({ city }) => city),
           },
         }
       },

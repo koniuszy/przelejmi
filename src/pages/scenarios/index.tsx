@@ -114,7 +114,7 @@ const App: FC = () => {
   const {
     list: merchantList,
     totalCount,
-    filters: { cityList, countryList },
+    filters: { __typename, ...filters },
   } = data.paginatedMerchantList
 
   return (
@@ -135,7 +135,7 @@ const App: FC = () => {
           filtersHeaderProps={{
             title: 'Total merchants',
             isEditable,
-            filterOptions: { cityList, countryList },
+            filterOptions: { ...filters },
             drawerOptions,
             onEditableToggle: setIsEditable,
           }}

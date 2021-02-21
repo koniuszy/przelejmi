@@ -114,7 +114,7 @@ const MerchantTable: FC = () => {
   const {
     list: merchantList,
     totalCount,
-    filters: { countryList, cityList },
+    filters: { __typename, ...filters },
   } = data.paginatedMerchantList
 
   return (
@@ -129,7 +129,7 @@ const MerchantTable: FC = () => {
       filtersHeaderProps={{
         title: TITLE,
         isEditable,
-        filterOptions: { countryList, cityList },
+        filterOptions: { ...filters },
         drawerOptions,
         onEditableToggle: setIsEditable,
       }}

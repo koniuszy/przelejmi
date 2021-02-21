@@ -12,8 +12,8 @@ query paginatedMerchantList(
   ) {
     totalCount
     filters {
-      countryList
-      cityList
+      country
+      city
     }
     list {
       ...MerchantContent

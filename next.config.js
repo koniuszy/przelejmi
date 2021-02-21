@@ -1,6 +1,3 @@
-module.exports = (phase, { defaultConfig }) => {
-  return {
-    ...defaultConfig,
-    reactStrictMode: true,
-  }
+module.exports = {
+  reactStrictMode: true,
 }

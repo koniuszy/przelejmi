@@ -22,20 +22,18 @@ import {
 import { useSession, signOut, signIn } from 'next-auth/client'
 
 const Header: FC = () => {
-  const router = useRouter()
+  const { pathname, push } = useRouter()
   const [session, isSessionLoading] = useSession()
 
   useEffect(() => {
-    if (!isSessionLoading && !session?.user) {
-      signIn('google')
-    }
+    if (!isSessionLoading && !session?.user && pathname !== '/') signIn('google')
   }, [isSessionLoading])
 
   return (
     <Box pb="5">
       <header>
         <Flex justifyContent="space-between" alignItems="center" py="5">
-          <Center cursor="pointer" onClick={() => router.push('/')}>
+          <Center cursor="pointer" onClick={() => push('/')}>
             <svg fill="teal" width="48" height="48" viewBox="0 0 512 512">
               <path d="M464 64h-416c-26.4 0-48 21.6-48 48v288c0 26.4 21.6 48 48 48h416c26.4 0 48-21.6 48-48v-288c0-26.4-21.6-48-48-48zM48 96h416c8.673 0 16 7.327 16 16v48h-448v-48c0-8.673 7.327-16 16-16zM464 416h-416c-8.673 0-16-7.327-16-16v-144h448v144c0 8.673-7.327 16-16 16zM64 320h32v64h-32zM128 320h32v64h-32zM192 320h32v64h-32z" />
             </svg>
@@ -58,7 +56,7 @@ const Header: FC = () => {
               <Button
                 w="100px"
                 colorScheme="teal"
-                variant={router.pathname.includes('invoices') ? 'outline' : 'ghost'}
+                variant={pathname.includes('invoices') ? 'outline' : 'ghost'}
               >
                 Invoices
               </Button>
@@ -68,7 +66,7 @@ const Header: FC = () => {
               <Button
                 w="100px"
                 colorScheme="teal"
-                variant={router.pathname.includes('scenarios') ? 'outline' : 'ghost'}
+                variant={pathname.includes('scenarios') ? 'outline' : 'ghost'}
               >
                 Scenarios
               </Button>
@@ -78,7 +76,7 @@ const Header: FC = () => {
               <Button
                 w="100px"
                 colorScheme="teal"
-                variant={router.pathname.includes('clients') ? 'outline' : 'ghost'}
+                variant={pathname.includes('clients') ? 'outline' : 'ghost'}
               >
                 Clients
               </Button>
@@ -88,7 +86,7 @@ const Header: FC = () => {
               <Button
                 w="100px"
                 colorScheme="teal"
-                variant={router.pathname.includes('merchants') ? 'outline' : 'ghost'}
+                variant={pathname.includes('merchants') ? 'outline' : 'ghost'}
               >
                 Merchants
               </Button>
@@ -101,7 +99,7 @@ const Header: FC = () => {
               colorScheme="teal"
               as={Button}
               leftIcon={<AddIcon w={3} h={3} />}
-              variant={router.pathname.includes('create') ? 'outline' : 'ghost'}
+              variant={pathname.includes('create') ? 'outline' : 'ghost'}
             >
               Create
             </MenuButton>
