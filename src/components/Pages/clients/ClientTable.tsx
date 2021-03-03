@@ -109,8 +109,6 @@ const ClientTable: FC = () => {
     updateClient({ variables: { data, id } })
   }
 
-  console.log(loading)
-
   const results = data ?? previousData
   if (!results) return <TablePlaceholder title={TITLE} />
 

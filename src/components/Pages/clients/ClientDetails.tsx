@@ -17,6 +17,65 @@ import Editable from 'src/components/Editable'
 
 import { PER_PAGE } from './ClientTable'
 
+const ClientDetailsForm: FC<{
+  client: ClientContentFragment
+  onUpdate(data: Partial<ClientContentFragment>): void
+}> = ({ client, onUpdate }) => (
+  <Flex direction="column">
+    <RadioGroup
+      value={client.VATId ? ClientType.company : ClientType.person}
+      onChange={() => onUpdate({ VATId: client.VATId ? null : '0' })}
+    >
+      <Text fontWeight="500">Client type</Text>
+      <Stack pt="3" spacing={5} direction="row">
+        {Object.values(ClientType).map((value) => (
+          <Radio key={value} cursor="pointer" colorScheme="green" value={value}>
+            {value}
+          </Radio>
+        ))}
+      </Stack>
+    </RadioGroup>
+
+    <Text pt="5" pb="2" fontWeight="500">
+      Name
+    </Text>
+    <Editable border defaultValue={client.name} onSubmit={(name) => onUpdate({ name })} />
+
+    {client.VATId && (
+      <>
+        <Text pt="5" pb="2" fontWeight="500">
+          Vat id
+        </Text>
+        <Editable border defaultValue={client.VATId} onSubmit={(VATId) => onUpdate({ VATId })} />
+      </>
+    )}
+
+    <Text pt="10" pb="2" fontWeight="500">
+      Street name and number
+    </Text>
+    <Editable border defaultValue={client.address} onSubmit={(address) => onUpdate({ address })} />
+
+    <Text pt="4" pb="2" fontWeight="500">
+      Post code
+    </Text>
+    <Editable
+      border
+      defaultValue={client.postCode}
+      onSubmit={(postCode) => onUpdate({ postCode })}
+    />
+
+    <Text pt="4" pb="2" fontWeight="500">
+      City
+    </Text>
+    <Editable border defaultValue={client.city} onSubmit={(city) => onUpdate({ city })} />
+
+    <Text pt="4" pb="2" fontWeight="500">
+      Country
+    </Text>
+    <Editable border defaultValue={client.country} onSubmit={(country) => onUpdate({ country })} />
+  </Flex>
+)
+
 const ClientDetails: FC<{
   calmInTrolleyImg: OptimizedImg
   clientId: number
@@ -66,79 +125,11 @@ const ClientDetails: FC<{
     updateClient({ variables: { data, id: clientId } })
   }
 
-  if (!data) return <Spinner />
-
-  const { client } = data
-
   return (
     <Flex>
       <BlurredImg optimizedImg={calmInTrolleyImg} width={500} />
 
-      <Flex direction="column">
-        <RadioGroup
-          value={client.VATId ? ClientType.company : ClientType.person}
-          onChange={() => handleUpdate({ VATId: client.VATId ? null : '0' })}
-        >
-          <Text fontWeight="500">Client type</Text>
-          <Stack pt="3" spacing={5} direction="row">
-            {Object.values(ClientType).map((value) => (
-              <Radio key={value} cursor="pointer" colorScheme="green" value={value}>
-                {value}
-              </Radio>
-            ))}
-          </Stack>
-        </RadioGroup>
-
-        <Text pt="5" pb="2" fontWeight="500">
-          Name
-        </Text>
-        <Editable border defaultValue={client.name} onSubmit={(name) => handleUpdate({ name })} />
-
-        {client.VATId && (
-          <>
-            <Text pt="5" pb="2" fontWeight="500">
-              Vat id
-            </Text>
-            <Editable
-              border
-              defaultValue={client.VATId}
-              onSubmit={(VATId) => handleUpdate({ VATId })}
-            />
-          </>
-        )}
-
-        <Text pt="10" pb="2" fontWeight="500">
-          Street name and number
-        </Text>
-        <Editable
-          border
-          defaultValue={client.address}
-          onSubmit={(address) => handleUpdate({ address })}
-        />
-
-        <Text pt="4" pb="2" fontWeight="500">
-          Post code
-        </Text>
-        <Editable
-          border
-          defaultValue={client.postCode}
-          onSubmit={(postCode) => handleUpdate({ postCode })}
-        />
-
-        <Text pt="4" pb="2" fontWeight="500">
-          City
-        </Text>
-        <Editable border defaultValue={client.city} onSubmit={(city) => handleUpdate({ city })} />
-
-        <Text pt="4" pb="2" fontWeight="500">
-          Country
-        </Text>
-        <Editable
-          border
-          defaultValue={client.country}
-          onSubmit={(country) => handleUpdate({ country })}
-        />
-      </Flex>
+      {data ? <ClientDetailsForm client={data.client} onUpdate={handleUpdate} /> : <Spinner />}
     </Flex>
   )
 }

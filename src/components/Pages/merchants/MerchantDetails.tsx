@@ -9,7 +9,7 @@ import {
   useMerchantQuery,
   MerchantContentFragment,
   PaginatedMerchantListDocument,
-  MerchantQuery,
+  PaginatedMerchantListQuery,
 } from 'src/generated/graphql'
 import { OptimizedImg } from 'src/types'
 
@@ -20,110 +20,60 @@ import { PER_PAGE } from './MerchantTable'
 
 const MerchantDetailsForm: FC<{
   merchant: MerchantContentFragment
-  onMerchantUpdate(fn: (prev: MerchantQuery) => MerchantQuery): void
-}> = ({ merchant, onMerchantUpdate }) => {
-  const toast = useToast()
+  onUpdate(merchant: Partial<MerchantContentFragment>): void
+}> = ({ merchant, onUpdate }) => (
+  <Flex direction="column">
+    <Text pt="5" pb="2" fontWeight="500">
+      Company name
+    </Text>
+    <Editable
+      border
+      defaultValue={merchant.companyName}
+      onSubmit={(companyName) => onUpdate({ companyName })}
+    />
 
-  const [updateMerchant, updateMerchantOptions] = useUpdateMerchantMutation({
-    onCompleted(response) {
-      toast({
-        ...successToastContent,
-        title: 'Client updated.',
-      })
+    {merchant.VATId && (
+      <>
+        <Text pt="5" pb="2" fontWeight="500">
+          Vat id
+        </Text>
+        <Editable border defaultValue={merchant.VATId} onSubmit={(VATId) => onUpdate({ VATId })} />
+      </>
+    )}
 
-      onMerchantUpdate((prev) => ({ ...prev, merchant: response.updatedMerchant }))
+    <Text pt="10" pb="2" fontWeight="500">
+      Street name and number
+    </Text>
+    <Editable
+      border
+      defaultValue={merchant.address}
+      onSubmit={(address) => onUpdate({ address })}
+    />
 
-      const data = updateMerchantOptions.client.readQuery({ query: PaginatedMerchantListDocument })
+    <Text pt="4" pb="2" fontWeight="500">
+      Post code
+    </Text>
+    <Editable
+      border
+      defaultValue={merchant.postCode}
+      onSubmit={(postCode) => onUpdate({ postCode })}
+    />
 
-      if (!data) {
-        updateMerchantOptions.client
-          .query({
-            query: PaginatedMerchantListDocument,
-            variables: { skip: 0, take: PER_PAGE },
-          })
-          .then((res) => {
-            if (!res.data.merchantList?.length) return
-            updateMerchantOptions.client.writeQuery({
-              query: PaginatedMerchantListDocument,
-              data: { ...res, merchantList: [response.updatedMerchant] },
-            })
-          })
-        return
-      }
+    <Text pt="4" pb="2" fontWeight="500">
+      City
+    </Text>
+    <Editable border defaultValue={merchant.city} onSubmit={(city) => onUpdate({ city })} />
 
-      updateMerchantOptions.client.writeQuery({
-        query: PaginatedMerchantListDocument,
-        data: { ...data, merchantList: [...data.merchantList, response.updatedMerchant] },
-      })
-    },
-    onError(err) {
-      console.error(err)
-      toast(errorToastContent)
-    },
-  })
-
-  function handleUpdate(data: Partial<MerchantContentFragment>) {
-    updateMerchant({ variables: { data, id: merchant.id } })
-  }
-
-  return (
-    <Flex direction="column">
-      <Text pt="5" pb="2" fontWeight="500">
-        Company name
-      </Text>
-      <Editable
-        border
-        defaultValue={merchant.companyName}
-        onSubmit={(companyName) => handleUpdate({ companyName })}
-      />
-
-      {merchant.VATId && (
-        <>
-          <Text pt="5" pb="2" fontWeight="500">
-            Vat id
-          </Text>
-          <Editable
-            border
-            defaultValue={merchant.VATId}
-            onSubmit={(VATId) => handleUpdate({ VATId })}
-          />
-        </>
-      )}
-
-      <Text pt="10" pb="2" fontWeight="500">
-        Street name and number
-      </Text>
-      <Editable
-        border
-        defaultValue={merchant.address}
-        onSubmit={(address) => handleUpdate({ address })}
-      />
-
-      <Text pt="4" pb="2" fontWeight="500">
-        Post code
-      </Text>
-      <Editable
-        border
-        defaultValue={merchant.postCode}
-        onSubmit={(postCode) => handleUpdate({ postCode })}
-      />
-
-      <Text pt="4" pb="2" fontWeight="500">
-        City
-      </Text>
-      <Editable border defaultValue={merchant.city} onSubmit={(city) => handleUpdate({ city })} />
-
-      <Text pt="4" pb="2" fontWeight="500">
-        Country
-      </Text>
-      <Editable
-        border
-        defaultValue={merchant.country}
-        onSubmit={(country) => handleUpdate({ country })}
-      />
-    </Flex>
-  )
-}
+    <Text pt="4" pb="2" fontWeight="500">
+      Country
+    </Text>
+    <Editable
+      border
+      defaultValue={merchant.country}
+      onSubmit={(country) => onUpdate({ country })}
+    />
+  </Flex>
+)
 
 const MerchantDetails: FC<{
   calmInTrolleyImg: OptimizedImg
@@ -131,11 +81,69 @@ const MerchantDetails: FC<{
 }> = ({ merchantId, calmInTrolleyImg }) => {
   const { data, updateQuery } = useMerchantQuery({ variables: { where: { id: merchantId } } })
 
+  const toast = useToast()
+
+  const [updateMerchant, updateMerchantOptions] = useUpdateMerchantMutation({
+    onCompleted({ updatedMerchant }) {
+      toast({
+        ...successToastContent,
+        title: 'Client updated.',
+      })
+
+      updateQuery((p) => ({ ...p, updatedMerchant }))
+
+      const data = updateMerchantOptions.client.readQuery<PaginatedMerchantListQuery>({
+        query: PaginatedMerchantListDocument,
+      })
+
+      if (data) {
+        updateMerchantOptions.client.writeQuery<PaginatedMerchantListQuery>({
+          query: PaginatedMerchantListDocument,
+          data: {
+            ...data,
+            paginatedMerchantList: {
+              ...data.paginatedMerchantList,
+              list: [...data.paginatedMerchantList.list, updatedMerchant],
+            },
+          },
+        })
+        return
+      }
+
+      updateMerchantOptions.client
+        .query({
+          query: PaginatedMerchantListDocument,
+          variables: { skip: 0, take: PER_PAGE },
+        })
+        .then((res) => {
+          if (!res.data.merchantList?.length) return
+          updateMerchantOptions.client.writeQuery<PaginatedMerchantListQuery>({
+            query: PaginatedMerchantListDocument,
+            data: {
+              ...data,
+              paginatedMerchantList: {
+                ...data.paginatedMerchantList,
+                list: [...data.paginatedMerchantList.list, updatedMerchant],
+              },
+            },
+          })
+        })
+    },
+    onError(err) {
+      console.error(err)
+      toast(errorToastContent)
+    },
+  })
+
+  function handleUpdate(dataToUpdate: Partial<MerchantContentFragment>) {
+    updateMerchant({ variables: { data: dataToUpdate, id: data.merchant.id } })
+  }
+
   return (
     <Flex>
       <BlurredImg optimizedImg={calmInTrolleyImg} width={500} />
       {data ? (
-        <MerchantDetailsForm merchant={data.merchant} onMerchantUpdate={updateQuery} />
+        <MerchantDetailsForm merchant={data.merchant} onUpdate={handleUpdate} />
       ) : (
         <Spinner />
       )}
