@@ -18,7 +18,11 @@ import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { useCreateClientMutation, PaginatedClientListDocument } from 'src/generated/graphql'
+import {
+  useCreateClientMutation,
+  PaginatedClientListDocument,
+  PaginatedClientListQuery,
+} from 'src/generated/graphql'
 import { ClientType, OptimizedImg } from 'src/types'
 
 import BlurredImg from 'src/components/BlurredImg'
@@ -40,34 +44,49 @@ const ClientForm: FC<{
   const toast = useToast()
   const [clientType, setClientType] = useState<ClientType>(ClientType.company)
   const [createClient, { loading, client }] = useCreateClientMutation({
-    onCompleted(response) {
+    onCompleted({ createdClient }) {
       toast({
         ...successToastContent,
         title: 'Client created.',
       })
 
-      const data = client.readQuery({ query: PaginatedClientListDocument })
+      const data = client.readQuery<PaginatedClientListQuery>({
+        query: PaginatedClientListDocument,
+      })
 
-      if (!data) {
-        client
-          .query({
-            query: PaginatedClientListDocument,
-            variables: { skip: 0, take: PER_PAGE },
-          })
-          .then((res) => {
-            if (!res.data.clientList.length) return
-            client.writeQuery({
-              query: PaginatedClientListDocument,
-              data: { ...res, clientList: [response.createdClient] },
-            })
-          })
+      if (data) {
+        client.writeQuery<PaginatedClientListQuery>({
+          query: PaginatedClientListDocument,
+          data: {
+            ...data,
+            paginatedClientList: {
+              ...data.paginatedClientList,
+              list: [...data.paginatedClientList.list, createdClient],
+            },
+          },
+        })
         return
       }
 
-      client.writeQuery({
-        query: PaginatedClientListDocument,
-        data: { ...data, clientList: [...data.clientList, response.createdClient] },
-      })
+      client
+        .query<PaginatedClientListQuery>({
+          query: PaginatedClientListDocument,
+          variables: { skip: 0, take: PER_PAGE },
+        })
+        .then(({ data }) => {
+          if (!data.paginatedClientList.totalCount) return
+          client.writeQuery<PaginatedClientListQuery>({
+            query: PaginatedClientListDocument,
+            data: {
+              ...data,
+              paginatedClientList: {
+                ...data.paginatedClientList,
+                totalCount: data.paginatedClientList.totalCount + 1,
+                list: [...data.paginatedClientList.list, createdClient],
+              },
+            },
+          })
+        })
     },
     onError(err) {
       console.error(err)

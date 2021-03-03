@@ -50,20 +50,20 @@ const CreateMerchantForm: FC<{
         title: 'Merchant created.',
       })
 
-      const query = client.readQuery<PaginatedMerchantListQuery>({
+      const data = client.readQuery<PaginatedMerchantListQuery>({
         query: PaginatedMerchantListDocument,
         variables: { take: PER_PAGE, skip: 0 },
       })
 
-      if (query) {
+      if (data) {
         client.writeQuery<PaginatedMerchantListQuery>({
           query: PaginatedMerchantListDocument,
           variables: { skip: 0, take: PER_PAGE },
           data: {
-            ...query,
+            ...data,
             paginatedMerchantList: {
-              ...query.paginatedMerchantList,
-              list: [...query.paginatedMerchantList.list, createdMerchant],
+              ...data.paginatedMerchantList,
+              list: [...data.paginatedMerchantList.list, createdMerchant],
             },
           },
         })
