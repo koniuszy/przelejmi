@@ -227,7 +227,7 @@ const ClientTable: FC = () => {
                     })
                   }
                 >
-                  <MenuItem icon={<CopyIcon w={3} h={3} />}>
+                  <MenuItem isDisabled={!item.VATId} bg="gray.700" icon={<CopyIcon w={3} h={3} />}>
                     <Text>Copy VAT id</Text>
                   </MenuItem>
                 </Clipboard>
