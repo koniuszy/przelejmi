@@ -37,8 +37,8 @@ model Merchant {
   Scenario       Scenario[]
 }
 
-enum Unit {
-  ITEM
+enum UnitType {
+  ITEMS
   HOURS
 }
 
@@ -49,7 +49,7 @@ model Scenario {
   netPerOne   Int
   VAT         String
   amount      Int
-  unit        Unit
+  unitType    UnitType
   notes       String
   dayPayments Int
   createdAt   DateTime @default(now())
