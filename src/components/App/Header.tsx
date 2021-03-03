@@ -124,7 +124,9 @@ const Header: FC = () => {
               <Menu>
                 <MenuButton color="white" as={ChevronDownIcon} />
                 <MenuList fontSize="md" color="white">
-                  <MenuItem>Preferences</MenuItem>
+                  <NextLink href="/preferences">
+                    <MenuItem>Preferences</MenuItem>
+                  </NextLink>
                   <MenuItem
                     color="red"
                     _hover={{ color: 'white', bg: 'red' }}

@@ -1,21 +1,12 @@
 import React, { FC } from 'react'
 
 import { CalendarIcon, TimeIcon, UnlockIcon } from '@chakra-ui/icons'
-import {
-  Center,
-  List,
-  ListIcon,
-  ListItem,
-  Progress,
-  Spinner,
-  Button,
-  Box,
-  Flex,
-} from '@chakra-ui/react'
+import { Center, List, ListIcon, ListItem, Progress, Spinner, Box, Flex } from '@chakra-ui/react'
 
 import Lottie from 'lottie-react'
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { useSession } from 'next-auth/client'
 
+import ActionButtons from './ActionButtons'
 import bigInvoiceAnimation from './bigInvoiceAnimation.json'
 import statsAnimation from './statsAnimation.json'
 
@@ -32,7 +23,7 @@ const Home: FC = () => {
   return (
     <Flex flexDir="column" flexWrap="nowrap" alignContent="space-between">
       <Box w="100%">
-        <Progress mb="5" value={20} size="xs" colorScheme="teal" />
+        <Progress mb="5" value={session ? 90 : 20} size="xs" colorScheme="teal" />
         <List spacing={3}>
           <ListItem>
             <ListIcon as={UnlockIcon} color="teal.200" />
@@ -47,7 +38,6 @@ const Home: FC = () => {
             Get your money
           </ListItem>
         </List>
-
         <Center>
           <Lottie
             loop
@@ -57,22 +47,8 @@ const Home: FC = () => {
           />
         </Center>
 
-        <Center>
-          <Button
-            mt="5"
-            size="lg"
-            colorScheme="teal"
-            onClick={() => {
-              if (session) {
-                signOut({ callbackUrl: '/' })
-                return
-              }
-
-              signIn()
-            }}
-          >
-            {session ? 'Sign out' : 'Sign in'}
-          </Button>
+        <Center mt="5">
+          <ActionButtons isSession={Boolean(session)} />
         </Center>
       </Box>
     </Flex>
