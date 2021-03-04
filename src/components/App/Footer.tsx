@@ -14,7 +14,7 @@ import {
 
 const Footer: FC = () => {
   return (
-    <Box position="sticky" bottom="0" w="100%">
+    <Box h="140px" position="sticky" bottom="0" w="100%">
       <Divider mb="5" />
       <footer>
         <Flex justifyContent="space-between">

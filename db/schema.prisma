@@ -51,7 +51,7 @@ model Scenario {
   amount      Int
   unitType    UnitType
   notes       String
-  dayPayments Int
+  dueDay      Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   client      Client   @relation(fields: [clientId], references: [id])
