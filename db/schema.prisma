@@ -46,6 +46,7 @@ model Scenario {
   id          Int      @id @default(autoincrement())
   name        String
   paymentType String
+  imageUrl    String
   netPerOne   Int
   VAT         String
   amount      Int

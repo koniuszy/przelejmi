@@ -35,7 +35,7 @@ export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
     <TableHeaderPlaceholder title={title} />
     <Stack>
       <Skeleton mt={4} height="27px" />
-      {new Array(8).fill(null).map((_, index) => (
+      {new Array(6).fill(null).map((_, index) => (
         <Skeleton key={index} height="67px" />
       ))}
     </Stack>

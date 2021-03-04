@@ -30,7 +30,7 @@ const Header: FC = () => {
   }, [isSessionLoading])
 
   return (
-    <Box pb="5">
+    <Box pb={5}>
       <header>
         <Flex justifyContent="space-between" alignItems="center" py="5">
           <Center cursor="pointer" onClick={() => push('/')}>

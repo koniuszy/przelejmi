@@ -15,6 +15,8 @@ import {
   Skeleton,
   VStack,
   Center,
+  Textarea,
+  Image,
 } from '@chakra-ui/react'
 
 import { useFormik } from 'formik'
@@ -40,6 +42,7 @@ const SkeletonsStack = () => (
 const CreateScenarioForm: FC = () => {
   const [selectedMerchantId, setSelectedMerchantId] = useState<number | null>(null)
   const [selectedClientId, setSelectedClientId] = useState<number | null>(null)
+  const [imgSrc, setImgSrc] = useState('')
 
   const merchantQuery = usePaginatedMerchantListQuery({
     variables: { skip: 0, take: 100 },
@@ -114,9 +117,9 @@ const CreateScenarioForm: FC = () => {
           )}
         </Flex>
 
-        <Divider mt={4} />
+        <Divider my={4} />
 
-        <Box h="200px" overflow="scroll">
+        <Box h="200px" overflow="auto">
           {merchantQuery.loading ? (
             <SkeletonsStack />
           ) : (
@@ -144,9 +147,9 @@ const CreateScenarioForm: FC = () => {
           )}
         </Flex>
 
-        <Divider mt={4} />
+        <Divider my={4} />
 
-        <Box h="200px" overflow="scroll">
+        <Box h="200px" overflow="auto">
           {clientQuery.loading ? (
             <SkeletonsStack />
           ) : (
@@ -161,21 +164,42 @@ const CreateScenarioForm: FC = () => {
       <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
         <Flex justifyContent="space-between">
           <Text fontWeight="bold" fontSize="lg">
-            Payment details
-          </Text>
-        </Flex>
-        <Divider mt={4} />
-        dueDay notes paymentType
-      </Box>
-
-      <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
-        <Flex justifyContent="space-between">
-          <Text fontWeight="bold" fontSize="lg">
             Trade
           </Text>
         </Flex>
         <Divider mt={4} />
         unitType amount VAT netPerOne
+        <Flex justifyContent="space-between">
+          <Text fontWeight="bold" fontSize="lg">
+            Payment details
+          </Text>
+        </Flex>
+        <Divider mt={4} />
+        dueDay paymentType
+        <Flex justifyContent="space-between">
+          <Text fontWeight="bold" fontSize="lg">
+            Notes
+          </Text>
+        </Flex>
+        <Divider mt={4} />
+        <Textarea />
+      </Box>
+
+      <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
+        <Flex justifyContent="space-between">
+          <Text fontWeight="bold" fontSize="lg">
+            Image URL
+          </Text>
+        </Flex>
+        <Divider my={4} />
+
+        <Input
+          placeholder="https://images.example.com"
+          value={imgSrc}
+          onChange={(e) => setImgSrc(e.target.value)}
+        />
+
+        {imgSrc && <Image mt={5} borderRadius={5} src={imgSrc} />}
       </Box>
     </SimpleGrid>
   )
