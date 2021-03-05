@@ -60,7 +60,7 @@ function MyApp({ Component, pageProps }) {
       <Provider session={pageProps.session}>
         <ApolloProvider client={client}>
           <ChakraProvider theme={extendedTheme}>
-            <Flex overflow="auto" h="100vh" flexDir="column" justifyContent="space-between" px="40">
+            <Flex overflow="auto" h="100vh" flexDir="column" justifyContent="space-between">
               <Box>
                 <Header />
                 <Box pb={10}>
