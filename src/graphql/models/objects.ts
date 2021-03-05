@@ -42,7 +42,7 @@ export const Scenario = objectType({
     t.model.netPerOne()
     t.model.VAT()
     t.model.amount()
-    t.model.unit()
+    t.model.unitType()
     t.model.notes()
     t.model.createdAt()
     t.model.updatedAt()
