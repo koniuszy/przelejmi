@@ -84,8 +84,8 @@
     "schema": "db/schema.prisma"
   },
   "resolutions": {
-    "@prisma/cli": "2.16.0",
-    "@prisma/client": "2.16.0",
+    "@prisma/cli": "2.18.0",
+    "@prisma/client": "2.18.0",
     "graphql": "15.5.0"
   },
   "builds": [
