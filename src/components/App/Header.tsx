@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -16,18 +16,13 @@ import {
   ButtonGroup,
   Avatar,
   AvatarBadge,
-  Box,
 } from '@chakra-ui/react'
 
-import { useSession, signOut, signIn } from 'next-auth/client'
+import { signOut, useSession } from 'next-auth/client'
 
 const Header: FC = () => {
   const { pathname, push } = useRouter()
-  const [session, isSessionLoading] = useSession()
-
-  useEffect(() => {
-    if (!isSessionLoading && !session?.user && pathname !== '/') signIn('google')
-  }, [isSessionLoading])
+  const [session] = useSession()
 
   return (
     <Flex as="header" p={5} justifyContent="space-between" alignItems="center">

@@ -48,6 +48,7 @@
     "prisma": "2.18.0",
     "react": "^17.0.1",
     "react-dom": "17.0.1",
+    "sharp": "^0.27.2",
     "ts-node": "^9.1.1"
   },
   "devDependencies": {
@@ -89,9 +90,11 @@
     "graphql": "15.5.0"
   },
   "builds": [
-      {
-        "src": "package.json",
-        "config": { "newPipeline": true }
+    {
+      "src": "package.json",
+      "config": {
+        "newPipeline": true
       }
-    ]
+    }
+  ]
 }

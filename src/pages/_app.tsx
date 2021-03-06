@@ -1,7 +1,11 @@
+import React, { useEffect } from 'react'
+
+import { useRouter } from 'next/router'
+
 import { ChakraProvider, extendTheme, Box, Flex } from '@chakra-ui/react'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import { Provider } from 'next-auth/client'
+import { Provider, useSession, signIn } from 'next-auth/client'
 import NextProgressBar from 'nextjs-progressbar'
 
 import { Footer, Header } from 'src/components/App'
@@ -48,6 +52,14 @@ const client = new ApolloClient({
 })
 
 function MyApp({ Component, pageProps }) {
+  const { pathname } = useRouter()
+
+  const [session] = useSession()
+
+  useEffect(() => {
+    if (session && !session.user && pathname !== '/') signIn('google')
+  }, [session?.user])
+
   return (
     <>
       <NextProgressBar
