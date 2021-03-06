@@ -6,7 +6,7 @@
     "dev": "next dev",
     "start": "next start",
     "test": "NODE_ENV=test jest --runInBand",
-    "build": "next build",
+    "build": "yarn db:push && yarn gen && next build",
     "gen": "yarn gen:prisma && yarn gen:nexus && yarn gen:gql",
     "gen:prisma": "prisma generate",
     "gen:nexus": "ts-node --transpile-only -P nexus.tsconfig.json src/graphql/schema",
