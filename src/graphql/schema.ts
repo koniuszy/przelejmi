@@ -15,6 +15,9 @@ const baseSchema = makeSchema({
       experimentalCRUD: true,
       atomicOperations: false,
       paginationStrategy: 'prisma',
+      outputs: {
+        typegen: join(process.cwd(), 'src', 'generated', 'typegen-nexus-plugin-prisma.d.ts'),
+      },
     }),
   ],
   outputs: {
