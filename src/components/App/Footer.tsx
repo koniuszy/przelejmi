@@ -13,8 +13,8 @@ import {
 } from '@chakra-ui/react'
 
 const Footer: FC = () => (
-  <Box w="100%">
-    <Divider mb="5" />
+  <Box pt={10} pb={5} w="100%">
+    <Divider mb={5} />
     <footer>
       <Flex justifyContent="space-between">
         <Center>
