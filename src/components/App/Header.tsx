@@ -25,7 +25,7 @@ const Header: FC = () => {
   const [session] = useSession()
 
   return (
-    <Flex as="header" p={5} justifyContent="space-between" alignItems="center">
+    <Flex width="100%" as="header" py={5} justifyContent="space-between" alignItems="center">
       <Center cursor="pointer" onClick={() => push('/')}>
         <svg fill="teal" width="48" height="48" viewBox="0 0 512 512">
           <path d="M464 64h-416c-26.4 0-48 21.6-48 48v288c0 26.4 21.6 48 48 48h416c26.4 0 48-21.6 48-48v-288c0-26.4-21.6-48-48-48zM48 96h416c8.673 0 16 7.327 16 16v48h-448v-48c0-8.673 7.327-16 16-16zM464 416h-416c-8.673 0-16-7.327-16-16v-144h448v144c0 8.673-7.327 16-16 16zM64 320h32v64h-32zM128 320h32v64h-32zM192 320h32v64h-32z" />
@@ -86,51 +86,55 @@ const Header: FC = () => {
         </NextLink>
       </ButtonGroup>
 
-      <Menu>
-        <MenuButton
-          cursor="pointer"
-          colorScheme="teal"
-          as={Button}
-          leftIcon={<AddIcon w={3} h={3} />}
-          variant={pathname.includes('create') ? 'outline' : 'ghost'}
-        >
-          Create
-        </MenuButton>
-        <MenuList zIndex={5}>
-          <NextLink href="/invoices/create">
-            <MenuItem>Invoice</MenuItem>
-          </NextLink>
-          <NextLink href="/scenarios/create">
-            <MenuItem>Scenario</MenuItem>
-          </NextLink>
-          <NextLink href="/clients/create">
-            <MenuItem>Client</MenuItem>
-          </NextLink>
-          <NextLink href="/merchants/create">
-            <MenuItem>Merchant</MenuItem>
-          </NextLink>
-        </MenuList>
-      </Menu>
+      <Flex>
+        <Menu>
+          <MenuButton
+            cursor="pointer"
+            colorScheme="teal"
+            as={Button}
+            leftIcon={<AddIcon w={3} h={3} />}
+            variant={pathname.includes('create') ? 'outline' : 'ghost'}
+          >
+            Create
+          </MenuButton>
+          <MenuList zIndex={5}>
+            <NextLink href="/invoices/create">
+              <MenuItem>Invoice</MenuItem>
+            </NextLink>
+            <NextLink href="/scenarios/create">
+              <MenuItem>Scenario</MenuItem>
+            </NextLink>
+            <NextLink href="/clients/create">
+              <MenuItem>Client</MenuItem>
+            </NextLink>
+            <NextLink href="/merchants/create">
+              <MenuItem>Merchant</MenuItem>
+            </NextLink>
+          </MenuList>
+        </Menu>
 
-      <Avatar zIndex={2} size="sm" name={session?.user.name} src={session?.user.image}>
-        <AvatarBadge _hover={{ bg: 'gray.700' }} bg="black" cursor="pointer">
-          <Menu>
-            <MenuButton color="white" as={ChevronDownIcon} />
-            <MenuList fontSize="md" color="white">
-              <NextLink href="/preferences">
-                <MenuItem>Preferences</MenuItem>
-              </NextLink>
-              <MenuItem
-                color="red"
-                _hover={{ color: 'white', bg: 'red' }}
-                onClick={() => signOut({ callbackUrl: '/' })}
-              >
-                Sign out
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </AvatarBadge>
-      </Avatar>
+        <Center>
+          <Avatar mx={5} zIndex={2} size="sm" name={session?.user.name} src={session?.user.image}>
+            <AvatarBadge _hover={{ bg: 'gray.700' }} bg="black" cursor="pointer">
+              <Menu>
+                <MenuButton color="white" as={ChevronDownIcon} />
+                <MenuList fontSize="md" color="white">
+                  <NextLink href="/preferences">
+                    <MenuItem>Preferences</MenuItem>
+                  </NextLink>
+                  <MenuItem
+                    color="red"
+                    _hover={{ color: 'white', bg: 'red' }}
+                    onClick={() => signOut({ callbackUrl: '/' })}
+                  >
+                    Sign out
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </AvatarBadge>
+          </Avatar>
+        </Center>
+      </Flex>
     </Flex>
   )
 }

@@ -73,9 +73,9 @@ function MyApp({ Component, pageProps }) {
         <ApolloProvider client={client}>
           <ChakraProvider theme={extendedTheme}>
             <Flex
-              overflow="scroll"
               px={20}
-              minH="100vh"
+              overflow="scroll"
+              height="100vh"
               flexDir="column"
               justifyContent="space-between"
             >

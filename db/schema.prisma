@@ -38,8 +38,8 @@ model Merchant {
 }
 
 enum UnitType {
-  ITEMS
-  HOURS
+  ITEM
+  HOUR
 }
 
 model Scenario {
@@ -52,7 +52,7 @@ model Scenario {
   amount      Int
   unitType    UnitType
   notes       String
-  dueDay      Int
+  dueDateDays Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   client      Client   @relation(fields: [clientId], references: [id])
