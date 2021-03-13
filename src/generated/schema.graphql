@@ -398,7 +398,7 @@ input ScenarioCreateInput {
   amount: Int!
   client: ClientCreateNestedOneWithoutScenarioInput!
   createdAt: DateTime
-  dueDay: Int!
+  dueDateDays: Int!
   imageUrl: String!
   merchant: MerchantCreateNestedOneWithoutScenarioInput!
   name: String!
@@ -435,7 +435,7 @@ input ScenarioCreateWithoutClientInput {
   VAT: String!
   amount: Int!
   createdAt: DateTime
-  dueDay: Int!
+  dueDateDays: Int!
   imageUrl: String!
   merchant: MerchantCreateNestedOneWithoutScenarioInput!
   name: String!
@@ -451,7 +451,7 @@ input ScenarioCreateWithoutMerchantInput {
   amount: Int!
   client: ClientCreateNestedOneWithoutScenarioInput!
   createdAt: DateTime
-  dueDay: Int!
+  dueDateDays: Int!
   imageUrl: String!
   name: String!
   netPerOne: Int!
@@ -475,7 +475,7 @@ input ScenarioScalarWhereInput {
   amount: IntFilter
   clientId: IntFilter
   createdAt: DateTimeFilter
-  dueDay: IntFilter
+  dueDateDays: IntFilter
   id: IntFilter
   imageUrl: StringFilter
   merchantId: IntFilter
@@ -492,7 +492,7 @@ input ScenarioUpdateInput {
   amount: Int
   client: ClientUpdateOneRequiredWithoutScenarioInput
   createdAt: DateTime
-  dueDay: Int
+  dueDateDays: Int
   imageUrl: String
   merchant: MerchantUpdateOneRequiredWithoutScenarioInput
   name: String
@@ -507,7 +507,7 @@ input ScenarioUpdateManyMutationInput {
   VAT: String
   amount: Int
   createdAt: DateTime
-  dueDay: Int
+  dueDateDays: Int
   imageUrl: String
   name: String
   netPerOne: Int
@@ -567,7 +567,7 @@ input ScenarioUpdateWithoutClientInput {
   VAT: String
   amount: Int
   createdAt: DateTime
-  dueDay: Int
+  dueDateDays: Int
   imageUrl: String
   merchant: MerchantUpdateOneRequiredWithoutScenarioInput
   name: String
@@ -583,7 +583,7 @@ input ScenarioUpdateWithoutMerchantInput {
   amount: Int
   client: ClientUpdateOneRequiredWithoutScenarioInput
   createdAt: DateTime
-  dueDay: Int
+  dueDateDays: Int
   imageUrl: String
   name: String
   netPerOne: Int
@@ -614,7 +614,7 @@ input ScenarioWhereInput {
   client: ClientWhereInput
   clientId: IntFilter
   createdAt: DateTimeFilter
-  dueDay: IntFilter
+  dueDateDays: IntFilter
   id: IntFilter
   imageUrl: StringFilter
   merchant: MerchantWhereInput
@@ -667,6 +667,6 @@ input StringNullableFilter {
 }
 
 enum UnitType {
-  HOURS
-  ITEMS
+  HOUR
+  ITEM
 }

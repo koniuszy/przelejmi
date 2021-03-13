@@ -290,7 +290,7 @@ export interface NexusGenInputs {
     amount: number; // Int!
     client: NexusGenInputs['ClientCreateNestedOneWithoutScenarioInput']; // ClientCreateNestedOneWithoutScenarioInput!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    dueDay: number; // Int!
+    dueDateDays: number; // Int!
     imageUrl: string; // String!
     merchant: NexusGenInputs['MerchantCreateNestedOneWithoutScenarioInput']; // MerchantCreateNestedOneWithoutScenarioInput!
     name: string; // String!
@@ -322,7 +322,7 @@ export interface NexusGenInputs {
     VAT: string; // String!
     amount: number; // Int!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    dueDay: number; // Int!
+    dueDateDays: number; // Int!
     imageUrl: string; // String!
     merchant: NexusGenInputs['MerchantCreateNestedOneWithoutScenarioInput']; // MerchantCreateNestedOneWithoutScenarioInput!
     name: string; // String!
@@ -337,7 +337,7 @@ export interface NexusGenInputs {
     amount: number; // Int!
     client: NexusGenInputs['ClientCreateNestedOneWithoutScenarioInput']; // ClientCreateNestedOneWithoutScenarioInput!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    dueDay: number; // Int!
+    dueDateDays: number; // Int!
     imageUrl: string; // String!
     name: string; // String!
     netPerOne: number; // Int!
@@ -359,7 +359,7 @@ export interface NexusGenInputs {
     amount?: NexusGenInputs['IntFilter'] | null; // IntFilter
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
-    dueDay?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    dueDateDays?: NexusGenInputs['IntFilter'] | null; // IntFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     imageUrl?: NexusGenInputs['StringFilter'] | null; // StringFilter
     merchantId?: NexusGenInputs['IntFilter'] | null; // IntFilter
@@ -375,7 +375,7 @@ export interface NexusGenInputs {
     amount?: number | null; // Int
     client?: NexusGenInputs['ClientUpdateOneRequiredWithoutScenarioInput'] | null; // ClientUpdateOneRequiredWithoutScenarioInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    dueDay?: number | null; // Int
+    dueDateDays?: number | null; // Int
     imageUrl?: string | null; // String
     merchant?: NexusGenInputs['MerchantUpdateOneRequiredWithoutScenarioInput'] | null; // MerchantUpdateOneRequiredWithoutScenarioInput
     name?: string | null; // String
@@ -389,7 +389,7 @@ export interface NexusGenInputs {
     VAT?: string | null; // String
     amount?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    dueDay?: number | null; // Int
+    dueDateDays?: number | null; // Int
     imageUrl?: string | null; // String
     name?: string | null; // String
     netPerOne?: number | null; // Int
@@ -442,7 +442,7 @@ export interface NexusGenInputs {
     VAT?: string | null; // String
     amount?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    dueDay?: number | null; // Int
+    dueDateDays?: number | null; // Int
     imageUrl?: string | null; // String
     merchant?: NexusGenInputs['MerchantUpdateOneRequiredWithoutScenarioInput'] | null; // MerchantUpdateOneRequiredWithoutScenarioInput
     name?: string | null; // String
@@ -457,7 +457,7 @@ export interface NexusGenInputs {
     amount?: number | null; // Int
     client?: NexusGenInputs['ClientUpdateOneRequiredWithoutScenarioInput'] | null; // ClientUpdateOneRequiredWithoutScenarioInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    dueDay?: number | null; // Int
+    dueDateDays?: number | null; // Int
     imageUrl?: string | null; // String
     name?: string | null; // String
     netPerOne?: number | null; // Int
@@ -485,7 +485,7 @@ export interface NexusGenInputs {
     client?: NexusGenInputs['ClientWhereInput'] | null; // ClientWhereInput
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
-    dueDay?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    dueDateDays?: NexusGenInputs['IntFilter'] | null; // IntFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     imageUrl?: NexusGenInputs['StringFilter'] | null; // StringFilter
     merchant?: NexusGenInputs['MerchantWhereInput'] | null; // MerchantWhereInput
@@ -533,7 +533,7 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   QueryMode: "default" | "insensitive"
   SortOrder: "asc" | "desc"
-  UnitType: "HOURS" | "ITEMS"
+  UnitType: "HOUR" | "ITEM"
 }
 
 export interface NexusGenScalars {
