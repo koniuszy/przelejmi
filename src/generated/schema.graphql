@@ -382,7 +382,9 @@ type Scenario {
   client: Client!
   clientId: Int!
   createdAt: DateTime!
+  dueDateDays: Int!
   id: Int!
+  imageUrl: String!
   merchant: Merchant!
   merchantId: Int!
   name: String!

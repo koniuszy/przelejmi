@@ -4,6 +4,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -515,7 +516,9 @@ export type Scenario = {
   client: Client;
   clientId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
+  dueDateDays: Scalars['Int'];
   id: Scalars['Int'];
+  imageUrl: Scalars['String'];
   merchant: Merchant;
   merchantId: Scalars['Int'];
   name: Scalars['String'];
@@ -531,7 +534,7 @@ export type ScenarioCreateInput = {
   amount: Scalars['Int'];
   client: ClientCreateNestedOneWithoutScenarioInput;
   createdAt?: Maybe<Scalars['DateTime']>;
-  dueDay: Scalars['Int'];
+  dueDateDays: Scalars['Int'];
   imageUrl: Scalars['String'];
   merchant: MerchantCreateNestedOneWithoutScenarioInput;
   name: Scalars['String'];
@@ -568,7 +571,7 @@ export type ScenarioCreateWithoutClientInput = {
   VAT: Scalars['String'];
   amount: Scalars['Int'];
   createdAt?: Maybe<Scalars['DateTime']>;
-  dueDay: Scalars['Int'];
+  dueDateDays: Scalars['Int'];
   imageUrl: Scalars['String'];
   merchant: MerchantCreateNestedOneWithoutScenarioInput;
   name: Scalars['String'];
@@ -584,7 +587,7 @@ export type ScenarioCreateWithoutMerchantInput = {
   amount: Scalars['Int'];
   client: ClientCreateNestedOneWithoutScenarioInput;
   createdAt?: Maybe<Scalars['DateTime']>;
-  dueDay: Scalars['Int'];
+  dueDateDays: Scalars['Int'];
   imageUrl: Scalars['String'];
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
@@ -608,7 +611,7 @@ export type ScenarioScalarWhereInput = {
   amount?: Maybe<IntFilter>;
   clientId?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
-  dueDay?: Maybe<IntFilter>;
+  dueDateDays?: Maybe<IntFilter>;
   id?: Maybe<IntFilter>;
   imageUrl?: Maybe<StringFilter>;
   merchantId?: Maybe<IntFilter>;
@@ -625,7 +628,7 @@ export type ScenarioUpdateInput = {
   amount?: Maybe<Scalars['Int']>;
   client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
   createdAt?: Maybe<Scalars['DateTime']>;
-  dueDay?: Maybe<Scalars['Int']>;
+  dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
   merchant?: Maybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
   name?: Maybe<Scalars['String']>;
@@ -640,7 +643,7 @@ export type ScenarioUpdateManyMutationInput = {
   VAT?: Maybe<Scalars['String']>;
   amount?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['DateTime']>;
-  dueDay?: Maybe<Scalars['Int']>;
+  dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
@@ -700,7 +703,7 @@ export type ScenarioUpdateWithoutClientInput = {
   VAT?: Maybe<Scalars['String']>;
   amount?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['DateTime']>;
-  dueDay?: Maybe<Scalars['Int']>;
+  dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
   merchant?: Maybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
   name?: Maybe<Scalars['String']>;
@@ -716,7 +719,7 @@ export type ScenarioUpdateWithoutMerchantInput = {
   amount?: Maybe<Scalars['Int']>;
   client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
   createdAt?: Maybe<Scalars['DateTime']>;
-  dueDay?: Maybe<Scalars['Int']>;
+  dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
@@ -747,7 +750,7 @@ export type ScenarioWhereInput = {
   client?: Maybe<ClientWhereInput>;
   clientId?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
-  dueDay?: Maybe<IntFilter>;
+  dueDateDays?: Maybe<IntFilter>;
   id?: Maybe<IntFilter>;
   imageUrl?: Maybe<StringFilter>;
   merchant?: Maybe<MerchantWhereInput>;
@@ -800,8 +803,8 @@ export type StringNullableFilter = {
 };
 
 export enum UnitType {
-  Hours = 'HOURS',
-  Items = 'ITEMS'
+  Hour = 'HOUR',
+  Item = 'ITEM'
 }
 
 export type ClientContentFragment = (
@@ -812,6 +815,11 @@ export type ClientContentFragment = (
 export type MerchantContentFragment = (
   { __typename?: 'Merchant' }
   & Pick<Merchant, 'id' | 'companyName' | 'address' | 'postCode' | 'city' | 'country' | 'VATId' | 'bankAccountPln' | 'bankAccountEur' | 'bankName' | 'email' | 'issuerName'>
+);
+
+export type ScenarioContentFragment = (
+  { __typename?: 'Scenario' }
+  & Pick<Scenario, 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'>
 );
 
 export type CreateClientMutationVariables = Exact<{
@@ -892,6 +900,19 @@ export type UpdateMerchantMutation = (
     { __typename?: 'Merchant' }
     & MerchantContentFragment
   )> }
+);
+
+export type CreateScenarioMutationVariables = Exact<{
+  data: ScenarioCreateInput;
+}>;
+
+
+export type CreateScenarioMutation = (
+  { __typename?: 'Mutation' }
+  & { createdScenario: (
+    { __typename?: 'Scenario' }
+    & ScenarioContentFragment
+  ) }
 );
 
 export type ClientQueryVariables = Exact<{
@@ -993,6 +1014,24 @@ export const MerchantContentFragmentDoc = gql`
   issuerName
 }
     `;
+export const ScenarioContentFragmentDoc = gql`
+    fragment ScenarioContent on Scenario {
+  id
+  name
+  paymentType
+  imageUrl
+  netPerOne
+  VAT
+  amount
+  unitType
+  notes
+  dueDateDays
+  createdAt
+  updatedAt
+  clientId
+  merchantId
+}
+    `;
 export const CreateClientDocument = gql`
     mutation createClient($data: ClientCreateInput!) {
   createdClient: createOneClient(data: $data) {
@@ -1020,7 +1059,8 @@ export type CreateClientMutationFn = Apollo.MutationFunction<CreateClientMutatio
  * });
  */
 export function useCreateClientMutation(baseOptions?: Apollo.MutationHookOptions<CreateClientMutation, CreateClientMutationVariables>) {
-        return Apollo.useMutation<CreateClientMutation, CreateClientMutationVariables>(CreateClientDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateClientMutation, CreateClientMutationVariables>(CreateClientDocument, options);
       }
 export type CreateClientMutationHookResult = ReturnType<typeof useCreateClientMutation>;
 export type CreateClientMutationResult = Apollo.MutationResult<CreateClientMutation>;
@@ -1052,7 +1092,8 @@ export type DeleteClientMutationFn = Apollo.MutationFunction<DeleteClientMutatio
  * });
  */
 export function useDeleteClientMutation(baseOptions?: Apollo.MutationHookOptions<DeleteClientMutation, DeleteClientMutationVariables>) {
-        return Apollo.useMutation<DeleteClientMutation, DeleteClientMutationVariables>(DeleteClientDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteClientMutation, DeleteClientMutationVariables>(DeleteClientDocument, options);
       }
 export type DeleteClientMutationHookResult = ReturnType<typeof useDeleteClientMutation>;
 export type DeleteClientMutationResult = Apollo.MutationResult<DeleteClientMutation>;
@@ -1085,7 +1126,8 @@ export type UpdateClientMutationFn = Apollo.MutationFunction<UpdateClientMutatio
  * });
  */
 export function useUpdateClientMutation(baseOptions?: Apollo.MutationHookOptions<UpdateClientMutation, UpdateClientMutationVariables>) {
-        return Apollo.useMutation<UpdateClientMutation, UpdateClientMutationVariables>(UpdateClientDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateClientMutation, UpdateClientMutationVariables>(UpdateClientDocument, options);
       }
 export type UpdateClientMutationHookResult = ReturnType<typeof useUpdateClientMutation>;
 export type UpdateClientMutationResult = Apollo.MutationResult<UpdateClientMutation>;
@@ -1117,7 +1159,8 @@ export type CreateMerchantMutationFn = Apollo.MutationFunction<CreateMerchantMut
  * });
  */
 export function useCreateMerchantMutation(baseOptions?: Apollo.MutationHookOptions<CreateMerchantMutation, CreateMerchantMutationVariables>) {
-        return Apollo.useMutation<CreateMerchantMutation, CreateMerchantMutationVariables>(CreateMerchantDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMerchantMutation, CreateMerchantMutationVariables>(CreateMerchantDocument, options);
       }
 export type CreateMerchantMutationHookResult = ReturnType<typeof useCreateMerchantMutation>;
 export type CreateMerchantMutationResult = Apollo.MutationResult<CreateMerchantMutation>;
@@ -1149,7 +1192,8 @@ export type DeleteMerchantMutationFn = Apollo.MutationFunction<DeleteMerchantMut
  * });
  */
 export function useDeleteMerchantMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMerchantMutation, DeleteMerchantMutationVariables>) {
-        return Apollo.useMutation<DeleteMerchantMutation, DeleteMerchantMutationVariables>(DeleteMerchantDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMerchantMutation, DeleteMerchantMutationVariables>(DeleteMerchantDocument, options);
       }
 export type DeleteMerchantMutationHookResult = ReturnType<typeof useDeleteMerchantMutation>;
 export type DeleteMerchantMutationResult = Apollo.MutationResult<DeleteMerchantMutation>;
@@ -1182,11 +1226,45 @@ export type UpdateMerchantMutationFn = Apollo.MutationFunction<UpdateMerchantMut
  * });
  */
 export function useUpdateMerchantMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMerchantMutation, UpdateMerchantMutationVariables>) {
-        return Apollo.useMutation<UpdateMerchantMutation, UpdateMerchantMutationVariables>(UpdateMerchantDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMerchantMutation, UpdateMerchantMutationVariables>(UpdateMerchantDocument, options);
       }
 export type UpdateMerchantMutationHookResult = ReturnType<typeof useUpdateMerchantMutation>;
 export type UpdateMerchantMutationResult = Apollo.MutationResult<UpdateMerchantMutation>;
 export type UpdateMerchantMutationOptions = Apollo.BaseMutationOptions<UpdateMerchantMutation, UpdateMerchantMutationVariables>;
+export const CreateScenarioDocument = gql`
+    mutation createScenario($data: ScenarioCreateInput!) {
+  createdScenario: createOneScenario(data: $data) {
+    ...ScenarioContent
+  }
+}
+    ${ScenarioContentFragmentDoc}`;
+export type CreateScenarioMutationFn = Apollo.MutationFunction<CreateScenarioMutation, CreateScenarioMutationVariables>;
+
+/**
+ * __useCreateScenarioMutation__
+ *
+ * To run a mutation, you first call `useCreateScenarioMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateScenarioMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createScenarioMutation, { data, loading, error }] = useCreateScenarioMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateScenarioMutation(baseOptions?: Apollo.MutationHookOptions<CreateScenarioMutation, CreateScenarioMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateScenarioMutation, CreateScenarioMutationVariables>(CreateScenarioDocument, options);
+      }
+export type CreateScenarioMutationHookResult = ReturnType<typeof useCreateScenarioMutation>;
+export type CreateScenarioMutationResult = Apollo.MutationResult<CreateScenarioMutation>;
+export type CreateScenarioMutationOptions = Apollo.BaseMutationOptions<CreateScenarioMutation, CreateScenarioMutationVariables>;
 export const ClientDocument = gql`
     query client($where: ClientWhereUniqueInput!) {
   client(where: $where) {
@@ -1212,10 +1290,12 @@ export const ClientDocument = gql`
  * });
  */
 export function useClientQuery(baseOptions: Apollo.QueryHookOptions<ClientQuery, ClientQueryVariables>) {
-        return Apollo.useQuery<ClientQuery, ClientQueryVariables>(ClientDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ClientQuery, ClientQueryVariables>(ClientDocument, options);
       }
 export function useClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClientQuery, ClientQueryVariables>) {
-          return Apollo.useLazyQuery<ClientQuery, ClientQueryVariables>(ClientDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ClientQuery, ClientQueryVariables>(ClientDocument, options);
         }
 export type ClientQueryHookResult = ReturnType<typeof useClientQuery>;
 export type ClientLazyQueryHookResult = ReturnType<typeof useClientLazyQuery>;
@@ -1260,10 +1340,12 @@ export const PaginatedClientListDocument = gql`
  * });
  */
 export function usePaginatedClientListQuery(baseOptions: Apollo.QueryHookOptions<PaginatedClientListQuery, PaginatedClientListQueryVariables>) {
-        return Apollo.useQuery<PaginatedClientListQuery, PaginatedClientListQueryVariables>(PaginatedClientListDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PaginatedClientListQuery, PaginatedClientListQueryVariables>(PaginatedClientListDocument, options);
       }
 export function usePaginatedClientListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PaginatedClientListQuery, PaginatedClientListQueryVariables>) {
-          return Apollo.useLazyQuery<PaginatedClientListQuery, PaginatedClientListQueryVariables>(PaginatedClientListDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PaginatedClientListQuery, PaginatedClientListQueryVariables>(PaginatedClientListDocument, options);
         }
 export type PaginatedClientListQueryHookResult = ReturnType<typeof usePaginatedClientListQuery>;
 export type PaginatedClientListLazyQueryHookResult = ReturnType<typeof usePaginatedClientListLazyQuery>;
@@ -1293,10 +1375,12 @@ export const MerchantDocument = gql`
  * });
  */
 export function useMerchantQuery(baseOptions: Apollo.QueryHookOptions<MerchantQuery, MerchantQueryVariables>) {
-        return Apollo.useQuery<MerchantQuery, MerchantQueryVariables>(MerchantDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MerchantQuery, MerchantQueryVariables>(MerchantDocument, options);
       }
 export function useMerchantLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MerchantQuery, MerchantQueryVariables>) {
-          return Apollo.useLazyQuery<MerchantQuery, MerchantQueryVariables>(MerchantDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MerchantQuery, MerchantQueryVariables>(MerchantDocument, options);
         }
 export type MerchantQueryHookResult = ReturnType<typeof useMerchantQuery>;
 export type MerchantLazyQueryHookResult = ReturnType<typeof useMerchantLazyQuery>;
@@ -1341,10 +1425,12 @@ export const PaginatedMerchantListDocument = gql`
  * });
  */
 export function usePaginatedMerchantListQuery(baseOptions: Apollo.QueryHookOptions<PaginatedMerchantListQuery, PaginatedMerchantListQueryVariables>) {
-        return Apollo.useQuery<PaginatedMerchantListQuery, PaginatedMerchantListQueryVariables>(PaginatedMerchantListDocument, baseOptions);
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PaginatedMerchantListQuery, PaginatedMerchantListQueryVariables>(PaginatedMerchantListDocument, options);
       }
 export function usePaginatedMerchantListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PaginatedMerchantListQuery, PaginatedMerchantListQueryVariables>) {
-          return Apollo.useLazyQuery<PaginatedMerchantListQuery, PaginatedMerchantListQueryVariables>(PaginatedMerchantListDocument, baseOptions);
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PaginatedMerchantListQuery, PaginatedMerchantListQueryVariables>(PaginatedMerchantListDocument, options);
         }
 export type PaginatedMerchantListQueryHookResult = ReturnType<typeof usePaginatedMerchantListQuery>;
 export type PaginatedMerchantListLazyQueryHookResult = ReturnType<typeof usePaginatedMerchantListLazyQuery>;

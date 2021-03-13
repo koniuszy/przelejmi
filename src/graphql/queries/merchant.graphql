@@ -3,3 +3,26 @@ query merchant($where: MerchantWhereUniqueInput!) {
     ...MerchantContent
   }
 }
+
+query paginatedMerchantList(
+  $orderBy: [MerchantOrderByInput!]
+  $where: MerchantWhereInput
+  $skip: Int!
+  $take: Int!
+) {
+  paginatedMerchantList: paginatedMerchants(
+    orderBy: $orderBy
+    where: $where
+    skip: $skip
+    take: $take
+  ) {
+    totalCount
+    filters {
+      country
+      city
+    }
+    list {
+      ...MerchantContent
+    }
+  }
+}

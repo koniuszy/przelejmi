@@ -594,7 +594,9 @@ export interface NexusGenObjects {
     amount: number; // Int!
     clientId: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
+    dueDateDays: number; // Int!
     id: number; // Int!
+    imageUrl: string; // String!
     merchantId: number; // Int!
     name: string; // String!
     netPerOne: number; // Int!
@@ -685,7 +687,9 @@ export interface NexusGenFieldTypes {
     client: NexusGenRootTypes['Client']; // Client!
     clientId: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
+    dueDateDays: number; // Int!
     id: number; // Int!
+    imageUrl: string; // String!
     merchant: NexusGenRootTypes['Merchant']; // Merchant!
     merchantId: number; // Int!
     name: string; // String!
@@ -767,7 +771,9 @@ export interface NexusGenFieldTypeNames {
     client: 'Client'
     clientId: 'Int'
     createdAt: 'DateTime'
+    dueDateDays: 'Int'
     id: 'Int'
+    imageUrl: 'String'
     merchant: 'Merchant'
     merchantId: 'Int'
     name: 'String'

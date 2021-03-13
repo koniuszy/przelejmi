@@ -1,0 +1,5 @@
+mutation createScenario($data: ScenarioCreateInput!) {
+  createdScenario: createOneScenario(data: $data) {
+    ...ScenarioContent
+  }
+}
