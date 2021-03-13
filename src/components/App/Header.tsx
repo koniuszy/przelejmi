@@ -18,11 +18,10 @@ import {
   AvatarBadge,
 } from '@chakra-ui/react'
 
-import { signOut, useSession } from 'next-auth/client'
+import { signOut, Session } from 'next-auth/client'
 
-const Header: FC = () => {
+const Header: FC<{ session: Session }> = ({ session }) => {
   const { pathname, push } = useRouter()
-  const [session] = useSession()
 
   return (
     <Flex width="100%" as="header" py={5} justifyContent="space-between" alignItems="center">

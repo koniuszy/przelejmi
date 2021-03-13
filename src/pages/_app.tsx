@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, createContext } from 'react'
 
 import { useRouter } from 'next/router'
 
 import { ChakraProvider, extendTheme, Box, Flex } from '@chakra-ui/react'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import { Provider, useSession, signIn } from 'next-auth/client'
+import { useSession, signIn, Session } from 'next-auth/client'
 import NextProgressBar from 'nextjs-progressbar'
 
 import { Footer, Header } from 'src/components/App'
@@ -51,10 +51,12 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+export const sessionContext = createContext<[Session, boolean]>([undefined, true])
+
 function MyApp({ Component, pageProps }) {
   const { pathname } = useRouter()
 
-  const [session] = useSession()
+  const [session, isSessionLoading] = useSession()
 
   useEffect(() => {
     if (session && !session.user && pathname !== '/') signIn('google')
@@ -69,7 +71,7 @@ function MyApp({ Component, pageProps }) {
         height={3}
       />
 
-      <Provider session={pageProps.session}>
+      <sessionContext.Provider value={[session, isSessionLoading]}>
         <ApolloProvider client={client}>
           <ChakraProvider theme={extendedTheme}>
             <Flex
@@ -80,7 +82,7 @@ function MyApp({ Component, pageProps }) {
               justifyContent="space-between"
             >
               <Box>
-                <Header />
+                <Header session={session} />
                 <Component {...pageProps} />
               </Box>
 
@@ -88,7 +90,7 @@ function MyApp({ Component, pageProps }) {
             </Flex>
           </ChakraProvider>
         </ApolloProvider>
-      </Provider>
+      </sessionContext.Provider>
     </>
   )
 }

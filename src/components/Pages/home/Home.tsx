@@ -1,17 +1,18 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 
 import { CalendarIcon, TimeIcon, UnlockIcon } from '@chakra-ui/icons'
 import { Center, List, ListIcon, ListItem, Progress, Spinner, Box, Flex } from '@chakra-ui/react'
 
 import Lottie from 'lottie-react'
-import { useSession } from 'next-auth/client'
+
+import { sessionContext } from 'src/pages/_app'
 
 import ActionButtons from './ActionButtons'
 import bigInvoiceAnimation from './bigInvoiceAnimation.json'
 import statsAnimation from './statsAnimation.json'
 
 const Home: FC = () => {
-  const [session, isSessionLoading] = useSession()
+  const [session, isSessionLoading] = useContext(sessionContext)
 
   if (isSessionLoading)
     return (
