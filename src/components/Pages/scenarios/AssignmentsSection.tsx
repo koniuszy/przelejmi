@@ -33,63 +33,73 @@ export type Assignments = {
   merchantId: number | null
 }
 
-const AssignmentsSection: FC<{
+type AssignmentProps = {
   assignments: Assignments
   onAssign(data: Partial<Assignments>): void
-}> = ({ onAssign, assignments }) => {
+}
+
+const MerchantSelect: FC<
+  AssignmentProps & {
+    merchant: MerchantContentFragment
+  }
+> = ({ assignments, merchant, onAssign }) => {
+  const isSelected = assignments.merchantId === merchant.id
+  return (
+    <>
+      <Center justifyContent="flex-start">{merchant.companyName}</Center>
+      <Center justifyContent="flex-start">{merchant.issuerName}</Center>
+      <Center justifyContent="flex-start">{merchant.VATId}</Center>
+      <Button
+        colorScheme={isSelected ? 'green' : 'blue'}
+        onClick={() => {
+          if (isSelected) {
+            onAssign({ merchantId: null })
+            return
+          }
+
+          onAssign({ merchantId: merchant.id })
+        }}
+      >
+        {isSelected ? 'Selected' : 'Select'}
+      </Button>
+    </>
+  )
+}
+
+const ClientSelect: FC<AssignmentProps & { client: ClientContentFragment }> = ({
+  client,
+  assignments,
+  onAssign,
+}) => {
+  const isSelected = assignments.clientId === client.id
+  return (
+    <React.Fragment key={client.id}>
+      <Center justifyContent="flex-start">{client.name}</Center>
+      <Center justifyContent="flex-start">{client.VATId}</Center>
+      <Button
+        colorScheme={isSelected ? 'green' : 'blue'}
+        onClick={() => {
+          if (isSelected) {
+            onAssign({ clientId: null })
+            return
+          }
+
+          onAssign({ clientId: client.id })
+        }}
+      >
+        {isSelected ? 'Selected' : 'Select'}
+      </Button>
+    </React.Fragment>
+  )
+}
+
+const AssignmentsSection: FC<AssignmentProps> = ({ onAssign, assignments }) => {
   const merchantQuery = usePaginatedMerchantListQuery({
     variables: { skip: 0, take: 100 },
   })
   const clientQuery = usePaginatedClientListQuery({
     variables: { skip: 0, take: 100 },
   })
-
-  const renderMerchantSelects = (merchant: MerchantContentFragment) => {
-    const isSelected = assignments.merchantId === merchant.id
-    return (
-      <React.Fragment key={merchant.id}>
-        <Center justifyContent="flex-start">{merchant.companyName}</Center>
-        <Center justifyContent="flex-start">{merchant.issuerName}</Center>
-        <Center justifyContent="flex-start">{merchant.VATId}</Center>
-        <Button
-          colorScheme={isSelected ? 'green' : 'blue'}
-          onClick={() => {
-            if (isSelected) {
-              onAssign({ merchantId: null })
-              return
-            }
-
-            onAssign({ merchantId: merchant.id })
-          }}
-        >
-          {isSelected ? 'Selected' : 'Select'}
-        </Button>
-      </React.Fragment>
-    )
-  }
-
-  const renderClientSelect = (client: ClientContentFragment) => {
-    const isSelected = assignments.clientId === client.id
-    return (
-      <React.Fragment key={client.id}>
-        <Center justifyContent="flex-start">{client.name}</Center>
-        <Center justifyContent="flex-start">{client.VATId}</Center>
-        <Button
-          colorScheme={isSelected ? 'green' : 'blue'}
-          onClick={() => {
-            if (isSelected) {
-              onAssign({ clientId: null })
-              return
-            }
-
-            onAssign({ clientId: client.id })
-          }}
-        >
-          {isSelected ? 'Selected' : 'Select'}
-        </Button>
-      </React.Fragment>
-    )
-  }
 
   return (
     <>
@@ -102,7 +112,7 @@ const AssignmentsSection: FC<{
           {assignments.merchantId && (
             <Text fontWeight="bold">
               {
-                merchantQuery.data.paginatedMerchantList.list.find(
+                merchantQuery.data?.paginatedMerchantList.list.find(
                   ({ id }) => id === assignments.merchantId
                 ).companyName
               }
@@ -117,7 +127,14 @@ const AssignmentsSection: FC<{
             <SkeletonsStack />
           ) : (
             <SimpleGrid my="2" columns={4} spacing={10}>
-              {merchantQuery.data.paginatedMerchantList.list.map(renderMerchantSelects)}
+              {merchantQuery.data?.paginatedMerchantList.list.map((merchantListItem) => (
+                <MerchantSelect
+                  key={merchantListItem.id}
+                  merchant={merchantListItem}
+                  assignments={assignments}
+                  onAssign={onAssign}
+                />
+              ))}
             </SimpleGrid>
           )}
         </Box>
@@ -132,7 +149,7 @@ const AssignmentsSection: FC<{
           {assignments.clientId && (
             <Text fontWeight="bold">
               {
-                clientQuery.data.paginatedClientList.list.find(
+                clientQuery.data?.paginatedClientList.list.find(
                   ({ id }) => id === assignments.clientId
                 ).name
               }
@@ -147,7 +164,14 @@ const AssignmentsSection: FC<{
             <SkeletonsStack />
           ) : (
             <SimpleGrid my="2" columns={3} spacing={10}>
-              {clientQuery.data.paginatedClientList.list.map(renderClientSelect)}
+              {clientQuery.data?.paginatedClientList.list.map((clientListItem) => (
+                <ClientSelect
+                  key={clientListItem.id}
+                  client={clientListItem}
+                  assignments={assignments}
+                  onAssign={onAssign}
+                />
+              ))}
             </SimpleGrid>
           )}
         </Box>
@@ -158,3 +182,6 @@ const AssignmentsSection: FC<{
 }
 
 export default AssignmentsSection
+
+// typescript allows to do: merchantQuery.data.paginatedMerchantList.
+// should convert onSave to merchantQuery.data?.paginatedMerchantList.

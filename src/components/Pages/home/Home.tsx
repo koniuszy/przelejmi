@@ -1,18 +1,18 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
 
 import { CalendarIcon, TimeIcon, UnlockIcon } from '@chakra-ui/icons'
 import { Center, List, ListIcon, ListItem, Progress, Spinner, Box, Flex } from '@chakra-ui/react'
 
 import Lottie from 'lottie-react'
 
-import { sessionContext } from 'src/pages/_app'
+import useSession from 'src/hooks/useSession'
 
 import ActionButtons from './ActionButtons'
 import bigInvoiceAnimation from './bigInvoiceAnimation.json'
 import statsAnimation from './statsAnimation.json'
 
 const Home: FC = () => {
-  const [session, isSessionLoading] = useContext(sessionContext)
+  const [session, isSessionLoading] = useSession()
 
   if (isSessionLoading)
     return (
