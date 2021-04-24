@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react'
+import React, { FC, ReactElement, useState } from 'react'
 
 import NextLink from 'next/link'
 
@@ -42,20 +42,17 @@ export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
   </>
 )
 
+type RefetchParams = {
+  where?: MerchantWhereInput | ClientWhereInput
+  skip?: number
+  orderBy?:
+    | MerchantOrderByInput
+    | MerchantOrderByInput[]
+    | ClientOrderByInput
+    | ClientOrderByInput[]
+}
 export interface Props {
-  refetch({
-    where,
-    skip,
-    orderBy,
-  }: {
-    where?: MerchantWhereInput | ClientWhereInput
-    skip?: number
-    orderBy?:
-      | MerchantOrderByInput
-      | MerchantOrderByInput[]
-      | ClientOrderByInput
-      | ClientOrderByInput[]
-  }): void
+  refetch(params: RefetchParams): Promise<any>
   variables: PaginatedMerchantListQueryVariables
 }
 
@@ -73,7 +70,7 @@ const Table: FC<
     rowRender(item: Item, index: number): ReactElement
   } & Props
 > = ({
-  filtersHeaderProps,
+  filtersHeaderProps: { isLoading, ...filtersHeaderProps },
   list,
   createHref,
   perPage,
@@ -83,60 +80,73 @@ const Table: FC<
   refetch,
   rowRender,
   emptyListHeading,
-}) => (
-  <>
-    <TableHeader
-      {...filtersHeaderProps}
-      searchKeys={Object.keys(list[0] ?? {})}
-      variables={variables}
-      refetch={refetch}
-    />
-    <ChakraTable variant="simple">
-      <TableCaption>
-        {list.length > 0 ? (
-          <Pagination
-            totalPages={Math.ceil(totalRecordsCount / perPage)}
-            currentPage={variables.skip ? (variables.skip + perPage) / perPage : 1}
-            onPageChange={(newPage) => refetch({ skip: (newPage - 1) * perPage })}
-          />
-        ) : (
-          <>
-            <Heading as="h2">{emptyListHeading}</Heading>
-            <NextLink href={createHref}>
-              <Button mt={5} colorScheme="teal">
-                Create
-              </Button>
-            </NextLink>
-          </>
-        )}
-      </TableCaption>
+}) => {
+  const [isRefetching, setIsRefetching] = useState(false)
 
-      <Thead>
-        <Tr>
-          {headerList.map((headerListItem, index) => (
-            <React.Fragment key={index}>
-              {typeof headerListItem === 'string' ? (
-                <Th>{headerListItem}</Th>
-              ) : (
-                <SortTh
-                  title={headerListItem.title}
-                  isAsc={(variables.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Asc}
-                  isDesc={(variables.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Desc}
-                  onAsc={() =>
-                    refetch({ orderBy: { [headerListItem.sortableKey]: SortOrder.Asc } })
-                  }
-                  onDesc={() =>
-                    refetch({ orderBy: { [headerListItem.sortableKey]: SortOrder.Desc } })
-                  }
-                />
-              )}
-            </React.Fragment>
-          ))}
-        </Tr>
-      </Thead>
-      <Tbody>{list.map(rowRender)}</Tbody>
-    </ChakraTable>
-  </>
-)
+  async function handleRefetch(params: RefetchParams) {
+    setIsRefetching(true)
+    await refetch(params)
+    setIsRefetching(false)
+  }
+
+  return (
+    <>
+      <TableHeader
+        {...filtersHeaderProps}
+        isLoading={isLoading || isRefetching}
+        searchKeys={Object.keys(list[0] ?? {})}
+        variables={variables}
+        refetch={handleRefetch}
+      />
+      <ChakraTable variant="simple">
+        <TableCaption>
+          {list.length > 0 ? (
+            <Pagination
+              totalPages={Math.ceil(totalRecordsCount / perPage)}
+              currentPage={variables.skip ? (variables.skip + perPage) / perPage : 1}
+              onPageChange={(newPage) => handleRefetch({ skip: (newPage - 1) * perPage })}
+            />
+          ) : (
+            <>
+              <Heading as="h2">{emptyListHeading}</Heading>
+              <NextLink href={createHref}>
+                <Button mt={5} colorScheme="teal">
+                  Create
+                </Button>
+              </NextLink>
+            </>
+          )}
+        </TableCaption>
+
+        <Thead>
+          <Tr>
+            {headerList.map((headerListItem, index) => (
+              <React.Fragment key={index}>
+                {typeof headerListItem === 'string' ? (
+                  <Th>{headerListItem}</Th>
+                ) : (
+                  <SortTh
+                    title={headerListItem.title}
+                    isAsc={(variables.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Asc}
+                    isDesc={
+                      (variables.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Desc
+                    }
+                    onAsc={() =>
+                      handleRefetch({ orderBy: { [headerListItem.sortableKey]: SortOrder.Asc } })
+                    }
+                    onDesc={() =>
+                      handleRefetch({ orderBy: { [headerListItem.sortableKey]: SortOrder.Desc } })
+                    }
+                  />
+                )}
+              </React.Fragment>
+            ))}
+          </Tr>
+        </Thead>
+        <Tbody>{list.map(rowRender)}</Tbody>
+      </ChakraTable>
+    </>
+  )
+}
 
 export default Table
