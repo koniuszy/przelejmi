@@ -17,11 +17,15 @@ import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import { Unit, Vat } from 'src/generated/graphql'
 
-import AssignmentsSection, { Assignments } from './AssignmentsSection'
+import AssignmentsSection from './AssignmentsSection'
 import TradeSection, { Trade } from './TradeSection'
 
 const CreateScenarioForm: FC = () => {
-  const [assignments, setAssignments] = useState<Assignments>({ clientId: null, merchantId: null })
+  const [assignments, setAssignments] = useState<{
+    clientId: number | null
+    merchantId: number | null
+  }>({ clientId: null, merchantId: null })
+
   const [trade, setTrade] = useState<Trade>({
     unitType: Unit.Item,
     VAT: Vat.Percent_23,
@@ -37,11 +41,13 @@ const CreateScenarioForm: FC = () => {
           assignments={assignments}
           onAssign={(data) => setAssignments((prev) => ({ ...prev, ...data }))}
         />
+
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
           <TradeSection
             trade={trade}
             onTradeChange={(data) => setTrade((prev) => ({ ...prev, ...data }))}
           />
+
           <Flex mt={4} justifyContent="space-between">
             <Text fontWeight="bold" fontSize="lg">
               Payment details

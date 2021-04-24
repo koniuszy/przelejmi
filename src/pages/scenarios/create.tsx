@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 
 import Head from 'next/head'
 
-import CreateScenarioForm from 'src/components/Pages/scenarios/ScenarioForm'
+import CreateScenarioForm from 'src/components/Pages/scenarios/CreateScenarioForm'
 
 const CreateScenarioPage: FC = () => (
   <>
