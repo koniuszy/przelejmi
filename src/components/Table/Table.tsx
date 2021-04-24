@@ -26,9 +26,10 @@ import {
   MerchantContentFragment,
 } from 'src/generated/graphql'
 
-import TableHeader, { TableHeaderProps, TableHeaderPlaceholder } from './Header'
 import Pagination from './Pagination'
 import SortTh from './SortTh'
+import TableHeader from './TableHeader'
+import { TableHeaderProps, TableHeaderPlaceholder } from './TableHeader/TableHeader'
 
 export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
   <>

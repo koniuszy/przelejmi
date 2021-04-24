@@ -2,9 +2,9 @@ import React, { FC } from 'react'
 
 import { Text, Flex, Center, Switch, FormControl, FormLabel, Spinner } from '@chakra-ui/react'
 
+import { Props } from '../Table'
 import DrawerFilters, { TriggerFiltersButton, Filters } from './DrawerFilters'
 import SearchInput, { Search, SearchInputPlaceholder } from './SearchInput'
-import { Props } from './Table'
 
 export type TableHeaderProps = {
   title: string
