@@ -14,14 +14,14 @@ import prisma from 'src/lib/prismaClient'
 
 import { OptimizedImg } from 'src/types'
 
-import MerchantDetails from 'src/components/Pages/merchants/MerchantDetails'
+import EditMerchantForm from 'src/components/Pages/merchants/EditMerchantForm'
 
 type SSGProps = {
   calmInTrolleyImg: OptimizedImg
   merchantId: number
 }
 
-const MerchantDetailsPage: FC<SSGProps> = (props) => {
+const EditMerchantFormPage: FC<SSGProps> = (props) => {
   const route = useRouter()
 
   return (
@@ -35,7 +35,7 @@ const MerchantDetailsPage: FC<SSGProps> = (props) => {
             <Spinner />
           </Center>
         ) : (
-          <MerchantDetails {...props} />
+          <EditMerchantForm {...props} />
         )}
       </main>
     </>
@@ -77,4 +77,4 @@ export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params 
   }
 }
 
-export default MerchantDetailsPage
+export default EditMerchantFormPage

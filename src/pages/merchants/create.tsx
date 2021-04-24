@@ -9,7 +9,7 @@ import { getImage } from '@plaiceholder/next'
 
 import { OptimizedImg } from 'src/types'
 
-import CreateMerchantForm from 'src/components/Pages/merchants/MerchantForm'
+import CreateMerchantForm from 'src/components/Pages/merchants/CreateMerchantForm'
 
 type SSGProps = {
   womanWithFoldersImg: OptimizedImg

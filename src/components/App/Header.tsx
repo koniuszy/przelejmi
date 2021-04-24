@@ -18,7 +18,8 @@ import {
   AvatarBadge,
 } from '@chakra-ui/react'
 
-import { signOut, Session } from 'next-auth/client'
+import { Session } from 'next-auth'
+import { signOut } from 'next-auth/client'
 
 const Header: FC<{ session: Session }> = ({ session }) => {
   const { pathname, push } = useRouter()
@@ -48,7 +49,7 @@ const Header: FC<{ session: Session }> = ({ session }) => {
           <Button
             w="100px"
             colorScheme="teal"
-            variant={pathname.includes('invoices') ? 'outline' : 'ghost'}
+            variant={pathname.endsWith('invoices') ? 'outline' : 'ghost'}
           >
             Invoices
           </Button>
@@ -58,7 +59,7 @@ const Header: FC<{ session: Session }> = ({ session }) => {
           <Button
             w="100px"
             colorScheme="teal"
-            variant={pathname.includes('scenarios') ? 'outline' : 'ghost'}
+            variant={pathname.endsWith('scenarios') ? 'outline' : 'ghost'}
           >
             Scenarios
           </Button>
@@ -68,7 +69,7 @@ const Header: FC<{ session: Session }> = ({ session }) => {
           <Button
             w="100px"
             colorScheme="teal"
-            variant={pathname.includes('clients') ? 'outline' : 'ghost'}
+            variant={pathname.endsWith('clients') ? 'outline' : 'ghost'}
           >
             Clients
           </Button>
@@ -78,7 +79,7 @@ const Header: FC<{ session: Session }> = ({ session }) => {
           <Button
             w="100px"
             colorScheme="teal"
-            variant={pathname.includes('merchants') ? 'outline' : 'ghost'}
+            variant={pathname.endsWith('merchants') ? 'outline' : 'ghost'}
           >
             Merchants
           </Button>

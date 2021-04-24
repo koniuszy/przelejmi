@@ -23,7 +23,7 @@ import { OptimizedImg } from 'src/types'
 
 import BlurredImg from 'src/components/BlurredImg'
 
-import { PER_PAGE } from './MerchantTable'
+import { PER_PAGE } from './MerchantList'
 
 type Form = {
   companyName: string
@@ -145,7 +145,7 @@ const CreateMerchantForm: FC<{
 
   return (
     <Flex>
-      <BlurredImg width={500} optimizedImg={womanWithFoldersImg} />
+      <BlurredImg height={770} optimizedImg={womanWithFoldersImg} />
 
       <Flex direction="row">
         <form onSubmit={handleSubmit}>

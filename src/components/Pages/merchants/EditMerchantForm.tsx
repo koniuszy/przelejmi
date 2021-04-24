@@ -16,7 +16,7 @@ import { OptimizedImg } from 'src/types'
 import BlurredImg from 'src/components/BlurredImg'
 import Editable from 'src/components/Editable'
 
-import { PER_PAGE } from './MerchantTable'
+import { PER_PAGE } from './MerchantList'
 
 const MerchantDetailsForm: FC<{
   merchant: MerchantContentFragment
@@ -75,7 +75,7 @@ const MerchantDetailsForm: FC<{
   </Flex>
 )
 
-const MerchantDetails: FC<{
+const EditMerchantForm: FC<{
   calmInTrolleyImg: OptimizedImg
   merchantId: number
 }> = ({ merchantId, calmInTrolleyImg }) => {
@@ -141,7 +141,7 @@ const MerchantDetails: FC<{
 
   return (
     <Flex>
-      <BlurredImg optimizedImg={calmInTrolleyImg} width={500} />
+      <BlurredImg optimizedImg={calmInTrolleyImg} height={760} />
       {data ? (
         <MerchantDetailsForm merchant={data.merchant} onUpdate={handleUpdate} />
       ) : (
@@ -151,4 +151,4 @@ const MerchantDetails: FC<{
   )
 }
 
-export default MerchantDetails
+export default EditMerchantForm

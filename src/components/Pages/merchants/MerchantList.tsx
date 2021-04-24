@@ -35,7 +35,7 @@ import Table, { TablePlaceholder } from 'src/components/Table'
 export const PER_PAGE = 10
 const TITLE = 'Total merchants'
 
-const MerchantTable: FC = () => {
+const MerchantList: FC = () => {
   const toast = useToast()
   const drawerOptions = useDisclosure()
 
@@ -260,4 +260,4 @@ const MerchantTable: FC = () => {
   )
 }
 
-export default MerchantTable
+export default MerchantList

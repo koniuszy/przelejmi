@@ -2,15 +2,15 @@ import React, { FC } from 'react'
 
 import Head from 'next/head'
 
-import MerchantTable from 'src/components/Pages/merchants/MerchantTable'
+import MerchantList from 'src/components/Pages/merchants/MerchantList'
 
-const MerchantTablePage: FC = () => (
+const MerchantListPage: FC = () => (
   <main>
     <Head>
       <title>Merchants | przelejmi</title>
     </Head>
-    <MerchantTable />
+    <MerchantList />
   </main>
 )
 
-export default MerchantTablePage
+export default MerchantListPage

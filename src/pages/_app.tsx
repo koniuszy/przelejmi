@@ -5,7 +5,8 @@ import { useRouter } from 'next/router'
 import { ChakraProvider, extendTheme, Box, Flex } from '@chakra-ui/react'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import { useSession, signIn, Session } from 'next-auth/client'
+import { Session } from 'next-auth'
+import { useSession, signIn } from 'next-auth/client'
 import NextProgressBar from 'nextjs-progressbar'
 
 import { Footer, Header } from 'src/components/App'
