@@ -14,14 +14,14 @@ import prisma from 'src/lib/prismaClient'
 
 import { OptimizedImg } from 'src/types'
 
-import ClientDetails from 'src/components/Pages/clients/EditClientForm'
+import EditClientForm from 'src/components/Pages/clients/EditClientForm'
 
 type SSGProps = {
   calmInTrolleyImg: OptimizedImg
   clientId: number
 }
 
-const ClientDetailsPage: FC<SSGProps> = (props) => {
+const EditClientFormPage: FC<SSGProps> = (props) => {
   const route = useRouter()
 
   return (
@@ -34,7 +34,7 @@ const ClientDetailsPage: FC<SSGProps> = (props) => {
           <Spinner />
         </Center>
       ) : (
-        <ClientDetails {...props} />
+        <EditClientForm {...props} />
       )}
     </>
   )
@@ -56,7 +56,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 }
 
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
-  const src = '/calmInTrolley.jpg'
+  const src = '/hecticInTrolley.jpeg'
   const width = 1920
   const height = 2880
   const img = await getImage(src)
@@ -75,4 +75,4 @@ export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params 
   }
 }
 
-export default ClientDetailsPage
+export default EditClientFormPage

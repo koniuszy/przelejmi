@@ -19,9 +19,9 @@ const EditMerchantForm: FC<{
   sittingLadyWithFolders: OptimizedImg
   merchantId: number
 }> = ({ merchantId, sittingLadyWithFolders }) => {
-  const { data, updateQuery } = useMerchantQuery({ variables: { where: { id: merchantId } } })
-
   const toast = useToast()
+
+  const { data, updateQuery } = useMerchantQuery({ variables: { where: { id: merchantId } } })
 
   const [updateMerchant, { loading }] = useUpdateMerchantMutation({
     refetchQueries: [
@@ -33,7 +33,7 @@ const EditMerchantForm: FC<{
         title: 'Client updated.',
       })
 
-      updateQuery((p) => ({ ...p, updatedMerchant }))
+      updateQuery((p) => ({ ...p, merchant: updatedMerchant }))
     },
     onError(err) {
       console.error(err)
