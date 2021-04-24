@@ -54,6 +54,7 @@ module.exports = {
         '@typescript-eslint/no-unused-expressions': ['error'],
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
+        '@typescript-eslint/no-empty-function': 'off',
       },
     },
   ],
