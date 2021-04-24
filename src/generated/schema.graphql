@@ -426,16 +426,60 @@ input ScenarioCreateInput {
   updatedAt: DateTime
 }
 
+input ScenarioCreateManyClientInput {
+  VAT: VAT!
+  amount: Int!
+  createdAt: DateTime
+  dueDateDays: Int!
+  id: Int
+  imageUrl: String!
+  merchantId: Int!
+  name: String!
+  netPerOne: Int!
+  notes: String!
+  paymentType: String!
+  unitType: Unit!
+  updatedAt: DateTime
+}
+
+input ScenarioCreateManyClientInputEnvelope {
+  data: [ScenarioCreateManyClientInput!]
+  skipDuplicates: Boolean
+}
+
+input ScenarioCreateManyMerchantInput {
+  VAT: VAT!
+  amount: Int!
+  clientId: Int!
+  createdAt: DateTime
+  dueDateDays: Int!
+  id: Int
+  imageUrl: String!
+  name: String!
+  netPerOne: Int!
+  notes: String!
+  paymentType: String!
+  unitType: Unit!
+  updatedAt: DateTime
+}
+
+input ScenarioCreateManyMerchantInputEnvelope {
+  data: [ScenarioCreateManyMerchantInput!]
+  skipDuplicates: Boolean
+}
+
 input ScenarioCreateNestedManyWithoutClientInput {
   connect: [ScenarioWhereUniqueInput!]
   connectOrCreate: [ScenarioCreateOrConnectWithoutClientInput!]
   create: [ScenarioCreateWithoutClientInput!]
+  createMany: ScenarioCreateManyClientInputEnvelope
 }
 
 input ScenarioCreateNestedManyWithoutMerchantInput {
   connect: [ScenarioWhereUniqueInput!]
   connectOrCreate: [ScenarioCreateOrConnectWithoutMerchantInput!]
   create: [ScenarioCreateWithoutMerchantInput!]
+  createMany: ScenarioCreateManyMerchantInputEnvelope
 }
 
 input ScenarioCreateOrConnectWithoutClientInput {
@@ -548,6 +592,7 @@ input ScenarioUpdateManyWithoutClientInput {
   connect: [ScenarioWhereUniqueInput!]
   connectOrCreate: [ScenarioCreateOrConnectWithoutClientInput!]
   create: [ScenarioCreateWithoutClientInput!]
+  createMany: ScenarioCreateManyClientInputEnvelope
   delete: [ScenarioWhereUniqueInput!]
   deleteMany: [ScenarioScalarWhereInput!]
   disconnect: [ScenarioWhereUniqueInput!]
@@ -561,6 +606,7 @@ input ScenarioUpdateManyWithoutMerchantInput {
   connect: [ScenarioWhereUniqueInput!]
   connectOrCreate: [ScenarioCreateOrConnectWithoutMerchantInput!]
   create: [ScenarioCreateWithoutMerchantInput!]
+  createMany: ScenarioCreateManyMerchantInputEnvelope
   delete: [ScenarioWhereUniqueInput!]
   deleteMany: [ScenarioScalarWhereInput!]
   disconnect: [ScenarioWhereUniqueInput!]

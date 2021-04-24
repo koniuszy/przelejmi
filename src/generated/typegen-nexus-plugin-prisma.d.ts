@@ -35,7 +35,7 @@ interface NexusPrismaInputs {
     }
     scenarios: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
-      ordering: 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
+      ordering: 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'
     }
     invoices: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'issueDate' | 'createdAt' | 'updatedAt' | 'content'
@@ -57,13 +57,13 @@ interface NexusPrismaInputs {
   Client: {
     Scenario: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
-      ordering: 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
+      ordering: 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'
     }
   }
   Merchant: {
     Scenario: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
-      ordering: 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
+      ordering: 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'
     }
   }
   Scenario: {

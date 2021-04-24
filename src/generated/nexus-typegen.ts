@@ -312,15 +312,55 @@ export interface NexusGenInputs {
     unitType: NexusGenEnums['Unit']; // Unit!
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
+  ScenarioCreateManyClientInput: { // input type
+    VAT: NexusGenEnums['VAT']; // VAT!
+    amount: number; // Int!
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    dueDateDays: number; // Int!
+    id?: number | null; // Int
+    imageUrl: string; // String!
+    merchantId: number; // Int!
+    name: string; // String!
+    netPerOne: number; // Int!
+    notes: string; // String!
+    paymentType: string; // String!
+    unitType: NexusGenEnums['Unit']; // Unit!
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+  }
+  ScenarioCreateManyClientInputEnvelope: { // input type
+    data?: NexusGenInputs['ScenarioCreateManyClientInput'][] | null; // [ScenarioCreateManyClientInput!]
+    skipDuplicates?: boolean | null; // Boolean
+  }
+  ScenarioCreateManyMerchantInput: { // input type
+    VAT: NexusGenEnums['VAT']; // VAT!
+    amount: number; // Int!
+    clientId: number; // Int!
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    dueDateDays: number; // Int!
+    id?: number | null; // Int
+    imageUrl: string; // String!
+    name: string; // String!
+    netPerOne: number; // Int!
+    notes: string; // String!
+    paymentType: string; // String!
+    unitType: NexusGenEnums['Unit']; // Unit!
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+  }
+  ScenarioCreateManyMerchantInputEnvelope: { // input type
+    data?: NexusGenInputs['ScenarioCreateManyMerchantInput'][] | null; // [ScenarioCreateManyMerchantInput!]
+    skipDuplicates?: boolean | null; // Boolean
+  }
   ScenarioCreateNestedManyWithoutClientInput: { // input type
     connect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
     connectOrCreate?: NexusGenInputs['ScenarioCreateOrConnectWithoutClientInput'][] | null; // [ScenarioCreateOrConnectWithoutClientInput!]
     create?: NexusGenInputs['ScenarioCreateWithoutClientInput'][] | null; // [ScenarioCreateWithoutClientInput!]
+    createMany?: NexusGenInputs['ScenarioCreateManyClientInputEnvelope'] | null; // ScenarioCreateManyClientInputEnvelope
   }
   ScenarioCreateNestedManyWithoutMerchantInput: { // input type
     connect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
     connectOrCreate?: NexusGenInputs['ScenarioCreateOrConnectWithoutMerchantInput'][] | null; // [ScenarioCreateOrConnectWithoutMerchantInput!]
     create?: NexusGenInputs['ScenarioCreateWithoutMerchantInput'][] | null; // [ScenarioCreateWithoutMerchantInput!]
+    createMany?: NexusGenInputs['ScenarioCreateManyMerchantInputEnvelope'] | null; // ScenarioCreateManyMerchantInputEnvelope
   }
   ScenarioCreateOrConnectWithoutClientInput: { // input type
     create: NexusGenInputs['ScenarioCreateWithoutClientInput']; // ScenarioCreateWithoutClientInput!
@@ -422,6 +462,7 @@ export interface NexusGenInputs {
     connect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
     connectOrCreate?: NexusGenInputs['ScenarioCreateOrConnectWithoutClientInput'][] | null; // [ScenarioCreateOrConnectWithoutClientInput!]
     create?: NexusGenInputs['ScenarioCreateWithoutClientInput'][] | null; // [ScenarioCreateWithoutClientInput!]
+    createMany?: NexusGenInputs['ScenarioCreateManyClientInputEnvelope'] | null; // ScenarioCreateManyClientInputEnvelope
     delete?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
     deleteMany?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
     disconnect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
@@ -434,6 +475,7 @@ export interface NexusGenInputs {
     connect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
     connectOrCreate?: NexusGenInputs['ScenarioCreateOrConnectWithoutMerchantInput'][] | null; // [ScenarioCreateOrConnectWithoutMerchantInput!]
     create?: NexusGenInputs['ScenarioCreateWithoutMerchantInput'][] | null; // [ScenarioCreateWithoutMerchantInput!]
+    createMany?: NexusGenInputs['ScenarioCreateManyMerchantInputEnvelope'] | null; // ScenarioCreateManyMerchantInputEnvelope
     delete?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
     deleteMany?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
     disconnect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
