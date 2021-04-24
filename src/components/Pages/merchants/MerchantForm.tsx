@@ -96,8 +96,8 @@ const CreateMerchantForm: FC<{
     },
   })
 
-  const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
-    validateOnBlur: false,
+  const { handleSubmit, errors, values, handleChange, isValid, validateField } = useFormik<Form>({
+    validateOnBlur: true,
     validateOnChange: false,
     initialValues: {
       companyName: '',
@@ -129,11 +129,16 @@ const CreateMerchantForm: FC<{
       if (values.country.length > 100) errors.country = 'Country should be shorter'
       if (values.bankName.length > 100) errors.bankName = 'Bank name should be shorter'
       if (values.issuerName.length > 100) errors.issuerName = 'Issuer name should be shorter'
+
       if (
         values.bankAccountPln &&
-        (values.bankAccountPln.length < 26 || values.bankAccountPln.length > 30)
-      )
+        (values.bankAccountPln.replace(/ /g, '').length < 26 ||
+          values.bankAccountPln.replace(/ /g, '').length > 30)
+      ) {
+        console.log(values.bankAccountPln.length)
         errors.bankAccountPln = 'Bank account should be between 26 and 30 digits'
+      }
+
       if (
         values.bankAccountEur &&
         (values.bankAccountEur.length < 26 || values.bankAccountEur.length > 30)
@@ -142,9 +147,12 @@ const CreateMerchantForm: FC<{
       if (values.email.length > 100) errors.email = 'Email should be shorter'
       if (isNaN(Number(values.VATId.replace(/ /g, '')))) errors.VATId = 'VATid is invalid'
 
+      console.log({ errors })
       return errors
     },
   })
+
+  console.log({ values })
 
   return (
     <Flex>
