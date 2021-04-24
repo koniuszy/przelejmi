@@ -14,11 +14,7 @@ import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import {
-  useCreateMerchantMutation,
-  PaginatedMerchantListDocument,
-  PaginatedMerchantListQuery,
-} from 'src/generated/graphql'
+import { useCreateMerchantMutation, PaginatedMerchantListDocument } from 'src/generated/graphql'
 import { OptimizedImg } from 'src/types'
 
 import BlurredImg from 'src/components/BlurredImg'
@@ -43,31 +39,16 @@ const CreateMerchantForm: FC<{
   womanWithFoldersImg: OptimizedImg
 }> = ({ womanWithFoldersImg }) => {
   const toast = useToast()
-  const [createMerchant, { loading, client }] = useCreateMerchantMutation({
-    onCompleted({ createdMerchant }) {
+
+  const [createMerchant, { loading }] = useCreateMerchantMutation({
+    refetchQueries: [
+      { query: PaginatedMerchantListDocument, variables: { take: PER_PAGE, skip: 0 } },
+    ],
+    onCompleted() {
       toast({
         ...successToastContent,
         title: 'Merchant created.',
       })
-
-      const listQueryOptions = {
-        query: PaginatedMerchantListDocument,
-        variables: { take: PER_PAGE, skip: 0 },
-      }
-
-      const data = client.readQuery<PaginatedMerchantListQuery>(listQueryOptions)
-
-      if (data)
-        client.writeQuery<PaginatedMerchantListQuery>({
-          ...listQueryOptions,
-          data: {
-            ...data,
-            paginatedMerchantList: {
-              ...data.paginatedMerchantList,
-              list: [...data.paginatedMerchantList.list, createdMerchant],
-            },
-          },
-        })
     },
     onError(err) {
       console.error(err)

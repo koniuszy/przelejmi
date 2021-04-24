@@ -9,46 +9,28 @@ import { Merchant } from 'prisma/prisma-client'
 
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
-import {
-  PaginatedMerchantListDocument,
-  useDeleteMerchantMutation,
-  PaginatedMerchantListQuery,
-} from 'src/generated/graphql'
+import { useDeleteMerchantMutation } from 'src/generated/graphql'
 
 import Clipboard from 'src/components/Clipboard'
 import Confirmation from 'src/components/Confirmation'
 
 const ActionsColumn: FC<{
   merchant: Merchant
-  merchantListQuery: PaginatedMerchantListQuery
-  merchantListVariables
-}> = ({ merchant, merchantListQuery, merchantListVariables }) => {
+  onMerchantDelete(id: number): void
+}> = ({ merchant, onMerchantDelete }) => {
   const toast = useToast()
 
   const [merchantDeletionId, setMerchantDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
 
   const [deleteMerchant, deleteMerchantOptions] = useDeleteMerchantMutation({
-    onCompleted(response) {
+    onCompleted({ deletedMerchant }) {
       toast({
         ...successToastContent,
         title: 'Client deleted.',
       })
       setMerchantDeletionId(null)
-
-      deleteMerchantOptions.client.writeQuery({
-        query: PaginatedMerchantListDocument,
-        variables: merchantListVariables,
-        data: {
-          ...merchantListQuery,
-          paginatedMerchantList: {
-            ...merchantListQuery.paginatedMerchantList,
-            list: merchantListQuery.paginatedMerchantList.list.filter(
-              (clientListItem) => clientListItem.id !== response.deletedMerchant.id
-            ),
-          },
-        },
-      })
+      onMerchantDelete(deletedMerchant.id)
     },
     onError() {
       toast(errorToastContent)
