@@ -15,9 +15,9 @@ import { ClientType, OptimizedImg } from 'src/types'
 import BlurredImg from 'src/components/BlurredImg'
 import Editable from 'src/components/Editable'
 
-import { PER_PAGE } from './ClientTable'
+import { PER_PAGE } from './ClientList'
 
-const ClientDetailsForm: FC<{
+const EditClientForm: FC<{
   client: ClientContentFragment
   onUpdate(data: Partial<ClientContentFragment>): void
 }> = ({ client, onUpdate }) => (
@@ -127,9 +127,9 @@ const ClientDetails: FC<{
 
   return (
     <Flex>
-      <BlurredImg optimizedImg={calmInTrolleyImg} width={500} />
+      <BlurredImg optimizedImg={calmInTrolleyImg} height={50} />
 
-      {data ? <ClientDetailsForm client={data.client} onUpdate={handleUpdate} /> : <Spinner />}
+      {data ? <EditClientForm client={data.client} onUpdate={handleUpdate} /> : <Spinner />}
     </Flex>
   )
 }

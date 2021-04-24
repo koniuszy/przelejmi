@@ -9,19 +9,19 @@ import { getImage } from '@plaiceholder/next'
 
 import { OptimizedImg } from 'src/types'
 
-import ClientForm from 'src/components/Pages/clients/ClientForm'
+import CreateClientForm from 'src/components/Pages/clients/CreateClientForm'
 
 type SSGProps = {
   calmInTrolleyImg: OptimizedImg
 }
 
-const CreateClient: FC<SSGProps> = ({ calmInTrolleyImg }) => (
+const CreateClientPage: FC<SSGProps> = ({ calmInTrolleyImg }) => (
   <>
     <Head>
       <title>Create client | przelejmi</title>
     </Head>
 
-    <ClientForm calmInTrolleyImg={calmInTrolleyImg} />
+    <CreateClientForm calmInTrolleyImg={calmInTrolleyImg} />
   </>
 )
 
@@ -43,4 +43,4 @@ export const getStaticProps: GetStaticProps<SSGProps> = async () => {
   }
 }
 
-export default CreateClient
+export default CreateClientPage

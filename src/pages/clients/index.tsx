@@ -2,17 +2,17 @@ import React, { FC } from 'react'
 
 import Head from 'next/head'
 
-import ClientTable from 'src/components/Pages/clients/ClientTable'
+import ClientList from 'src/components/Pages/clients/ClientList'
 
-const ClientTablePage: FC = () => (
+const ClientListPage: FC = () => (
   <>
     <Head>
       <title>Clients | przelejmi</title>
     </Head>
     <main>
-      <ClientTable />
+      <ClientList />
     </main>
   </>
 )
 
-export default ClientTablePage
+export default ClientListPage

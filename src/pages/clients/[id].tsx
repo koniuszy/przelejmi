@@ -14,7 +14,7 @@ import prisma from 'src/lib/prismaClient'
 
 import { OptimizedImg } from 'src/types'
 
-import ClientDetails from 'src/components/Pages/clients/ClientDetails'
+import ClientDetails from 'src/components/Pages/clients/EditClientForm'
 
 type SSGProps = {
   calmInTrolleyImg: OptimizedImg

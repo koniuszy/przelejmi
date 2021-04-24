@@ -37,7 +37,7 @@ export const PER_PAGE = 10
 
 const TITLE = 'Total clients'
 
-const ClientTable: FC = () => {
+const ClientList: FC = () => {
   const toast = useToast()
 
   const [isEditable, setIsEditable] = useState(true)
@@ -275,4 +275,4 @@ const ClientTable: FC = () => {
   )
 }
 
-export default ClientTable
+export default ClientList

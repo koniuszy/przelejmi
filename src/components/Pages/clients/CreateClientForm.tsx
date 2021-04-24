@@ -27,7 +27,7 @@ import { ClientType, OptimizedImg } from 'src/types'
 
 import BlurredImg from 'src/components/BlurredImg'
 
-import { PER_PAGE } from './ClientTable'
+import { PER_PAGE } from './ClientList'
 
 type Form = {
   name: string
@@ -38,7 +38,7 @@ type Form = {
   VATId: string
 }
 
-const ClientForm: FC<{
+const CreateClientForm: FC<{
   calmInTrolleyImg: OptimizedImg
 }> = ({ calmInTrolleyImg }) => {
   const toast = useToast()
@@ -121,7 +121,7 @@ const ClientForm: FC<{
 
   return (
     <Flex>
-      <BlurredImg width={500} optimizedImg={calmInTrolleyImg} />
+      <BlurredImg height={10} optimizedImg={calmInTrolleyImg} />
 
       <form onSubmit={handleSubmit}>
         <Flex direction="column">
@@ -208,4 +208,4 @@ const ClientForm: FC<{
   )
 }
 
-export default ClientForm
+export default CreateClientForm
