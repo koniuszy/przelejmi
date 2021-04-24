@@ -364,6 +364,7 @@ type PaginatedClientsFilters {
 }
 
 type PaginatedMerchantFilters {
+  bank: [String]
   city: [String]
   country: [String]
 }

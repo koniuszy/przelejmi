@@ -5,6 +5,7 @@ export const PaginatedMerchantsFilters = objectType({
   definition(t) {
     t.list.string('country')
     t.list.string('city')
+    t.list.string('bank')
   },
 })
 
@@ -30,7 +31,7 @@ export const PaginatedMerchantListQuery = extendType({
         orderBy: arg({ type: 'MerchantOrderByInput', list: true }),
       },
       async resolve(_root, variables, { prisma }) {
-        const [totalCount, list, countryList, cityList] = await Promise.all([
+        const [totalCount, list, countryList, cityList, bankList] = await Promise.all([
           prisma.merchant.count({ where: variables.where }),
           prisma.merchant.findMany(variables),
           prisma.merchant.findMany({
@@ -41,6 +42,7 @@ export const PaginatedMerchantListQuery = extendType({
             distinct: 'city',
             select: { city: true },
           }),
+          prisma.merchant.findMany({ distinct: 'bankName', select: { bankName: true } }),
         ])
 
         return {
@@ -49,6 +51,7 @@ export const PaginatedMerchantListQuery = extendType({
           filters: {
             country: countryList.map(({ country }) => country),
             city: cityList.map(({ city }) => city),
+            bank: bankList.map(({ bankName }) => bankName),
           },
         }
       },

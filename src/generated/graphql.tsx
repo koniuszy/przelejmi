@@ -439,6 +439,7 @@ export type PaginatedClientsFilters = {
 
 export type PaginatedMerchantFilters = {
   __typename?: 'PaginatedMerchantFilters';
+  bank?: Maybe<Array<Maybe<Scalars['String']>>>;
   city?: Maybe<Array<Maybe<Scalars['String']>>>;
   country?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
@@ -559,16 +560,60 @@ export type ScenarioCreateInput = {
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
+export type ScenarioCreateManyClientInput = {
+  VAT: Vat;
+  amount: Scalars['Int'];
+  createdAt?: Maybe<Scalars['DateTime']>;
+  dueDateDays: Scalars['Int'];
+  id?: Maybe<Scalars['Int']>;
+  imageUrl: Scalars['String'];
+  merchantId: Scalars['Int'];
+  name: Scalars['String'];
+  netPerOne: Scalars['Int'];
+  notes: Scalars['String'];
+  paymentType: Scalars['String'];
+  unitType: Unit;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ScenarioCreateManyClientInputEnvelope = {
+  data?: Maybe<Array<ScenarioCreateManyClientInput>>;
+  skipDuplicates?: Maybe<Scalars['Boolean']>;
+};
+
+export type ScenarioCreateManyMerchantInput = {
+  VAT: Vat;
+  amount: Scalars['Int'];
+  clientId: Scalars['Int'];
+  createdAt?: Maybe<Scalars['DateTime']>;
+  dueDateDays: Scalars['Int'];
+  id?: Maybe<Scalars['Int']>;
+  imageUrl: Scalars['String'];
+  name: Scalars['String'];
+  netPerOne: Scalars['Int'];
+  notes: Scalars['String'];
+  paymentType: Scalars['String'];
+  unitType: Unit;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ScenarioCreateManyMerchantInputEnvelope = {
+  data?: Maybe<Array<ScenarioCreateManyMerchantInput>>;
+  skipDuplicates?: Maybe<Scalars['Boolean']>;
+};
+
 export type ScenarioCreateNestedManyWithoutClientInput = {
   connect?: Maybe<Array<ScenarioWhereUniqueInput>>;
   connectOrCreate?: Maybe<Array<ScenarioCreateOrConnectWithoutClientInput>>;
   create?: Maybe<Array<ScenarioCreateWithoutClientInput>>;
+  createMany?: Maybe<ScenarioCreateManyClientInputEnvelope>;
 };
 
 export type ScenarioCreateNestedManyWithoutMerchantInput = {
   connect?: Maybe<Array<ScenarioWhereUniqueInput>>;
   connectOrCreate?: Maybe<Array<ScenarioCreateOrConnectWithoutMerchantInput>>;
   create?: Maybe<Array<ScenarioCreateWithoutMerchantInput>>;
+  createMany?: Maybe<ScenarioCreateManyMerchantInputEnvelope>;
 };
 
 export type ScenarioCreateOrConnectWithoutClientInput = {
@@ -681,6 +726,7 @@ export type ScenarioUpdateManyWithoutClientInput = {
   connect?: Maybe<Array<ScenarioWhereUniqueInput>>;
   connectOrCreate?: Maybe<Array<ScenarioCreateOrConnectWithoutClientInput>>;
   create?: Maybe<Array<ScenarioCreateWithoutClientInput>>;
+  createMany?: Maybe<ScenarioCreateManyClientInputEnvelope>;
   delete?: Maybe<Array<ScenarioWhereUniqueInput>>;
   deleteMany?: Maybe<Array<ScenarioScalarWhereInput>>;
   disconnect?: Maybe<Array<ScenarioWhereUniqueInput>>;
@@ -694,6 +740,7 @@ export type ScenarioUpdateManyWithoutMerchantInput = {
   connect?: Maybe<Array<ScenarioWhereUniqueInput>>;
   connectOrCreate?: Maybe<Array<ScenarioCreateOrConnectWithoutMerchantInput>>;
   create?: Maybe<Array<ScenarioCreateWithoutMerchantInput>>;
+  createMany?: Maybe<ScenarioCreateManyMerchantInputEnvelope>;
   delete?: Maybe<Array<ScenarioWhereUniqueInput>>;
   deleteMany?: Maybe<Array<ScenarioScalarWhereInput>>;
   disconnect?: Maybe<Array<ScenarioWhereUniqueInput>>;
@@ -1000,7 +1047,7 @@ export type PaginatedMerchantListQuery = (
     & Pick<PaginatedMerchants, 'totalCount'>
     & { filters?: Maybe<(
       { __typename?: 'PaginatedMerchantFilters' }
-      & Pick<PaginatedMerchantFilters, 'country' | 'city'>
+      & Pick<PaginatedMerchantFilters, 'country' | 'city' | 'bank'>
     )>, list?: Maybe<Array<Maybe<(
       { __typename?: 'Merchant' }
       & MerchantContentFragment
@@ -1418,6 +1465,7 @@ export const PaginatedMerchantListDocument = gql`
     filters {
       country
       city
+      bank
     }
     list {
       ...MerchantContent

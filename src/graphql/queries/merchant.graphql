@@ -20,6 +20,7 @@ query paginatedMerchantList(
     filters {
       country
       city
+      bank
     }
     list {
       ...MerchantContent

@@ -593,6 +593,7 @@ export interface NexusGenObjects {
     country?: Array<string | null> | null; // [String]
   }
   PaginatedMerchantFilters: { // root type
+    bank?: Array<string | null> | null; // [String]
     city?: Array<string | null> | null; // [String]
     country?: Array<string | null> | null; // [String]
   }
@@ -676,6 +677,7 @@ export interface NexusGenFieldTypes {
     country: Array<string | null> | null; // [String]
   }
   PaginatedMerchantFilters: { // field return type
+    bank: Array<string | null> | null; // [String]
     city: Array<string | null> | null; // [String]
     country: Array<string | null> | null; // [String]
   }
@@ -760,6 +762,7 @@ export interface NexusGenFieldTypeNames {
     country: 'String'
   }
   PaginatedMerchantFilters: { // field return type name
+    bank: 'String'
     city: 'String'
     country: 'String'
   }
