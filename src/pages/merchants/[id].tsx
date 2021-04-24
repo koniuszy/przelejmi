@@ -17,7 +17,7 @@ import { OptimizedImg } from 'src/types'
 import EditMerchantForm from 'src/components/Pages/merchants/EditMerchantForm'
 
 type SSGProps = {
-  womanWithFoldersImg: OptimizedImg
+  sittingLadyWithFolders: OptimizedImg
   merchantId: number
 }
 
@@ -58,7 +58,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 }
 
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
-  const src = '/womanWithFolders.jpg'
+  const src = '/sittingLadyWithFolders.jpeg'
   const width = 1920
   const height = 2880
   const img = await getImage(src)
@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params 
   return {
     props: {
       merchantId: Number(params.id),
-      womanWithFoldersImg: {
+      sittingLadyWithFolders: {
         src,
         base64,
         ratio: height / width,

@@ -16,9 +16,9 @@ import MerchantForm from 'src/components/MerchantForm'
 import { PER_PAGE } from './MerchantList'
 
 const EditMerchantForm: FC<{
-  womanWithFoldersImg: OptimizedImg
+  sittingLadyWithFolders: OptimizedImg
   merchantId: number
-}> = ({ merchantId, womanWithFoldersImg }) => {
+}> = ({ merchantId, sittingLadyWithFolders }) => {
   const { data, updateQuery } = useMerchantQuery({ variables: { where: { id: merchantId } } })
 
   const toast = useToast()
@@ -46,7 +46,7 @@ const EditMerchantForm: FC<{
       <div>
         <MerchantForm
           isLoading={true}
-          optimizedImg={womanWithFoldersImg}
+          optimizedImg={sittingLadyWithFolders}
           initialValues={{
             companyName: '',
             address: '',
@@ -68,7 +68,7 @@ const EditMerchantForm: FC<{
   return (
     <MerchantForm
       isLoading={loading}
-      optimizedImg={womanWithFoldersImg}
+      optimizedImg={sittingLadyWithFolders}
       initialValues={{ ...data.merchant, bankAccountEur: data.merchant.bankAccountEur ?? '' }}
       onSubmit={(values) => updateMerchant({ variables: { data: values, id: merchantId } })}
     />
