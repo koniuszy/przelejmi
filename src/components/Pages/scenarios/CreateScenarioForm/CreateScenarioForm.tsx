@@ -17,7 +17,8 @@ import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import { Unit, Vat } from 'src/generated/graphql'
 
-import AssignmentsSection from './AssignmentsSection'
+import SelectClientSection from './SelectClientSection'
+import SelectMerchantSection from './SelectMerchantSection'
 import TradeSection, { Trade } from './TradeSection'
 
 const CreateScenarioForm: FC = () => {
@@ -37,17 +38,59 @@ const CreateScenarioForm: FC = () => {
   return (
     <>
       <SimpleGrid columns={2} spacing={10}>
-        <AssignmentsSection
-          assignments={assignments}
-          onAssign={(data) => setAssignments((prev) => ({ ...prev, ...data }))}
-        />
+        <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
+          <SelectMerchantSection
+            selectedMerchantId={assignments.merchantId}
+            onMerchantSelect={(merchantId) => setAssignments((prev) => ({ ...prev, merchantId }))}
+          />
+          <Divider />
+        </Box>
+
+        <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
+          <SelectClientSection
+            selectedClientId={assignments.clientId}
+            onClientSelect={(clientId) => setAssignments((prev) => ({ ...prev, clientId }))}
+          />
+          <Divider />
+        </Box>
 
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
           <TradeSection
             trade={trade}
             onTradeChange={(data) => setTrade((prev) => ({ ...prev, ...data }))}
           />
+        </Box>
 
+        <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
+          <Flex justifyContent="space-between">
+            <Text fontWeight="bold" fontSize="lg">
+              Image URL
+            </Text>
+          </Flex>
+          <Divider my={4} />
+
+          <Input
+            placeholder="https://images.example.com"
+            value={imgSrc}
+            mb={4}
+            onChange={(e) => setImgSrc(e.target.value)}
+          />
+
+          {imgSrc && (
+            <Image
+              mx="auto"
+              objectFit="cover"
+              align="center"
+              w={300}
+              h={400}
+              mt={5}
+              borderRadius={5}
+              src={imgSrc}
+            />
+          )}
+        </Box>
+
+        <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
           <Flex mt={4} justifyContent="space-between">
             <Text fontWeight="bold" fontSize="lg">
               Payment details
@@ -83,35 +126,6 @@ const CreateScenarioForm: FC = () => {
           </Flex>
           <Divider my={4} />
           <Textarea />
-        </Box>
-
-        <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
-          <Flex justifyContent="space-between">
-            <Text fontWeight="bold" fontSize="lg">
-              Image URL
-            </Text>
-          </Flex>
-          <Divider my={4} />
-
-          <Input
-            placeholder="https://images.example.com"
-            value={imgSrc}
-            mb={4}
-            onChange={(e) => setImgSrc(e.target.value)}
-          />
-
-          {imgSrc && (
-            <Image
-              mx="auto"
-              objectFit="cover"
-              align="center"
-              w={300}
-              h={400}
-              mt={5}
-              borderRadius={5}
-              src={imgSrc}
-            />
-          )}
         </Box>
       </SimpleGrid>
 
