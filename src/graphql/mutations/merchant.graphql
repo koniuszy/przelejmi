@@ -1,6 +1,6 @@
 mutation createMerchant($data: MerchantCreateInput!) {
   createdMerchant: createOneMerchant(data: $data) {
-    ...MerchantContent
+    id
   }
 }
 

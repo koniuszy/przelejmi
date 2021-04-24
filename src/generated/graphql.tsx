@@ -899,7 +899,7 @@ export type CreateClientMutation = (
   { __typename?: 'Mutation' }
   & { createdClient: (
     { __typename?: 'Client' }
-    & ClientContentFragment
+    & Pick<Client, 'id'>
   ) }
 );
 
@@ -939,7 +939,7 @@ export type CreateMerchantMutation = (
   { __typename?: 'Mutation' }
   & { createdMerchant: (
     { __typename?: 'Merchant' }
-    & MerchantContentFragment
+    & Pick<Merchant, 'id'>
   ) }
 );
 
@@ -1103,10 +1103,10 @@ export const ScenarioContentFragmentDoc = gql`
 export const CreateClientDocument = gql`
     mutation createClient($data: ClientCreateInput!) {
   createdClient: createOneClient(data: $data) {
-    ...ClientContent
+    id
   }
 }
-    ${ClientContentFragmentDoc}`;
+    `;
 export type CreateClientMutationFn = Apollo.MutationFunction<CreateClientMutation, CreateClientMutationVariables>;
 
 /**
@@ -1203,10 +1203,10 @@ export type UpdateClientMutationOptions = Apollo.BaseMutationOptions<UpdateClien
 export const CreateMerchantDocument = gql`
     mutation createMerchant($data: MerchantCreateInput!) {
   createdMerchant: createOneMerchant(data: $data) {
-    ...MerchantContent
+    id
   }
 }
-    ${MerchantContentFragmentDoc}`;
+    `;
 export type CreateMerchantMutationFn = Apollo.MutationFunction<CreateMerchantMutation, CreateMerchantMutationVariables>;
 
 /**

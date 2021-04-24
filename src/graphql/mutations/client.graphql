@@ -1,6 +1,6 @@
 mutation createClient($data: ClientCreateInput!) {
   createdClient: createOneClient(data: $data) {
-    ...ClientContent
+    id
   }
 }
 
