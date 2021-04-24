@@ -14,7 +14,7 @@ export type TableHeaderProps = {
   filterOptions: Record<string, string[]>
   onEditableToggle(v: boolean): void
   isLoading: boolean
-  onDrawerChange?(newFilters: Filters): void
+  onDrawerChange(newFilters: Filters): Promise<void>
 }
 
 export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (
@@ -109,7 +109,7 @@ const TableHeader: FC<TableHeaderProps & Props> = ({
         filters={filterOptions}
         disclosureOptions={drawerOptions}
         prevFilters={variables.where}
-        onChange={onDrawerChange ?? handleFiltersRefetch}
+        onChange={onDrawerChange}
       />
     </Flex>
   )

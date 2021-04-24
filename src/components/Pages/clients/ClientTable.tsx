@@ -148,9 +148,9 @@ const ClientTable: FC = () => {
         },
         drawerOptions: drawerOptions,
         onEditableToggle: setIsEditable,
-        onDrawerChange(newFilters) {
+        async onDrawerChange(newFilters) {
           if (!newFilters) {
-            refetch({ where: newFilters })
+            await refetch({ where: newFilters })
             return
           }
 
@@ -174,7 +174,7 @@ const ClientTable: FC = () => {
               VATIdFilters = { VATId: { [DBConditions.includes]: [] } }
           }
 
-          refetch({ where: { ...rest, ...VATIdFilters } })
+          await refetch({ where: { ...rest, ...VATIdFilters } })
         },
       }}
       rowRender={(item: Client, index) => (

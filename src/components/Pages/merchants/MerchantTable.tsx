@@ -136,6 +136,11 @@ const MerchantTable: FC = () => {
         filterOptions: { ...filters },
         drawerOptions,
         onEditableToggle: setIsEditable,
+        async onDrawerChange({ bank, ...filters }) {
+          const where = { ...filters }
+          if (bank) where.bankName = bank
+          await refetch({ where })
+        },
       }}
       headerList={[
         `total: ${totalCount}`,

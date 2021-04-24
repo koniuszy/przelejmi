@@ -63,45 +63,45 @@ const DrawerFilters: FC<{
 }> = ({ filters, disclosureOptions, onChange, prevFilters }) => {
   const [filterList, setFilterList] = useState(getInitialFilters(filters))
 
-  const debouncedFiltersChange = useConstant(() =>
-    debounce((newFilterList: typeof filterList, prevFilters) => {
-      const touchedFilterList = newFilterList.filter((filterListItem) =>
-        filterListItem.optionList.find((item) => !item.checked)
+  function handleFiltersChange(newFilterList: typeof filterList, prevFilters: Record<string, any>) {
+    const touchedFilterList = newFilterList.filter((filterListItem) =>
+      filterListItem.optionList.find((item) => !item.checked)
+    )
+
+    if (touchedFilterList.length === 0) {
+      onChange(prevFilters?.OR ?? {})
+      return
+    }
+
+    const groupedTouched = touchedFilterList.map((item) => {
+      const groupedOptionList = item.optionList.reduce(
+        (acc, item) => {
+          acc[item.checked ? 'checked' : 'unchecked'].push(item.name)
+          return acc
+        },
+        {
+          checked: [] as string[],
+          unchecked: [] as string[],
+        }
       )
 
-      if (touchedFilterList.length === 0) {
-        onChange(prevFilters?.OR ?? {})
-        return
-      }
+      return { name: item.name, groupedOptionList }
+    })
 
-      const groupedTouched = touchedFilterList.map((item) => {
-        const groupedOptionList = item.optionList.reduce(
-          (acc, item) => {
-            acc[item.checked ? 'checked' : 'unchecked'].push(item.name)
-            return acc
-          },
-          {
-            checked: [] as string[],
-            unchecked: [] as string[],
-          }
-        )
+    const parsedFilters = groupedTouched.reduce((acc, item) => {
+      const { checked, unchecked } = item.groupedOptionList
+      const filter =
+        checked.length < unchecked.length
+          ? { [DBConditions.includes]: checked }
+          : { [DBConditions.notIncludes]: unchecked }
 
-        return { name: item.name, groupedOptionList }
-      })
+      return { ...acc, [item.name]: filter }
+    }, {} as Filters)
 
-      const parsedFilters = groupedTouched.reduce((acc, item) => {
-        const { checked, unchecked } = item.groupedOptionList
-        const filter =
-          checked.length < unchecked.length
-            ? { [DBConditions.includes]: checked }
-            : { [DBConditions.notIncludes]: unchecked }
+    onChange({ ...prevFilters, ...parsedFilters })
+  }
 
-        return { ...acc, [item.name]: filter }
-      }, {} as Filters)
-
-      onChange({ ...prevFilters, ...parsedFilters })
-    }, 200)
-  )
+  const debouncedFiltersChange = useConstant(() => debounce(handleFiltersChange, 200))
 
   function handleOptionListChange(newFilterList: typeof filterList) {
     setFilterList(newFilterList)

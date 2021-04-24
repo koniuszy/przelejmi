@@ -71,7 +71,7 @@ const Table: FC<
     rowRender(item: Item, index: number): ReactElement
   } & Props
 > = ({
-  filtersHeaderProps: { isLoading, ...filtersHeaderProps },
+  filtersHeaderProps: { isLoading, onDrawerChange, ...filtersHeaderProps },
   list,
   createHref,
   perPage,
@@ -98,6 +98,11 @@ const Table: FC<
         searchKeys={Object.keys(list[0] ?? {})}
         variables={variables}
         refetch={handleRefetch}
+        onDrawerChange={async (params) => {
+          setIsRefetching(true)
+          await onDrawerChange(params)
+          setIsRefetching(false)
+        }}
       />
       <ChakraTable variant="simple">
         <TableCaption>
