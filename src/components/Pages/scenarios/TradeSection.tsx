@@ -12,7 +12,9 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react'
 
-export type Trade = { unitType: 'item'; vat: '0%'; amount: 1; netPerOne: 1000 }
+import { Scenario, Unit } from 'src/generated/graphql'
+
+export type Trade = Pick<Scenario, 'unitType' | 'amount' | 'netPerOne' | 'VAT'>
 
 const TradeSection: FC<{ trade: Trade; onTradeChange(data: Partial<Trade>): void }> = ({
   trade,
@@ -28,20 +30,27 @@ const TradeSection: FC<{ trade: Trade; onTradeChange(data: Partial<Trade>): void
     <Text fontSize={12} fontWeight={500}>
       Unit type
     </Text>
-    <Select value={trade.unitType} onChange={(e) => onTradeChange({ unitType: e.target.value })}>
-      <option value="item">Item</option>
-      <option value="hour">Hour</option>
+    <Select
+      value={trade.unitType}
+      onChange={(e) => onTradeChange({ unitType: e.target.value as Unit })}
+    >
+      {Object.entries(Unit).map(([key, value]) => (
+        <option key={value} value={value}>
+          {key}
+        </option>
+      ))}
     </Select>
     <Text mt={4} fontSize={12} fontWeight={500}>
       Amount
     </Text>
-    <NumberInput defaultValue={1}>
+    <NumberInput value={trade.amount} onChange={(v) => onTradeChange({ amount: Number(v) })}>
       <NumberInputField />
       <NumberInputStepper>
         <NumberIncrementStepper />
         <NumberDecrementStepper />
       </NumberInputStepper>
     </NumberInput>
+
     <Text mt={4} fontSize={12} fontWeight={500}>
       VAT
     </Text>

@@ -37,9 +37,16 @@ model Merchant {
   Scenario       Scenario[]
 }
 
-enum UnitType {
+enum Unit {
   ITEM
   HOUR
+}
+
+enum VAT {
+  PERCENT_0
+  PERCENT_23
+  DOES_NOT_CONCERN
+  ZWOLNIONY
 }
 
 model Scenario {
@@ -48,9 +55,9 @@ model Scenario {
   paymentType String
   imageUrl    String
   netPerOne   Int
-  VAT         String
+  VAT         VAT
   amount      Int
-  unitType    UnitType
+  unitType    Unit
   notes       String
   dueDateDays Int
   createdAt   DateTime @default(now())

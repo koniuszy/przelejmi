@@ -2,39 +2,20 @@ import React, { FC, useState } from 'react'
 
 import {
   Flex,
-  FormControl,
-  FormLabel,
   Input,
-  FormErrorMessage,
   Button,
-  useToast,
   Text,
   Box,
   SimpleGrid,
   Divider,
-  Skeleton,
-  VStack,
-  Center,
   Textarea,
   Image,
   Select,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
 } from '@chakra-ui/react'
-
-import { useFormik } from 'formik'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import {
-  usePaginatedMerchantListQuery,
-  MerchantContentFragment,
-  usePaginatedClientListQuery,
-  ClientContentFragment,
-} from 'src/generated/graphql'
+import { Unit, Vat } from 'src/generated/graphql'
 
 import AssignmentsSection, { Assignments } from './AssignmentsSection'
 import TradeSection, { Trade } from './TradeSection'
@@ -42,8 +23,8 @@ import TradeSection, { Trade } from './TradeSection'
 const CreateScenarioForm: FC = () => {
   const [assignments, setAssignments] = useState<Assignments>({ clientId: null, merchantId: null })
   const [trade, setTrade] = useState<Trade>({
-    unitType: 'item',
-    vat: '0%',
+    unitType: Unit.Item,
+    VAT: Vat.Percent_23,
     amount: 1,
     netPerOne: 1000,
   })

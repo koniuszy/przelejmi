@@ -108,11 +108,17 @@ export interface NexusGenInputs {
     not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
     notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
   }
-  EnumUnitTypeFilter: { // input type
-    equals?: NexusGenEnums['UnitType'] | null; // UnitType
-    in?: NexusGenEnums['UnitType'][] | null; // [UnitType!]
-    not?: NexusGenInputs['NestedEnumUnitTypeFilter'] | null; // NestedEnumUnitTypeFilter
-    notIn?: NexusGenEnums['UnitType'][] | null; // [UnitType!]
+  EnumUnitFilter: { // input type
+    equals?: NexusGenEnums['Unit'] | null; // Unit
+    in?: NexusGenEnums['Unit'][] | null; // [Unit!]
+    not?: NexusGenInputs['NestedEnumUnitFilter'] | null; // NestedEnumUnitFilter
+    notIn?: NexusGenEnums['Unit'][] | null; // [Unit!]
+  }
+  EnumVATFilter: { // input type
+    equals?: NexusGenEnums['VAT'] | null; // VAT
+    in?: NexusGenEnums['VAT'][] | null; // [VAT!]
+    not?: NexusGenInputs['NestedEnumVATFilter'] | null; // NestedEnumVATFilter
+    notIn?: NexusGenEnums['VAT'][] | null; // [VAT!]
   }
   IntFilter: { // input type
     equals?: number | null; // Int
@@ -243,11 +249,17 @@ export interface NexusGenInputs {
     not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
     notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
   }
-  NestedEnumUnitTypeFilter: { // input type
-    equals?: NexusGenEnums['UnitType'] | null; // UnitType
-    in?: NexusGenEnums['UnitType'][] | null; // [UnitType!]
-    not?: NexusGenInputs['NestedEnumUnitTypeFilter'] | null; // NestedEnumUnitTypeFilter
-    notIn?: NexusGenEnums['UnitType'][] | null; // [UnitType!]
+  NestedEnumUnitFilter: { // input type
+    equals?: NexusGenEnums['Unit'] | null; // Unit
+    in?: NexusGenEnums['Unit'][] | null; // [Unit!]
+    not?: NexusGenInputs['NestedEnumUnitFilter'] | null; // NestedEnumUnitFilter
+    notIn?: NexusGenEnums['Unit'][] | null; // [Unit!]
+  }
+  NestedEnumVATFilter: { // input type
+    equals?: NexusGenEnums['VAT'] | null; // VAT
+    in?: NexusGenEnums['VAT'][] | null; // [VAT!]
+    not?: NexusGenInputs['NestedEnumVATFilter'] | null; // NestedEnumVATFilter
+    notIn?: NexusGenEnums['VAT'][] | null; // [VAT!]
   }
   NestedIntFilter: { // input type
     equals?: number | null; // Int
@@ -286,7 +298,7 @@ export interface NexusGenInputs {
     startsWith?: string | null; // String
   }
   ScenarioCreateInput: { // input type
-    VAT: string; // String!
+    VAT: NexusGenEnums['VAT']; // VAT!
     amount: number; // Int!
     client: NexusGenInputs['ClientCreateNestedOneWithoutScenarioInput']; // ClientCreateNestedOneWithoutScenarioInput!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -297,7 +309,7 @@ export interface NexusGenInputs {
     netPerOne: number; // Int!
     notes: string; // String!
     paymentType: string; // String!
-    unitType: NexusGenEnums['UnitType']; // UnitType!
+    unitType: NexusGenEnums['Unit']; // Unit!
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioCreateNestedManyWithoutClientInput: { // input type
@@ -319,7 +331,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ScenarioWhereUniqueInput']; // ScenarioWhereUniqueInput!
   }
   ScenarioCreateWithoutClientInput: { // input type
-    VAT: string; // String!
+    VAT: NexusGenEnums['VAT']; // VAT!
     amount: number; // Int!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays: number; // Int!
@@ -329,11 +341,11 @@ export interface NexusGenInputs {
     netPerOne: number; // Int!
     notes: string; // String!
     paymentType: string; // String!
-    unitType: NexusGenEnums['UnitType']; // UnitType!
+    unitType: NexusGenEnums['Unit']; // Unit!
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioCreateWithoutMerchantInput: { // input type
-    VAT: string; // String!
+    VAT: NexusGenEnums['VAT']; // VAT!
     amount: number; // Int!
     client: NexusGenInputs['ClientCreateNestedOneWithoutScenarioInput']; // ClientCreateNestedOneWithoutScenarioInput!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -343,7 +355,7 @@ export interface NexusGenInputs {
     netPerOne: number; // Int!
     notes: string; // String!
     paymentType: string; // String!
-    unitType: NexusGenEnums['UnitType']; // UnitType!
+    unitType: NexusGenEnums['Unit']; // Unit!
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioListRelationFilter: { // input type
@@ -355,7 +367,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
     NOT?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
     OR?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
-    VAT?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    VAT?: NexusGenInputs['EnumVATFilter'] | null; // EnumVATFilter
     amount?: NexusGenInputs['IntFilter'] | null; // IntFilter
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -367,11 +379,11 @@ export interface NexusGenInputs {
     netPerOne?: NexusGenInputs['IntFilter'] | null; // IntFilter
     notes?: NexusGenInputs['StringFilter'] | null; // StringFilter
     paymentType?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    unitType?: NexusGenInputs['EnumUnitTypeFilter'] | null; // EnumUnitTypeFilter
+    unitType?: NexusGenInputs['EnumUnitFilter'] | null; // EnumUnitFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
   }
   ScenarioUpdateInput: { // input type
-    VAT?: string | null; // String
+    VAT?: NexusGenEnums['VAT'] | null; // VAT
     amount?: number | null; // Int
     client?: NexusGenInputs['ClientUpdateOneRequiredWithoutScenarioInput'] | null; // ClientUpdateOneRequiredWithoutScenarioInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -382,11 +394,11 @@ export interface NexusGenInputs {
     netPerOne?: number | null; // Int
     notes?: string | null; // String
     paymentType?: string | null; // String
-    unitType?: NexusGenEnums['UnitType'] | null; // UnitType
+    unitType?: NexusGenEnums['Unit'] | null; // Unit
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioUpdateManyMutationInput: { // input type
-    VAT?: string | null; // String
+    VAT?: NexusGenEnums['VAT'] | null; // VAT
     amount?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays?: number | null; // Int
@@ -395,7 +407,7 @@ export interface NexusGenInputs {
     netPerOne?: number | null; // Int
     notes?: string | null; // String
     paymentType?: string | null; // String
-    unitType?: NexusGenEnums['UnitType'] | null; // UnitType
+    unitType?: NexusGenEnums['Unit'] | null; // Unit
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioUpdateManyWithWhereWithoutClientInput: { // input type
@@ -439,7 +451,7 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ScenarioWhereUniqueInput']; // ScenarioWhereUniqueInput!
   }
   ScenarioUpdateWithoutClientInput: { // input type
-    VAT?: string | null; // String
+    VAT?: NexusGenEnums['VAT'] | null; // VAT
     amount?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays?: number | null; // Int
@@ -449,11 +461,11 @@ export interface NexusGenInputs {
     netPerOne?: number | null; // Int
     notes?: string | null; // String
     paymentType?: string | null; // String
-    unitType?: NexusGenEnums['UnitType'] | null; // UnitType
+    unitType?: NexusGenEnums['Unit'] | null; // Unit
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioUpdateWithoutMerchantInput: { // input type
-    VAT?: string | null; // String
+    VAT?: NexusGenEnums['VAT'] | null; // VAT
     amount?: number | null; // Int
     client?: NexusGenInputs['ClientUpdateOneRequiredWithoutScenarioInput'] | null; // ClientUpdateOneRequiredWithoutScenarioInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
@@ -463,7 +475,7 @@ export interface NexusGenInputs {
     netPerOne?: number | null; // Int
     notes?: string | null; // String
     paymentType?: string | null; // String
-    unitType?: NexusGenEnums['UnitType'] | null; // UnitType
+    unitType?: NexusGenEnums['Unit'] | null; // Unit
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioUpsertWithWhereUniqueWithoutClientInput: { // input type
@@ -480,7 +492,7 @@ export interface NexusGenInputs {
     AND?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
     NOT?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
     OR?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
-    VAT?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    VAT?: NexusGenInputs['EnumVATFilter'] | null; // EnumVATFilter
     amount?: NexusGenInputs['IntFilter'] | null; // IntFilter
     client?: NexusGenInputs['ClientWhereInput'] | null; // ClientWhereInput
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
@@ -494,7 +506,7 @@ export interface NexusGenInputs {
     netPerOne?: NexusGenInputs['IntFilter'] | null; // IntFilter
     notes?: NexusGenInputs['StringFilter'] | null; // StringFilter
     paymentType?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    unitType?: NexusGenInputs['EnumUnitTypeFilter'] | null; // EnumUnitTypeFilter
+    unitType?: NexusGenInputs['EnumUnitFilter'] | null; // EnumUnitFilter
     updatedAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
   }
   ScenarioWhereUniqueInput: { // input type
@@ -533,7 +545,8 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
   QueryMode: "default" | "insensitive"
   SortOrder: "asc" | "desc"
-  UnitType: "HOUR" | "ITEM"
+  Unit: "HOUR" | "ITEM"
+  VAT: "DOES_NOT_CONCERN" | "PERCENT_0" | "PERCENT_23" | "ZWOLNIONY"
 }
 
 export interface NexusGenScalars {
@@ -590,7 +603,7 @@ export interface NexusGenObjects {
   }
   Query: {};
   Scenario: { // root type
-    VAT: string; // String!
+    VAT: NexusGenEnums['VAT']; // VAT!
     amount: number; // Int!
     clientId: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -602,7 +615,7 @@ export interface NexusGenObjects {
     netPerOne: number; // Int!
     notes: string; // String!
     paymentType: string; // String!
-    unitType: NexusGenEnums['UnitType']; // UnitType!
+    unitType: NexusGenEnums['Unit']; // Unit!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
 }
@@ -682,7 +695,7 @@ export interface NexusGenFieldTypes {
     scenarios: NexusGenRootTypes['Scenario'][]; // [Scenario!]!
   }
   Scenario: { // field return type
-    VAT: string; // String!
+    VAT: NexusGenEnums['VAT']; // VAT!
     amount: number; // Int!
     client: NexusGenRootTypes['Client']; // Client!
     clientId: number; // Int!
@@ -696,7 +709,7 @@ export interface NexusGenFieldTypes {
     netPerOne: number; // Int!
     notes: string; // String!
     paymentType: string; // String!
-    unitType: NexusGenEnums['UnitType']; // UnitType!
+    unitType: NexusGenEnums['Unit']; // Unit!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
 }
@@ -766,7 +779,7 @@ export interface NexusGenFieldTypeNames {
     scenarios: 'Scenario'
   }
   Scenario: { // field return type name
-    VAT: 'String'
+    VAT: 'VAT'
     amount: 'Int'
     client: 'Client'
     clientId: 'Int'
@@ -780,7 +793,7 @@ export interface NexusGenFieldTypeNames {
     netPerOne: 'Int'
     notes: 'String'
     paymentType: 'String'
-    unitType: 'UnitType'
+    unitType: 'Unit'
     updatedAt: 'DateTime'
   }
 }

@@ -58,9 +58,9 @@ function MyApp({ Component, pageProps }) {
 
   const [session, isSessionLoading] = useSession()
 
-  useEffect(() => {
-    if (session && !session.user && pathname !== '/') signIn('google')
-  }, [session?.user])
+  // useEffect(() => {
+  //   if (session && !session.user && pathname !== '/') signIn('google')
+  // }, [session?.user])
 
   return (
     <>
