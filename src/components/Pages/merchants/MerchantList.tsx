@@ -13,7 +13,6 @@ import {
   MenuList,
   MenuItem,
   useToast,
-  useDisclosure,
 } from '@chakra-ui/react'
 
 import { Merchant } from 'prisma/prisma-client'
@@ -37,7 +36,6 @@ const TITLE = 'Total merchants'
 
 const MerchantList: FC = () => {
   const toast = useToast()
-  const drawerOptions = useDisclosure()
 
   const [isEditable, setIsEditable] = useState(true)
   const [merchantDeletionId, setMerchantDeletionId] = useState<number | null>(null)
@@ -134,7 +132,6 @@ const MerchantList: FC = () => {
         title: TITLE,
         isEditable,
         filterOptions: { ...filters },
-        drawerOptions,
         onEditableToggle: setIsEditable,
         async onDrawerChange({ bank, ...filters }) {
           const where = { ...filters }

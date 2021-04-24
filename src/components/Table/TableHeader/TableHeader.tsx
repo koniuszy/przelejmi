@@ -1,6 +1,15 @@
 import React, { FC } from 'react'
 
-import { Text, Flex, Center, Switch, FormControl, FormLabel, Spinner } from '@chakra-ui/react'
+import {
+  Text,
+  Flex,
+  Center,
+  Switch,
+  FormControl,
+  FormLabel,
+  Spinner,
+  useDisclosure,
+} from '@chakra-ui/react'
 
 import { Props } from '../Table'
 import DrawerFilters, { TriggerFiltersButton, Filters } from './DrawerFilters'
@@ -10,7 +19,6 @@ export type TableHeaderProps = {
   title: string
   isEditable: boolean
   searchKeys: string[]
-  drawerOptions: { onClose(): void; isOpen: boolean; onOpen(): void }
   filterOptions: Record<string, string[]>
   onEditableToggle(v: boolean): void
   isLoading: boolean
@@ -48,7 +56,6 @@ const TableHeader: FC<TableHeaderProps & Props> = ({
   title,
   variables,
   isEditable,
-  drawerOptions,
   filterOptions,
   refetch,
   onEditableToggle,
@@ -56,6 +63,8 @@ const TableHeader: FC<TableHeaderProps & Props> = ({
   searchKeys,
   isLoading,
 }) => {
+  const drawerOptions = useDisclosure()
+
   function handleFiltersRefetch(filters: Search | Filters) {
     refetch({ where: filters })
   }

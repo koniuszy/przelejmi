@@ -13,7 +13,6 @@ import {
   MenuList,
   MenuItem,
   useToast,
-  useDisclosure,
 } from '@chakra-ui/react'
 
 import { Client } from 'prisma/prisma-client'
@@ -43,7 +42,6 @@ const ClientList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)
   const [clientDeletionId, setClientDeletionId] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
-  const drawerOptions = useDisclosure()
 
   const { data, refetch, variables, loading, previousData } = usePaginatedClientListQuery({
     variables: { skip: 0, take: PER_PAGE },
@@ -146,7 +144,6 @@ const ClientList: FC = () => {
           ...filters,
           type: Object.values(ClientType),
         },
-        drawerOptions: drawerOptions,
         onEditableToggle: setIsEditable,
         async onDrawerChange(newFilters) {
           if (!newFilters) {
