@@ -64,6 +64,12 @@ export type ClientCreateWithoutScenarioInput = {
   postCode: Scalars['String'];
 };
 
+export type ClientList = {
+  __typename?: 'ClientList';
+  list?: Maybe<Array<Maybe<Client>>>;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
 export type ClientOrderByInput = {
   VATId?: Maybe<SortOrder>;
   address?: Maybe<SortOrder>;
@@ -223,6 +229,12 @@ export type MerchantCreateWithoutScenarioInput = {
   email: Scalars['String'];
   issuerName: Scalars['String'];
   postCode: Scalars['String'];
+};
+
+export type MerchantList = {
+  __typename?: 'MerchantList';
+  list?: Maybe<Array<Maybe<Merchant>>>;
+  totalCount?: Maybe<Scalars['Int']>;
 };
 
 export type MerchantOrderByInput = {
@@ -424,41 +436,43 @@ export type NestedStringNullableFilter = {
   startsWith?: Maybe<Scalars['String']>;
 };
 
-export type PaginatedClients = {
-  __typename?: 'PaginatedClients';
-  filters?: Maybe<PaginatedClientsFilters>;
+export type PaginatedClientList = {
+  __typename?: 'PaginatedClientList';
+  filters?: Maybe<PaginatedClientListFilters>;
   list?: Maybe<Array<Maybe<Client>>>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
-export type PaginatedClientsFilters = {
-  __typename?: 'PaginatedClientsFilters';
+export type PaginatedClientListFilters = {
+  __typename?: 'PaginatedClientListFilters';
   city?: Maybe<Array<Maybe<Scalars['String']>>>;
   country?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-export type PaginatedMerchantFilters = {
-  __typename?: 'PaginatedMerchantFilters';
+export type PaginatedMerchantList = {
+  __typename?: 'PaginatedMerchantList';
+  filters?: Maybe<PaginatedMerchantListFilters>;
+  list?: Maybe<Array<Maybe<Merchant>>>;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type PaginatedMerchantListFilters = {
+  __typename?: 'PaginatedMerchantListFilters';
   bank?: Maybe<Array<Maybe<Scalars['String']>>>;
   city?: Maybe<Array<Maybe<Scalars['String']>>>;
   country?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
-export type PaginatedMerchants = {
-  __typename?: 'PaginatedMerchants';
-  filters?: Maybe<PaginatedMerchantFilters>;
-  list?: Maybe<Array<Maybe<Merchant>>>;
-  totalCount?: Maybe<Scalars['Int']>;
-};
-
 export type Query = {
   __typename?: 'Query';
   client?: Maybe<Client>;
+  clientList?: Maybe<ClientList>;
   clients: Array<Client>;
   merchant?: Maybe<Merchant>;
+  merchantList?: Maybe<MerchantList>;
   merchants: Array<Merchant>;
-  paginatedClients?: Maybe<PaginatedClients>;
-  paginatedMerchants?: Maybe<PaginatedMerchants>;
+  paginatedClientList?: Maybe<PaginatedClientList>;
+  paginatedMerchantList?: Maybe<PaginatedMerchantList>;
   scenario?: Maybe<Scenario>;
   scenarios: Array<Scenario>;
 };
@@ -492,7 +506,7 @@ export type QueryMerchantsArgs = {
 };
 
 
-export type QueryPaginatedClientsArgs = {
+export type QueryPaginatedClientListArgs = {
   orderBy?: Maybe<Array<Maybe<ClientOrderByInput>>>;
   skip: Scalars['Int'];
   take: Scalars['Int'];
@@ -500,7 +514,7 @@ export type QueryPaginatedClientsArgs = {
 };
 
 
-export type QueryPaginatedMerchantsArgs = {
+export type QueryPaginatedMerchantListArgs = {
   orderBy?: Maybe<Array<Maybe<MerchantOrderByInput>>>;
   skip: Scalars['Int'];
   take: Scalars['Int'];
@@ -527,7 +541,6 @@ export enum QueryMode {
 export type Scenario = {
   __typename?: 'Scenario';
   VAT: Vat;
-  amount: Scalars['Int'];
   client: Client;
   clientId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
@@ -546,7 +559,6 @@ export type Scenario = {
 
 export type ScenarioCreateInput = {
   VAT: Vat;
-  amount: Scalars['Int'];
   client: ClientCreateNestedOneWithoutScenarioInput;
   createdAt?: Maybe<Scalars['DateTime']>;
   dueDateDays: Scalars['Int'];
@@ -562,7 +574,6 @@ export type ScenarioCreateInput = {
 
 export type ScenarioCreateManyClientInput = {
   VAT: Vat;
-  amount: Scalars['Int'];
   createdAt?: Maybe<Scalars['DateTime']>;
   dueDateDays: Scalars['Int'];
   id?: Maybe<Scalars['Int']>;
@@ -583,7 +594,6 @@ export type ScenarioCreateManyClientInputEnvelope = {
 
 export type ScenarioCreateManyMerchantInput = {
   VAT: Vat;
-  amount: Scalars['Int'];
   clientId: Scalars['Int'];
   createdAt?: Maybe<Scalars['DateTime']>;
   dueDateDays: Scalars['Int'];
@@ -628,7 +638,6 @@ export type ScenarioCreateOrConnectWithoutMerchantInput = {
 
 export type ScenarioCreateWithoutClientInput = {
   VAT: Vat;
-  amount: Scalars['Int'];
   createdAt?: Maybe<Scalars['DateTime']>;
   dueDateDays: Scalars['Int'];
   imageUrl: Scalars['String'];
@@ -643,7 +652,6 @@ export type ScenarioCreateWithoutClientInput = {
 
 export type ScenarioCreateWithoutMerchantInput = {
   VAT: Vat;
-  amount: Scalars['Int'];
   client: ClientCreateNestedOneWithoutScenarioInput;
   createdAt?: Maybe<Scalars['DateTime']>;
   dueDateDays: Scalars['Int'];
@@ -667,7 +675,6 @@ export type ScenarioScalarWhereInput = {
   NOT?: Maybe<Array<ScenarioScalarWhereInput>>;
   OR?: Maybe<Array<ScenarioScalarWhereInput>>;
   VAT?: Maybe<EnumVatFilter>;
-  amount?: Maybe<IntFilter>;
   clientId?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
   dueDateDays?: Maybe<IntFilter>;
@@ -684,7 +691,6 @@ export type ScenarioScalarWhereInput = {
 
 export type ScenarioUpdateInput = {
   VAT?: Maybe<Vat>;
-  amount?: Maybe<Scalars['Int']>;
   client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
   createdAt?: Maybe<Scalars['DateTime']>;
   dueDateDays?: Maybe<Scalars['Int']>;
@@ -700,7 +706,6 @@ export type ScenarioUpdateInput = {
 
 export type ScenarioUpdateManyMutationInput = {
   VAT?: Maybe<Vat>;
-  amount?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
@@ -762,7 +767,6 @@ export type ScenarioUpdateWithWhereUniqueWithoutMerchantInput = {
 
 export type ScenarioUpdateWithoutClientInput = {
   VAT?: Maybe<Vat>;
-  amount?: Maybe<Scalars['Int']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
@@ -777,7 +781,6 @@ export type ScenarioUpdateWithoutClientInput = {
 
 export type ScenarioUpdateWithoutMerchantInput = {
   VAT?: Maybe<Vat>;
-  amount?: Maybe<Scalars['Int']>;
   client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
   createdAt?: Maybe<Scalars['DateTime']>;
   dueDateDays?: Maybe<Scalars['Int']>;
@@ -807,7 +810,6 @@ export type ScenarioWhereInput = {
   NOT?: Maybe<Array<ScenarioWhereInput>>;
   OR?: Maybe<Array<ScenarioWhereInput>>;
   VAT?: Maybe<EnumVatFilter>;
-  amount?: Maybe<IntFilter>;
   client?: Maybe<ClientWhereInput>;
   clientId?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
@@ -887,7 +889,7 @@ export type MerchantContentFragment = (
 
 export type ScenarioContentFragment = (
   { __typename?: 'Scenario' }
-  & Pick<Scenario, 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'amount' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'>
+  & Pick<Scenario, 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'>
 );
 
 export type CreateClientMutationVariables = Exact<{
@@ -996,6 +998,21 @@ export type ClientQuery = (
   )> }
 );
 
+export type ClientListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ClientListQuery = (
+  { __typename?: 'Query' }
+  & { clientList?: Maybe<(
+    { __typename?: 'ClientList' }
+    & Pick<ClientList, 'totalCount'>
+    & { list?: Maybe<Array<Maybe<(
+      { __typename?: 'Client' }
+      & ClientContentFragment
+    )>>> }
+  )> }
+);
+
 export type PaginatedClientListQueryVariables = Exact<{
   orderBy?: Maybe<Array<ClientOrderByInput> | ClientOrderByInput>;
   where?: Maybe<ClientWhereInput>;
@@ -1007,11 +1024,11 @@ export type PaginatedClientListQueryVariables = Exact<{
 export type PaginatedClientListQuery = (
   { __typename?: 'Query' }
   & { paginatedClientList?: Maybe<(
-    { __typename?: 'PaginatedClients' }
-    & Pick<PaginatedClients, 'totalCount'>
+    { __typename?: 'PaginatedClientList' }
+    & Pick<PaginatedClientList, 'totalCount'>
     & { filters?: Maybe<(
-      { __typename?: 'PaginatedClientsFilters' }
-      & Pick<PaginatedClientsFilters, 'country' | 'city'>
+      { __typename?: 'PaginatedClientListFilters' }
+      & Pick<PaginatedClientListFilters, 'country' | 'city'>
     )>, list?: Maybe<Array<Maybe<(
       { __typename?: 'Client' }
       & ClientContentFragment
@@ -1032,6 +1049,21 @@ export type MerchantQuery = (
   )> }
 );
 
+export type MerchantListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MerchantListQuery = (
+  { __typename?: 'Query' }
+  & { merchantList?: Maybe<(
+    { __typename?: 'MerchantList' }
+    & Pick<MerchantList, 'totalCount'>
+    & { list?: Maybe<Array<Maybe<(
+      { __typename?: 'Merchant' }
+      & MerchantContentFragment
+    )>>> }
+  )> }
+);
+
 export type PaginatedMerchantListQueryVariables = Exact<{
   orderBy?: Maybe<Array<MerchantOrderByInput> | MerchantOrderByInput>;
   where?: Maybe<MerchantWhereInput>;
@@ -1043,11 +1075,11 @@ export type PaginatedMerchantListQueryVariables = Exact<{
 export type PaginatedMerchantListQuery = (
   { __typename?: 'Query' }
   & { paginatedMerchantList?: Maybe<(
-    { __typename?: 'PaginatedMerchants' }
-    & Pick<PaginatedMerchants, 'totalCount'>
+    { __typename?: 'PaginatedMerchantList' }
+    & Pick<PaginatedMerchantList, 'totalCount'>
     & { filters?: Maybe<(
-      { __typename?: 'PaginatedMerchantFilters' }
-      & Pick<PaginatedMerchantFilters, 'country' | 'city' | 'bank'>
+      { __typename?: 'PaginatedMerchantListFilters' }
+      & Pick<PaginatedMerchantListFilters, 'country' | 'city' | 'bank'>
     )>, list?: Maybe<Array<Maybe<(
       { __typename?: 'Merchant' }
       & MerchantContentFragment
@@ -1090,7 +1122,6 @@ export const ScenarioContentFragmentDoc = gql`
   imageUrl
   netPerOne
   VAT
-  amount
   unitType
   notes
   dueDateDays
@@ -1368,14 +1399,46 @@ export function useClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Cli
 export type ClientQueryHookResult = ReturnType<typeof useClientQuery>;
 export type ClientLazyQueryHookResult = ReturnType<typeof useClientLazyQuery>;
 export type ClientQueryResult = Apollo.QueryResult<ClientQuery, ClientQueryVariables>;
+export const ClientListDocument = gql`
+    query clientList {
+  clientList {
+    totalCount
+    list {
+      ...ClientContent
+    }
+  }
+}
+    ${ClientContentFragmentDoc}`;
+
+/**
+ * __useClientListQuery__
+ *
+ * To run a query within a React component, call `useClientListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useClientListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClientListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useClientListQuery(baseOptions?: Apollo.QueryHookOptions<ClientListQuery, ClientListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ClientListQuery, ClientListQueryVariables>(ClientListDocument, options);
+      }
+export function useClientListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClientListQuery, ClientListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ClientListQuery, ClientListQueryVariables>(ClientListDocument, options);
+        }
+export type ClientListQueryHookResult = ReturnType<typeof useClientListQuery>;
+export type ClientListLazyQueryHookResult = ReturnType<typeof useClientListLazyQuery>;
+export type ClientListQueryResult = Apollo.QueryResult<ClientListQuery, ClientListQueryVariables>;
 export const PaginatedClientListDocument = gql`
     query paginatedClientList($orderBy: [ClientOrderByInput!], $where: ClientWhereInput, $skip: Int!, $take: Int!) {
-  paginatedClientList: paginatedClients(
-    orderBy: $orderBy
-    where: $where
-    take: $take
-    skip: $skip
-  ) {
+  paginatedClientList(orderBy: $orderBy, where: $where, take: $take, skip: $skip) {
     totalCount
     filters {
       country
@@ -1453,9 +1516,46 @@ export function useMerchantLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<M
 export type MerchantQueryHookResult = ReturnType<typeof useMerchantQuery>;
 export type MerchantLazyQueryHookResult = ReturnType<typeof useMerchantLazyQuery>;
 export type MerchantQueryResult = Apollo.QueryResult<MerchantQuery, MerchantQueryVariables>;
+export const MerchantListDocument = gql`
+    query merchantList {
+  merchantList {
+    totalCount
+    list {
+      ...MerchantContent
+    }
+  }
+}
+    ${MerchantContentFragmentDoc}`;
+
+/**
+ * __useMerchantListQuery__
+ *
+ * To run a query within a React component, call `useMerchantListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMerchantListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMerchantListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMerchantListQuery(baseOptions?: Apollo.QueryHookOptions<MerchantListQuery, MerchantListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MerchantListQuery, MerchantListQueryVariables>(MerchantListDocument, options);
+      }
+export function useMerchantListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MerchantListQuery, MerchantListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MerchantListQuery, MerchantListQueryVariables>(MerchantListDocument, options);
+        }
+export type MerchantListQueryHookResult = ReturnType<typeof useMerchantListQuery>;
+export type MerchantListLazyQueryHookResult = ReturnType<typeof useMerchantListLazyQuery>;
+export type MerchantListQueryResult = Apollo.QueryResult<MerchantListQuery, MerchantListQueryVariables>;
 export const PaginatedMerchantListDocument = gql`
     query paginatedMerchantList($orderBy: [MerchantOrderByInput!], $where: MerchantWhereInput, $skip: Int!, $take: Int!) {
-  paginatedMerchantList: paginatedMerchants(
+  paginatedMerchantList(
     orderBy: $orderBy
     where: $where
     skip: $skip

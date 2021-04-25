@@ -43,6 +43,11 @@ input ClientCreateWithoutScenarioInput {
   postCode: String!
 }
 
+type ClientList {
+  list: [Client]
+  totalCount: Int
+}
+
 input ClientOrderByInput {
   VATId: SortOrder
   address: SortOrder
@@ -195,6 +200,11 @@ input MerchantCreateWithoutScenarioInput {
   email: String!
   issuerName: String!
   postCode: String!
+}
+
+type MerchantList {
+  list: [Merchant]
+  totalCount: Int
 }
 
 input MerchantOrderByInput {
@@ -352,36 +362,38 @@ input NestedStringNullableFilter {
   startsWith: String
 }
 
-type PaginatedClients {
-  filters: PaginatedClientsFilters
+type PaginatedClientList {
+  filters: PaginatedClientListFilters
   list: [Client]
   totalCount: Int
 }
 
-type PaginatedClientsFilters {
+type PaginatedClientListFilters {
   city: [String]
   country: [String]
 }
 
-type PaginatedMerchantFilters {
+type PaginatedMerchantList {
+  filters: PaginatedMerchantListFilters
+  list: [Merchant]
+  totalCount: Int
+}
+
+type PaginatedMerchantListFilters {
   bank: [String]
   city: [String]
   country: [String]
 }
 
-type PaginatedMerchants {
-  filters: PaginatedMerchantFilters
-  list: [Merchant]
-  totalCount: Int
-}
-
 type Query {
   client(where: ClientWhereUniqueInput!): Client
+  clientList: ClientList
   clients(cursor: ClientWhereUniqueInput, orderBy: [ClientOrderByInput!], skip: Int, take: Int, where: ClientWhereInput): [Client!]!
   merchant(where: MerchantWhereUniqueInput!): Merchant
+  merchantList: MerchantList
   merchants(cursor: MerchantWhereUniqueInput, orderBy: [MerchantOrderByInput!], skip: Int, take: Int, where: MerchantWhereInput): [Merchant!]!
-  paginatedClients(orderBy: [ClientOrderByInput], skip: Int!, take: Int!, where: ClientWhereInput): PaginatedClients
-  paginatedMerchants(orderBy: [MerchantOrderByInput], skip: Int!, take: Int!, where: MerchantWhereInput): PaginatedMerchants
+  paginatedClientList(orderBy: [ClientOrderByInput], skip: Int!, take: Int!, where: ClientWhereInput): PaginatedClientList
+  paginatedMerchantList(orderBy: [MerchantOrderByInput], skip: Int!, take: Int!, where: MerchantWhereInput): PaginatedMerchantList
   scenario(where: ScenarioWhereUniqueInput!): Scenario
   scenarios(cursor: ScenarioWhereUniqueInput, skip: Int, take: Int): [Scenario!]!
 }
@@ -393,7 +405,6 @@ enum QueryMode {
 
 type Scenario {
   VAT: VAT!
-  amount: Int!
   client: Client!
   clientId: Int!
   createdAt: DateTime!
@@ -412,7 +423,6 @@ type Scenario {
 
 input ScenarioCreateInput {
   VAT: VAT!
-  amount: Int!
   client: ClientCreateNestedOneWithoutScenarioInput!
   createdAt: DateTime
   dueDateDays: Int!
@@ -428,7 +438,6 @@ input ScenarioCreateInput {
 
 input ScenarioCreateManyClientInput {
   VAT: VAT!
-  amount: Int!
   createdAt: DateTime
   dueDateDays: Int!
   id: Int
@@ -449,7 +458,6 @@ input ScenarioCreateManyClientInputEnvelope {
 
 input ScenarioCreateManyMerchantInput {
   VAT: VAT!
-  amount: Int!
   clientId: Int!
   createdAt: DateTime
   dueDateDays: Int!
@@ -494,7 +502,6 @@ input ScenarioCreateOrConnectWithoutMerchantInput {
 
 input ScenarioCreateWithoutClientInput {
   VAT: VAT!
-  amount: Int!
   createdAt: DateTime
   dueDateDays: Int!
   imageUrl: String!
@@ -509,7 +516,6 @@ input ScenarioCreateWithoutClientInput {
 
 input ScenarioCreateWithoutMerchantInput {
   VAT: VAT!
-  amount: Int!
   client: ClientCreateNestedOneWithoutScenarioInput!
   createdAt: DateTime
   dueDateDays: Int!
@@ -533,7 +539,6 @@ input ScenarioScalarWhereInput {
   NOT: [ScenarioScalarWhereInput!]
   OR: [ScenarioScalarWhereInput!]
   VAT: EnumVATFilter
-  amount: IntFilter
   clientId: IntFilter
   createdAt: DateTimeFilter
   dueDateDays: IntFilter
@@ -550,7 +555,6 @@ input ScenarioScalarWhereInput {
 
 input ScenarioUpdateInput {
   VAT: VAT
-  amount: Int
   client: ClientUpdateOneRequiredWithoutScenarioInput
   createdAt: DateTime
   dueDateDays: Int
@@ -566,7 +570,6 @@ input ScenarioUpdateInput {
 
 input ScenarioUpdateManyMutationInput {
   VAT: VAT
-  amount: Int
   createdAt: DateTime
   dueDateDays: Int
   imageUrl: String
@@ -628,7 +631,6 @@ input ScenarioUpdateWithWhereUniqueWithoutMerchantInput {
 
 input ScenarioUpdateWithoutClientInput {
   VAT: VAT
-  amount: Int
   createdAt: DateTime
   dueDateDays: Int
   imageUrl: String
@@ -643,7 +645,6 @@ input ScenarioUpdateWithoutClientInput {
 
 input ScenarioUpdateWithoutMerchantInput {
   VAT: VAT
-  amount: Int
   client: ClientUpdateOneRequiredWithoutScenarioInput
   createdAt: DateTime
   dueDateDays: Int
@@ -673,7 +674,6 @@ input ScenarioWhereInput {
   NOT: [ScenarioWhereInput!]
   OR: [ScenarioWhereInput!]
   VAT: EnumVATFilter
-  amount: IntFilter
   client: ClientWhereInput
   clientId: IntFilter
   createdAt: DateTimeFilter

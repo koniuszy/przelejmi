@@ -23,7 +23,6 @@ const CreateScenarioForm: FC = () => {
   const [trade, setTrade] = useState<Trade>({
     unitType: Unit.Item,
     VAT: Vat.Percent_23,
-    amount: 1,
     netPerOne: 1000,
   })
 

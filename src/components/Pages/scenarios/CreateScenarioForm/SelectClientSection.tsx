@@ -12,7 +12,7 @@ import {
   Center,
 } from '@chakra-ui/react'
 
-import { ClientContentFragment, usePaginatedClientListQuery } from 'src/generated/graphql'
+import { ClientContentFragment, useClientListQuery } from 'src/generated/graphql'
 
 const SkeletonsStack: FC = () => (
   <VStack mt="2" spacing={4} align="stretch">
@@ -51,32 +51,28 @@ const SelectClientSection: FC<{ selectedClientId: number; onClientSelect(id: num
   selectedClientId,
   onClientSelect,
 }) => {
-  const clientQuery = usePaginatedClientListQuery({
-    variables: { skip: 0, take: 100 },
-  })
+  const { data, loading } = useClientListQuery()
+
   return (
     <>
       <Flex justifyContent="space-between">
         <Text fontWeight="bold" fontSize="lg">
-          Total Clients: {clientQuery.data?.paginatedClientList.totalCount}
+          Total Clients: {data?.clientList.totalCount}
         </Text>
 
         {selectedClientId && (
           <Text fontWeight="bold">
-            {
-              clientQuery.data?.paginatedClientList.list.find(({ id }) => id === selectedClientId)
-                .name
-            }
+            {data?.clientList.list.find(({ id }) => id === selectedClientId).name}
           </Text>
         )}
       </Flex>
       <Divider my={4} />
       <Box h="200px" overflow="auto">
-        {clientQuery.loading ? (
+        {loading ? (
           <SkeletonsStack />
         ) : (
           <SimpleGrid my="2" columns={3} spacing={10}>
-            {clientQuery.data?.paginatedClientList.list.map((clientListItem) => (
+            {data.clientList.list.map((clientListItem) => (
               <ClientSelect
                 key={clientListItem.id}
                 client={clientListItem}

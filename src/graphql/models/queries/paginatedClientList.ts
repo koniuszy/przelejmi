@@ -1,18 +1,18 @@
 import { objectType, intArg, arg, extendType } from 'nexus'
 
-export const PaginatedClientsFilters = objectType({
-  name: 'PaginatedClientsFilters',
+export const PaginatedClientListFilters = objectType({
+  name: 'PaginatedClientListFilters',
   definition(t) {
     t.list.string('country')
     t.list.string('city')
   },
 })
 
-export const PaginatedClients = objectType({
-  name: 'PaginatedClients',
+export const PaginatedClientList = objectType({
+  name: 'PaginatedClientList',
   definition(t) {
     t.int('totalCount')
-    t.field('filters', { type: 'PaginatedClientsFilters' })
+    t.field('filters', { type: 'PaginatedClientListFilters' })
     t.list.field('list', { type: 'Client' })
   },
 })
@@ -21,8 +21,8 @@ export const PaginatedClientListQuery = extendType({
   type: 'Query',
   definition(t) {
     t.crud.clients({ ordering: true, filtering: true })
-    t.field('paginatedClients', {
-      type: 'PaginatedClients',
+    t.field('paginatedClientList', {
+      type: 'PaginatedClientList',
       args: {
         take: intArg({ required: true }),
         skip: intArg({ required: true }),

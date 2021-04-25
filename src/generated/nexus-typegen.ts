@@ -299,7 +299,6 @@ export interface NexusGenInputs {
   }
   ScenarioCreateInput: { // input type
     VAT: NexusGenEnums['VAT']; // VAT!
-    amount: number; // Int!
     client: NexusGenInputs['ClientCreateNestedOneWithoutScenarioInput']; // ClientCreateNestedOneWithoutScenarioInput!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays: number; // Int!
@@ -314,7 +313,6 @@ export interface NexusGenInputs {
   }
   ScenarioCreateManyClientInput: { // input type
     VAT: NexusGenEnums['VAT']; // VAT!
-    amount: number; // Int!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays: number; // Int!
     id?: number | null; // Int
@@ -333,7 +331,6 @@ export interface NexusGenInputs {
   }
   ScenarioCreateManyMerchantInput: { // input type
     VAT: NexusGenEnums['VAT']; // VAT!
-    amount: number; // Int!
     clientId: number; // Int!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays: number; // Int!
@@ -372,7 +369,6 @@ export interface NexusGenInputs {
   }
   ScenarioCreateWithoutClientInput: { // input type
     VAT: NexusGenEnums['VAT']; // VAT!
-    amount: number; // Int!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays: number; // Int!
     imageUrl: string; // String!
@@ -386,7 +382,6 @@ export interface NexusGenInputs {
   }
   ScenarioCreateWithoutMerchantInput: { // input type
     VAT: NexusGenEnums['VAT']; // VAT!
-    amount: number; // Int!
     client: NexusGenInputs['ClientCreateNestedOneWithoutScenarioInput']; // ClientCreateNestedOneWithoutScenarioInput!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays: number; // Int!
@@ -408,7 +403,6 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
     OR?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
     VAT?: NexusGenInputs['EnumVATFilter'] | null; // EnumVATFilter
-    amount?: NexusGenInputs['IntFilter'] | null; // IntFilter
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     dueDateDays?: NexusGenInputs['IntFilter'] | null; // IntFilter
@@ -424,7 +418,6 @@ export interface NexusGenInputs {
   }
   ScenarioUpdateInput: { // input type
     VAT?: NexusGenEnums['VAT'] | null; // VAT
-    amount?: number | null; // Int
     client?: NexusGenInputs['ClientUpdateOneRequiredWithoutScenarioInput'] | null; // ClientUpdateOneRequiredWithoutScenarioInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays?: number | null; // Int
@@ -439,7 +432,6 @@ export interface NexusGenInputs {
   }
   ScenarioUpdateManyMutationInput: { // input type
     VAT?: NexusGenEnums['VAT'] | null; // VAT
-    amount?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays?: number | null; // Int
     imageUrl?: string | null; // String
@@ -494,7 +486,6 @@ export interface NexusGenInputs {
   }
   ScenarioUpdateWithoutClientInput: { // input type
     VAT?: NexusGenEnums['VAT'] | null; // VAT
-    amount?: number | null; // Int
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays?: number | null; // Int
     imageUrl?: string | null; // String
@@ -508,7 +499,6 @@ export interface NexusGenInputs {
   }
   ScenarioUpdateWithoutMerchantInput: { // input type
     VAT?: NexusGenEnums['VAT'] | null; // VAT
-    amount?: number | null; // Int
     client?: NexusGenInputs['ClientUpdateOneRequiredWithoutScenarioInput'] | null; // ClientUpdateOneRequiredWithoutScenarioInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     dueDateDays?: number | null; // Int
@@ -535,7 +525,6 @@ export interface NexusGenInputs {
     NOT?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
     OR?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
     VAT?: NexusGenInputs['EnumVATFilter'] | null; // EnumVATFilter
-    amount?: NexusGenInputs['IntFilter'] | null; // IntFilter
     client?: NexusGenInputs['ClientWhereInput'] | null; // ClientWhereInput
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -610,6 +599,10 @@ export interface NexusGenObjects {
     name: string; // String!
     postCode: string; // String!
   }
+  ClientList: { // root type
+    list?: Array<NexusGenRootTypes['Client'] | null> | null; // [Client]
+    totalCount?: number | null; // Int
+  }
   Merchant: { // root type
     VATId: string; // String!
     address: string; // String!
@@ -624,30 +617,33 @@ export interface NexusGenObjects {
     issuerName: string; // String!
     postCode: string; // String!
   }
+  MerchantList: { // root type
+    list?: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
+    totalCount?: number | null; // Int
+  }
   Mutation: {};
-  PaginatedClients: { // root type
-    filters?: NexusGenRootTypes['PaginatedClientsFilters'] | null; // PaginatedClientsFilters
+  PaginatedClientList: { // root type
+    filters?: NexusGenRootTypes['PaginatedClientListFilters'] | null; // PaginatedClientListFilters
     list?: Array<NexusGenRootTypes['Client'] | null> | null; // [Client]
     totalCount?: number | null; // Int
   }
-  PaginatedClientsFilters: { // root type
+  PaginatedClientListFilters: { // root type
     city?: Array<string | null> | null; // [String]
     country?: Array<string | null> | null; // [String]
   }
-  PaginatedMerchantFilters: { // root type
+  PaginatedMerchantList: { // root type
+    filters?: NexusGenRootTypes['PaginatedMerchantListFilters'] | null; // PaginatedMerchantListFilters
+    list?: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
+    totalCount?: number | null; // Int
+  }
+  PaginatedMerchantListFilters: { // root type
     bank?: Array<string | null> | null; // [String]
     city?: Array<string | null> | null; // [String]
     country?: Array<string | null> | null; // [String]
   }
-  PaginatedMerchants: { // root type
-    filters?: NexusGenRootTypes['PaginatedMerchantFilters'] | null; // PaginatedMerchantFilters
-    list?: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
-    totalCount?: number | null; // Int
-  }
   Query: {};
   Scenario: { // root type
     VAT: NexusGenEnums['VAT']; // VAT!
-    amount: number; // Int!
     clientId: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     dueDateDays: number; // Int!
@@ -684,6 +680,10 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     postCode: string; // String!
   }
+  ClientList: { // field return type
+    list: Array<NexusGenRootTypes['Client'] | null> | null; // [Client]
+    totalCount: number | null; // Int
+  }
   Merchant: { // field return type
     Scenario: NexusGenRootTypes['Scenario'][]; // [Scenario!]!
     VATId: string; // String!
@@ -699,6 +699,10 @@ export interface NexusGenFieldTypes {
     issuerName: string; // String!
     postCode: string; // String!
   }
+  MerchantList: { // field return type
+    list: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
+    totalCount: number | null; // Int
+  }
   Mutation: { // field return type
     createOneClient: NexusGenRootTypes['Client']; // Client!
     createOneMerchant: NexusGenRootTypes['Merchant']; // Merchant!
@@ -709,38 +713,39 @@ export interface NexusGenFieldTypes {
     updateOneMerchant: NexusGenRootTypes['Merchant'] | null; // Merchant
     updateOneScenario: NexusGenRootTypes['Scenario'] | null; // Scenario
   }
-  PaginatedClients: { // field return type
-    filters: NexusGenRootTypes['PaginatedClientsFilters'] | null; // PaginatedClientsFilters
+  PaginatedClientList: { // field return type
+    filters: NexusGenRootTypes['PaginatedClientListFilters'] | null; // PaginatedClientListFilters
     list: Array<NexusGenRootTypes['Client'] | null> | null; // [Client]
     totalCount: number | null; // Int
   }
-  PaginatedClientsFilters: { // field return type
+  PaginatedClientListFilters: { // field return type
     city: Array<string | null> | null; // [String]
     country: Array<string | null> | null; // [String]
   }
-  PaginatedMerchantFilters: { // field return type
+  PaginatedMerchantList: { // field return type
+    filters: NexusGenRootTypes['PaginatedMerchantListFilters'] | null; // PaginatedMerchantListFilters
+    list: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
+    totalCount: number | null; // Int
+  }
+  PaginatedMerchantListFilters: { // field return type
     bank: Array<string | null> | null; // [String]
     city: Array<string | null> | null; // [String]
     country: Array<string | null> | null; // [String]
   }
-  PaginatedMerchants: { // field return type
-    filters: NexusGenRootTypes['PaginatedMerchantFilters'] | null; // PaginatedMerchantFilters
-    list: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
-    totalCount: number | null; // Int
-  }
   Query: { // field return type
     client: NexusGenRootTypes['Client'] | null; // Client
+    clientList: NexusGenRootTypes['ClientList'] | null; // ClientList
     clients: NexusGenRootTypes['Client'][]; // [Client!]!
     merchant: NexusGenRootTypes['Merchant'] | null; // Merchant
+    merchantList: NexusGenRootTypes['MerchantList'] | null; // MerchantList
     merchants: NexusGenRootTypes['Merchant'][]; // [Merchant!]!
-    paginatedClients: NexusGenRootTypes['PaginatedClients'] | null; // PaginatedClients
-    paginatedMerchants: NexusGenRootTypes['PaginatedMerchants'] | null; // PaginatedMerchants
+    paginatedClientList: NexusGenRootTypes['PaginatedClientList'] | null; // PaginatedClientList
+    paginatedMerchantList: NexusGenRootTypes['PaginatedMerchantList'] | null; // PaginatedMerchantList
     scenario: NexusGenRootTypes['Scenario'] | null; // Scenario
     scenarios: NexusGenRootTypes['Scenario'][]; // [Scenario!]!
   }
   Scenario: { // field return type
     VAT: NexusGenEnums['VAT']; // VAT!
-    amount: number; // Int!
     client: NexusGenRootTypes['Client']; // Client!
     clientId: number; // Int!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -769,6 +774,10 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     postCode: 'String'
   }
+  ClientList: { // field return type name
+    list: 'Client'
+    totalCount: 'Int'
+  }
   Merchant: { // field return type name
     Scenario: 'Scenario'
     VATId: 'String'
@@ -784,6 +793,10 @@ export interface NexusGenFieldTypeNames {
     issuerName: 'String'
     postCode: 'String'
   }
+  MerchantList: { // field return type name
+    list: 'Merchant'
+    totalCount: 'Int'
+  }
   Mutation: { // field return type name
     createOneClient: 'Client'
     createOneMerchant: 'Merchant'
@@ -794,38 +807,39 @@ export interface NexusGenFieldTypeNames {
     updateOneMerchant: 'Merchant'
     updateOneScenario: 'Scenario'
   }
-  PaginatedClients: { // field return type name
-    filters: 'PaginatedClientsFilters'
+  PaginatedClientList: { // field return type name
+    filters: 'PaginatedClientListFilters'
     list: 'Client'
     totalCount: 'Int'
   }
-  PaginatedClientsFilters: { // field return type name
+  PaginatedClientListFilters: { // field return type name
     city: 'String'
     country: 'String'
   }
-  PaginatedMerchantFilters: { // field return type name
+  PaginatedMerchantList: { // field return type name
+    filters: 'PaginatedMerchantListFilters'
+    list: 'Merchant'
+    totalCount: 'Int'
+  }
+  PaginatedMerchantListFilters: { // field return type name
     bank: 'String'
     city: 'String'
     country: 'String'
   }
-  PaginatedMerchants: { // field return type name
-    filters: 'PaginatedMerchantFilters'
-    list: 'Merchant'
-    totalCount: 'Int'
-  }
   Query: { // field return type name
     client: 'Client'
+    clientList: 'ClientList'
     clients: 'Client'
     merchant: 'Merchant'
+    merchantList: 'MerchantList'
     merchants: 'Merchant'
-    paginatedClients: 'PaginatedClients'
-    paginatedMerchants: 'PaginatedMerchants'
+    paginatedClientList: 'PaginatedClientList'
+    paginatedMerchantList: 'PaginatedMerchantList'
     scenario: 'Scenario'
     scenarios: 'Scenario'
   }
   Scenario: { // field return type name
     VAT: 'VAT'
-    amount: 'Int'
     client: 'Client'
     clientId: 'Int'
     createdAt: 'DateTime'
@@ -908,13 +922,13 @@ export interface NexusGenArgTypes {
       take?: number | null; // Int
       where?: NexusGenInputs['MerchantWhereInput'] | null; // MerchantWhereInput
     }
-    paginatedClients: { // args
+    paginatedClientList: { // args
       orderBy?: Array<NexusGenInputs['ClientOrderByInput'] | null> | null; // [ClientOrderByInput]
       skip: number; // Int!
       take: number; // Int!
       where?: NexusGenInputs['ClientWhereInput'] | null; // ClientWhereInput
     }
-    paginatedMerchants: { // args
+    paginatedMerchantList: { // args
       orderBy?: Array<NexusGenInputs['MerchantOrderByInput'] | null> | null; // [MerchantOrderByInput]
       skip: number; // Int!
       take: number; // Int!

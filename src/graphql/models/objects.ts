@@ -43,7 +43,6 @@ export const Scenario = objectType({
     t.model.imageUrl()
     t.model.dueDateDays()
     t.model.VAT()
-    t.model.amount()
     t.model.unitType()
     t.model.notes()
     t.model.createdAt()

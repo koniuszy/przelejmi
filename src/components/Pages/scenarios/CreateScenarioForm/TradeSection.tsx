@@ -14,7 +14,7 @@ import {
 
 import { Scenario, Unit } from 'src/generated/graphql'
 
-export type Trade = Pick<Scenario, 'unitType' | 'amount' | 'netPerOne' | 'VAT'>
+export type Trade = Pick<Scenario, 'unitType' | 'netPerOne' | 'VAT'>
 
 const TradeSection: FC<{ trade: Trade; onTradeChange(data: Partial<Trade>): void }> = ({
   trade,
@@ -40,16 +40,6 @@ const TradeSection: FC<{ trade: Trade; onTradeChange(data: Partial<Trade>): void
         </option>
       ))}
     </Select>
-    <Text mt={4} fontSize={12} fontWeight={500}>
-      Amount
-    </Text>
-    <NumberInput value={trade.amount} onChange={(v) => onTradeChange({ amount: Number(v) })}>
-      <NumberInputField />
-      <NumberInputStepper>
-        <NumberIncrementStepper />
-        <NumberDecrementStepper />
-      </NumberInputStepper>
-    </NumberInput>
 
     <Text mt={4} fontSize={12} fontWeight={500}>
       VAT
@@ -70,15 +60,12 @@ const TradeSection: FC<{ trade: Trade; onTradeChange(data: Partial<Trade>): void
         <NumberDecrementStepper />
       </NumberInputStepper>
     </NumberInput>
+
     <Text mt={4} fontSize={12} fontWeight={500}>
-      Total
+      Gross per one
     </Text>
-    <NumberInput>
+    <NumberInput isReadOnly>
       <NumberInputField />
-      <NumberInputStepper>
-        <NumberIncrementStepper />
-        <NumberDecrementStepper />
-      </NumberInputStepper>
     </NumberInput>
   </>
 )

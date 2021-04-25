@@ -56,7 +56,6 @@ model Scenario {
   imageUrl    String
   netPerOne   Int
   VAT         VAT
-  amount      Int
   unitType    Unit
   notes       String
   dueDateDays Int
@@ -71,6 +70,7 @@ model Scenario {
 model Invoice {
   id        String   @id
   issueDate DateTime
+  amount    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   content   Json

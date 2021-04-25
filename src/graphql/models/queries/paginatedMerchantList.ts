@@ -1,7 +1,7 @@
 import { objectType, intArg, arg, extendType } from 'nexus'
 
-export const PaginatedMerchantsFilters = objectType({
-  name: 'PaginatedMerchantFilters',
+export const PaginatedMerchantListFilters = objectType({
+  name: 'PaginatedMerchantListFilters',
   definition(t) {
     t.list.string('country')
     t.list.string('city')
@@ -9,11 +9,11 @@ export const PaginatedMerchantsFilters = objectType({
   },
 })
 
-export const PaginatedMerchants = objectType({
-  name: 'PaginatedMerchants',
+export const PaginatedMerchantList = objectType({
+  name: 'PaginatedMerchantList',
   definition(t) {
     t.int('totalCount')
-    t.field('filters', { type: 'PaginatedMerchantFilters' })
+    t.field('filters', { type: 'PaginatedMerchantListFilters' })
     t.list.field('list', { type: 'Merchant' })
   },
 })
@@ -22,8 +22,8 @@ export const PaginatedMerchantListQuery = extendType({
   type: 'Query',
   definition(t) {
     t.crud.merchants({ ordering: true, filtering: true })
-    t.field('paginatedMerchants', {
-      type: 'PaginatedMerchants',
+    t.field('paginatedMerchantList', {
+      type: 'PaginatedMerchantList',
       args: {
         take: intArg({ required: true }),
         skip: intArg({ required: true }),

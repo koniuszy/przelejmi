@@ -12,7 +12,7 @@ import {
   Center,
 } from '@chakra-ui/react'
 
-import { usePaginatedMerchantListQuery, MerchantContentFragment } from 'src/generated/graphql'
+import { MerchantContentFragment, useMerchantListQuery } from 'src/generated/graphql'
 
 const SkeletonsStack: FC = () => (
   <VStack mt="2" spacing={4} align="stretch">
@@ -52,24 +52,18 @@ const SelectMerchantSection: FC<{
   selectedMerchantId: number
   onMerchantSelect(id: number | null): void
 }> = ({ onMerchantSelect, selectedMerchantId }) => {
-  const merchantQuery = usePaginatedMerchantListQuery({
-    variables: { skip: 0, take: 100 },
-  })
+  const { data, loading } = useMerchantListQuery()
 
   return (
     <>
       <Flex justifyContent="space-between">
         <Text fontWeight="bold" fontSize="lg">
-          Total Merchants: {merchantQuery.data?.paginatedMerchantList.totalCount}
+          Total Merchants: {data?.merchantList.totalCount}
         </Text>
 
         {selectedMerchantId && (
           <Text fontWeight="bold">
-            {
-              merchantQuery.data?.paginatedMerchantList.list.find(
-                ({ id }) => id === selectedMerchantId
-              ).companyName
-            }
+            {data?.merchantList.list.find(({ id }) => id === selectedMerchantId).companyName}
           </Text>
         )}
       </Flex>
@@ -77,11 +71,11 @@ const SelectMerchantSection: FC<{
       <Divider my={4} />
 
       <Box h="200px" overflow="auto">
-        {merchantQuery.loading ? (
+        {loading ? (
           <SkeletonsStack />
         ) : (
           <SimpleGrid my="2" columns={4} spacing={10}>
-            {merchantQuery.data?.paginatedMerchantList.list.map((merchantListItem) => (
+            {data.merchantList.list.map((merchantListItem) => (
               <MerchantSelect
                 key={merchantListItem.id}
                 merchant={merchantListItem}

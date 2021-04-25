@@ -4,7 +4,11 @@ import { useToast } from '@chakra-ui/react'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { useCreateMerchantMutation, PaginatedMerchantListDocument } from 'src/generated/graphql'
+import {
+  useCreateMerchantMutation,
+  PaginatedMerchantListDocument,
+  MerchantListDocument,
+} from 'src/generated/graphql'
 import { OptimizedImg } from 'src/types'
 
 import MerchantForm from 'src/components/MerchantForm'
@@ -19,6 +23,7 @@ const CreateMerchantForm: FC<{
   const [createMerchant, { loading }] = useCreateMerchantMutation({
     refetchQueries: [
       { query: PaginatedMerchantListDocument, variables: { take: PER_PAGE, skip: 0 } },
+      { query: MerchantListDocument },
     ],
     onCompleted() {
       toast({

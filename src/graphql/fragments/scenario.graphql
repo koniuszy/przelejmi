@@ -5,7 +5,6 @@ fragment ScenarioContent on Scenario {
   imageUrl
   netPerOne
   VAT
-  amount
   unitType
   notes
   dueDateDays
