@@ -52,7 +52,7 @@ const SelectMerchantSection: FC<{
   selectedMerchantId: number
   onMerchantSelect(id: number | null): void
 }> = ({ onMerchantSelect, selectedMerchantId }) => {
-  const { data, loading } = useMerchantListQuery()
+  const { data, loading } = useMerchantListQuery({ fetchPolicy: 'cache-and-network' })
 
   return (
     <>

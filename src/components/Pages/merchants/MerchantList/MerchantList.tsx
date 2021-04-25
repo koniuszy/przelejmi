@@ -11,7 +11,7 @@ import Table, { TablePlaceholder } from 'src/components/Table'
 import ActionsColumn from './ActionsColumn'
 import EditableColumns from './EditableColumns'
 
-export const PER_PAGE = 10
+const PER_PAGE = 10
 const TITLE = 'Total merchants'
 
 const MerchantList: FC = () => {

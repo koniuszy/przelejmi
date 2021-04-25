@@ -1,1 +1,1 @@
-export { default, PER_PAGE } from './MerchantList'
+export { default } from './MerchantList'

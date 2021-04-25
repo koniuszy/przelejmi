@@ -4,21 +4,16 @@ import { useToast } from '@chakra-ui/react'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { useCreateClientMutation, PaginatedClientListDocument } from 'src/generated/graphql'
+import { useCreateClientMutation } from 'src/generated/graphql'
 import { ClientType, OptimizedImg } from 'src/types'
 
 import ClientForm from 'src/components/ClientForm'
-
-import { PER_PAGE } from './ClientList'
 
 const CreateClientForm: FC<{
   calmInTrolleyImg: OptimizedImg
 }> = ({ calmInTrolleyImg }) => {
   const toast = useToast()
   const [createClient, { loading }] = useCreateClientMutation({
-    refetchQueries: [
-      { query: PaginatedClientListDocument, variables: { take: PER_PAGE, skip: 0 } },
-    ],
     onCompleted() {
       toast({
         ...successToastContent,

@@ -1,1 +1,1 @@
-export { default, PER_PAGE } from './ClientList'
+export { default } from './ClientList'

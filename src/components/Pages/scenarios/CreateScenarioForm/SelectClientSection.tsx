@@ -51,7 +51,7 @@ const SelectClientSection: FC<{ selectedClientId: number; onClientSelect(id: num
   selectedClientId,
   onClientSelect,
 }) => {
-  const { data, loading } = useClientListQuery()
+  const { data, loading } = useClientListQuery({ fetchPolicy: 'cache-and-network' })
 
   return (
     <>
