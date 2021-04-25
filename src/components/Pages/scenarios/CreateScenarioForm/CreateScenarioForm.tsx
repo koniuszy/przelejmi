@@ -5,6 +5,7 @@ import { Button, Box, SimpleGrid, Divider, Flex, Text, Textarea } from '@chakra-
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import { Unit, Vat, Currency, PaymentType } from 'src/generated/graphql'
+import { OptimizedImg } from 'src/types'
 
 import ImageSection from './ImageSection'
 import PaymentDetailsSection, { PaymentDetails } from './PaymentDetailsSection'
@@ -12,8 +13,9 @@ import SelectClientSection from './SelectClientSection'
 import SelectMerchantSection from './SelectMerchantSection'
 import TradeSection, { Trade } from './TradeSection'
 
-const CreateScenarioForm: FC = () => {
+const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }) => {
   const [imgSrc, setImgSrc] = useState('')
+  const [notes, setNotes] = useState('')
   const [clientId, setClientId] = useState<number | null>(null)
   const [merchantId, setMerchantId] = useState<number | null>(null)
 
@@ -46,6 +48,7 @@ const CreateScenarioForm: FC = () => {
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
           <TradeSection
             trade={trade}
+            optimizedImg={optimizedImg}
             onTradeChange={(data) => setTrade((prev) => ({ ...prev, ...data }))}
           />
         </Box>
@@ -68,7 +71,7 @@ const CreateScenarioForm: FC = () => {
             </Text>
           </Flex>
           <Divider my={4} />
-          <Textarea />
+          <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
         </Box>
       </SimpleGrid>
 

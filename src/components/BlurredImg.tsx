@@ -6,10 +6,11 @@ import { Box } from '@chakra-ui/react'
 
 import { OptimizedImg } from 'src/types'
 
-const BlurredImg: FC<{ optimizedImg: OptimizedImg; height: number }> = ({
-  optimizedImg,
-  height,
-}) => (
+const BlurredImg: FC<{
+  optimizedImg: OptimizedImg
+  height: number
+  objectFit?: JSX.IntrinsicElements['img']['style']['objectFit']
+}> = ({ optimizedImg, height, objectFit = 'cover' }) => (
   <Box className="nextImgBox">
     <img
       aria-hidden="true"
@@ -20,7 +21,7 @@ const BlurredImg: FC<{ optimizedImg: OptimizedImg; height: number }> = ({
     <NextImg
       width={height / optimizedImg.ratio}
       src={optimizedImg.src}
-      objectFit="contain"
+      objectFit={objectFit}
       objectPosition="center"
       height={height}
     />

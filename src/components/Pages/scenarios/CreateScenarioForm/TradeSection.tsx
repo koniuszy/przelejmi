@@ -12,9 +12,13 @@ import {
   Button,
   InputGroup,
   InputRightAddon,
+  Center,
 } from '@chakra-ui/react'
 
 import { Scenario, Unit, Vat, Currency } from 'src/generated/graphql'
+import { OptimizedImg } from 'src/types'
+
+import BlurredImg from 'src/components/BlurredImg'
 
 export type Trade = Pick<Scenario, 'unitType' | 'netPerOne' | 'VAT' | 'currency'>
 
@@ -36,10 +40,11 @@ function getGrossValue(trade: Trade) {
   return `+ ${value} ${trade.currency} VAT`
 }
 
-const TradeSection: FC<{ trade: Trade; onTradeChange(data: Partial<Trade>): void }> = ({
-  trade,
-  onTradeChange,
-}) => (
+const TradeSection: FC<{
+  trade: Trade
+  optimizedImg: OptimizedImg
+  onTradeChange(data: Partial<Trade>): void
+}> = ({ trade, optimizedImg, onTradeChange }) => (
   <>
     <Flex justifyContent="space-between">
       <Text fontWeight="bold" fontSize="lg">
@@ -95,7 +100,7 @@ const TradeSection: FC<{ trade: Trade; onTradeChange(data: Partial<Trade>): void
     <Text mt={4} fontSize={12} fontWeight={500}>
       Net per one
     </Text>
-    <InputGroup>
+    <InputGroup mb={4}>
       <NumberInput
         value={trade.netPerOne}
         width="70%"
@@ -109,6 +114,18 @@ const TradeSection: FC<{ trade: Trade; onTradeChange(data: Partial<Trade>): void
       </NumberInput>
       {getGrossValue(trade) && <InputRightAddon>{getGrossValue(trade)}</InputRightAddon>}
     </InputGroup>
+
+    <Center>
+      <BlurredImg objectFit="cover" optimizedImg={optimizedImg} height={180} />
+    </Center>
+    <style global jsx>
+      {`
+        .nextImgBox {
+          margin-right: 0 !important;
+          width: 100%;
+        }
+      `}
+    </style>
   </>
 )
 export default TradeSection
