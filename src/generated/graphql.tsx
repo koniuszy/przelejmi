@@ -130,6 +130,13 @@ export type ClientWhereUniqueInput = {
   id?: Maybe<Scalars['Int']>;
 };
 
+export enum Currency {
+  Eur = 'EUR',
+  Nok = 'NOK',
+  Pln = 'PLN',
+  Usd = 'USD'
+}
+
 
 export type DateTimeFilter = {
   equals?: Maybe<Scalars['DateTime']>;
@@ -140,6 +147,20 @@ export type DateTimeFilter = {
   lte?: Maybe<Scalars['DateTime']>;
   not?: Maybe<NestedDateTimeFilter>;
   notIn?: Maybe<Array<Scalars['DateTime']>>;
+};
+
+export type EnumCurrencyFilter = {
+  equals?: Maybe<Currency>;
+  in?: Maybe<Array<Currency>>;
+  not?: Maybe<NestedEnumCurrencyFilter>;
+  notIn?: Maybe<Array<Currency>>;
+};
+
+export type EnumPaymentTypeFilter = {
+  equals?: Maybe<PaymentType>;
+  in?: Maybe<Array<PaymentType>>;
+  not?: Maybe<NestedEnumPaymentTypeFilter>;
+  notIn?: Maybe<Array<PaymentType>>;
 };
 
 export type EnumUnitFilter = {
@@ -383,6 +404,20 @@ export type NestedDateTimeFilter = {
   notIn?: Maybe<Array<Scalars['DateTime']>>;
 };
 
+export type NestedEnumCurrencyFilter = {
+  equals?: Maybe<Currency>;
+  in?: Maybe<Array<Currency>>;
+  not?: Maybe<NestedEnumCurrencyFilter>;
+  notIn?: Maybe<Array<Currency>>;
+};
+
+export type NestedEnumPaymentTypeFilter = {
+  equals?: Maybe<PaymentType>;
+  in?: Maybe<Array<PaymentType>>;
+  not?: Maybe<NestedEnumPaymentTypeFilter>;
+  notIn?: Maybe<Array<PaymentType>>;
+};
+
 export type NestedEnumUnitFilter = {
   equals?: Maybe<Unit>;
   in?: Maybe<Array<Unit>>;
@@ -462,6 +497,11 @@ export type PaginatedMerchantListFilters = {
   city?: Maybe<Array<Maybe<Scalars['String']>>>;
   country?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
+
+export enum PaymentType {
+  Cash = 'CASH',
+  Transfer = 'TRANSFER'
+}
 
 export type Query = {
   __typename?: 'Query';
@@ -544,6 +584,7 @@ export type Scenario = {
   client: Client;
   clientId: Scalars['Int'];
   createdAt: Scalars['DateTime'];
+  currency: Currency;
   dueDateDays: Scalars['Int'];
   id: Scalars['Int'];
   imageUrl: Scalars['String'];
@@ -552,7 +593,7 @@ export type Scenario = {
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  paymentType: Scalars['String'];
+  paymentType: PaymentType;
   unitType: Unit;
   updatedAt: Scalars['DateTime'];
 };
@@ -561,13 +602,14 @@ export type ScenarioCreateInput = {
   VAT: Vat;
   client: ClientCreateNestedOneWithoutScenarioInput;
   createdAt?: Maybe<Scalars['DateTime']>;
+  currency: Currency;
   dueDateDays: Scalars['Int'];
   imageUrl: Scalars['String'];
   merchant: MerchantCreateNestedOneWithoutScenarioInput;
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  paymentType: Scalars['String'];
+  paymentType: PaymentType;
   unitType: Unit;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -575,6 +617,7 @@ export type ScenarioCreateInput = {
 export type ScenarioCreateManyClientInput = {
   VAT: Vat;
   createdAt?: Maybe<Scalars['DateTime']>;
+  currency: Currency;
   dueDateDays: Scalars['Int'];
   id?: Maybe<Scalars['Int']>;
   imageUrl: Scalars['String'];
@@ -582,7 +625,7 @@ export type ScenarioCreateManyClientInput = {
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  paymentType: Scalars['String'];
+  paymentType: PaymentType;
   unitType: Unit;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -596,13 +639,14 @@ export type ScenarioCreateManyMerchantInput = {
   VAT: Vat;
   clientId: Scalars['Int'];
   createdAt?: Maybe<Scalars['DateTime']>;
+  currency: Currency;
   dueDateDays: Scalars['Int'];
   id?: Maybe<Scalars['Int']>;
   imageUrl: Scalars['String'];
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  paymentType: Scalars['String'];
+  paymentType: PaymentType;
   unitType: Unit;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -639,13 +683,14 @@ export type ScenarioCreateOrConnectWithoutMerchantInput = {
 export type ScenarioCreateWithoutClientInput = {
   VAT: Vat;
   createdAt?: Maybe<Scalars['DateTime']>;
+  currency: Currency;
   dueDateDays: Scalars['Int'];
   imageUrl: Scalars['String'];
   merchant: MerchantCreateNestedOneWithoutScenarioInput;
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  paymentType: Scalars['String'];
+  paymentType: PaymentType;
   unitType: Unit;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -654,12 +699,13 @@ export type ScenarioCreateWithoutMerchantInput = {
   VAT: Vat;
   client: ClientCreateNestedOneWithoutScenarioInput;
   createdAt?: Maybe<Scalars['DateTime']>;
+  currency: Currency;
   dueDateDays: Scalars['Int'];
   imageUrl: Scalars['String'];
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
-  paymentType: Scalars['String'];
+  paymentType: PaymentType;
   unitType: Unit;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -677,6 +723,7 @@ export type ScenarioScalarWhereInput = {
   VAT?: Maybe<EnumVatFilter>;
   clientId?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
+  currency?: Maybe<EnumCurrencyFilter>;
   dueDateDays?: Maybe<IntFilter>;
   id?: Maybe<IntFilter>;
   imageUrl?: Maybe<StringFilter>;
@@ -684,7 +731,7 @@ export type ScenarioScalarWhereInput = {
   name?: Maybe<StringFilter>;
   netPerOne?: Maybe<IntFilter>;
   notes?: Maybe<StringFilter>;
-  paymentType?: Maybe<StringFilter>;
+  paymentType?: Maybe<EnumPaymentTypeFilter>;
   unitType?: Maybe<EnumUnitFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
 };
@@ -693,13 +740,14 @@ export type ScenarioUpdateInput = {
   VAT?: Maybe<Vat>;
   client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
   createdAt?: Maybe<Scalars['DateTime']>;
+  currency?: Maybe<Currency>;
   dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
   merchant?: Maybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
-  paymentType?: Maybe<Scalars['String']>;
+  paymentType?: Maybe<PaymentType>;
   unitType?: Maybe<Unit>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -707,12 +755,13 @@ export type ScenarioUpdateInput = {
 export type ScenarioUpdateManyMutationInput = {
   VAT?: Maybe<Vat>;
   createdAt?: Maybe<Scalars['DateTime']>;
+  currency?: Maybe<Currency>;
   dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
-  paymentType?: Maybe<Scalars['String']>;
+  paymentType?: Maybe<PaymentType>;
   unitType?: Maybe<Unit>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -768,13 +817,14 @@ export type ScenarioUpdateWithWhereUniqueWithoutMerchantInput = {
 export type ScenarioUpdateWithoutClientInput = {
   VAT?: Maybe<Vat>;
   createdAt?: Maybe<Scalars['DateTime']>;
+  currency?: Maybe<Currency>;
   dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
   merchant?: Maybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
-  paymentType?: Maybe<Scalars['String']>;
+  paymentType?: Maybe<PaymentType>;
   unitType?: Maybe<Unit>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -783,12 +833,13 @@ export type ScenarioUpdateWithoutMerchantInput = {
   VAT?: Maybe<Vat>;
   client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
   createdAt?: Maybe<Scalars['DateTime']>;
+  currency?: Maybe<Currency>;
   dueDateDays?: Maybe<Scalars['Int']>;
   imageUrl?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   netPerOne?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
-  paymentType?: Maybe<Scalars['String']>;
+  paymentType?: Maybe<PaymentType>;
   unitType?: Maybe<Unit>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
@@ -813,6 +864,7 @@ export type ScenarioWhereInput = {
   client?: Maybe<ClientWhereInput>;
   clientId?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
+  currency?: Maybe<EnumCurrencyFilter>;
   dueDateDays?: Maybe<IntFilter>;
   id?: Maybe<IntFilter>;
   imageUrl?: Maybe<StringFilter>;
@@ -821,7 +873,7 @@ export type ScenarioWhereInput = {
   name?: Maybe<StringFilter>;
   netPerOne?: Maybe<IntFilter>;
   notes?: Maybe<StringFilter>;
-  paymentType?: Maybe<StringFilter>;
+  paymentType?: Maybe<EnumPaymentTypeFilter>;
   unitType?: Maybe<EnumUnitFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
 };
@@ -872,9 +924,9 @@ export enum Unit {
 
 export enum Vat {
   DoesNotConcern = 'DOES_NOT_CONCERN',
+  Freed = 'FREED',
   Percent_0 = 'PERCENT_0',
-  Percent_23 = 'PERCENT_23',
-  Zwolniony = 'ZWOLNIONY'
+  Percent_23 = 'PERCENT_23'
 }
 
 export type ClientContentFragment = (
@@ -889,7 +941,7 @@ export type MerchantContentFragment = (
 
 export type ScenarioContentFragment = (
   { __typename?: 'Scenario' }
-  & Pick<Scenario, 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'>
+  & Pick<Scenario, 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'>
 );
 
 export type CreateClientMutationVariables = Exact<{
@@ -1123,6 +1175,7 @@ export const ScenarioContentFragmentDoc = gql`
   netPerOne
   VAT
   unitType
+  currency
   notes
   dueDateDays
   createdAt

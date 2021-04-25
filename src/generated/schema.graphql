@@ -108,6 +108,13 @@ input ClientWhereUniqueInput {
   id: Int
 }
 
+enum Currency {
+  EUR
+  NOK
+  PLN
+  USD
+}
+
 scalar DateTime
 
 input DateTimeFilter {
@@ -119,6 +126,20 @@ input DateTimeFilter {
   lte: DateTime
   not: NestedDateTimeFilter
   notIn: [DateTime!]
+}
+
+input EnumCurrencyFilter {
+  equals: Currency
+  in: [Currency!]
+  not: NestedEnumCurrencyFilter
+  notIn: [Currency!]
+}
+
+input EnumPaymentTypeFilter {
+  equals: PaymentType
+  in: [PaymentType!]
+  not: NestedEnumPaymentTypeFilter
+  notIn: [PaymentType!]
 }
 
 input EnumUnitFilter {
@@ -309,6 +330,20 @@ input NestedDateTimeFilter {
   notIn: [DateTime!]
 }
 
+input NestedEnumCurrencyFilter {
+  equals: Currency
+  in: [Currency!]
+  not: NestedEnumCurrencyFilter
+  notIn: [Currency!]
+}
+
+input NestedEnumPaymentTypeFilter {
+  equals: PaymentType
+  in: [PaymentType!]
+  not: NestedEnumPaymentTypeFilter
+  notIn: [PaymentType!]
+}
+
 input NestedEnumUnitFilter {
   equals: Unit
   in: [Unit!]
@@ -385,6 +420,11 @@ type PaginatedMerchantListFilters {
   country: [String]
 }
 
+enum PaymentType {
+  CASH
+  TRANSFER
+}
+
 type Query {
   client(where: ClientWhereUniqueInput!): Client
   clientList: ClientList
@@ -408,6 +448,7 @@ type Scenario {
   client: Client!
   clientId: Int!
   createdAt: DateTime!
+  currency: Currency!
   dueDateDays: Int!
   id: Int!
   imageUrl: String!
@@ -416,7 +457,7 @@ type Scenario {
   name: String!
   netPerOne: Int!
   notes: String!
-  paymentType: String!
+  paymentType: PaymentType!
   unitType: Unit!
   updatedAt: DateTime!
 }
@@ -425,13 +466,14 @@ input ScenarioCreateInput {
   VAT: VAT!
   client: ClientCreateNestedOneWithoutScenarioInput!
   createdAt: DateTime
+  currency: Currency!
   dueDateDays: Int!
   imageUrl: String!
   merchant: MerchantCreateNestedOneWithoutScenarioInput!
   name: String!
   netPerOne: Int!
   notes: String!
-  paymentType: String!
+  paymentType: PaymentType!
   unitType: Unit!
   updatedAt: DateTime
 }
@@ -439,6 +481,7 @@ input ScenarioCreateInput {
 input ScenarioCreateManyClientInput {
   VAT: VAT!
   createdAt: DateTime
+  currency: Currency!
   dueDateDays: Int!
   id: Int
   imageUrl: String!
@@ -446,7 +489,7 @@ input ScenarioCreateManyClientInput {
   name: String!
   netPerOne: Int!
   notes: String!
-  paymentType: String!
+  paymentType: PaymentType!
   unitType: Unit!
   updatedAt: DateTime
 }
@@ -460,13 +503,14 @@ input ScenarioCreateManyMerchantInput {
   VAT: VAT!
   clientId: Int!
   createdAt: DateTime
+  currency: Currency!
   dueDateDays: Int!
   id: Int
   imageUrl: String!
   name: String!
   netPerOne: Int!
   notes: String!
-  paymentType: String!
+  paymentType: PaymentType!
   unitType: Unit!
   updatedAt: DateTime
 }
@@ -503,13 +547,14 @@ input ScenarioCreateOrConnectWithoutMerchantInput {
 input ScenarioCreateWithoutClientInput {
   VAT: VAT!
   createdAt: DateTime
+  currency: Currency!
   dueDateDays: Int!
   imageUrl: String!
   merchant: MerchantCreateNestedOneWithoutScenarioInput!
   name: String!
   netPerOne: Int!
   notes: String!
-  paymentType: String!
+  paymentType: PaymentType!
   unitType: Unit!
   updatedAt: DateTime
 }
@@ -518,12 +563,13 @@ input ScenarioCreateWithoutMerchantInput {
   VAT: VAT!
   client: ClientCreateNestedOneWithoutScenarioInput!
   createdAt: DateTime
+  currency: Currency!
   dueDateDays: Int!
   imageUrl: String!
   name: String!
   netPerOne: Int!
   notes: String!
-  paymentType: String!
+  paymentType: PaymentType!
   unitType: Unit!
   updatedAt: DateTime
 }
@@ -541,6 +587,7 @@ input ScenarioScalarWhereInput {
   VAT: EnumVATFilter
   clientId: IntFilter
   createdAt: DateTimeFilter
+  currency: EnumCurrencyFilter
   dueDateDays: IntFilter
   id: IntFilter
   imageUrl: StringFilter
@@ -548,7 +595,7 @@ input ScenarioScalarWhereInput {
   name: StringFilter
   netPerOne: IntFilter
   notes: StringFilter
-  paymentType: StringFilter
+  paymentType: EnumPaymentTypeFilter
   unitType: EnumUnitFilter
   updatedAt: DateTimeFilter
 }
@@ -557,13 +604,14 @@ input ScenarioUpdateInput {
   VAT: VAT
   client: ClientUpdateOneRequiredWithoutScenarioInput
   createdAt: DateTime
+  currency: Currency
   dueDateDays: Int
   imageUrl: String
   merchant: MerchantUpdateOneRequiredWithoutScenarioInput
   name: String
   netPerOne: Int
   notes: String
-  paymentType: String
+  paymentType: PaymentType
   unitType: Unit
   updatedAt: DateTime
 }
@@ -571,12 +619,13 @@ input ScenarioUpdateInput {
 input ScenarioUpdateManyMutationInput {
   VAT: VAT
   createdAt: DateTime
+  currency: Currency
   dueDateDays: Int
   imageUrl: String
   name: String
   netPerOne: Int
   notes: String
-  paymentType: String
+  paymentType: PaymentType
   unitType: Unit
   updatedAt: DateTime
 }
@@ -632,13 +681,14 @@ input ScenarioUpdateWithWhereUniqueWithoutMerchantInput {
 input ScenarioUpdateWithoutClientInput {
   VAT: VAT
   createdAt: DateTime
+  currency: Currency
   dueDateDays: Int
   imageUrl: String
   merchant: MerchantUpdateOneRequiredWithoutScenarioInput
   name: String
   netPerOne: Int
   notes: String
-  paymentType: String
+  paymentType: PaymentType
   unitType: Unit
   updatedAt: DateTime
 }
@@ -647,12 +697,13 @@ input ScenarioUpdateWithoutMerchantInput {
   VAT: VAT
   client: ClientUpdateOneRequiredWithoutScenarioInput
   createdAt: DateTime
+  currency: Currency
   dueDateDays: Int
   imageUrl: String
   name: String
   netPerOne: Int
   notes: String
-  paymentType: String
+  paymentType: PaymentType
   unitType: Unit
   updatedAt: DateTime
 }
@@ -677,6 +728,7 @@ input ScenarioWhereInput {
   client: ClientWhereInput
   clientId: IntFilter
   createdAt: DateTimeFilter
+  currency: EnumCurrencyFilter
   dueDateDays: IntFilter
   id: IntFilter
   imageUrl: StringFilter
@@ -685,7 +737,7 @@ input ScenarioWhereInput {
   name: StringFilter
   netPerOne: IntFilter
   notes: StringFilter
-  paymentType: StringFilter
+  paymentType: EnumPaymentTypeFilter
   unitType: EnumUnitFilter
   updatedAt: DateTimeFilter
 }
@@ -736,7 +788,7 @@ enum Unit {
 
 enum VAT {
   DOES_NOT_CONCERN
+  FREED
   PERCENT_0
   PERCENT_23
-  ZWOLNIONY
 }

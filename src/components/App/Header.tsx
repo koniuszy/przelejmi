@@ -118,7 +118,7 @@ const Header: FC<{ session: Session }> = ({ session }) => {
             <AvatarBadge _hover={{ bg: 'gray.700' }} bg="black" cursor="pointer">
               <Menu>
                 <MenuButton color="white" as={ChevronDownIcon} />
-                <MenuList data-popper-placement="bottom-end" fontSize="md" color="white">
+                <MenuList data-popper-placement="bottom-end" color="white">
                   <NextLink href="/preferences">
                     <MenuItem>Preferences</MenuItem>
                   </NextLink>

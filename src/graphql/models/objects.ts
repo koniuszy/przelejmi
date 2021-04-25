@@ -44,6 +44,7 @@ export const Scenario = objectType({
     t.model.dueDateDays()
     t.model.VAT()
     t.model.unitType()
+    t.model.currency()
     t.model.notes()
     t.model.createdAt()
     t.model.updatedAt()

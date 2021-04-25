@@ -46,23 +46,36 @@ enum VAT {
   PERCENT_0
   PERCENT_23
   DOES_NOT_CONCERN
-  ZWOLNIONY
+  FREED
+}
+
+enum Currency {
+  PLN
+  EUR
+  USD
+  NOK
+}
+
+enum PaymentType {
+  CASH
+  TRANSFER
 }
 
 model Scenario {
-  id          Int      @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
-  paymentType String
+  paymentType PaymentType
   imageUrl    String
   netPerOne   Int
   VAT         VAT
   unitType    Unit
+  currency    Currency
   notes       String
   dueDateDays Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  client      Client   @relation(fields: [clientId], references: [id])
-  merchant    Merchant @relation(fields: [merchantId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now()) @updatedAt
+  client      Client      @relation(fields: [clientId], references: [id])
+  merchant    Merchant    @relation(fields: [merchantId], references: [id])
   clientId    Int
   merchantId  Int
 }

@@ -21,18 +21,16 @@ const ImageSection: FC<{ onImageSrcChange(src: string): void; imgSrc: string }> 
       mb={4}
       onChange={(e) => onImageSrcChange(e.target.value)}
     />
-    {imgSrc && (
-      <Image
-        mx="auto"
-        objectFit="cover"
-        align="center"
-        w={300}
-        h={400}
-        mt={5}
-        borderRadius={5}
-        src={imgSrc}
-      />
-    )}
+    <Image
+      mx="auto"
+      objectFit="cover"
+      align="center"
+      w={300}
+      h={400}
+      mt={5}
+      borderRadius={5}
+      src={imgSrc}
+    />
   </>
 )
 

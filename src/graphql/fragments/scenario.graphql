@@ -6,6 +6,7 @@ fragment ScenarioContent on Scenario {
   netPerOne
   VAT
   unitType
+  currency
   notes
   dueDateDays
   createdAt

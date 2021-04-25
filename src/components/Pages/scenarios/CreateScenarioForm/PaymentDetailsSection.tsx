@@ -1,8 +1,15 @@
 import React, { FC } from 'react'
 
-import { Flex, Text, Divider, Textarea, Select } from '@chakra-ui/react'
+import { Flex, Text, Divider, Textarea, Button } from '@chakra-ui/react'
 
-const PaymentDetailsSection: FC = () => (
+import { PaymentType, Scenario } from 'src/generated/graphql'
+
+export type PaymentDetails = Pick<Scenario, 'paymentType' | 'dueDateDays' | 'notes'>
+
+const PaymentDetailsSection: FC<{
+  paymentDetails: PaymentDetails
+  onPaymentDetailsChange(data: Partial<PaymentDetails>): void
+}> = ({ paymentDetails, onPaymentDetailsChange }) => (
   <>
     <Flex mt={4} justifyContent="space-between">
       <Text fontWeight="bold" fontSize="lg">
@@ -10,35 +17,40 @@ const PaymentDetailsSection: FC = () => (
       </Text>
     </Flex>
     <Divider my={4} />
+
     <Text fontSize={12} fontWeight={500}>
       Payment type
     </Text>
-    <Select defaultValue="transfer">
-      <option value="transfer">transfer</option>
-      <option value="cash">cash</option>
-    </Select>
+    <Flex>
+      {Object.keys(PaymentType).map((paymentTypeKey) => (
+        <Button
+          key={paymentTypeKey}
+          mr={5}
+          colorScheme={
+            paymentDetails.paymentType === PaymentType[paymentTypeKey] ? 'green' : 'blue'
+          }
+          onClick={() => onPaymentDetailsChange({ paymentType: PaymentType[paymentTypeKey] })}
+        >
+          {paymentTypeKey}
+        </Button>
+      ))}
+    </Flex>
+
     <Text mt={4} fontSize={12} fontWeight={500}>
       Due date (days)
     </Text>
-    <Select defaultValue="3">
-      <option value="3">3</option>
-      <option value="1">1</option>
-      <option value="5">5</option>
-      <option value="7">7</option>
-      <option value="10">10</option>
-      <option value="14">14</option>
-      <option value="21">21</option>
-      <option value="30">30</option>
-      <option value="60">60</option>
-      <option value="90">90</option>
-    </Select>
-    <Flex mt={4} justifyContent="space-between">
-      <Text fontWeight="bold" fontSize="lg">
-        Notes
-      </Text>
+    <Flex>
+      {[1, 3, 5, 7, 10, 14, 21, 30, 60, 90].map((days) => (
+        <Button
+          key={days}
+          mr={5}
+          colorScheme={paymentDetails.dueDateDays === days ? 'green' : 'blue'}
+          onClick={() => onPaymentDetailsChange({ dueDateDays: days })}
+        >
+          {days}
+        </Button>
+      ))}
     </Flex>
-    <Divider my={4} />
-    <Textarea />
   </>
 )
 
