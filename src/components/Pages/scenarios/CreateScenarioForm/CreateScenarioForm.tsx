@@ -14,7 +14,7 @@ import SelectMerchantSection from './SelectMerchantSection'
 import TradeSection, { Trade } from './TradeSection'
 
 const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }) => {
-  const [imageUrl, setImageUrl] = useState('')
+  const [imgUrl, setimgUrl] = useState('')
   const [notes, setNotes] = useState('')
   const [clientId, setClientId] = useState<number | null>(null)
   const [merchantId, setMerchantId] = useState<number | null>(null)
@@ -59,7 +59,7 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
         </Box>
 
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
-          <ImageSection imageUrl={imageUrl} onImageUrlChange={setImageUrl} />
+          <ImageSection imgUrl={imgUrl} onImgUrlChange={setimgUrl} />
         </Box>
 
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
@@ -90,7 +90,7 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
         onClick={() =>
           createScenario({
             //@ts-ignore
-            variables: { data: { ...trade, ...paymentDetails, notes, imageUrl, name: 'test' } },
+            variables: { data: { ...trade, ...paymentDetails, notes, imgUrl, name: 'test' } },
           })
         }
       >

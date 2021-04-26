@@ -2,8 +2,8 @@ import { FC } from 'react'
 
 import { Image, Flex, Divider, Input, Text } from '@chakra-ui/react'
 
-const ImageSection: FC<{ onImageUrlChange(Url: string): void; imgUrl: string }> = ({
-  onImageUrlChange,
+const ImageSection: FC<{ onImgUrlChange(Url: string): void; imgUrl: string }> = ({
+  onImgUrlChange,
   imgUrl,
 }) => (
   <>
@@ -19,7 +19,7 @@ const ImageSection: FC<{ onImageUrlChange(Url: string): void; imgUrl: string }> 
       placeholder="https://images.example.com"
       value={imgUrl}
       mb={4}
-      onChange={(e) => onImageUrlChange(e.target.value)}
+      onChange={(e) => onImgUrlChange(e.target.value)}
     />
     <Image
       mx="auto"
