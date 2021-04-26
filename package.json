@@ -83,12 +83,4 @@
   "prisma": {
     "schema": "db/schema.prisma"
   },
-  "builds": [
-    {
-      "src": "package.json",
-      "config": {
-        "newPipeline": true
-      }
-    }
-  ]
 }

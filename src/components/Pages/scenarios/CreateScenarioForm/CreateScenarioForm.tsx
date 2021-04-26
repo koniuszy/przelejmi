@@ -4,7 +4,7 @@ import { Button, Box, SimpleGrid, Divider, Flex, Text, Textarea } from '@chakra-
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-import { Unit, Vat, Currency, PaymentType } from 'src/generated/graphql'
+import { Unit, Vat, Currency, PaymentType, useCreateScenarioMutation } from 'src/generated/graphql'
 import { OptimizedImg } from 'src/types'
 
 import ImageSection from './ImageSection'
@@ -14,7 +14,7 @@ import SelectMerchantSection from './SelectMerchantSection'
 import TradeSection, { Trade } from './TradeSection'
 
 const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }) => {
-  const [imgSrc, setImgSrc] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
   const [notes, setNotes] = useState('')
   const [clientId, setClientId] = useState<number | null>(null)
   const [merchantId, setMerchantId] = useState<number | null>(null)
@@ -30,6 +30,11 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
     dueDateDays: 5,
     notes: '',
     paymentType: PaymentType.Transfer,
+  })
+
+  const [createScenario, { loading }] = useCreateScenarioMutation({
+    onCompleted() {},
+    onError() {},
   })
 
   return (
@@ -54,7 +59,7 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
         </Box>
 
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
-          <ImageSection imgSrc={imgSrc} onImageSrcChange={setImgSrc} />
+          <ImageSection imageUrl={imageUrl} onImageUrlChange={setImageUrl} />
         </Box>
 
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
@@ -75,7 +80,17 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
         </Box>
       </SimpleGrid>
 
-      <Button size="lg" m="auto" mt={10} colorScheme="teal" display="block">
+      <Button
+        isLoading={loading}
+        mt={10}
+        size="lg"
+        m="auto"
+        colorScheme="teal"
+        display="block"
+        onClick={() =>
+          createScenario({ variables: { data: { ...trade, ...paymentDetails, notes, imageUrl } } })
+        }
+      >
         Create
       </Button>
     </>

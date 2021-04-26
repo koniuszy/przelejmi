@@ -2,9 +2,9 @@ import { FC } from 'react'
 
 import { Image, Flex, Divider, Input, Text } from '@chakra-ui/react'
 
-const ImageSection: FC<{ onImageSrcChange(src: string): void; imgSrc: string }> = ({
-  onImageSrcChange,
-  imgSrc,
+const ImageSection: FC<{ onImageUrlChange(Url: string): void; imgUrl: string }> = ({
+  onImageUrlChange,
+  imgUrl,
 }) => (
   <>
     <Flex justifyContent="space-between">
@@ -17,9 +17,9 @@ const ImageSection: FC<{ onImageSrcChange(src: string): void; imgSrc: string }> 
 
     <Input
       placeholder="https://images.example.com"
-      value={imgSrc}
+      value={imgUrl}
       mb={4}
-      onChange={(e) => onImageSrcChange(e.target.value)}
+      onChange={(e) => onImageUrlChange(e.target.value)}
     />
     <Image
       mx="auto"
@@ -29,7 +29,7 @@ const ImageSection: FC<{ onImageSrcChange(src: string): void; imgSrc: string }> 
       h={400}
       mt={5}
       borderRadius={5}
-      src={imgSrc}
+      src={imgUrl}
     />
   </>
 )
