@@ -88,7 +88,10 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
         colorScheme="teal"
         display="block"
         onClick={() =>
-          createScenario({ variables: { data: { ...trade, ...paymentDetails, notes, imageUrl } } })
+          createScenario({
+            //@ts-ignore
+            variables: { data: { ...trade, ...paymentDetails, notes, imageUrl, name: 'test' } },
+          })
         }
       >
         Create
