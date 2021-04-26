@@ -82,5 +82,5 @@
   },
   "prisma": {
     "schema": "db/schema.prisma"
-  },
+  }
 }
