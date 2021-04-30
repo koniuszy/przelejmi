@@ -15,7 +15,7 @@ class MyDocument extends Document {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>
-          <ColorModeScript initialColorMode={'dark'} />
+          <ColorModeScript initialColorMode="dark" />
 
           <Main />
           <NextScript />

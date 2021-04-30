@@ -2,7 +2,7 @@ fragment ScenarioContent on Scenario {
   id
   name
   paymentType
-  imageUrl
+  imgUrl
   netPerOne
   VAT
   unitType

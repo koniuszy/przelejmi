@@ -34,8 +34,8 @@ interface NexusPrismaInputs {
       ordering: 'id' | 'issuerName' | 'companyName' | 'address' | 'postCode' | 'city' | 'country' | 'VATId' | 'email' | 'bankName' | 'bankAccountPln' | 'bankAccountEur'
     }
     scenarios: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
-      ordering: 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'paymentType' | 'imgUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
+      ordering: 'id' | 'name' | 'paymentType' | 'imgUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'
     }
     invoices: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'issueDate' | 'amount' | 'createdAt' | 'updatedAt' | 'content'
@@ -56,14 +56,14 @@ interface NexusPrismaInputs {
   },
   Client: {
     Scenario: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
-      ordering: 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'paymentType' | 'imgUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
+      ordering: 'id' | 'name' | 'paymentType' | 'imgUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'
     }
   }
   Merchant: {
     Scenario: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
-      ordering: 'id' | 'name' | 'paymentType' | 'imageUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'paymentType' | 'imgUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId'
+      ordering: 'id' | 'name' | 'paymentType' | 'imgUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'
     }
   }
   Scenario: {
@@ -174,7 +174,7 @@ interface NexusPrismaOutputs {
     id: 'Int'
     name: 'String'
     paymentType: 'PaymentType'
-    imageUrl: 'String'
+    imgUrl: 'String'
     netPerOne: 'Int'
     VAT: 'VAT'
     unitType: 'Unit'

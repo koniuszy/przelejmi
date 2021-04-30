@@ -40,7 +40,7 @@ export const Scenario = objectType({
     t.model.name()
     t.model.paymentType()
     t.model.netPerOne()
-    t.model.imageUrl()
+    t.model.imgUrl()
     t.model.dueDateDays()
     t.model.VAT()
     t.model.unitType()

@@ -451,7 +451,7 @@ type Scenario {
   currency: Currency!
   dueDateDays: Int!
   id: Int!
-  imageUrl: String!
+  imgUrl: String!
   merchant: Merchant!
   merchantId: Int!
   name: String!
@@ -468,7 +468,7 @@ input ScenarioCreateInput {
   createdAt: DateTime
   currency: Currency!
   dueDateDays: Int!
-  imageUrl: String!
+  imgUrl: String!
   merchant: MerchantCreateNestedOneWithoutScenarioInput!
   name: String!
   netPerOne: Int!
@@ -484,7 +484,7 @@ input ScenarioCreateManyClientInput {
   currency: Currency!
   dueDateDays: Int!
   id: Int
-  imageUrl: String!
+  imgUrl: String!
   merchantId: Int!
   name: String!
   netPerOne: Int!
@@ -506,7 +506,7 @@ input ScenarioCreateManyMerchantInput {
   currency: Currency!
   dueDateDays: Int!
   id: Int
-  imageUrl: String!
+  imgUrl: String!
   name: String!
   netPerOne: Int!
   notes: String!
@@ -549,7 +549,7 @@ input ScenarioCreateWithoutClientInput {
   createdAt: DateTime
   currency: Currency!
   dueDateDays: Int!
-  imageUrl: String!
+  imgUrl: String!
   merchant: MerchantCreateNestedOneWithoutScenarioInput!
   name: String!
   netPerOne: Int!
@@ -565,7 +565,7 @@ input ScenarioCreateWithoutMerchantInput {
   createdAt: DateTime
   currency: Currency!
   dueDateDays: Int!
-  imageUrl: String!
+  imgUrl: String!
   name: String!
   netPerOne: Int!
   notes: String!
@@ -590,7 +590,7 @@ input ScenarioScalarWhereInput {
   currency: EnumCurrencyFilter
   dueDateDays: IntFilter
   id: IntFilter
-  imageUrl: StringFilter
+  imgUrl: StringFilter
   merchantId: IntFilter
   name: StringFilter
   netPerOne: IntFilter
@@ -606,7 +606,7 @@ input ScenarioUpdateInput {
   createdAt: DateTime
   currency: Currency
   dueDateDays: Int
-  imageUrl: String
+  imgUrl: String
   merchant: MerchantUpdateOneRequiredWithoutScenarioInput
   name: String
   netPerOne: Int
@@ -621,7 +621,7 @@ input ScenarioUpdateManyMutationInput {
   createdAt: DateTime
   currency: Currency
   dueDateDays: Int
-  imageUrl: String
+  imgUrl: String
   name: String
   netPerOne: Int
   notes: String
@@ -683,7 +683,7 @@ input ScenarioUpdateWithoutClientInput {
   createdAt: DateTime
   currency: Currency
   dueDateDays: Int
-  imageUrl: String
+  imgUrl: String
   merchant: MerchantUpdateOneRequiredWithoutScenarioInput
   name: String
   netPerOne: Int
@@ -699,7 +699,7 @@ input ScenarioUpdateWithoutMerchantInput {
   createdAt: DateTime
   currency: Currency
   dueDateDays: Int
-  imageUrl: String
+  imgUrl: String
   name: String
   netPerOne: Int
   notes: String
@@ -731,7 +731,7 @@ input ScenarioWhereInput {
   currency: EnumCurrencyFilter
   dueDateDays: IntFilter
   id: IntFilter
-  imageUrl: StringFilter
+  imgUrl: StringFilter
   merchant: MerchantWhereInput
   merchantId: IntFilter
   name: StringFilter
@@ -790,5 +790,6 @@ enum VAT {
   DOES_NOT_CONCERN
   FREED
   PERCENT_0
+  PERCENT_8
   PERCENT_23
 }

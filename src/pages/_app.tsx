@@ -1,4 +1,4 @@
-import React, { useEffect, createContext } from 'react'
+import React, { createContext } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -6,7 +6,7 @@ import { ChakraProvider, extendTheme, Box, Flex } from '@chakra-ui/react'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import { Session } from 'next-auth'
-import { useSession, signIn } from 'next-auth/client'
+import { useSession } from 'next-auth/client'
 import NextProgressBar from 'nextjs-progressbar'
 
 import { Footer, Header } from 'src/components/App'
@@ -50,14 +50,11 @@ const extendedTheme = extendTheme({
 const client = new ApolloClient({
   uri: `/api/graphql`,
   cache: new InMemoryCache(),
-  defaultOptions: { query: { fetchPolicy: 'network-only' } },
 })
 
 export const sessionContext = createContext<[Session, boolean]>([undefined, true])
 
 function MyApp({ Component, pageProps }) {
-  const { pathname } = useRouter()
-
   const [session, isSessionLoading] = useSession()
 
   // useEffect(() => {

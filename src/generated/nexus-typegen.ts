@@ -327,7 +327,7 @@ export interface NexusGenInputs {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     currency: NexusGenEnums['Currency']; // Currency!
     dueDateDays: number; // Int!
-    imageUrl: string; // String!
+    imgUrl: string; // String!
     merchant: NexusGenInputs['MerchantCreateNestedOneWithoutScenarioInput']; // MerchantCreateNestedOneWithoutScenarioInput!
     name: string; // String!
     netPerOne: number; // Int!
@@ -342,7 +342,7 @@ export interface NexusGenInputs {
     currency: NexusGenEnums['Currency']; // Currency!
     dueDateDays: number; // Int!
     id?: number | null; // Int
-    imageUrl: string; // String!
+    imgUrl: string; // String!
     merchantId: number; // Int!
     name: string; // String!
     netPerOne: number; // Int!
@@ -362,7 +362,7 @@ export interface NexusGenInputs {
     currency: NexusGenEnums['Currency']; // Currency!
     dueDateDays: number; // Int!
     id?: number | null; // Int
-    imageUrl: string; // String!
+    imgUrl: string; // String!
     name: string; // String!
     netPerOne: number; // Int!
     notes: string; // String!
@@ -399,7 +399,7 @@ export interface NexusGenInputs {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     currency: NexusGenEnums['Currency']; // Currency!
     dueDateDays: number; // Int!
-    imageUrl: string; // String!
+    imgUrl: string; // String!
     merchant: NexusGenInputs['MerchantCreateNestedOneWithoutScenarioInput']; // MerchantCreateNestedOneWithoutScenarioInput!
     name: string; // String!
     netPerOne: number; // Int!
@@ -414,7 +414,7 @@ export interface NexusGenInputs {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     currency: NexusGenEnums['Currency']; // Currency!
     dueDateDays: number; // Int!
-    imageUrl: string; // String!
+    imgUrl: string; // String!
     name: string; // String!
     netPerOne: number; // Int!
     notes: string; // String!
@@ -437,7 +437,7 @@ export interface NexusGenInputs {
     currency?: NexusGenInputs['EnumCurrencyFilter'] | null; // EnumCurrencyFilter
     dueDateDays?: NexusGenInputs['IntFilter'] | null; // IntFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    imageUrl?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    imgUrl?: NexusGenInputs['StringFilter'] | null; // StringFilter
     merchantId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
     netPerOne?: NexusGenInputs['IntFilter'] | null; // IntFilter
@@ -452,7 +452,7 @@ export interface NexusGenInputs {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     currency?: NexusGenEnums['Currency'] | null; // Currency
     dueDateDays?: number | null; // Int
-    imageUrl?: string | null; // String
+    imgUrl?: string | null; // String
     merchant?: NexusGenInputs['MerchantUpdateOneRequiredWithoutScenarioInput'] | null; // MerchantUpdateOneRequiredWithoutScenarioInput
     name?: string | null; // String
     netPerOne?: number | null; // Int
@@ -466,7 +466,7 @@ export interface NexusGenInputs {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     currency?: NexusGenEnums['Currency'] | null; // Currency
     dueDateDays?: number | null; // Int
-    imageUrl?: string | null; // String
+    imgUrl?: string | null; // String
     name?: string | null; // String
     netPerOne?: number | null; // Int
     notes?: string | null; // String
@@ -521,7 +521,7 @@ export interface NexusGenInputs {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     currency?: NexusGenEnums['Currency'] | null; // Currency
     dueDateDays?: number | null; // Int
-    imageUrl?: string | null; // String
+    imgUrl?: string | null; // String
     merchant?: NexusGenInputs['MerchantUpdateOneRequiredWithoutScenarioInput'] | null; // MerchantUpdateOneRequiredWithoutScenarioInput
     name?: string | null; // String
     netPerOne?: number | null; // Int
@@ -536,7 +536,7 @@ export interface NexusGenInputs {
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     currency?: NexusGenEnums['Currency'] | null; // Currency
     dueDateDays?: number | null; // Int
-    imageUrl?: string | null; // String
+    imgUrl?: string | null; // String
     name?: string | null; // String
     netPerOne?: number | null; // Int
     notes?: string | null; // String
@@ -565,7 +565,7 @@ export interface NexusGenInputs {
     currency?: NexusGenInputs['EnumCurrencyFilter'] | null; // EnumCurrencyFilter
     dueDateDays?: NexusGenInputs['IntFilter'] | null; // IntFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    imageUrl?: NexusGenInputs['StringFilter'] | null; // StringFilter
+    imgUrl?: NexusGenInputs['StringFilter'] | null; // StringFilter
     merchant?: NexusGenInputs['MerchantWhereInput'] | null; // MerchantWhereInput
     merchantId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -614,7 +614,7 @@ export interface NexusGenEnums {
   QueryMode: "default" | "insensitive"
   SortOrder: "asc" | "desc"
   Unit: "HOUR" | "ITEM"
-  VAT: "DOES_NOT_CONCERN" | "FREED" | "PERCENT_0" | "PERCENT_23"
+  VAT: "DOES_NOT_CONCERN" | "FREED" | "PERCENT_0" | "PERCENT_8" | "PERCENT_23"
 }
 
 export interface NexusGenScalars {
@@ -686,7 +686,7 @@ export interface NexusGenObjects {
     currency: NexusGenEnums['Currency']; // Currency!
     dueDateDays: number; // Int!
     id: number; // Int!
-    imageUrl: string; // String!
+    imgUrl: string; // String!
     merchantId: number; // Int!
     name: string; // String!
     netPerOne: number; // Int!
@@ -790,7 +790,7 @@ export interface NexusGenFieldTypes {
     currency: NexusGenEnums['Currency']; // Currency!
     dueDateDays: number; // Int!
     id: number; // Int!
-    imageUrl: string; // String!
+    imgUrl: string; // String!
     merchant: NexusGenRootTypes['Merchant']; // Merchant!
     merchantId: number; // Int!
     name: string; // String!
@@ -885,7 +885,7 @@ export interface NexusGenFieldTypeNames {
     currency: 'Currency'
     dueDateDays: 'Int'
     id: 'Int'
-    imageUrl: 'String'
+    imgUrl: 'String'
     merchant: 'Merchant'
     merchantId: 'Int'
     name: 'String'

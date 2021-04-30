@@ -44,6 +44,7 @@ enum Unit {
 
 enum VAT {
   PERCENT_0
+  PERCENT_8
   PERCENT_23
   DOES_NOT_CONCERN
   FREED
@@ -65,7 +66,7 @@ model Scenario {
   id          Int         @id @default(autoincrement())
   name        String
   paymentType PaymentType
-  imageUrl    String
+  imgUrl      String
   netPerOne   Int
   VAT         VAT
   unitType    Unit

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 
-import { Button, Box, SimpleGrid, Divider, Flex, Text, Textarea } from '@chakra-ui/react'
+import { Button, Box, SimpleGrid, Divider, Flex, Text, Textarea, useToast } from '@chakra-ui/react'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
@@ -14,7 +14,9 @@ import SelectMerchantSection from './SelectMerchantSection'
 import TradeSection, { Trade } from './TradeSection'
 
 const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }) => {
-  const [imgUrl, setimgUrl] = useState('')
+  const toast = useToast()
+
+  const [imgUrl, setImgUrl] = useState('')
   const [notes, setNotes] = useState('')
   const [clientId, setClientId] = useState<number | null>(null)
   const [merchantId, setMerchantId] = useState<number | null>(null)
@@ -36,6 +38,38 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
     onCompleted() {},
     onError() {},
   })
+
+  function handleCreate() {
+    let errorMsg = ''
+    if (!clientId) errorMsg = 'Client is not selected'
+    if (!merchantId) errorMsg = 'Merchant is not selected'
+    if (!imgUrl) errorMsg = 'Image URL is missing'
+
+    if (errorMsg) {
+      toast({ ...errorToastContent, description: errorMsg })
+      return
+    }
+
+    createScenario({
+      variables: {
+        data: {
+          ...trade,
+          ...paymentDetails,
+          notes,
+          imgUrl,
+          name: 'test',
+          client: { connect: { id: clientId } },
+          merchant: { connect: { id: merchantId } },
+        },
+      },
+    })
+      .catch((e) => {
+        toast({ ...errorToastContent, description: e.message })
+      })
+      .then(() => {
+        toast({ ...successToastContent, description: 'Scenario has been created' })
+      })
+  }
 
   return (
     <>
@@ -59,7 +93,7 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
         </Box>
 
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
-          <ImageSection imgUrl={imgUrl} onImgUrlChange={setimgUrl} />
+          <ImageSection imgUrl={imgUrl} onImgUrlChange={setImgUrl} />
         </Box>
 
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
@@ -79,20 +113,14 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
           <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
         </Box>
       </SimpleGrid>
-
       <Button
-        isLoading={loading}
-        mt={10}
-        size="lg"
         m="auto"
-        colorScheme="teal"
+        size="lg"
         display="block"
-        onClick={() =>
-          createScenario({
-            //@ts-ignore
-            variables: { data: { ...trade, ...paymentDetails, notes, imgUrl, name: 'test' } },
-          })
-        }
+        colorScheme="teal"
+        mt={10}
+        isLoading={loading}
+        onClick={handleCreate}
       >
         Create
       </Button>
