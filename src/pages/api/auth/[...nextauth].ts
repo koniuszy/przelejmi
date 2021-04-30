@@ -4,7 +4,7 @@ import NextAuth from 'next-auth'
 import Adapters from 'next-auth/adapters'
 import Providers from 'next-auth/providers'
 
-import prisma from 'src/lib/prismaClient'
+import prisma from 'src/lib/prisma/prismaClient'
 
 const whiteList = [
   'michal.stefan.konczak@gmail.com',

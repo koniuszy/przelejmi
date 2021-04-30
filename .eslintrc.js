@@ -96,16 +96,6 @@ module.exports = {
             position: 'before',
           },
           {
-            pattern: 'src/lib/**',
-            group: 'internal',
-            position: 'before',
-          },
-          {
-            pattern: 'src/components/**',
-            group: 'internal',
-            position: 'after',
-          },
-          {
             pattern: 'src/**',
             group: 'internal',
             position: 'before',

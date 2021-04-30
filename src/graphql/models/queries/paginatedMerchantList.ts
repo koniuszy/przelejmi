@@ -1,5 +1,9 @@
 import { objectType, intArg, arg, extendType } from 'nexus'
 
+import { PaginatedMerchantListQueryVariables } from 'src/generated/graphql'
+
+import { getPaginatedMerchantListData } from '../../../lib/prisma/helpers'
+
 export const PaginatedMerchantListFilters = objectType({
   name: 'PaginatedMerchantListFilters',
   definition(t) {
@@ -31,29 +35,10 @@ export const PaginatedMerchantListQuery = extendType({
         orderBy: arg({ type: 'MerchantOrderByInput', list: true }),
       },
       async resolve(_root, variables, { prisma }) {
-        const [totalCount, list, countryList, cityList, bankList] = await Promise.all([
-          prisma.merchant.count({ where: variables.where }),
-          prisma.merchant.findMany(variables),
-          prisma.merchant.findMany({
-            distinct: 'country',
-            select: { country: true },
-          }),
-          prisma.merchant.findMany({
-            distinct: 'city',
-            select: { city: true },
-          }),
-          prisma.merchant.findMany({ distinct: 'bankName', select: { bankName: true } }),
-        ])
-
-        return {
-          totalCount,
-          list,
-          filters: {
-            country: countryList.map(({ country }) => country),
-            city: cityList.map(({ city }) => city),
-            bank: bankList.map(({ bankName }) => bankName),
-          },
-        }
+        const paginatedMerchantListData = await getPaginatedMerchantListData(
+          variables as PaginatedMerchantListQueryVariables
+        )
+        return paginatedMerchantListData
       },
     })
   },

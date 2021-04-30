@@ -10,7 +10,7 @@ import { Spinner, Center } from '@chakra-ui/react'
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
 
-import prisma from 'src/lib/prismaClient'
+import prisma from 'src/lib/prisma/prismaClient'
 
 import { OptimizedImg } from 'src/types'
 

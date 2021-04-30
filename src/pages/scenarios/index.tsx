@@ -2,8 +2,6 @@ import React, { FC } from 'react'
 
 import Head from 'next/head'
 
-export const PER_PAGE = 10
-
 const App: FC = () => {
   return (
     <div>
