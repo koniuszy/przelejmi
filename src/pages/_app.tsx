@@ -1,7 +1,5 @@
 import React, { createContext } from 'react'
 
-import { useRouter } from 'next/router'
-
 import { ChakraProvider, extendTheme, Box, Flex } from '@chakra-ui/react'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
