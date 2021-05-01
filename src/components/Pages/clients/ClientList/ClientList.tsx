@@ -4,10 +4,9 @@ import { Tr, Td } from '@chakra-ui/react'
 
 import { Client } from 'prisma/prisma-client'
 
-import { usePaginatedClientListQuery } from 'src/generated/graphql'
-import { ClientType, DBConditions } from 'src/types'
-
 import Table, { TablePlaceholder } from 'src/components/Table'
+import { PaginatedClientListQuery, usePaginatedClientListQuery } from 'src/generated/graphql'
+import { ClientType, DBConditions } from 'src/types'
 
 import ActionsColumn from './ActionsColumn'
 import EditableColumns from './EditableColumns'
@@ -15,7 +14,7 @@ import EditableColumns from './EditableColumns'
 const PER_PAGE = 10
 const TITLE = 'Total clients'
 
-const ClientList: FC = () => {
+const ClientList: FC<{ initialListQuery: PaginatedClientListQuery }> = ({ initialListQuery }) => {
   const [isEditable, setIsEditable] = useState(true)
 
   const {
@@ -30,7 +29,7 @@ const ClientList: FC = () => {
     fetchPolicy: 'cache-and-network',
   })
 
-  const results = data ?? previousData
+  const results = data || previousData || initialListQuery
   if (!results) return <TablePlaceholder title={TITLE} />
 
   const {

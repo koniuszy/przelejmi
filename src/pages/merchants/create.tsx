@@ -7,9 +7,8 @@ import Head from 'next/head'
 import { getBase64 } from '@plaiceholder/base64'
 import { getImage } from '@plaiceholder/next'
 
-import { OptimizedImg } from 'src/types'
-
 import CreateMerchantForm from 'src/components/Pages/merchants/CreateMerchantForm'
+import { OptimizedImg } from 'src/types'
 
 type SSGProps = {
   womanWithFoldersImg: OptimizedImg

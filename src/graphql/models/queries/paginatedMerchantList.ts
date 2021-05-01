@@ -2,7 +2,7 @@ import { objectType, intArg, arg, extendType } from 'nexus'
 
 import { PaginatedMerchantListQueryVariables } from 'src/generated/graphql'
 
-import { getPaginatedMerchantListData } from '../../../lib/prisma/helpers'
+import { getPaginatedMerchantListData } from '../../../lib/prisma/merchants'
 
 export const PaginatedMerchantListFilters = objectType({
   name: 'PaginatedMerchantListFilters',
@@ -34,7 +34,7 @@ export const PaginatedMerchantListQuery = extendType({
         where: arg({ type: 'MerchantWhereInput' }),
         orderBy: arg({ type: 'MerchantOrderByInput', list: true }),
       },
-      async resolve(_root, variables, { prisma }) {
+      async resolve(_root, variables) {
         const paginatedMerchantListData = await getPaginatedMerchantListData(
           variables as PaginatedMerchantListQueryVariables
         )

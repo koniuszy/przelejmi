@@ -1,38 +1,20 @@
 import React, { FC } from 'react'
 
-import {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  InferGetServerSidePropsType,
-} from 'next'
+import { InferGetServerSidePropsType } from 'next'
 
 import Head from 'next/head'
 
-import { getSession } from 'next-auth/client'
-
 import MerchantList from 'src/components/Pages/merchants/MerchantList'
 import { PaginatedMerchantListQuery } from 'src/generated/graphql'
-import { getPaginatedMerchantListData } from 'src/lib/prisma/helpers'
+import { getPaginatedMerchantListData } from 'src/lib/prisma/merchants'
+import { withSession } from 'src/lib/session'
 
-export async function getServerSideProps({
-  req,
-}: GetServerSidePropsContext): Promise<
-  GetServerSidePropsResult<{ paginatedMerchantListQuery: PaginatedMerchantListQuery }>
-> {
-  const session = await getSession({ req })
-
-  if (session?.user) {
-    const paginatedMerchantList = await getPaginatedMerchantListData({ skip: 0, take: 10 })
-    return { props: { paginatedMerchantListQuery: { paginatedMerchantList } } }
-  }
-
-  return {
-    redirect: {
-      destination: '/api/auth/signin?callbackUrl=https%3A%2F%2Fprzelejmi.pl%2F',
-      permanent: false,
-    },
-  }
-}
+export const getServerSideProps = withSession<{
+  paginatedMerchantListQuery: PaginatedMerchantListQuery
+}>(async () => {
+  const paginatedMerchantList = await getPaginatedMerchantListData({ skip: 0, take: 10 })
+  return { props: { paginatedMerchantListQuery: { paginatedMerchantList } } }
+})
 
 const MerchantListPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
   paginatedMerchantListQuery,
@@ -41,7 +23,7 @@ const MerchantListPage: FC<InferGetServerSidePropsType<typeof getServerSideProps
     <Head>
       <title>Merchants | przelejmi</title>
     </Head>
-    <MerchantList initialList={paginatedMerchantListQuery} />
+    <MerchantList initialListQuery={paginatedMerchantListQuery} />
   </main>
 )
 

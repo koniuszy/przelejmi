@@ -4,13 +4,13 @@ export const Client = objectType({
   name: 'Client',
   definition(t) {
     t.model.id()
+    t.model.name()
     t.model.Scenario()
     t.model.address()
     t.model.postCode()
     t.model.city()
     t.model.country()
     t.model.VATId()
-    t.model.name()
   },
 })
 

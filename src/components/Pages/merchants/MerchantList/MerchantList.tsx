@@ -13,7 +13,9 @@ import EditableColumns from './EditableColumns'
 const PER_PAGE = 10
 const TITLE = 'Total merchants'
 
-const MerchantList: FC<{ initialList: PaginatedMerchantListQuery }> = ({ initialList }) => {
+const MerchantList: FC<{ initialListQuery: PaginatedMerchantListQuery }> = ({
+  initialListQuery,
+}) => {
   const [isEditable, setIsEditable] = useState(true)
 
   const {
@@ -28,7 +30,7 @@ const MerchantList: FC<{ initialList: PaginatedMerchantListQuery }> = ({ initial
     fetchPolicy: 'cache-and-network',
   })
 
-  const results = data || previousData || initialList
+  const results = data || previousData || initialListQuery
 
   if (!results) return <TablePlaceholder title={TITLE} />
 

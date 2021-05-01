@@ -1,5 +1,9 @@
 import { objectType, intArg, arg, extendType } from 'nexus'
 
+import { PaginatedClientListQueryVariables } from 'src/generated/graphql'
+
+import { getPaginatedClientListData } from '../../../lib/prisma/clients'
+
 export const PaginatedClientListFilters = objectType({
   name: 'PaginatedClientListFilters',
   definition(t) {
@@ -29,27 +33,11 @@ export const PaginatedClientListQuery = extendType({
         where: arg({ type: 'ClientWhereInput' }),
         orderBy: arg({ type: 'ClientOrderByInput', list: true }),
       },
-      async resolve(_root, variables, { prisma }) {
-        const [totalCount, list, countryList, cityList] = await Promise.all([
-          prisma.client.count({ where: variables.where }),
-          prisma.client.findMany(variables),
-          prisma.client.findMany({
-            distinct: 'country',
-            select: { country: true },
-          }),
-          prisma.client.findMany({
-            distinct: 'city',
-            select: { city: true },
-          }),
-        ])
-        return {
-          totalCount,
-          list,
-          filters: {
-            country: countryList.map(({ country }) => country),
-            city: cityList.map(({ city }) => city),
-          },
-        }
+      async resolve(_root, variables) {
+        const paginatedClientListData = await getPaginatedClientListData(
+          variables as PaginatedClientListQueryVariables
+        )
+        return paginatedClientListData
       },
     })
   },
