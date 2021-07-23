@@ -2,10 +2,8 @@ import React, { FC, useState } from 'react'
 
 import { Button, Box, SimpleGrid, Divider, Flex, Text, Textarea, useToast } from '@chakra-ui/react'
 
-import { errorToastContent, successToastContent } from 'src/lib/toastContent'
-
 import { Unit, Vat, Currency, PaymentType, useCreateScenarioMutation } from 'src/generated/graphql'
-import { OptimizedImg } from 'src/types'
+import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import ImageSection from './ImageSection'
 import PaymentDetailsSection, { PaymentDetails } from './PaymentDetailsSection'
@@ -13,7 +11,7 @@ import SelectClientSection from './SelectClientSection'
 import SelectMerchantSection from './SelectMerchantSection'
 import TradeSection, { Trade } from './TradeSection'
 
-const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }) => {
+const CreateScenarioForm: FC = () => {
   const toast = useToast()
 
   const [imgUrl, setImgUrl] = useState('')
@@ -87,7 +85,6 @@ const CreateScenarioForm: FC<{ optimizedImg: OptimizedImg }> = ({ optimizedImg }
         <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
           <TradeSection
             trade={trade}
-            optimizedImg={optimizedImg}
             onTradeChange={(data) => setTrade((prev) => ({ ...prev, ...data }))}
           />
         </Box>

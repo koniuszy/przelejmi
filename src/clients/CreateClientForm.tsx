@@ -2,16 +2,12 @@ import React, { FC } from 'react'
 
 import { useToast } from '@chakra-ui/react'
 
-import { errorToastContent, successToastContent } from 'src/lib/toastContent'
-
+import ClientForm from 'src/clients/ClientForm'
 import { useCreateClientMutation } from 'src/generated/graphql'
-import { ClientType, OptimizedImg } from 'src/types'
+import { errorToastContent, successToastContent } from 'src/lib/toastContent'
+import { ClientType } from 'src/types'
 
-import ClientForm from 'src/components/ClientForm'
-
-const CreateClientForm: FC<{
-  calmInTrolleyImg: OptimizedImg
-}> = ({ calmInTrolleyImg }) => {
+const CreateClientForm: FC = () => {
   const toast = useToast()
   const [createClient, { loading }] = useCreateClientMutation({
     onCompleted() {
@@ -29,7 +25,6 @@ const CreateClientForm: FC<{
   return (
     <ClientForm
       isLoading={loading}
-      optimizedImg={calmInTrolleyImg}
       initialValues={{ name: '', address: '', postCode: '', city: '', country: '', VATId: '' }}
       onSubmit={(values) => {
         const { VATId, clientType, ...data } = values

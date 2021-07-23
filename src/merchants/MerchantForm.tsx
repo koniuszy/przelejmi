@@ -1,12 +1,12 @@
 import React, { FC } from 'react'
 
+import NextImg from 'next/image'
+
 import { Flex, FormControl, FormLabel, Input, FormErrorMessage, Button } from '@chakra-ui/react'
 
 import { useFormik } from 'formik'
 
-import { OptimizedImg } from 'src/types'
-
-import BlurredImg from 'src/components/BlurredImg'
+import womanWithFoldersImg from './womanWithFolders.jpg'
 
 type Form = {
   companyName: string
@@ -23,11 +23,10 @@ type Form = {
 }
 
 const MerchantForm: FC<{
-  optimizedImg: OptimizedImg
   isLoading: boolean
   initialValues: Record<keyof Form, string>
   onSubmit(values: Form): void
-}> = ({ onSubmit, optimizedImg, isLoading, initialValues }) => {
+}> = ({ onSubmit, isLoading, initialValues }) => {
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
     onSubmit,
     initialValues,
@@ -59,7 +58,7 @@ const MerchantForm: FC<{
 
   return (
     <Flex>
-      <BlurredImg height={770} optimizedImg={optimizedImg} />
+      <NextImg height={770} src={womanWithFoldersImg} />
 
       <Flex direction="row">
         <form onSubmit={handleSubmit}>

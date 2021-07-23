@@ -7,17 +7,10 @@ import { useRouter } from 'next/router'
 
 import { Center, Spinner } from '@chakra-ui/react'
 
-import { getBase64 } from '@plaiceholder/base64'
-import { getImage } from '@plaiceholder/next'
-
 import prisma from 'src/lib/prisma/prismaClient'
-
-import { OptimizedImg } from 'src/types'
-
-import EditMerchantForm from 'src/components/Pages/merchants/EditMerchantForm'
+import EditMerchantForm from 'src/merchants/EditMerchantForm'
 
 type SSGProps = {
-  sittingLadyWithFolders: OptimizedImg
   merchantId: number
 }
 
@@ -58,21 +51,9 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 }
 
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
-  const src = '/sittingLadyWithFolders.jpeg'
-  const width = 1920
-  const height = 2880
-  const img = await getImage(src)
-
-  const base64 = await getBase64(img)
-
   return {
     props: {
       merchantId: Number(params.id),
-      sittingLadyWithFolders: {
-        src,
-        base64,
-        ratio: height / width,
-      },
     },
   }
 }

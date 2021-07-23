@@ -46,7 +46,7 @@ const extendedTheme = extendTheme({
 })
 
 const client = new ApolloClient({
-  uri: `/api/graphql`,
+  uri: '/api/graphql',
   cache: new InMemoryCache(),
 })
 
@@ -59,6 +59,21 @@ function MyApp({ Component, pageProps }) {
   //   if (session && !session.user && pathname !== '/') signIn('google')
   // }, [session?.user])
 
+  const sessionContextValue: [Session, boolean] =
+    process.env.NODE_ENV === 'development'
+      ? [
+          {
+            user: {
+              name: null,
+              email: null,
+              image: null,
+            },
+            expires: '',
+          },
+          false,
+        ]
+      : [session, isSessionLoading]
+
   return (
     <>
       <NextProgressBar
@@ -68,7 +83,7 @@ function MyApp({ Component, pageProps }) {
         height={3}
       />
 
-      <sessionContext.Provider value={[session, isSessionLoading]}>
+      <sessionContext.Provider value={sessionContextValue}>
         <ApolloProvider client={client}>
           <ChakraProvider theme={extendedTheme}>
             <Flex
@@ -79,7 +94,7 @@ function MyApp({ Component, pageProps }) {
               justifyContent="space-between"
             >
               <Box>
-                <Header session={session} />
+                <Header session={sessionContextValue[0]} />
                 <Component {...pageProps} />
               </Box>
 

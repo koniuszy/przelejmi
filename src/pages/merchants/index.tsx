@@ -1,24 +1,17 @@
 import React, { FC } from 'react'
 
-import { InferGetServerSidePropsType } from 'next'
-
 import Head from 'next/head'
 
-import MerchantList from 'src/components/Pages/merchants/MerchantList'
 import { PaginatedMerchantListQuery } from 'src/generated/graphql'
 import { getPaginatedMerchantListData } from 'src/lib/prisma/merchants'
 import { withSession } from 'src/lib/session'
+import MerchantList from 'src/merchants/MerchantList'
 
-export const getServerSideProps = withSession<{
+interface SSG {
   paginatedMerchantListQuery: PaginatedMerchantListQuery
-}>(async () => {
-  const paginatedMerchantList = await getPaginatedMerchantListData({ skip: 0, take: 10 })
-  return { props: { paginatedMerchantListQuery: { paginatedMerchantList } } }
-})
+}
 
-const MerchantListPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
-  paginatedMerchantListQuery,
-}) => (
+const MerchantListPage: FC<SSG> = ({ paginatedMerchantListQuery }) => (
   <main>
     <Head>
       <title>Merchants | przelejmi</title>
@@ -26,5 +19,10 @@ const MerchantListPage: FC<InferGetServerSidePropsType<typeof getServerSideProps
     <MerchantList initialListQuery={paginatedMerchantListQuery} />
   </main>
 )
+
+export const getServerSideProps = withSession<SSG>(async () => {
+  const paginatedMerchantList = await getPaginatedMerchantListData({ skip: 0, take: 10 })
+  return { props: { paginatedMerchantListQuery: { paginatedMerchantList } } }
+})
 
 export default MerchantListPage

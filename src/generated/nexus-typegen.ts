@@ -4,7 +4,7 @@
  */
 
 
-import { Context } from "./../graphql/context"
+import type { Context } from "./../graphql/context"
 
 
 declare global {
@@ -1044,6 +1044,8 @@ export interface NexusGenTypes {
 
 declare global {
   interface NexusGenPluginTypeConfig<TypeName extends string> {
+  }
+  interface NexusGenPluginInputTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
     /**

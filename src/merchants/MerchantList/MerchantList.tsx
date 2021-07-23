@@ -18,17 +18,11 @@ const MerchantList: FC<{ initialListQuery: PaginatedMerchantListQuery }> = ({
 }) => {
   const [isEditable, setIsEditable] = useState(true)
 
-  const {
-    data,
-    refetch,
-    variables,
-    previousData,
-    loading,
-    updateQuery,
-  } = usePaginatedMerchantListQuery({
-    variables: { skip: 0, take: PER_PAGE },
-    fetchPolicy: 'cache-and-network',
-  })
+  const { data, refetch, variables, previousData, loading, updateQuery } =
+    usePaginatedMerchantListQuery({
+      variables: { skip: 0, take: PER_PAGE },
+      fetchPolicy: 'cache-and-network',
+    })
 
   const results = data || previousData || initialListQuery
 

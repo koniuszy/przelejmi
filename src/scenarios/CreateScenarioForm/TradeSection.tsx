@@ -1,5 +1,7 @@
 import React, { FC } from 'react'
 
+import NextImage from 'next/image'
+
 import {
   Flex,
   Text,
@@ -16,10 +18,8 @@ import {
 } from '@chakra-ui/react'
 
 import { Scenario, Unit, Vat, Currency } from 'src/generated/graphql'
-import { OptimizedImg } from 'src/types'
 
-import BlurredImg from 'src/components/BlurredImg'
-
+import tradeImg from './trade.jpeg'
 export type Trade = Pick<Scenario, 'unitType' | 'netPerOne' | 'VAT' | 'currency'>
 
 function getVatValue(vatKey: keyof Vat) {
@@ -42,9 +42,8 @@ function getGrossValue(trade: Trade) {
 
 const TradeSection: FC<{
   trade: Trade
-  optimizedImg: OptimizedImg
   onTradeChange(data: Partial<Trade>): void
-}> = ({ trade, optimizedImg, onTradeChange }) => (
+}> = ({ trade, onTradeChange }) => (
   <>
     <Flex justifyContent="space-between">
       <Text fontWeight="bold" fontSize="lg">
@@ -116,7 +115,7 @@ const TradeSection: FC<{
     </InputGroup>
 
     <Center>
-      <BlurredImg objectFit="cover" optimizedImg={optimizedImg} height={180} />
+      <NextImage placeholder={'blur'} src={tradeImg} objectFit="cover" height={180} />
     </Center>
     <style global jsx>
       {`

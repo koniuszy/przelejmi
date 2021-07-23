@@ -1,47 +1,19 @@
 import React, { FC } from 'react'
 
-import { GetStaticProps } from 'next'
-
 import Head from 'next/head'
 
-import { getBase64 } from '@plaiceholder/base64'
-import { getImage } from '@plaiceholder/next'
+import CreateMerchantForm from 'src/merchants/CreateMerchantForm'
 
-import CreateMerchantForm from 'src/components/Pages/merchants/CreateMerchantForm'
-import { OptimizedImg } from 'src/types'
-
-type SSGProps = {
-  womanWithFoldersImg: OptimizedImg
-}
-
-const CreateMerchantPage: FC<SSGProps> = ({ womanWithFoldersImg }) => (
+const CreateMerchantPage: FC = () => (
   <>
     <Head>
       <title>Create merchant | przelejmi</title>
     </Head>
 
     <main>
-      <CreateMerchantForm womanWithFoldersImg={womanWithFoldersImg} />
+      <CreateMerchantForm />
     </main>
   </>
 )
-
-export const getStaticProps: GetStaticProps<SSGProps> = async () => {
-  const src = '/womanWithFolders.jpg'
-  const width = 1920
-  const height = 2880
-  const img = await getImage(src)
-  const base64 = await getBase64(img)
-
-  return {
-    props: {
-      womanWithFoldersImg: {
-        src,
-        base64,
-        ratio: height / width,
-      },
-    },
-  }
-}
 
 export default CreateMerchantPage

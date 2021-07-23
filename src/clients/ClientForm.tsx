@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react'
 
+import NextImage from 'next/image'
+
 import {
   Flex,
   FormControl,
@@ -15,9 +17,9 @@ import {
 
 import { useFormik } from 'formik'
 
-import { ClientType, OptimizedImg } from 'src/types'
+import { ClientType } from 'src/types'
 
-import BlurredImg from 'src/components/BlurredImg'
+import calmInTrolleyImg from './calmInTrolley.jpg'
 
 type Form = {
   name: string
@@ -29,11 +31,10 @@ type Form = {
 }
 
 const ClientForm: FC<{
-  optimizedImg: OptimizedImg
   isLoading: boolean
   initialValues: Form
   onSubmit(values: Form & { clientType: ClientType }): void
-}> = ({ optimizedImg, isLoading, onSubmit, initialValues }) => {
+}> = ({ isLoading, onSubmit, initialValues }) => {
   const [clientType, setClientType] = useState<ClientType>(ClientType.company)
 
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
@@ -58,7 +59,7 @@ const ClientForm: FC<{
 
   return (
     <Flex>
-      <BlurredImg height={700} optimizedImg={optimizedImg} />
+      <NextImage src={calmInTrolleyImg} placeholder="blur" height={700} />
 
       <form onSubmit={handleSubmit}>
         <Flex direction="column">

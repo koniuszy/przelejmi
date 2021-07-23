@@ -17,17 +17,11 @@ const TITLE = 'Total clients'
 const ClientList: FC<{ initialListQuery: PaginatedClientListQuery }> = ({ initialListQuery }) => {
   const [isEditable, setIsEditable] = useState(true)
 
-  const {
-    data,
-    refetch,
-    variables,
-    loading,
-    previousData,
-    updateQuery,
-  } = usePaginatedClientListQuery({
-    variables: { skip: 0, take: PER_PAGE },
-    fetchPolicy: 'cache-and-network',
-  })
+  const { data, refetch, variables, loading, previousData, updateQuery } =
+    usePaginatedClientListQuery({
+      variables: { skip: 0, take: PER_PAGE },
+      fetchPolicy: 'cache-and-network',
+    })
 
   const results = data || previousData || initialListQuery
   if (!results) return <TablePlaceholder title={TITLE} />

@@ -4,7 +4,7 @@ import { InferGetServerSidePropsType } from 'next'
 
 import Head from 'next/head'
 
-import ClientList from 'src/components/Pages/clients/ClientList'
+import ClientList from 'src/clients/ClientList'
 import { PaginatedClientListQuery } from 'src/generated/graphql'
 import { getPaginatedClientListData } from 'src/lib/prisma/clients'
 import { withSession } from 'src/lib/session'

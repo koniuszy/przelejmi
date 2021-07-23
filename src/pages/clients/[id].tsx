@@ -7,17 +7,10 @@ import { useRouter } from 'next/router'
 
 import { Spinner, Center } from '@chakra-ui/react'
 
-import { getBase64 } from '@plaiceholder/base64'
-import { getImage } from '@plaiceholder/next'
-
+import EditClientForm from 'src/clients/EditClientForm'
 import prisma from 'src/lib/prisma/prismaClient'
 
-import { OptimizedImg } from 'src/types'
-
-import EditClientForm from 'src/components/Pages/clients/EditClientForm'
-
 type SSGProps = {
-  calmInTrolleyImg: OptimizedImg
   clientId: number
 }
 
@@ -56,21 +49,9 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 }
 
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
-  const src = '/hecticInTrolley.jpeg'
-  const width = 1920
-  const height = 2880
-  const img = await getImage(src)
-
-  const base64 = await getBase64(img)
-
   return {
     props: {
       clientId: Number(params.id),
-      calmInTrolleyImg: {
-        src,
-        base64,
-        ratio: height / width,
-      },
     },
   }
 }

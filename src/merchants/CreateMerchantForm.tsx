@@ -2,16 +2,11 @@ import React, { FC } from 'react'
 
 import { useToast } from '@chakra-ui/react'
 
-import { errorToastContent, successToastContent } from 'src/lib/toastContent'
-
 import { useCreateMerchantMutation } from 'src/generated/graphql'
-import { OptimizedImg } from 'src/types'
+import { errorToastContent, successToastContent } from 'src/lib/toastContent'
+import MerchantForm from 'src/merchants/MerchantForm'
 
-import MerchantForm from 'src/components/MerchantForm'
-
-const CreateMerchantForm: FC<{
-  womanWithFoldersImg: OptimizedImg
-}> = ({ womanWithFoldersImg }) => {
+const CreateMerchantForm: FC = () => {
   const toast = useToast()
 
   const [createMerchant, { loading }] = useCreateMerchantMutation({
@@ -30,7 +25,6 @@ const CreateMerchantForm: FC<{
   return (
     <MerchantForm
       isLoading={loading}
-      optimizedImg={womanWithFoldersImg}
       initialValues={{
         companyName: '',
         address: '',

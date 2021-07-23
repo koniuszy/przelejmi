@@ -6,7 +6,6 @@ import schema from 'src/graphql/schema'
 const apolloServer = new ApolloServer({
   schema,
   context: createContext,
-  tracing: process.env.NODE_ENV === 'development',
 })
 
 export const config = {
@@ -15,4 +14,6 @@ export const config = {
   },
 }
 
-export default apolloServer.createHandler({ path: '/api/graphql' })
+apolloServer.graphqlPath = 'api/graphql'
+
+export default apolloServer.start().then(() => apolloServer.createHandler())

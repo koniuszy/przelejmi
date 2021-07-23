@@ -24,12 +24,6 @@ export enum ClientType {
   person = 'Person',
 }
 
-export type OptimizedImg = {
-  src: string
-  base64: string
-  ratio: number
-}
-
 export enum DBConditions {
   'includes' = 'in',
   'notIncludes' = 'notIn',
