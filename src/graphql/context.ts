@@ -17,12 +17,12 @@ export type Context = {
   user: Session['user']
 }
 
-export async function createContext({ req, res }: NextApi): Promise<Context> {
+export async function createContext({ req }: NextApi): Promise<Context> {
   const session = await getSession({ req })
 
   return {
     prisma,
     db: prisma,
-    user: session.user,
+    user: process.env.NODE_ENV === 'development' ? {name: 'michu', email: 'michu@gmail.com'} : session.user,
   }
 }

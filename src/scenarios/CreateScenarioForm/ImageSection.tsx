@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 import { Image, Flex, Divider, Input, Text } from '@chakra-ui/react'
 
-const ImageSection: FC<{ onImgUrlChange(Url: string): void; imgUrl: string }> = ({
+const ImageSection: FC<{ onImgUrlChange: (Url: string) => void; imgUrl: string }> = ({
   onImgUrlChange,
   imgUrl,
 }) => (

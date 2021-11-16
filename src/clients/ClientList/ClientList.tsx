@@ -4,8 +4,9 @@ import { Tr, Td } from '@chakra-ui/react'
 
 import { Client } from 'prisma/prisma-client'
 
-import Table, { TablePlaceholder } from 'src/components/Table'
 import { PaginatedClientListQuery, usePaginatedClientListQuery } from 'src/generated/graphql'
+
+import Table, { TablePlaceholder } from 'src/components/Table'
 import { ClientType, DBConditions } from 'src/types'
 
 import ActionsColumn from './ActionsColumn'

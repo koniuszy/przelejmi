@@ -7,14 +7,14 @@ import { Td, Text, Menu, MenuButton, Button, MenuList, MenuItem, useToast } from
 
 import { Client } from 'prisma/prisma-client'
 
-import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 import { useDeleteClientMutation } from 'src/generated/graphql'
 
 import Clipboard from 'src/components/Clipboard'
 import Confirmation from 'src/components/Confirmation'
+import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
-const ActionsColumn: FC<{ client: Client; onClientDelete(id: number): void }> = ({
+const ActionsColumn: FC<{ client: Client; onClientDelete: (id: number) => void }> = ({
   client,
   onClientDelete,
 }) => {

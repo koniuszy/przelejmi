@@ -15,8 +15,8 @@ import {
 
 const Confirmation: FC<{
   id: number | null
-  onClose(): void
-  onClick(): void
+  onClose: () => void
+  onClick: () => void
   isLoading: boolean
   confirmText: string
 }> = ({ id, children, onClose, onClick, isLoading, confirmText }) => {

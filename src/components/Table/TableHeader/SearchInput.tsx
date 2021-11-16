@@ -24,7 +24,7 @@ export const SearchInputPlaceholder: FC = () => (
 )
 
 const SearchInput: FC<{
-  onSearch(search: Search): void
+  onSearch: (search: Search) => void
   keyList: string[]
   prevFilters: Record<string, any>
 }> = (props) => {

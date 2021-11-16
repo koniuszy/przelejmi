@@ -25,11 +25,12 @@ module.exports = {
     'no-unused-expressions': 'off',
     'import/extensions': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
-
+    'react-hooks/exhaustive-deps': 'off',
+    'react/no-namespace': 'off',
     'react/jsx-filename-extension': 'off',
     'react/react-in-jsx-scope': 'off',
-    'react-hooks/exhaustive-deps': 'off',
     'react/prop-types': 'off',
+    'react/no-unstable-nested-components': 'off',
     'react/self-closing-comp': ['error'],
     'react/jsx-sort-props': [
       'warn',
@@ -42,7 +43,15 @@ module.exports = {
 
     'react/jsx-no-constructed-context-values': 'off',
 
-    '@typescript-eslint/no-unused-vars': ['warn'],
+    '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'off',
+    '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/indent': 'off',
@@ -84,6 +93,11 @@ module.exports = {
           {
             pattern: '@chakra-ui/**',
             group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: 'src/generated/**',
+            group: 'internal',
             position: 'before',
           },
           {

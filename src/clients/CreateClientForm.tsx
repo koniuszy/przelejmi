@@ -2,8 +2,9 @@ import React, { FC } from 'react'
 
 import { useToast } from '@chakra-ui/react'
 
-import ClientForm from 'src/clients/ClientForm'
 import { useCreateClientMutation } from 'src/generated/graphql'
+
+import ClientForm from 'src/clients/ClientForm'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
 

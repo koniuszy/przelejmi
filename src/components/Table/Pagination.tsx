@@ -7,14 +7,13 @@ const pagesCountInBlock = 5
 const Pagination: FC<{
   totalPages: number
   currentPage: number
-  onPageChange(page: number): void
+  onPageChange: (page: number) => void
 }> = ({ totalPages, currentPage, onPageChange }) => {
   const moreThan1Block = totalPages > pagesCountInBlock
   const pagesCountInTheLastBlock = totalPages - pagesCountInBlock
   const activeButtonProps = { colorScheme: 'teal', variant: 'solid' }
   return (
-    <>
-      <Center>
+    <Center>
         <ButtonGroup isAttached variant="outline">
           {new Array(moreThan1Block ? pagesCountInBlock : totalPages).fill(null).map((_, index) => {
             const page = index + 1
@@ -48,7 +47,6 @@ const Pagination: FC<{
               .reverse()}
         </ButtonGroup>
       </Center>
-    </>
   )
 }
 

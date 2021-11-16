@@ -24,7 +24,7 @@ const SkeletonsStack: FC = () => (
 )
 
 const MerchantSelect: FC<{
-  onMerchantSelect(id: number | null): void
+  onMerchantSelect: (id: number | null) => void
   merchant: MerchantContentFragment
   isSelected: boolean
 }> = ({ merchant, isSelected, onMerchantSelect }) => (
@@ -50,7 +50,7 @@ const MerchantSelect: FC<{
 
 const SelectMerchantSection: FC<{
   selectedMerchantId: number
-  onMerchantSelect(id: number | null): void
+  onMerchantSelect: (id: number | null) => void
 }> = ({ onMerchantSelect, selectedMerchantId }) => {
   const { data, loading } = useMerchantListQuery({ fetchPolicy: 'cache-and-network' })
 

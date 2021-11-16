@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import { useToast } from '@chakra-ui/react'
 
 import { useCreateMerchantMutation } from 'src/generated/graphql'
+
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 import MerchantForm from 'src/merchants/MerchantForm'
 

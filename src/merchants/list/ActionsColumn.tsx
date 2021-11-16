@@ -7,16 +7,15 @@ import { Td, Text, Menu, MenuButton, Button, MenuList, MenuItem, useToast } from
 
 import { Merchant } from 'prisma/prisma-client'
 
-import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
-
 import { useDeleteMerchantMutation } from 'src/generated/graphql'
 
 import Clipboard from 'src/components/Clipboard'
 import Confirmation from 'src/components/Confirmation'
+import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const ActionsColumn: FC<{
   merchant: Merchant
-  onMerchantDelete(id: number): void
+  onMerchantDelete: (id: number) => void
 }> = ({ merchant, onMerchantDelete }) => {
   const toast = useToast()
 

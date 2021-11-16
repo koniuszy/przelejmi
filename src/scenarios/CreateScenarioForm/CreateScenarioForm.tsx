@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react'
 import { Button, Box, SimpleGrid, Divider, Flex, Text, Textarea, useToast } from '@chakra-ui/react'
 
 import { Unit, Vat, Currency, PaymentType, useCreateScenarioMutation } from 'src/generated/graphql'
+
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 import ImageSection from './ImageSection'

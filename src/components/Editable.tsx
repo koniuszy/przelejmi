@@ -20,7 +20,7 @@ const FieldBox: FC<{ border: boolean }> = ({ children, border }) =>
 
 const Editable: FC<{
   defaultValue: string
-  onSubmit(value: string): void
+  onSubmit: (value: string) => void
   isDisabled?: boolean
   border?: boolean
 }> = ({ defaultValue, onSubmit, border, isDisabled }) => (

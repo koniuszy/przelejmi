@@ -25,7 +25,7 @@ type Form = {
 const MerchantForm: FC<{
   isLoading: boolean
   initialValues: Record<keyof Form, string>
-  onSubmit(values: Form): void
+  onSubmit: (values: Form) => void
 }> = ({ onSubmit, isLoading, initialValues }) => {
   const { handleSubmit, errors, values, handleChange, isValid } = useFormik<Form>({
     onSubmit,

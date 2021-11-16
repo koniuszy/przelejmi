@@ -25,7 +25,7 @@ const SkeletonsStack: FC = () => (
 
 const ClientSelect: FC<{
   isSelected: boolean
-  onClientSelect(id: number | null): void
+  onClientSelect: (id: number | null) => void
   client: ClientContentFragment
 }> = ({ client, isSelected, onClientSelect }) => (
   <React.Fragment key={client.id}>
@@ -47,7 +47,7 @@ const ClientSelect: FC<{
   </React.Fragment>
 )
 
-const SelectClientSection: FC<{ selectedClientId: number; onClientSelect(id: number): void }> = ({
+const SelectClientSection: FC<{ selectedClientId: number; onClientSelect: (id: number) => void }> = ({
   selectedClientId,
   onClientSelect,
 }) => {

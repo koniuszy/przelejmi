@@ -8,7 +8,7 @@ export type PaymentDetails = Pick<Scenario, 'paymentType' | 'dueDateDays' | 'not
 
 const PaymentDetailsSection: FC<{
   paymentDetails: PaymentDetails
-  onPaymentDetailsChange(data: Partial<PaymentDetails>): void
+  onPaymentDetailsChange: (data: Partial<PaymentDetails>) => void
 }> = ({ paymentDetails, onPaymentDetailsChange }) => (
   <>
     <Flex mt={4} justifyContent="space-between">

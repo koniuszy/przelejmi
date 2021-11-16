@@ -33,7 +33,7 @@ type Form = {
 const ClientForm: FC<{
   isLoading: boolean
   initialValues: Form
-  onSubmit(values: Form & { clientType: ClientType }): void
+  onSubmit: (values: Form & { clientType: ClientType }) => void
 }> = ({ isLoading, onSubmit, initialValues }) => {
   const [clientType, setClientType] = useState<ClientType>(ClientType.company)
 
@@ -43,7 +43,7 @@ const ClientForm: FC<{
       onSubmit({ ...values, clientType })
     },
     validate(values) {
-      //@ts-ignore
+      // @ts-ignore
       const errors: Record<keyof Form, string> = {}
 
       if (values.name.length > 100) errors.name = 'Name should be shorter'

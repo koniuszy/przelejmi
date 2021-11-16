@@ -4,15 +4,16 @@ import { Td, useToast } from '@chakra-ui/react'
 
 import { Client } from 'prisma/prisma-client'
 
-import Editable from 'src/components/Editable'
 import { useUpdateClientMutation } from 'src/generated/graphql'
+
+import Editable from 'src/components/Editable'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
 
 const EditableColumns: FC<{
   client: Client
   isEditable: boolean
-  onClientUpdate(client: Client): void
+  onClientUpdate: (client: Client) => void
 }> = ({ client, isEditable, onClientUpdate }) => {
   const toast = useToast()
 

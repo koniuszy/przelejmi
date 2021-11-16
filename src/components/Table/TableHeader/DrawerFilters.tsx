@@ -25,7 +25,7 @@ import debounce from 'lodash.debounce'
 import useConstant from 'src/hooks'
 import { DBConditions } from 'src/types'
 
-export const TriggerFiltersButton: FC<{ onOpen(): void; isActive: boolean }> = ({
+export const TriggerFiltersButton: FC<{ onOpen: () => void; isActive: boolean }> = ({
   onOpen,
   isActive,
 }) => (
@@ -56,10 +56,10 @@ function getInitialFilters(filters: Record<string, string[]>) {
 }
 
 const DrawerFilters: FC<{
-  disclosureOptions: { onClose(): void; onClose(): void; isOpen: boolean }
+  disclosureOptions: { onClose: (() => void) & (() => void); isOpen: boolean }
   filters: Record<string, string[]>
   prevFilters: Record<string, any>
-  onChange(where: Filters): void
+  onChange: (where: Filters) => void
 }> = ({ filters, disclosureOptions, onChange, prevFilters }) => {
   const [filterList, setFilterList] = useState(getInitialFilters(filters))
 

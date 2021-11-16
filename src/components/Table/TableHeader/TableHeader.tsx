@@ -20,9 +20,9 @@ export type TableHeaderProps = {
   isEditable: boolean
   searchKeys: string[]
   filterOptions: Record<string, string[]>
-  onEditableToggle(v: boolean): void
+  onEditableToggle: (v: boolean) => void
   isLoading: boolean
-  onDrawerChange(newFilters: Filters): Promise<void>
+  onDrawerChange: (newFilters: Filters) => Promise<void>
 }
 
 export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (

@@ -4,16 +4,16 @@ import { Td, useToast } from '@chakra-ui/react'
 
 import { Merchant } from 'prisma/prisma-client'
 
-import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
-
 import { useUpdateMerchantMutation } from 'src/generated/graphql'
 
 import Editable from 'src/components/Editable'
+import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
+
 
 const EditableColumns: FC<{
   isEditable: boolean
   merchant: Merchant
-  onMerchantUpdate(updatedMerchant: Merchant): void
+  onMerchantUpdate: (updatedMerchant: Merchant) => void
 }> = ({ isEditable, merchant, onMerchantUpdate }) => {
   const toast = useToast()
 

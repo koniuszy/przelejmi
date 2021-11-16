@@ -1,10 +1,12 @@
-require('sharp')
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
-
-module.exports = withBundleAnalyzer({
+/**
+ * @type {import('next').NextConfig}
+ */
+const configs = {
   reactStrictMode: true,
-  productionBrowserSourceMaps: true,
-})
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+}
+
+module.exports = configs

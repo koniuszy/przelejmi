@@ -42,7 +42,7 @@ function getGrossValue(trade: Trade) {
 
 const TradeSection: FC<{
   trade: Trade
-  onTradeChange(data: Partial<Trade>): void
+  onTradeChange: (data: Partial<Trade>) => void
 }> = ({ trade, onTradeChange }) => (
   <>
     <Flex justifyContent="space-between">
@@ -115,7 +115,7 @@ const TradeSection: FC<{
     </InputGroup>
 
     <Center>
-      <NextImage placeholder={'blur'} src={tradeImg} objectFit="cover" height={180} />
+      <NextImage placeholder="blur" src={tradeImg} objectFit="cover" height={180} />
     </Center>
     <style global jsx>
       {`

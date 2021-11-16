@@ -7,8 +7,8 @@ const SortTh: FC<{
   title: string
   isAsc: boolean
   isDesc: boolean
-  onAsc(): void
-  onDesc(): void
+  onAsc: () => void
+  onDesc: () => void
 }> = ({ title, isAsc, isDesc, onAsc, onDesc }) => (
   <Th>
     <Flex>

@@ -60,12 +60,12 @@ export default function convertCurrencyToWordsEN(
       return (
         ones[Number(numString[0])] +
         ' hundred and ' +
-        convertCurrencyToWordsEN(+(numString[1] + numString[2]))
+        convertCurrencyToWordsEN(Number(numString[1] + numString[2]))
       )
   }
 
   if (numString.length === 4) {
-    const end = +(numString[1] + numString[2] + numString[3])
+    const end = Number(numString[1] + numString[2] + numString[3])
     if (end === 0) return ones[Number(numString[0])] + ' thousand'
     if (end < 100)
       return ones[Number(numString[0])] + ' thousand and ' + convertCurrencyToWordsEN(end)

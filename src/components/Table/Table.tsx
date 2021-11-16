@@ -52,8 +52,8 @@ type RefetchParams = {
     | ClientOrderByInput
     | ClientOrderByInput[]
 }
-export interface Props {
-  refetch(params: RefetchParams): Promise<any>
+export type Props = {
+  refetch: (params: RefetchParams) => Promise<any>
   variables: PaginatedMerchantListQueryVariables
 }
 
@@ -68,7 +68,7 @@ const Table: FC<
     list: Item[]
     filtersHeaderProps: Omit<TableHeaderProps, 'variables' | 'refetch' | 'searchKeys'>
     headerList: Array<string | { title: string; sortableKey: string }>
-    rowRender(item: Item, index: number): ReactElement
+    rowRender: (item: Item, index: number) => ReactElement
   } & Props
 > = ({
   filtersHeaderProps: { isLoading, onDrawerChange, ...filtersHeaderProps },
