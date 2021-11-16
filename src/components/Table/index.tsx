@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from 'react'
+import React, { FC, ReactElement, ReactNode, useState } from 'react'
 
 import NextLink from 'next/link'
 
@@ -14,6 +14,8 @@ import {
   Stack,
   Skeleton,
 } from '@chakra-ui/react'
+
+import { Merchant, Client } from 'prisma/prisma-client'
 
 import {
   PaginatedMerchantListQueryVariables,
@@ -53,23 +55,10 @@ type RefetchParams = {
 }
 export type Props = {
   refetch: (params: RefetchParams) => Promise<any>
-  variables: PaginatedMerchantListQueryVariables
+  variables: PaginatedMerchantListQueryVariables | undefined
 }
 
-type Item = ClientContentFragment | MerchantContentFragment
-
-const Table: FC<
-  {
-    perPage: number
-    createHref: string
-    totalRecordsCount: number
-    emptyListHeading: string
-    list: Item[]
-    filtersHeaderProps: Omit<TableHeaderProps, 'variables' | 'refetch' | 'searchKeys'>
-    headerList: Array<string | { title: string; sortableKey: string }>
-    rowRender: (item: Item, index: number) => ReactElement
-  } & Props
-> = ({
+function Table<Item>({
   filtersHeaderProps: { isLoading, onDrawerChange, ...filtersHeaderProps },
   list,
   createHref,
@@ -80,7 +69,16 @@ const Table: FC<
   refetch,
   rowRender,
   emptyListHeading,
-}) => {
+}: {
+  perPage: number
+  createHref: string
+  totalRecordsCount: number
+  emptyListHeading: string
+  list: Item[]
+  filtersHeaderProps: Omit<TableHeaderProps, 'variables' | 'refetch' | 'searchKeys'>
+  headerList: Array<string | { title: string; sortableKey: string }>
+  rowRender: (item: Item, index: number) => ReactElement
+} & Props): ReactElement {
   const [isRefetching, setIsRefetching] = useState(false)
 
   async function handleRefetch(params: RefetchParams) {
@@ -108,7 +106,7 @@ const Table: FC<
           {list.length > 0 ? (
             <Pagination
               totalPages={Math.ceil(totalRecordsCount / perPage)}
-              currentPage={variables.skip ? (variables.skip + perPage) / perPage : 1}
+              currentPage={variables?.skip ? (variables.skip + perPage) / perPage : 1}
               onPageChange={(newPage) => handleRefetch({ skip: (newPage - 1) * perPage })}
             />
           ) : (
@@ -132,9 +130,9 @@ const Table: FC<
                 ) : (
                   <SortTh
                     title={headerListItem.title}
-                    isAsc={(variables.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Asc}
+                    isAsc={(variables?.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Asc}
                     isDesc={
-                      (variables.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Desc
+                      (variables?.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Desc
                     }
                     onAsc={() =>
                       handleRefetch({ orderBy: { [headerListItem.sortableKey]: SortOrder.Asc } })

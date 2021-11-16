@@ -46,7 +46,7 @@ export const TriggerFiltersButton: FC<{ onOpen: () => void; isActive: boolean }>
   </Button>
 )
 
-export type Filters = Record<string, any> | null
+export type Filters = any | null
 
 function getInitialFilters(filters: Record<string, string[]>) {
   return Object.entries(filters).map((entry) => {

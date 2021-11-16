@@ -14,7 +14,7 @@ type NextApi = {
 export type Context = {
   prisma: PrismaClient
   db: PrismaClient
-  user: Session['user']
+  user: Session['user'] | null
 }
 
 export async function createContext({ req }: NextApi): Promise<Context> {
@@ -23,6 +23,6 @@ export async function createContext({ req }: NextApi): Promise<Context> {
   return {
     prisma,
     db: prisma,
-    user: process.env.NODE_ENV === 'development' ? {name: 'michu', email: 'michu@gmail.com'} : session.user,
+    user: session?.user || null,
   }
 }

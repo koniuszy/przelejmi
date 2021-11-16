@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -29,14 +30,14 @@ export type Client = {
 
 
 export type ClientScenarioArgs = {
-  cursor?: Maybe<ScenarioWhereUniqueInput>;
-  skip?: Maybe<Scalars['Int']>;
-  take?: Maybe<Scalars['Int']>;
+  cursor?: InputMaybe<ScenarioWhereUniqueInput>;
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
 };
 
 export type ClientCreateInput = {
-  Scenario?: Maybe<ScenarioCreateNestedManyWithoutClientInput>;
-  VATId?: Maybe<Scalars['String']>;
+  Scenario?: InputMaybe<ScenarioCreateNestedManyWithoutClientInput>;
+  VATId?: InputMaybe<Scalars['String']>;
   address: Scalars['String'];
   city: Scalars['String'];
   country: Scalars['String'];
@@ -45,9 +46,9 @@ export type ClientCreateInput = {
 };
 
 export type ClientCreateNestedOneWithoutScenarioInput = {
-  connect?: Maybe<ClientWhereUniqueInput>;
-  connectOrCreate?: Maybe<ClientCreateOrConnectWithoutScenarioInput>;
-  create?: Maybe<ClientCreateWithoutScenarioInput>;
+  connect?: InputMaybe<ClientWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<ClientCreateOrConnectWithoutScenarioInput>;
+  create?: InputMaybe<ClientCreateWithoutScenarioInput>;
 };
 
 export type ClientCreateOrConnectWithoutScenarioInput = {
@@ -56,7 +57,7 @@ export type ClientCreateOrConnectWithoutScenarioInput = {
 };
 
 export type ClientCreateWithoutScenarioInput = {
-  VATId?: Maybe<Scalars['String']>;
+  VATId?: InputMaybe<Scalars['String']>;
   address: Scalars['String'];
   city: Scalars['String'];
   country: Scalars['String'];
@@ -66,45 +67,45 @@ export type ClientCreateWithoutScenarioInput = {
 
 export type ClientList = {
   __typename?: 'ClientList';
-  list?: Maybe<Array<Maybe<Client>>>;
-  totalCount?: Maybe<Scalars['Int']>;
+  list: Array<Client>;
+  totalCount: Scalars['Int'];
 };
 
 export type ClientOrderByInput = {
-  VATId?: Maybe<SortOrder>;
-  address?: Maybe<SortOrder>;
-  city?: Maybe<SortOrder>;
-  country?: Maybe<SortOrder>;
-  id?: Maybe<SortOrder>;
-  name?: Maybe<SortOrder>;
-  postCode?: Maybe<SortOrder>;
+  VATId?: InputMaybe<SortOrder>;
+  address?: InputMaybe<SortOrder>;
+  city?: InputMaybe<SortOrder>;
+  country?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  name?: InputMaybe<SortOrder>;
+  postCode?: InputMaybe<SortOrder>;
 };
 
 export type ClientUpdateInput = {
-  Scenario?: Maybe<ScenarioUpdateManyWithoutClientInput>;
-  VATId?: Maybe<Scalars['String']>;
-  address?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  postCode?: Maybe<Scalars['String']>;
+  Scenario?: InputMaybe<ScenarioUpdateManyWithoutClientInput>;
+  VATId?: InputMaybe<Scalars['String']>;
+  address?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  postCode?: InputMaybe<Scalars['String']>;
 };
 
 export type ClientUpdateOneRequiredWithoutScenarioInput = {
-  connect?: Maybe<ClientWhereUniqueInput>;
-  connectOrCreate?: Maybe<ClientCreateOrConnectWithoutScenarioInput>;
-  create?: Maybe<ClientCreateWithoutScenarioInput>;
-  update?: Maybe<ClientUpdateWithoutScenarioInput>;
-  upsert?: Maybe<ClientUpsertWithoutScenarioInput>;
+  connect?: InputMaybe<ClientWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<ClientCreateOrConnectWithoutScenarioInput>;
+  create?: InputMaybe<ClientCreateWithoutScenarioInput>;
+  update?: InputMaybe<ClientUpdateWithoutScenarioInput>;
+  upsert?: InputMaybe<ClientUpsertWithoutScenarioInput>;
 };
 
 export type ClientUpdateWithoutScenarioInput = {
-  VATId?: Maybe<Scalars['String']>;
-  address?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  postCode?: Maybe<Scalars['String']>;
+  VATId?: InputMaybe<Scalars['String']>;
+  address?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  postCode?: InputMaybe<Scalars['String']>;
 };
 
 export type ClientUpsertWithoutScenarioInput = {
@@ -113,21 +114,21 @@ export type ClientUpsertWithoutScenarioInput = {
 };
 
 export type ClientWhereInput = {
-  AND?: Maybe<Array<ClientWhereInput>>;
-  NOT?: Maybe<Array<ClientWhereInput>>;
-  OR?: Maybe<Array<ClientWhereInput>>;
-  Scenario?: Maybe<ScenarioListRelationFilter>;
-  VATId?: Maybe<StringNullableFilter>;
-  address?: Maybe<StringFilter>;
-  city?: Maybe<StringFilter>;
-  country?: Maybe<StringFilter>;
-  id?: Maybe<IntFilter>;
-  name?: Maybe<StringFilter>;
-  postCode?: Maybe<StringFilter>;
+  AND: Array<ClientWhereInput>;
+  NOT: Array<ClientWhereInput>;
+  OR: Array<ClientWhereInput>;
+  Scenario?: InputMaybe<ScenarioListRelationFilter>;
+  VATId?: InputMaybe<StringNullableFilter>;
+  address?: InputMaybe<StringFilter>;
+  city?: InputMaybe<StringFilter>;
+  country?: InputMaybe<StringFilter>;
+  id?: InputMaybe<IntFilter>;
+  name?: InputMaybe<StringFilter>;
+  postCode?: InputMaybe<StringFilter>;
 };
 
 export type ClientWhereUniqueInput = {
-  id?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export enum Currency {
@@ -137,55 +138,54 @@ export enum Currency {
   Usd = 'USD'
 }
 
-
 export type DateTimeFilter = {
-  equals?: Maybe<Scalars['DateTime']>;
-  gt?: Maybe<Scalars['DateTime']>;
-  gte?: Maybe<Scalars['DateTime']>;
-  in?: Maybe<Array<Scalars['DateTime']>>;
-  lt?: Maybe<Scalars['DateTime']>;
-  lte?: Maybe<Scalars['DateTime']>;
-  not?: Maybe<NestedDateTimeFilter>;
-  notIn?: Maybe<Array<Scalars['DateTime']>>;
+  equals?: InputMaybe<Scalars['DateTime']>;
+  gt?: InputMaybe<Scalars['DateTime']>;
+  gte?: InputMaybe<Scalars['DateTime']>;
+  in: Array<Scalars['DateTime']>;
+  lt?: InputMaybe<Scalars['DateTime']>;
+  lte?: InputMaybe<Scalars['DateTime']>;
+  not?: InputMaybe<NestedDateTimeFilter>;
+  notIn: Array<Scalars['DateTime']>;
 };
 
 export type EnumCurrencyFilter = {
-  equals?: Maybe<Currency>;
-  in?: Maybe<Array<Currency>>;
-  not?: Maybe<NestedEnumCurrencyFilter>;
-  notIn?: Maybe<Array<Currency>>;
+  equals?: InputMaybe<Currency>;
+  in: Array<Currency>;
+  not?: InputMaybe<NestedEnumCurrencyFilter>;
+  notIn: Array<Currency>;
 };
 
 export type EnumPaymentTypeFilter = {
-  equals?: Maybe<PaymentType>;
-  in?: Maybe<Array<PaymentType>>;
-  not?: Maybe<NestedEnumPaymentTypeFilter>;
-  notIn?: Maybe<Array<PaymentType>>;
+  equals?: InputMaybe<PaymentType>;
+  in: Array<PaymentType>;
+  not?: InputMaybe<NestedEnumPaymentTypeFilter>;
+  notIn: Array<PaymentType>;
 };
 
 export type EnumUnitFilter = {
-  equals?: Maybe<Unit>;
-  in?: Maybe<Array<Unit>>;
-  not?: Maybe<NestedEnumUnitFilter>;
-  notIn?: Maybe<Array<Unit>>;
+  equals?: InputMaybe<Unit>;
+  in: Array<Unit>;
+  not?: InputMaybe<NestedEnumUnitFilter>;
+  notIn: Array<Unit>;
 };
 
 export type EnumVatFilter = {
-  equals?: Maybe<Vat>;
-  in?: Maybe<Array<Vat>>;
-  not?: Maybe<NestedEnumVatFilter>;
-  notIn?: Maybe<Array<Vat>>;
+  equals?: InputMaybe<Vat>;
+  in: Array<Vat>;
+  not?: InputMaybe<NestedEnumVatFilter>;
+  notIn: Array<Vat>;
 };
 
 export type IntFilter = {
-  equals?: Maybe<Scalars['Int']>;
-  gt?: Maybe<Scalars['Int']>;
-  gte?: Maybe<Scalars['Int']>;
-  in?: Maybe<Array<Scalars['Int']>>;
-  lt?: Maybe<Scalars['Int']>;
-  lte?: Maybe<Scalars['Int']>;
-  not?: Maybe<NestedIntFilter>;
-  notIn?: Maybe<Array<Scalars['Int']>>;
+  equals?: InputMaybe<Scalars['Int']>;
+  gt?: InputMaybe<Scalars['Int']>;
+  gte?: InputMaybe<Scalars['Int']>;
+  in: Array<Scalars['Int']>;
+  lt?: InputMaybe<Scalars['Int']>;
+  lte?: InputMaybe<Scalars['Int']>;
+  not?: InputMaybe<NestedIntFilter>;
+  notIn: Array<Scalars['Int']>;
 };
 
 export type Merchant = {
@@ -207,16 +207,16 @@ export type Merchant = {
 
 
 export type MerchantScenarioArgs = {
-  cursor?: Maybe<ScenarioWhereUniqueInput>;
-  skip?: Maybe<Scalars['Int']>;
-  take?: Maybe<Scalars['Int']>;
+  cursor?: InputMaybe<ScenarioWhereUniqueInput>;
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
 };
 
 export type MerchantCreateInput = {
-  Scenario?: Maybe<ScenarioCreateNestedManyWithoutMerchantInput>;
+  Scenario?: InputMaybe<ScenarioCreateNestedManyWithoutMerchantInput>;
   VATId: Scalars['String'];
   address: Scalars['String'];
-  bankAccountEur?: Maybe<Scalars['String']>;
+  bankAccountEur?: InputMaybe<Scalars['String']>;
   bankAccountPln: Scalars['String'];
   bankName: Scalars['String'];
   city: Scalars['String'];
@@ -228,9 +228,9 @@ export type MerchantCreateInput = {
 };
 
 export type MerchantCreateNestedOneWithoutScenarioInput = {
-  connect?: Maybe<MerchantWhereUniqueInput>;
-  connectOrCreate?: Maybe<MerchantCreateOrConnectWithoutScenarioInput>;
-  create?: Maybe<MerchantCreateWithoutScenarioInput>;
+  connect?: InputMaybe<MerchantWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MerchantCreateOrConnectWithoutScenarioInput>;
+  create?: InputMaybe<MerchantCreateWithoutScenarioInput>;
 };
 
 export type MerchantCreateOrConnectWithoutScenarioInput = {
@@ -241,7 +241,7 @@ export type MerchantCreateOrConnectWithoutScenarioInput = {
 export type MerchantCreateWithoutScenarioInput = {
   VATId: Scalars['String'];
   address: Scalars['String'];
-  bankAccountEur?: Maybe<Scalars['String']>;
+  bankAccountEur?: InputMaybe<Scalars['String']>;
   bankAccountPln: Scalars['String'];
   bankName: Scalars['String'];
   city: Scalars['String'];
@@ -254,60 +254,60 @@ export type MerchantCreateWithoutScenarioInput = {
 
 export type MerchantList = {
   __typename?: 'MerchantList';
-  list?: Maybe<Array<Maybe<Merchant>>>;
-  totalCount?: Maybe<Scalars['Int']>;
+  list: Array<Merchant>;
+  totalCount: Scalars['Int'];
 };
 
 export type MerchantOrderByInput = {
-  VATId?: Maybe<SortOrder>;
-  address?: Maybe<SortOrder>;
-  bankAccountEur?: Maybe<SortOrder>;
-  bankAccountPln?: Maybe<SortOrder>;
-  bankName?: Maybe<SortOrder>;
-  city?: Maybe<SortOrder>;
-  companyName?: Maybe<SortOrder>;
-  country?: Maybe<SortOrder>;
-  email?: Maybe<SortOrder>;
-  id?: Maybe<SortOrder>;
-  issuerName?: Maybe<SortOrder>;
-  postCode?: Maybe<SortOrder>;
+  VATId?: InputMaybe<SortOrder>;
+  address?: InputMaybe<SortOrder>;
+  bankAccountEur?: InputMaybe<SortOrder>;
+  bankAccountPln?: InputMaybe<SortOrder>;
+  bankName?: InputMaybe<SortOrder>;
+  city?: InputMaybe<SortOrder>;
+  companyName?: InputMaybe<SortOrder>;
+  country?: InputMaybe<SortOrder>;
+  email?: InputMaybe<SortOrder>;
+  id?: InputMaybe<SortOrder>;
+  issuerName?: InputMaybe<SortOrder>;
+  postCode?: InputMaybe<SortOrder>;
 };
 
 export type MerchantUpdateInput = {
-  Scenario?: Maybe<ScenarioUpdateManyWithoutMerchantInput>;
-  VATId?: Maybe<Scalars['String']>;
-  address?: Maybe<Scalars['String']>;
-  bankAccountEur?: Maybe<Scalars['String']>;
-  bankAccountPln?: Maybe<Scalars['String']>;
-  bankName?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  companyName?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  issuerName?: Maybe<Scalars['String']>;
-  postCode?: Maybe<Scalars['String']>;
+  Scenario?: InputMaybe<ScenarioUpdateManyWithoutMerchantInput>;
+  VATId?: InputMaybe<Scalars['String']>;
+  address?: InputMaybe<Scalars['String']>;
+  bankAccountEur?: InputMaybe<Scalars['String']>;
+  bankAccountPln?: InputMaybe<Scalars['String']>;
+  bankName?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  companyName?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  issuerName?: InputMaybe<Scalars['String']>;
+  postCode?: InputMaybe<Scalars['String']>;
 };
 
 export type MerchantUpdateOneRequiredWithoutScenarioInput = {
-  connect?: Maybe<MerchantWhereUniqueInput>;
-  connectOrCreate?: Maybe<MerchantCreateOrConnectWithoutScenarioInput>;
-  create?: Maybe<MerchantCreateWithoutScenarioInput>;
-  update?: Maybe<MerchantUpdateWithoutScenarioInput>;
-  upsert?: Maybe<MerchantUpsertWithoutScenarioInput>;
+  connect?: InputMaybe<MerchantWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MerchantCreateOrConnectWithoutScenarioInput>;
+  create?: InputMaybe<MerchantCreateWithoutScenarioInput>;
+  update?: InputMaybe<MerchantUpdateWithoutScenarioInput>;
+  upsert?: InputMaybe<MerchantUpsertWithoutScenarioInput>;
 };
 
 export type MerchantUpdateWithoutScenarioInput = {
-  VATId?: Maybe<Scalars['String']>;
-  address?: Maybe<Scalars['String']>;
-  bankAccountEur?: Maybe<Scalars['String']>;
-  bankAccountPln?: Maybe<Scalars['String']>;
-  bankName?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  companyName?: Maybe<Scalars['String']>;
-  country?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  issuerName?: Maybe<Scalars['String']>;
-  postCode?: Maybe<Scalars['String']>;
+  VATId?: InputMaybe<Scalars['String']>;
+  address?: InputMaybe<Scalars['String']>;
+  bankAccountEur?: InputMaybe<Scalars['String']>;
+  bankAccountPln?: InputMaybe<Scalars['String']>;
+  bankName?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']>;
+  companyName?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  issuerName?: InputMaybe<Scalars['String']>;
+  postCode?: InputMaybe<Scalars['String']>;
 };
 
 export type MerchantUpsertWithoutScenarioInput = {
@@ -316,26 +316,26 @@ export type MerchantUpsertWithoutScenarioInput = {
 };
 
 export type MerchantWhereInput = {
-  AND?: Maybe<Array<MerchantWhereInput>>;
-  NOT?: Maybe<Array<MerchantWhereInput>>;
-  OR?: Maybe<Array<MerchantWhereInput>>;
-  Scenario?: Maybe<ScenarioListRelationFilter>;
-  VATId?: Maybe<StringFilter>;
-  address?: Maybe<StringFilter>;
-  bankAccountEur?: Maybe<StringNullableFilter>;
-  bankAccountPln?: Maybe<StringFilter>;
-  bankName?: Maybe<StringFilter>;
-  city?: Maybe<StringFilter>;
-  companyName?: Maybe<StringFilter>;
-  country?: Maybe<StringFilter>;
-  email?: Maybe<StringFilter>;
-  id?: Maybe<IntFilter>;
-  issuerName?: Maybe<StringFilter>;
-  postCode?: Maybe<StringFilter>;
+  AND: Array<MerchantWhereInput>;
+  NOT: Array<MerchantWhereInput>;
+  OR: Array<MerchantWhereInput>;
+  Scenario?: InputMaybe<ScenarioListRelationFilter>;
+  VATId?: InputMaybe<StringFilter>;
+  address?: InputMaybe<StringFilter>;
+  bankAccountEur?: InputMaybe<StringNullableFilter>;
+  bankAccountPln?: InputMaybe<StringFilter>;
+  bankName?: InputMaybe<StringFilter>;
+  city?: InputMaybe<StringFilter>;
+  companyName?: InputMaybe<StringFilter>;
+  country?: InputMaybe<StringFilter>;
+  email?: InputMaybe<StringFilter>;
+  id?: InputMaybe<IntFilter>;
+  issuerName?: InputMaybe<StringFilter>;
+  postCode?: InputMaybe<StringFilter>;
 };
 
 export type MerchantWhereUniqueInput = {
-  id?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type Mutation = {
@@ -394,108 +394,108 @@ export type MutationUpdateOneScenarioArgs = {
 };
 
 export type NestedDateTimeFilter = {
-  equals?: Maybe<Scalars['DateTime']>;
-  gt?: Maybe<Scalars['DateTime']>;
-  gte?: Maybe<Scalars['DateTime']>;
-  in?: Maybe<Array<Scalars['DateTime']>>;
-  lt?: Maybe<Scalars['DateTime']>;
-  lte?: Maybe<Scalars['DateTime']>;
-  not?: Maybe<NestedDateTimeFilter>;
-  notIn?: Maybe<Array<Scalars['DateTime']>>;
+  equals?: InputMaybe<Scalars['DateTime']>;
+  gt?: InputMaybe<Scalars['DateTime']>;
+  gte?: InputMaybe<Scalars['DateTime']>;
+  in: Array<Scalars['DateTime']>;
+  lt?: InputMaybe<Scalars['DateTime']>;
+  lte?: InputMaybe<Scalars['DateTime']>;
+  not?: InputMaybe<NestedDateTimeFilter>;
+  notIn: Array<Scalars['DateTime']>;
 };
 
 export type NestedEnumCurrencyFilter = {
-  equals?: Maybe<Currency>;
-  in?: Maybe<Array<Currency>>;
-  not?: Maybe<NestedEnumCurrencyFilter>;
-  notIn?: Maybe<Array<Currency>>;
+  equals?: InputMaybe<Currency>;
+  in: Array<Currency>;
+  not?: InputMaybe<NestedEnumCurrencyFilter>;
+  notIn: Array<Currency>;
 };
 
 export type NestedEnumPaymentTypeFilter = {
-  equals?: Maybe<PaymentType>;
-  in?: Maybe<Array<PaymentType>>;
-  not?: Maybe<NestedEnumPaymentTypeFilter>;
-  notIn?: Maybe<Array<PaymentType>>;
+  equals?: InputMaybe<PaymentType>;
+  in: Array<PaymentType>;
+  not?: InputMaybe<NestedEnumPaymentTypeFilter>;
+  notIn: Array<PaymentType>;
 };
 
 export type NestedEnumUnitFilter = {
-  equals?: Maybe<Unit>;
-  in?: Maybe<Array<Unit>>;
-  not?: Maybe<NestedEnumUnitFilter>;
-  notIn?: Maybe<Array<Unit>>;
+  equals?: InputMaybe<Unit>;
+  in: Array<Unit>;
+  not?: InputMaybe<NestedEnumUnitFilter>;
+  notIn: Array<Unit>;
 };
 
 export type NestedEnumVatFilter = {
-  equals?: Maybe<Vat>;
-  in?: Maybe<Array<Vat>>;
-  not?: Maybe<NestedEnumVatFilter>;
-  notIn?: Maybe<Array<Vat>>;
+  equals?: InputMaybe<Vat>;
+  in: Array<Vat>;
+  not?: InputMaybe<NestedEnumVatFilter>;
+  notIn: Array<Vat>;
 };
 
 export type NestedIntFilter = {
-  equals?: Maybe<Scalars['Int']>;
-  gt?: Maybe<Scalars['Int']>;
-  gte?: Maybe<Scalars['Int']>;
-  in?: Maybe<Array<Scalars['Int']>>;
-  lt?: Maybe<Scalars['Int']>;
-  lte?: Maybe<Scalars['Int']>;
-  not?: Maybe<NestedIntFilter>;
-  notIn?: Maybe<Array<Scalars['Int']>>;
+  equals?: InputMaybe<Scalars['Int']>;
+  gt?: InputMaybe<Scalars['Int']>;
+  gte?: InputMaybe<Scalars['Int']>;
+  in: Array<Scalars['Int']>;
+  lt?: InputMaybe<Scalars['Int']>;
+  lte?: InputMaybe<Scalars['Int']>;
+  not?: InputMaybe<NestedIntFilter>;
+  notIn: Array<Scalars['Int']>;
 };
 
 export type NestedStringFilter = {
-  contains?: Maybe<Scalars['String']>;
-  endsWith?: Maybe<Scalars['String']>;
-  equals?: Maybe<Scalars['String']>;
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Scalars['String']>>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  not?: Maybe<NestedStringFilter>;
-  notIn?: Maybe<Array<Scalars['String']>>;
-  startsWith?: Maybe<Scalars['String']>;
+  contains?: InputMaybe<Scalars['String']>;
+  endsWith?: InputMaybe<Scalars['String']>;
+  equals?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  gte?: InputMaybe<Scalars['String']>;
+  in: Array<Scalars['String']>;
+  lt?: InputMaybe<Scalars['String']>;
+  lte?: InputMaybe<Scalars['String']>;
+  not?: InputMaybe<NestedStringFilter>;
+  notIn: Array<Scalars['String']>;
+  startsWith?: InputMaybe<Scalars['String']>;
 };
 
 export type NestedStringNullableFilter = {
-  contains?: Maybe<Scalars['String']>;
-  endsWith?: Maybe<Scalars['String']>;
-  equals?: Maybe<Scalars['String']>;
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Scalars['String']>>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  not?: Maybe<NestedStringNullableFilter>;
-  notIn?: Maybe<Array<Scalars['String']>>;
-  startsWith?: Maybe<Scalars['String']>;
+  contains?: InputMaybe<Scalars['String']>;
+  endsWith?: InputMaybe<Scalars['String']>;
+  equals?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  gte?: InputMaybe<Scalars['String']>;
+  in: Array<Scalars['String']>;
+  lt?: InputMaybe<Scalars['String']>;
+  lte?: InputMaybe<Scalars['String']>;
+  not?: InputMaybe<NestedStringNullableFilter>;
+  notIn: Array<Scalars['String']>;
+  startsWith?: InputMaybe<Scalars['String']>;
 };
 
 export type PaginatedClientList = {
   __typename?: 'PaginatedClientList';
-  filters?: Maybe<PaginatedClientListFilters>;
-  list?: Maybe<Array<Maybe<Client>>>;
-  totalCount?: Maybe<Scalars['Int']>;
+  filters: PaginatedClientListFilters;
+  list: Array<Client>;
+  totalCount: Scalars['Int'];
 };
 
 export type PaginatedClientListFilters = {
   __typename?: 'PaginatedClientListFilters';
-  city?: Maybe<Array<Maybe<Scalars['String']>>>;
-  country?: Maybe<Array<Maybe<Scalars['String']>>>;
+  city: Array<Scalars['String']>;
+  country: Array<Scalars['String']>;
 };
 
 export type PaginatedMerchantList = {
   __typename?: 'PaginatedMerchantList';
-  filters?: Maybe<PaginatedMerchantListFilters>;
-  list?: Maybe<Array<Maybe<Merchant>>>;
-  totalCount?: Maybe<Scalars['Int']>;
+  filters: PaginatedMerchantListFilters;
+  list: Array<Merchant>;
+  totalCount: Scalars['Int'];
 };
 
 export type PaginatedMerchantListFilters = {
   __typename?: 'PaginatedMerchantListFilters';
-  bank?: Maybe<Array<Maybe<Scalars['String']>>>;
-  city?: Maybe<Array<Maybe<Scalars['String']>>>;
-  country?: Maybe<Array<Maybe<Scalars['String']>>>;
+  bank: Array<Scalars['String']>;
+  city: Array<Scalars['String']>;
+  country: Array<Scalars['String']>;
 };
 
 export enum PaymentType {
@@ -506,13 +506,13 @@ export enum PaymentType {
 export type Query = {
   __typename?: 'Query';
   client?: Maybe<Client>;
-  clientList?: Maybe<ClientList>;
+  clientList: ClientList;
   clients: Array<Client>;
   merchant?: Maybe<Merchant>;
-  merchantList?: Maybe<MerchantList>;
+  merchantList: MerchantList;
   merchants: Array<Merchant>;
-  paginatedClientList?: Maybe<PaginatedClientList>;
-  paginatedMerchantList?: Maybe<PaginatedMerchantList>;
+  paginatedClientList: PaginatedClientList;
+  paginatedMerchantList: PaginatedMerchantList;
   scenario?: Maybe<Scenario>;
   scenarios: Array<Scenario>;
 };
@@ -524,11 +524,11 @@ export type QueryClientArgs = {
 
 
 export type QueryClientsArgs = {
-  cursor?: Maybe<ClientWhereUniqueInput>;
-  orderBy?: Maybe<Array<ClientOrderByInput>>;
-  skip?: Maybe<Scalars['Int']>;
-  take?: Maybe<Scalars['Int']>;
-  where?: Maybe<ClientWhereInput>;
+  cursor?: InputMaybe<ClientWhereUniqueInput>;
+  orderBy: Array<ClientOrderByInput>;
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
+  where?: InputMaybe<ClientWhereInput>;
 };
 
 
@@ -538,27 +538,27 @@ export type QueryMerchantArgs = {
 
 
 export type QueryMerchantsArgs = {
-  cursor?: Maybe<MerchantWhereUniqueInput>;
-  orderBy?: Maybe<Array<MerchantOrderByInput>>;
-  skip?: Maybe<Scalars['Int']>;
-  take?: Maybe<Scalars['Int']>;
-  where?: Maybe<MerchantWhereInput>;
+  cursor?: InputMaybe<MerchantWhereUniqueInput>;
+  orderBy: Array<MerchantOrderByInput>;
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
+  where?: InputMaybe<MerchantWhereInput>;
 };
 
 
 export type QueryPaginatedClientListArgs = {
-  orderBy?: Maybe<Array<Maybe<ClientOrderByInput>>>;
+  orderBy?: InputMaybe<Array<ClientOrderByInput>>;
   skip: Scalars['Int'];
   take: Scalars['Int'];
-  where?: Maybe<ClientWhereInput>;
+  where?: InputMaybe<ClientWhereInput>;
 };
 
 
 export type QueryPaginatedMerchantListArgs = {
-  orderBy?: Maybe<Array<Maybe<MerchantOrderByInput>>>;
+  orderBy?: InputMaybe<Array<MerchantOrderByInput>>;
   skip: Scalars['Int'];
   take: Scalars['Int'];
-  where?: Maybe<MerchantWhereInput>;
+  where?: InputMaybe<MerchantWhereInput>;
 };
 
 
@@ -568,9 +568,9 @@ export type QueryScenarioArgs = {
 
 
 export type QueryScenariosArgs = {
-  cursor?: Maybe<ScenarioWhereUniqueInput>;
-  skip?: Maybe<Scalars['Int']>;
-  take?: Maybe<Scalars['Int']>;
+  cursor?: InputMaybe<ScenarioWhereUniqueInput>;
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
 };
 
 export enum QueryMode {
@@ -601,7 +601,7 @@ export type Scenario = {
 export type ScenarioCreateInput = {
   VAT: Vat;
   client: ClientCreateNestedOneWithoutScenarioInput;
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
   currency: Currency;
   dueDateDays: Scalars['Int'];
   imgUrl: Scalars['String'];
@@ -611,15 +611,15 @@ export type ScenarioCreateInput = {
   notes: Scalars['String'];
   paymentType: PaymentType;
   unitType: Unit;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type ScenarioCreateManyClientInput = {
   VAT: Vat;
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
   currency: Currency;
   dueDateDays: Scalars['Int'];
-  id?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']>;
   imgUrl: Scalars['String'];
   merchantId: Scalars['Int'];
   name: Scalars['String'];
@@ -627,47 +627,47 @@ export type ScenarioCreateManyClientInput = {
   notes: Scalars['String'];
   paymentType: PaymentType;
   unitType: Unit;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type ScenarioCreateManyClientInputEnvelope = {
-  data?: Maybe<Array<ScenarioCreateManyClientInput>>;
-  skipDuplicates?: Maybe<Scalars['Boolean']>;
+  data: Array<ScenarioCreateManyClientInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ScenarioCreateManyMerchantInput = {
   VAT: Vat;
   clientId: Scalars['Int'];
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
   currency: Currency;
   dueDateDays: Scalars['Int'];
-  id?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']>;
   imgUrl: Scalars['String'];
   name: Scalars['String'];
   netPerOne: Scalars['Int'];
   notes: Scalars['String'];
   paymentType: PaymentType;
   unitType: Unit;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type ScenarioCreateManyMerchantInputEnvelope = {
-  data?: Maybe<Array<ScenarioCreateManyMerchantInput>>;
-  skipDuplicates?: Maybe<Scalars['Boolean']>;
+  data: Array<ScenarioCreateManyMerchantInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ScenarioCreateNestedManyWithoutClientInput = {
-  connect?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  connectOrCreate?: Maybe<Array<ScenarioCreateOrConnectWithoutClientInput>>;
-  create?: Maybe<Array<ScenarioCreateWithoutClientInput>>;
-  createMany?: Maybe<ScenarioCreateManyClientInputEnvelope>;
+  connect: Array<ScenarioWhereUniqueInput>;
+  connectOrCreate: Array<ScenarioCreateOrConnectWithoutClientInput>;
+  create: Array<ScenarioCreateWithoutClientInput>;
+  createMany?: InputMaybe<ScenarioCreateManyClientInputEnvelope>;
 };
 
 export type ScenarioCreateNestedManyWithoutMerchantInput = {
-  connect?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  connectOrCreate?: Maybe<Array<ScenarioCreateOrConnectWithoutMerchantInput>>;
-  create?: Maybe<Array<ScenarioCreateWithoutMerchantInput>>;
-  createMany?: Maybe<ScenarioCreateManyMerchantInputEnvelope>;
+  connect: Array<ScenarioWhereUniqueInput>;
+  connectOrCreate: Array<ScenarioCreateOrConnectWithoutMerchantInput>;
+  create: Array<ScenarioCreateWithoutMerchantInput>;
+  createMany?: InputMaybe<ScenarioCreateManyMerchantInputEnvelope>;
 };
 
 export type ScenarioCreateOrConnectWithoutClientInput = {
@@ -682,7 +682,7 @@ export type ScenarioCreateOrConnectWithoutMerchantInput = {
 
 export type ScenarioCreateWithoutClientInput = {
   VAT: Vat;
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
   currency: Currency;
   dueDateDays: Scalars['Int'];
   imgUrl: Scalars['String'];
@@ -692,13 +692,13 @@ export type ScenarioCreateWithoutClientInput = {
   notes: Scalars['String'];
   paymentType: PaymentType;
   unitType: Unit;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type ScenarioCreateWithoutMerchantInput = {
   VAT: Vat;
   client: ClientCreateNestedOneWithoutScenarioInput;
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
   currency: Currency;
   dueDateDays: Scalars['Int'];
   imgUrl: Scalars['String'];
@@ -707,63 +707,63 @@ export type ScenarioCreateWithoutMerchantInput = {
   notes: Scalars['String'];
   paymentType: PaymentType;
   unitType: Unit;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type ScenarioListRelationFilter = {
-  every?: Maybe<ScenarioWhereInput>;
-  none?: Maybe<ScenarioWhereInput>;
-  some?: Maybe<ScenarioWhereInput>;
+  every?: InputMaybe<ScenarioWhereInput>;
+  none?: InputMaybe<ScenarioWhereInput>;
+  some?: InputMaybe<ScenarioWhereInput>;
 };
 
 export type ScenarioScalarWhereInput = {
-  AND?: Maybe<Array<ScenarioScalarWhereInput>>;
-  NOT?: Maybe<Array<ScenarioScalarWhereInput>>;
-  OR?: Maybe<Array<ScenarioScalarWhereInput>>;
-  VAT?: Maybe<EnumVatFilter>;
-  clientId?: Maybe<IntFilter>;
-  createdAt?: Maybe<DateTimeFilter>;
-  currency?: Maybe<EnumCurrencyFilter>;
-  dueDateDays?: Maybe<IntFilter>;
-  id?: Maybe<IntFilter>;
-  imgUrl?: Maybe<StringFilter>;
-  merchantId?: Maybe<IntFilter>;
-  name?: Maybe<StringFilter>;
-  netPerOne?: Maybe<IntFilter>;
-  notes?: Maybe<StringFilter>;
-  paymentType?: Maybe<EnumPaymentTypeFilter>;
-  unitType?: Maybe<EnumUnitFilter>;
-  updatedAt?: Maybe<DateTimeFilter>;
+  AND: Array<ScenarioScalarWhereInput>;
+  NOT: Array<ScenarioScalarWhereInput>;
+  OR: Array<ScenarioScalarWhereInput>;
+  VAT?: InputMaybe<EnumVatFilter>;
+  clientId?: InputMaybe<IntFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  currency?: InputMaybe<EnumCurrencyFilter>;
+  dueDateDays?: InputMaybe<IntFilter>;
+  id?: InputMaybe<IntFilter>;
+  imgUrl?: InputMaybe<StringFilter>;
+  merchantId?: InputMaybe<IntFilter>;
+  name?: InputMaybe<StringFilter>;
+  netPerOne?: InputMaybe<IntFilter>;
+  notes?: InputMaybe<StringFilter>;
+  paymentType?: InputMaybe<EnumPaymentTypeFilter>;
+  unitType?: InputMaybe<EnumUnitFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
 };
 
 export type ScenarioUpdateInput = {
-  VAT?: Maybe<Vat>;
-  client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Currency>;
-  dueDateDays?: Maybe<Scalars['Int']>;
-  imgUrl?: Maybe<Scalars['String']>;
-  merchant?: Maybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
-  name?: Maybe<Scalars['String']>;
-  netPerOne?: Maybe<Scalars['Int']>;
-  notes?: Maybe<Scalars['String']>;
-  paymentType?: Maybe<PaymentType>;
-  unitType?: Maybe<Unit>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  VAT?: InputMaybe<Vat>;
+  client?: InputMaybe<ClientUpdateOneRequiredWithoutScenarioInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<Currency>;
+  dueDateDays?: InputMaybe<Scalars['Int']>;
+  imgUrl?: InputMaybe<Scalars['String']>;
+  merchant?: InputMaybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
+  name?: InputMaybe<Scalars['String']>;
+  netPerOne?: InputMaybe<Scalars['Int']>;
+  notes?: InputMaybe<Scalars['String']>;
+  paymentType?: InputMaybe<PaymentType>;
+  unitType?: InputMaybe<Unit>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type ScenarioUpdateManyMutationInput = {
-  VAT?: Maybe<Vat>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Currency>;
-  dueDateDays?: Maybe<Scalars['Int']>;
-  imgUrl?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  netPerOne?: Maybe<Scalars['Int']>;
-  notes?: Maybe<Scalars['String']>;
-  paymentType?: Maybe<PaymentType>;
-  unitType?: Maybe<Unit>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  VAT?: InputMaybe<Vat>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<Currency>;
+  dueDateDays?: InputMaybe<Scalars['Int']>;
+  imgUrl?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  netPerOne?: InputMaybe<Scalars['Int']>;
+  notes?: InputMaybe<Scalars['String']>;
+  paymentType?: InputMaybe<PaymentType>;
+  unitType?: InputMaybe<Unit>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type ScenarioUpdateManyWithWhereWithoutClientInput = {
@@ -777,31 +777,31 @@ export type ScenarioUpdateManyWithWhereWithoutMerchantInput = {
 };
 
 export type ScenarioUpdateManyWithoutClientInput = {
-  connect?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  connectOrCreate?: Maybe<Array<ScenarioCreateOrConnectWithoutClientInput>>;
-  create?: Maybe<Array<ScenarioCreateWithoutClientInput>>;
-  createMany?: Maybe<ScenarioCreateManyClientInputEnvelope>;
-  delete?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  deleteMany?: Maybe<Array<ScenarioScalarWhereInput>>;
-  disconnect?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  set?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  update?: Maybe<Array<ScenarioUpdateWithWhereUniqueWithoutClientInput>>;
-  updateMany?: Maybe<Array<ScenarioUpdateManyWithWhereWithoutClientInput>>;
-  upsert?: Maybe<Array<ScenarioUpsertWithWhereUniqueWithoutClientInput>>;
+  connect: Array<ScenarioWhereUniqueInput>;
+  connectOrCreate: Array<ScenarioCreateOrConnectWithoutClientInput>;
+  create: Array<ScenarioCreateWithoutClientInput>;
+  createMany?: InputMaybe<ScenarioCreateManyClientInputEnvelope>;
+  delete: Array<ScenarioWhereUniqueInput>;
+  deleteMany: Array<ScenarioScalarWhereInput>;
+  disconnect: Array<ScenarioWhereUniqueInput>;
+  set: Array<ScenarioWhereUniqueInput>;
+  update: Array<ScenarioUpdateWithWhereUniqueWithoutClientInput>;
+  updateMany: Array<ScenarioUpdateManyWithWhereWithoutClientInput>;
+  upsert: Array<ScenarioUpsertWithWhereUniqueWithoutClientInput>;
 };
 
 export type ScenarioUpdateManyWithoutMerchantInput = {
-  connect?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  connectOrCreate?: Maybe<Array<ScenarioCreateOrConnectWithoutMerchantInput>>;
-  create?: Maybe<Array<ScenarioCreateWithoutMerchantInput>>;
-  createMany?: Maybe<ScenarioCreateManyMerchantInputEnvelope>;
-  delete?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  deleteMany?: Maybe<Array<ScenarioScalarWhereInput>>;
-  disconnect?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  set?: Maybe<Array<ScenarioWhereUniqueInput>>;
-  update?: Maybe<Array<ScenarioUpdateWithWhereUniqueWithoutMerchantInput>>;
-  updateMany?: Maybe<Array<ScenarioUpdateManyWithWhereWithoutMerchantInput>>;
-  upsert?: Maybe<Array<ScenarioUpsertWithWhereUniqueWithoutMerchantInput>>;
+  connect: Array<ScenarioWhereUniqueInput>;
+  connectOrCreate: Array<ScenarioCreateOrConnectWithoutMerchantInput>;
+  create: Array<ScenarioCreateWithoutMerchantInput>;
+  createMany?: InputMaybe<ScenarioCreateManyMerchantInputEnvelope>;
+  delete: Array<ScenarioWhereUniqueInput>;
+  deleteMany: Array<ScenarioScalarWhereInput>;
+  disconnect: Array<ScenarioWhereUniqueInput>;
+  set: Array<ScenarioWhereUniqueInput>;
+  update: Array<ScenarioUpdateWithWhereUniqueWithoutMerchantInput>;
+  updateMany: Array<ScenarioUpdateManyWithWhereWithoutMerchantInput>;
+  upsert: Array<ScenarioUpsertWithWhereUniqueWithoutMerchantInput>;
 };
 
 export type ScenarioUpdateWithWhereUniqueWithoutClientInput = {
@@ -815,33 +815,33 @@ export type ScenarioUpdateWithWhereUniqueWithoutMerchantInput = {
 };
 
 export type ScenarioUpdateWithoutClientInput = {
-  VAT?: Maybe<Vat>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Currency>;
-  dueDateDays?: Maybe<Scalars['Int']>;
-  imgUrl?: Maybe<Scalars['String']>;
-  merchant?: Maybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
-  name?: Maybe<Scalars['String']>;
-  netPerOne?: Maybe<Scalars['Int']>;
-  notes?: Maybe<Scalars['String']>;
-  paymentType?: Maybe<PaymentType>;
-  unitType?: Maybe<Unit>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  VAT?: InputMaybe<Vat>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<Currency>;
+  dueDateDays?: InputMaybe<Scalars['Int']>;
+  imgUrl?: InputMaybe<Scalars['String']>;
+  merchant?: InputMaybe<MerchantUpdateOneRequiredWithoutScenarioInput>;
+  name?: InputMaybe<Scalars['String']>;
+  netPerOne?: InputMaybe<Scalars['Int']>;
+  notes?: InputMaybe<Scalars['String']>;
+  paymentType?: InputMaybe<PaymentType>;
+  unitType?: InputMaybe<Unit>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type ScenarioUpdateWithoutMerchantInput = {
-  VAT?: Maybe<Vat>;
-  client?: Maybe<ClientUpdateOneRequiredWithoutScenarioInput>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  currency?: Maybe<Currency>;
-  dueDateDays?: Maybe<Scalars['Int']>;
-  imgUrl?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  netPerOne?: Maybe<Scalars['Int']>;
-  notes?: Maybe<Scalars['String']>;
-  paymentType?: Maybe<PaymentType>;
-  unitType?: Maybe<Unit>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  VAT?: InputMaybe<Vat>;
+  client?: InputMaybe<ClientUpdateOneRequiredWithoutScenarioInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<Currency>;
+  dueDateDays?: InputMaybe<Scalars['Int']>;
+  imgUrl?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  netPerOne?: InputMaybe<Scalars['Int']>;
+  notes?: InputMaybe<Scalars['String']>;
+  paymentType?: InputMaybe<PaymentType>;
+  unitType?: InputMaybe<Unit>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type ScenarioUpsertWithWhereUniqueWithoutClientInput = {
@@ -857,29 +857,29 @@ export type ScenarioUpsertWithWhereUniqueWithoutMerchantInput = {
 };
 
 export type ScenarioWhereInput = {
-  AND?: Maybe<Array<ScenarioWhereInput>>;
-  NOT?: Maybe<Array<ScenarioWhereInput>>;
-  OR?: Maybe<Array<ScenarioWhereInput>>;
-  VAT?: Maybe<EnumVatFilter>;
-  client?: Maybe<ClientWhereInput>;
-  clientId?: Maybe<IntFilter>;
-  createdAt?: Maybe<DateTimeFilter>;
-  currency?: Maybe<EnumCurrencyFilter>;
-  dueDateDays?: Maybe<IntFilter>;
-  id?: Maybe<IntFilter>;
-  imgUrl?: Maybe<StringFilter>;
-  merchant?: Maybe<MerchantWhereInput>;
-  merchantId?: Maybe<IntFilter>;
-  name?: Maybe<StringFilter>;
-  netPerOne?: Maybe<IntFilter>;
-  notes?: Maybe<StringFilter>;
-  paymentType?: Maybe<EnumPaymentTypeFilter>;
-  unitType?: Maybe<EnumUnitFilter>;
-  updatedAt?: Maybe<DateTimeFilter>;
+  AND: Array<ScenarioWhereInput>;
+  NOT: Array<ScenarioWhereInput>;
+  OR: Array<ScenarioWhereInput>;
+  VAT?: InputMaybe<EnumVatFilter>;
+  client?: InputMaybe<ClientWhereInput>;
+  clientId?: InputMaybe<IntFilter>;
+  createdAt?: InputMaybe<DateTimeFilter>;
+  currency?: InputMaybe<EnumCurrencyFilter>;
+  dueDateDays?: InputMaybe<IntFilter>;
+  id?: InputMaybe<IntFilter>;
+  imgUrl?: InputMaybe<StringFilter>;
+  merchant?: InputMaybe<MerchantWhereInput>;
+  merchantId?: InputMaybe<IntFilter>;
+  name?: InputMaybe<StringFilter>;
+  netPerOne?: InputMaybe<IntFilter>;
+  notes?: InputMaybe<StringFilter>;
+  paymentType?: InputMaybe<EnumPaymentTypeFilter>;
+  unitType?: InputMaybe<EnumUnitFilter>;
+  updatedAt?: InputMaybe<DateTimeFilter>;
 };
 
 export type ScenarioWhereUniqueInput = {
-  id?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export enum SortOrder {
@@ -888,33 +888,33 @@ export enum SortOrder {
 }
 
 export type StringFilter = {
-  contains?: Maybe<Scalars['String']>;
-  endsWith?: Maybe<Scalars['String']>;
-  equals?: Maybe<Scalars['String']>;
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Scalars['String']>>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  mode?: Maybe<QueryMode>;
-  not?: Maybe<NestedStringFilter>;
-  notIn?: Maybe<Array<Scalars['String']>>;
-  startsWith?: Maybe<Scalars['String']>;
+  contains?: InputMaybe<Scalars['String']>;
+  endsWith?: InputMaybe<Scalars['String']>;
+  equals?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  gte?: InputMaybe<Scalars['String']>;
+  in: Array<Scalars['String']>;
+  lt?: InputMaybe<Scalars['String']>;
+  lte?: InputMaybe<Scalars['String']>;
+  mode?: InputMaybe<QueryMode>;
+  not?: InputMaybe<NestedStringFilter>;
+  notIn: Array<Scalars['String']>;
+  startsWith?: InputMaybe<Scalars['String']>;
 };
 
 export type StringNullableFilter = {
-  contains?: Maybe<Scalars['String']>;
-  endsWith?: Maybe<Scalars['String']>;
-  equals?: Maybe<Scalars['String']>;
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Scalars['String']>>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  mode?: Maybe<QueryMode>;
-  not?: Maybe<NestedStringNullableFilter>;
-  notIn?: Maybe<Array<Scalars['String']>>;
-  startsWith?: Maybe<Scalars['String']>;
+  contains?: InputMaybe<Scalars['String']>;
+  endsWith?: InputMaybe<Scalars['String']>;
+  equals?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  gte?: InputMaybe<Scalars['String']>;
+  in: Array<Scalars['String']>;
+  lt?: InputMaybe<Scalars['String']>;
+  lte?: InputMaybe<Scalars['String']>;
+  mode?: InputMaybe<QueryMode>;
+  not?: InputMaybe<NestedStringNullableFilter>;
+  notIn: Array<Scalars['String']>;
+  startsWith?: InputMaybe<Scalars['String']>;
 };
 
 export enum Unit {
@@ -930,46 +930,25 @@ export enum Vat {
   Percent_23 = 'PERCENT_23'
 }
 
-export type ClientContentFragment = (
-  { __typename?: 'Client' }
-  & Pick<Client, 'id' | 'name' | 'address' | 'postCode' | 'city' | 'country' | 'VATId'>
-);
+export type ClientContentFragment = { __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined };
 
-export type MerchantContentFragment = (
-  { __typename?: 'Merchant' }
-  & Pick<Merchant, 'id' | 'companyName' | 'address' | 'postCode' | 'city' | 'country' | 'VATId' | 'bankAccountPln' | 'bankAccountEur' | 'bankName' | 'email' | 'issuerName'>
-);
+export type MerchantContentFragment = { __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string };
 
-export type ScenarioContentFragment = (
-  { __typename?: 'Scenario' }
-  & Pick<Scenario, 'id' | 'name' | 'paymentType' | 'imgUrl' | 'netPerOne' | 'VAT' | 'unitType' | 'currency' | 'notes' | 'dueDateDays' | 'createdAt' | 'updatedAt' | 'clientId' | 'merchantId'>
-);
+export type ScenarioContentFragment = { __typename?: 'Scenario', id: number, name: string, paymentType: PaymentType, imgUrl: string, netPerOne: number, VAT: Vat, unitType: Unit, currency: Currency, notes: string, dueDateDays: number, createdAt: any, updatedAt: any, clientId: number, merchantId: number };
 
 export type CreateClientMutationVariables = Exact<{
   data: ClientCreateInput;
 }>;
 
 
-export type CreateClientMutation = (
-  { __typename?: 'Mutation' }
-  & { createdClient: (
-    { __typename?: 'Client' }
-    & Pick<Client, 'id'>
-  ) }
-);
+export type CreateClientMutation = { __typename?: 'Mutation', createdClient: { __typename?: 'Client', id: number } };
 
 export type DeleteClientMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DeleteClientMutation = (
-  { __typename?: 'Mutation' }
-  & { deletedClient?: Maybe<(
-    { __typename?: 'Client' }
-    & Pick<Client, 'id'>
-  )> }
-);
+export type DeleteClientMutation = { __typename?: 'Mutation', deletedClient?: { __typename?: 'Client', id: number } | null | undefined };
 
 export type UpdateClientMutationVariables = Exact<{
   data: ClientUpdateInput;
@@ -977,39 +956,21 @@ export type UpdateClientMutationVariables = Exact<{
 }>;
 
 
-export type UpdateClientMutation = (
-  { __typename?: 'Mutation' }
-  & { updatedClient?: Maybe<(
-    { __typename?: 'Client' }
-    & ClientContentFragment
-  )> }
-);
+export type UpdateClientMutation = { __typename?: 'Mutation', updatedClient?: { __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined } | null | undefined };
 
 export type CreateMerchantMutationVariables = Exact<{
   data: MerchantCreateInput;
 }>;
 
 
-export type CreateMerchantMutation = (
-  { __typename?: 'Mutation' }
-  & { createdMerchant: (
-    { __typename?: 'Merchant' }
-    & Pick<Merchant, 'id'>
-  ) }
-);
+export type CreateMerchantMutation = { __typename?: 'Mutation', createdMerchant: { __typename?: 'Merchant', id: number } };
 
 export type DeleteMerchantMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DeleteMerchantMutation = (
-  { __typename?: 'Mutation' }
-  & { deletedMerchant?: Maybe<(
-    { __typename?: 'Merchant' }
-    & Pick<Merchant, 'id'>
-  )> }
-);
+export type DeleteMerchantMutation = { __typename?: 'Mutation', deletedMerchant?: { __typename?: 'Merchant', id: number } | null | undefined };
 
 export type UpdateMerchantMutationVariables = Exact<{
   data: MerchantUpdateInput;
@@ -1017,54 +978,26 @@ export type UpdateMerchantMutationVariables = Exact<{
 }>;
 
 
-export type UpdateMerchantMutation = (
-  { __typename?: 'Mutation' }
-  & { updatedMerchant?: Maybe<(
-    { __typename?: 'Merchant' }
-    & MerchantContentFragment
-  )> }
-);
+export type UpdateMerchantMutation = { __typename?: 'Mutation', updatedMerchant?: { __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string } | null | undefined };
 
 export type CreateScenarioMutationVariables = Exact<{
   data: ScenarioCreateInput;
 }>;
 
 
-export type CreateScenarioMutation = (
-  { __typename?: 'Mutation' }
-  & { createdScenario: (
-    { __typename?: 'Scenario' }
-    & ScenarioContentFragment
-  ) }
-);
+export type CreateScenarioMutation = { __typename?: 'Mutation', createdScenario: { __typename?: 'Scenario', id: number, name: string, paymentType: PaymentType, imgUrl: string, netPerOne: number, VAT: Vat, unitType: Unit, currency: Currency, notes: string, dueDateDays: number, createdAt: any, updatedAt: any, clientId: number, merchantId: number } };
 
 export type ClientQueryVariables = Exact<{
   where: ClientWhereUniqueInput;
 }>;
 
 
-export type ClientQuery = (
-  { __typename?: 'Query' }
-  & { client?: Maybe<(
-    { __typename?: 'Client' }
-    & ClientContentFragment
-  )> }
-);
+export type ClientQuery = { __typename?: 'Query', client?: { __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined } | null | undefined };
 
 export type ClientListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ClientListQuery = (
-  { __typename?: 'Query' }
-  & { clientList?: Maybe<(
-    { __typename?: 'ClientList' }
-    & Pick<ClientList, 'totalCount'>
-    & { list?: Maybe<Array<Maybe<(
-      { __typename?: 'Client' }
-      & ClientContentFragment
-    )>>> }
-  )> }
-);
+export type ClientListQuery = { __typename?: 'Query', clientList: { __typename?: 'ClientList', totalCount: number, list: Array<{ __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined }> } };
 
 export type PaginatedClientListQueryVariables = Exact<{
   orderBy?: Maybe<Array<ClientOrderByInput> | ClientOrderByInput>;
@@ -1074,48 +1007,19 @@ export type PaginatedClientListQueryVariables = Exact<{
 }>;
 
 
-export type PaginatedClientListQuery = (
-  { __typename?: 'Query' }
-  & { paginatedClientList?: Maybe<(
-    { __typename?: 'PaginatedClientList' }
-    & Pick<PaginatedClientList, 'totalCount'>
-    & { filters?: Maybe<(
-      { __typename?: 'PaginatedClientListFilters' }
-      & Pick<PaginatedClientListFilters, 'country' | 'city'>
-    )>, list?: Maybe<Array<Maybe<(
-      { __typename?: 'Client' }
-      & ClientContentFragment
-    )>>> }
-  )> }
-);
+export type PaginatedClientListQuery = { __typename?: 'Query', paginatedClientList: { __typename?: 'PaginatedClientList', totalCount: number, filters: { __typename?: 'PaginatedClientListFilters', country: Array<string>, city: Array<string> }, list: Array<{ __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined }> } };
 
 export type MerchantQueryVariables = Exact<{
   where: MerchantWhereUniqueInput;
 }>;
 
 
-export type MerchantQuery = (
-  { __typename?: 'Query' }
-  & { merchant?: Maybe<(
-    { __typename?: 'Merchant' }
-    & MerchantContentFragment
-  )> }
-);
+export type MerchantQuery = { __typename?: 'Query', merchant?: { __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string } | null | undefined };
 
 export type MerchantListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MerchantListQuery = (
-  { __typename?: 'Query' }
-  & { merchantList?: Maybe<(
-    { __typename?: 'MerchantList' }
-    & Pick<MerchantList, 'totalCount'>
-    & { list?: Maybe<Array<Maybe<(
-      { __typename?: 'Merchant' }
-      & MerchantContentFragment
-    )>>> }
-  )> }
-);
+export type MerchantListQuery = { __typename?: 'Query', merchantList: { __typename?: 'MerchantList', totalCount: number, list: Array<{ __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string }> } };
 
 export type PaginatedMerchantListQueryVariables = Exact<{
   orderBy?: Maybe<Array<MerchantOrderByInput> | MerchantOrderByInput>;
@@ -1125,20 +1029,7 @@ export type PaginatedMerchantListQueryVariables = Exact<{
 }>;
 
 
-export type PaginatedMerchantListQuery = (
-  { __typename?: 'Query' }
-  & { paginatedMerchantList?: Maybe<(
-    { __typename?: 'PaginatedMerchantList' }
-    & Pick<PaginatedMerchantList, 'totalCount'>
-    & { filters?: Maybe<(
-      { __typename?: 'PaginatedMerchantListFilters' }
-      & Pick<PaginatedMerchantListFilters, 'country' | 'city' | 'bank'>
-    )>, list?: Maybe<Array<Maybe<(
-      { __typename?: 'Merchant' }
-      & MerchantContentFragment
-    )>>> }
-  )> }
-);
+export type PaginatedMerchantListQuery = { __typename?: 'Query', paginatedMerchantList: { __typename?: 'PaginatedMerchantList', totalCount: number, filters: { __typename?: 'PaginatedMerchantListFilters', country: Array<string>, city: Array<string>, bank: Array<string> }, list: Array<{ __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string }> } };
 
 export const ClientContentFragmentDoc = gql`
     fragment ClientContent on Client {

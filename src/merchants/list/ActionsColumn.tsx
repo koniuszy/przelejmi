@@ -5,16 +5,14 @@ import NextLink from 'next/link'
 import { CopyIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Td, Text, Menu, MenuButton, Button, MenuList, MenuItem, useToast } from '@chakra-ui/react'
 
-import { Merchant } from 'prisma/prisma-client'
-
-import { useDeleteMerchantMutation } from 'src/generated/graphql'
+import { MerchantContentFragment, useDeleteMerchantMutation } from 'src/generated/graphql'
 
 import Clipboard from 'src/components/Clipboard'
 import Confirmation from 'src/components/Confirmation'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const ActionsColumn: FC<{
-  merchant: Merchant
+  merchant: MerchantContentFragment
   onMerchantDelete: (id: number) => void
 }> = ({ merchant, onMerchantDelete }) => {
   const toast = useToast()
@@ -23,13 +21,13 @@ const ActionsColumn: FC<{
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
 
   const [deleteMerchant, deleteMerchantOptions] = useDeleteMerchantMutation({
-    onCompleted({ deletedMerchant }) {
+    onCompleted() {
       toast({
         ...successToastContent,
         title: 'Client deleted.',
       })
       setMerchantDeletionId(null)
-      onMerchantDelete(deletedMerchant.id)
+      onMerchantDelete(merchant.id)
     },
     onError() {
       toast(errorToastContent)
@@ -72,7 +70,7 @@ const ActionsColumn: FC<{
           </Clipboard>
 
           <Clipboard
-            value={merchant.bankAccountEur}
+            value={merchant.bankAccountEur || ''}
             onCopy={() =>
               toast({
                 ...successToastContent,

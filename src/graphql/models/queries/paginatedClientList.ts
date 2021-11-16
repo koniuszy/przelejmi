@@ -30,8 +30,8 @@ export const PaginatedClientListQuery = extendType({
       args: {
         take: intArg({ required: true }),
         skip: intArg({ required: true }),
-        where: arg({ type: 'ClientWhereInput' }),
-        orderBy: arg({ type: 'ClientOrderByInput', list: true }),
+        where: arg({ type: 'ClientWhereInput', nullable: true }),
+        orderBy: arg({ type: 'ClientOrderByInput', list: true, nullable: true }),
       },
       async resolve(_root, variables) {
         const paginatedClientListData = await getPaginatedClientListData(

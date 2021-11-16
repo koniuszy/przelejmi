@@ -19,6 +19,7 @@ module.exports = {
       2,
       { devDependencies: ['**/*.test.*', '**/*.stories.*'] },
     ],
+    'max-params': 'off',
     'import/no-anonymous-default-export': 0,
     'no-undef': 'off',
     'no-unused-vars': 'off',

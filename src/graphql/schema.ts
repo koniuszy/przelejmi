@@ -15,14 +15,15 @@ const baseSchema = makeSchema({
       experimentalCRUD: true,
       atomicOperations: false,
       paginationStrategy: 'prisma',
+      shouldGenerateArtifacts: true,
       outputs: {
         typegen: join(process.cwd(), 'src', 'generated', 'typegen-nexus-plugin-prisma.d.ts'),
       },
     }),
   ],
   nonNullDefaults: {
-    input: false,
-    output: false,
+    input: true,
+    output: true,
   },
   outputs: {
     schema: join(process.cwd(), 'src', 'generated', 'schema.graphql'),
@@ -42,6 +43,6 @@ const baseSchema = makeSchema({
   },
 })
 
-export const schema = applyMiddleware(baseSchema, permissions)
+// export const schema = applyMiddleware(baseSchema, permissions)
 
-export default schema
+export default baseSchema

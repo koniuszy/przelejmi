@@ -4,9 +4,7 @@ import Head from 'next/head'
 
 import { Tr, Td } from '@chakra-ui/react'
 
-import { Merchant } from 'prisma/prisma-client'
-
-import { usePaginatedMerchantListQuery } from 'src/generated/graphql'
+import { MerchantWhereInput, usePaginatedMerchantListQuery } from 'src/generated/graphql'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
 import ActionsColumn from 'src/merchants/list/ActionsColumn'
@@ -46,8 +44,9 @@ const MerchantList: FC = () => {
         isEditable,
         filterOptions: { ...filters },
         onEditableToggle: setIsEditable,
-        async onDrawerChange({ bank, ...filters }) {
-          const where = { ...filters }
+        async onDrawerChange(nullableFilters) {
+          const { bank, ...filters } = nullableFilters || {}
+          const where: MerchantWhereInput = { ...filters }
           if (bank) where.bankName = bank
           await refetch({ where })
         },
@@ -60,7 +59,7 @@ const MerchantList: FC = () => {
         'bank',
         'actions',
       ]}
-      rowRender={(item: Merchant, index) => (
+      rowRender={(item, index) => (
         <Tr key={item.id}>
           <Td>{index + 1}.</Td>
 

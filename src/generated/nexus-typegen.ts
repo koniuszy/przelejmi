@@ -83,9 +83,9 @@ export interface NexusGenInputs {
     update: NexusGenInputs['ClientUpdateWithoutScenarioInput']; // ClientUpdateWithoutScenarioInput!
   }
   ClientWhereInput: { // input type
-    AND?: NexusGenInputs['ClientWhereInput'][] | null; // [ClientWhereInput!]
-    NOT?: NexusGenInputs['ClientWhereInput'][] | null; // [ClientWhereInput!]
-    OR?: NexusGenInputs['ClientWhereInput'][] | null; // [ClientWhereInput!]
+    AND: NexusGenInputs['ClientWhereInput'][]; // [ClientWhereInput!]!
+    NOT: NexusGenInputs['ClientWhereInput'][]; // [ClientWhereInput!]!
+    OR: NexusGenInputs['ClientWhereInput'][]; // [ClientWhereInput!]!
     Scenario?: NexusGenInputs['ScenarioListRelationFilter'] | null; // ScenarioListRelationFilter
     VATId?: NexusGenInputs['StringNullableFilter'] | null; // StringNullableFilter
     address?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -102,45 +102,45 @@ export interface NexusGenInputs {
     equals?: NexusGenScalars['DateTime'] | null; // DateTime
     gt?: NexusGenScalars['DateTime'] | null; // DateTime
     gte?: NexusGenScalars['DateTime'] | null; // DateTime
-    in?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
+    in: NexusGenScalars['DateTime'][]; // [DateTime!]!
     lt?: NexusGenScalars['DateTime'] | null; // DateTime
     lte?: NexusGenScalars['DateTime'] | null; // DateTime
     not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
-    notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
+    notIn: NexusGenScalars['DateTime'][]; // [DateTime!]!
   }
   EnumCurrencyFilter: { // input type
     equals?: NexusGenEnums['Currency'] | null; // Currency
-    in?: NexusGenEnums['Currency'][] | null; // [Currency!]
+    in: NexusGenEnums['Currency'][]; // [Currency!]!
     not?: NexusGenInputs['NestedEnumCurrencyFilter'] | null; // NestedEnumCurrencyFilter
-    notIn?: NexusGenEnums['Currency'][] | null; // [Currency!]
+    notIn: NexusGenEnums['Currency'][]; // [Currency!]!
   }
   EnumPaymentTypeFilter: { // input type
     equals?: NexusGenEnums['PaymentType'] | null; // PaymentType
-    in?: NexusGenEnums['PaymentType'][] | null; // [PaymentType!]
+    in: NexusGenEnums['PaymentType'][]; // [PaymentType!]!
     not?: NexusGenInputs['NestedEnumPaymentTypeFilter'] | null; // NestedEnumPaymentTypeFilter
-    notIn?: NexusGenEnums['PaymentType'][] | null; // [PaymentType!]
+    notIn: NexusGenEnums['PaymentType'][]; // [PaymentType!]!
   }
   EnumUnitFilter: { // input type
     equals?: NexusGenEnums['Unit'] | null; // Unit
-    in?: NexusGenEnums['Unit'][] | null; // [Unit!]
+    in: NexusGenEnums['Unit'][]; // [Unit!]!
     not?: NexusGenInputs['NestedEnumUnitFilter'] | null; // NestedEnumUnitFilter
-    notIn?: NexusGenEnums['Unit'][] | null; // [Unit!]
+    notIn: NexusGenEnums['Unit'][]; // [Unit!]!
   }
   EnumVATFilter: { // input type
     equals?: NexusGenEnums['VAT'] | null; // VAT
-    in?: NexusGenEnums['VAT'][] | null; // [VAT!]
+    in: NexusGenEnums['VAT'][]; // [VAT!]!
     not?: NexusGenInputs['NestedEnumVATFilter'] | null; // NestedEnumVATFilter
-    notIn?: NexusGenEnums['VAT'][] | null; // [VAT!]
+    notIn: NexusGenEnums['VAT'][]; // [VAT!]!
   }
   IntFilter: { // input type
     equals?: number | null; // Int
     gt?: number | null; // Int
     gte?: number | null; // Int
-    in?: number[] | null; // [Int!]
+    in: number[]; // [Int!]!
     lt?: number | null; // Int
     lte?: number | null; // Int
     not?: NexusGenInputs['NestedIntFilter'] | null; // NestedIntFilter
-    notIn?: number[] | null; // [Int!]
+    notIn: number[]; // [Int!]!
   }
   MerchantCreateInput: { // input type
     Scenario?: NexusGenInputs['ScenarioCreateNestedManyWithoutMerchantInput'] | null; // ScenarioCreateNestedManyWithoutMerchantInput
@@ -231,9 +231,9 @@ export interface NexusGenInputs {
     update: NexusGenInputs['MerchantUpdateWithoutScenarioInput']; // MerchantUpdateWithoutScenarioInput!
   }
   MerchantWhereInput: { // input type
-    AND?: NexusGenInputs['MerchantWhereInput'][] | null; // [MerchantWhereInput!]
-    NOT?: NexusGenInputs['MerchantWhereInput'][] | null; // [MerchantWhereInput!]
-    OR?: NexusGenInputs['MerchantWhereInput'][] | null; // [MerchantWhereInput!]
+    AND: NexusGenInputs['MerchantWhereInput'][]; // [MerchantWhereInput!]!
+    NOT: NexusGenInputs['MerchantWhereInput'][]; // [MerchantWhereInput!]!
+    OR: NexusGenInputs['MerchantWhereInput'][]; // [MerchantWhereInput!]!
     Scenario?: NexusGenInputs['ScenarioListRelationFilter'] | null; // ScenarioListRelationFilter
     VATId?: NexusGenInputs['StringFilter'] | null; // StringFilter
     address?: NexusGenInputs['StringFilter'] | null; // StringFilter
@@ -255,45 +255,45 @@ export interface NexusGenInputs {
     equals?: NexusGenScalars['DateTime'] | null; // DateTime
     gt?: NexusGenScalars['DateTime'] | null; // DateTime
     gte?: NexusGenScalars['DateTime'] | null; // DateTime
-    in?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
+    in: NexusGenScalars['DateTime'][]; // [DateTime!]!
     lt?: NexusGenScalars['DateTime'] | null; // DateTime
     lte?: NexusGenScalars['DateTime'] | null; // DateTime
     not?: NexusGenInputs['NestedDateTimeFilter'] | null; // NestedDateTimeFilter
-    notIn?: NexusGenScalars['DateTime'][] | null; // [DateTime!]
+    notIn: NexusGenScalars['DateTime'][]; // [DateTime!]!
   }
   NestedEnumCurrencyFilter: { // input type
     equals?: NexusGenEnums['Currency'] | null; // Currency
-    in?: NexusGenEnums['Currency'][] | null; // [Currency!]
+    in: NexusGenEnums['Currency'][]; // [Currency!]!
     not?: NexusGenInputs['NestedEnumCurrencyFilter'] | null; // NestedEnumCurrencyFilter
-    notIn?: NexusGenEnums['Currency'][] | null; // [Currency!]
+    notIn: NexusGenEnums['Currency'][]; // [Currency!]!
   }
   NestedEnumPaymentTypeFilter: { // input type
     equals?: NexusGenEnums['PaymentType'] | null; // PaymentType
-    in?: NexusGenEnums['PaymentType'][] | null; // [PaymentType!]
+    in: NexusGenEnums['PaymentType'][]; // [PaymentType!]!
     not?: NexusGenInputs['NestedEnumPaymentTypeFilter'] | null; // NestedEnumPaymentTypeFilter
-    notIn?: NexusGenEnums['PaymentType'][] | null; // [PaymentType!]
+    notIn: NexusGenEnums['PaymentType'][]; // [PaymentType!]!
   }
   NestedEnumUnitFilter: { // input type
     equals?: NexusGenEnums['Unit'] | null; // Unit
-    in?: NexusGenEnums['Unit'][] | null; // [Unit!]
+    in: NexusGenEnums['Unit'][]; // [Unit!]!
     not?: NexusGenInputs['NestedEnumUnitFilter'] | null; // NestedEnumUnitFilter
-    notIn?: NexusGenEnums['Unit'][] | null; // [Unit!]
+    notIn: NexusGenEnums['Unit'][]; // [Unit!]!
   }
   NestedEnumVATFilter: { // input type
     equals?: NexusGenEnums['VAT'] | null; // VAT
-    in?: NexusGenEnums['VAT'][] | null; // [VAT!]
+    in: NexusGenEnums['VAT'][]; // [VAT!]!
     not?: NexusGenInputs['NestedEnumVATFilter'] | null; // NestedEnumVATFilter
-    notIn?: NexusGenEnums['VAT'][] | null; // [VAT!]
+    notIn: NexusGenEnums['VAT'][]; // [VAT!]!
   }
   NestedIntFilter: { // input type
     equals?: number | null; // Int
     gt?: number | null; // Int
     gte?: number | null; // Int
-    in?: number[] | null; // [Int!]
+    in: number[]; // [Int!]!
     lt?: number | null; // Int
     lte?: number | null; // Int
     not?: NexusGenInputs['NestedIntFilter'] | null; // NestedIntFilter
-    notIn?: number[] | null; // [Int!]
+    notIn: number[]; // [Int!]!
   }
   NestedStringFilter: { // input type
     contains?: string | null; // String
@@ -301,11 +301,11 @@ export interface NexusGenInputs {
     equals?: string | null; // String
     gt?: string | null; // String
     gte?: string | null; // String
-    in?: string[] | null; // [String!]
+    in: string[]; // [String!]!
     lt?: string | null; // String
     lte?: string | null; // String
     not?: NexusGenInputs['NestedStringFilter'] | null; // NestedStringFilter
-    notIn?: string[] | null; // [String!]
+    notIn: string[]; // [String!]!
     startsWith?: string | null; // String
   }
   NestedStringNullableFilter: { // input type
@@ -314,11 +314,11 @@ export interface NexusGenInputs {
     equals?: string | null; // String
     gt?: string | null; // String
     gte?: string | null; // String
-    in?: string[] | null; // [String!]
+    in: string[]; // [String!]!
     lt?: string | null; // String
     lte?: string | null; // String
     not?: NexusGenInputs['NestedStringNullableFilter'] | null; // NestedStringNullableFilter
-    notIn?: string[] | null; // [String!]
+    notIn: string[]; // [String!]!
     startsWith?: string | null; // String
   }
   ScenarioCreateInput: { // input type
@@ -352,7 +352,7 @@ export interface NexusGenInputs {
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioCreateManyClientInputEnvelope: { // input type
-    data?: NexusGenInputs['ScenarioCreateManyClientInput'][] | null; // [ScenarioCreateManyClientInput!]
+    data: NexusGenInputs['ScenarioCreateManyClientInput'][]; // [ScenarioCreateManyClientInput!]!
     skipDuplicates?: boolean | null; // Boolean
   }
   ScenarioCreateManyMerchantInput: { // input type
@@ -371,19 +371,19 @@ export interface NexusGenInputs {
     updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   ScenarioCreateManyMerchantInputEnvelope: { // input type
-    data?: NexusGenInputs['ScenarioCreateManyMerchantInput'][] | null; // [ScenarioCreateManyMerchantInput!]
+    data: NexusGenInputs['ScenarioCreateManyMerchantInput'][]; // [ScenarioCreateManyMerchantInput!]!
     skipDuplicates?: boolean | null; // Boolean
   }
   ScenarioCreateNestedManyWithoutClientInput: { // input type
-    connect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['ScenarioCreateOrConnectWithoutClientInput'][] | null; // [ScenarioCreateOrConnectWithoutClientInput!]
-    create?: NexusGenInputs['ScenarioCreateWithoutClientInput'][] | null; // [ScenarioCreateWithoutClientInput!]
+    connect: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    connectOrCreate: NexusGenInputs['ScenarioCreateOrConnectWithoutClientInput'][]; // [ScenarioCreateOrConnectWithoutClientInput!]!
+    create: NexusGenInputs['ScenarioCreateWithoutClientInput'][]; // [ScenarioCreateWithoutClientInput!]!
     createMany?: NexusGenInputs['ScenarioCreateManyClientInputEnvelope'] | null; // ScenarioCreateManyClientInputEnvelope
   }
   ScenarioCreateNestedManyWithoutMerchantInput: { // input type
-    connect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['ScenarioCreateOrConnectWithoutMerchantInput'][] | null; // [ScenarioCreateOrConnectWithoutMerchantInput!]
-    create?: NexusGenInputs['ScenarioCreateWithoutMerchantInput'][] | null; // [ScenarioCreateWithoutMerchantInput!]
+    connect: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    connectOrCreate: NexusGenInputs['ScenarioCreateOrConnectWithoutMerchantInput'][]; // [ScenarioCreateOrConnectWithoutMerchantInput!]!
+    create: NexusGenInputs['ScenarioCreateWithoutMerchantInput'][]; // [ScenarioCreateWithoutMerchantInput!]!
     createMany?: NexusGenInputs['ScenarioCreateManyMerchantInputEnvelope'] | null; // ScenarioCreateManyMerchantInputEnvelope
   }
   ScenarioCreateOrConnectWithoutClientInput: { // input type
@@ -428,9 +428,9 @@ export interface NexusGenInputs {
     some?: NexusGenInputs['ScenarioWhereInput'] | null; // ScenarioWhereInput
   }
   ScenarioScalarWhereInput: { // input type
-    AND?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
-    NOT?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
-    OR?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
+    AND: NexusGenInputs['ScenarioScalarWhereInput'][]; // [ScenarioScalarWhereInput!]!
+    NOT: NexusGenInputs['ScenarioScalarWhereInput'][]; // [ScenarioScalarWhereInput!]!
+    OR: NexusGenInputs['ScenarioScalarWhereInput'][]; // [ScenarioScalarWhereInput!]!
     VAT?: NexusGenInputs['EnumVATFilter'] | null; // EnumVATFilter
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
@@ -483,30 +483,30 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ScenarioScalarWhereInput']; // ScenarioScalarWhereInput!
   }
   ScenarioUpdateManyWithoutClientInput: { // input type
-    connect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['ScenarioCreateOrConnectWithoutClientInput'][] | null; // [ScenarioCreateOrConnectWithoutClientInput!]
-    create?: NexusGenInputs['ScenarioCreateWithoutClientInput'][] | null; // [ScenarioCreateWithoutClientInput!]
+    connect: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    connectOrCreate: NexusGenInputs['ScenarioCreateOrConnectWithoutClientInput'][]; // [ScenarioCreateOrConnectWithoutClientInput!]!
+    create: NexusGenInputs['ScenarioCreateWithoutClientInput'][]; // [ScenarioCreateWithoutClientInput!]!
     createMany?: NexusGenInputs['ScenarioCreateManyClientInputEnvelope'] | null; // ScenarioCreateManyClientInputEnvelope
-    delete?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    deleteMany?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
-    disconnect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    set?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    update?: NexusGenInputs['ScenarioUpdateWithWhereUniqueWithoutClientInput'][] | null; // [ScenarioUpdateWithWhereUniqueWithoutClientInput!]
-    updateMany?: NexusGenInputs['ScenarioUpdateManyWithWhereWithoutClientInput'][] | null; // [ScenarioUpdateManyWithWhereWithoutClientInput!]
-    upsert?: NexusGenInputs['ScenarioUpsertWithWhereUniqueWithoutClientInput'][] | null; // [ScenarioUpsertWithWhereUniqueWithoutClientInput!]
+    delete: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    deleteMany: NexusGenInputs['ScenarioScalarWhereInput'][]; // [ScenarioScalarWhereInput!]!
+    disconnect: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    set: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    update: NexusGenInputs['ScenarioUpdateWithWhereUniqueWithoutClientInput'][]; // [ScenarioUpdateWithWhereUniqueWithoutClientInput!]!
+    updateMany: NexusGenInputs['ScenarioUpdateManyWithWhereWithoutClientInput'][]; // [ScenarioUpdateManyWithWhereWithoutClientInput!]!
+    upsert: NexusGenInputs['ScenarioUpsertWithWhereUniqueWithoutClientInput'][]; // [ScenarioUpsertWithWhereUniqueWithoutClientInput!]!
   }
   ScenarioUpdateManyWithoutMerchantInput: { // input type
-    connect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['ScenarioCreateOrConnectWithoutMerchantInput'][] | null; // [ScenarioCreateOrConnectWithoutMerchantInput!]
-    create?: NexusGenInputs['ScenarioCreateWithoutMerchantInput'][] | null; // [ScenarioCreateWithoutMerchantInput!]
+    connect: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    connectOrCreate: NexusGenInputs['ScenarioCreateOrConnectWithoutMerchantInput'][]; // [ScenarioCreateOrConnectWithoutMerchantInput!]!
+    create: NexusGenInputs['ScenarioCreateWithoutMerchantInput'][]; // [ScenarioCreateWithoutMerchantInput!]!
     createMany?: NexusGenInputs['ScenarioCreateManyMerchantInputEnvelope'] | null; // ScenarioCreateManyMerchantInputEnvelope
-    delete?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    deleteMany?: NexusGenInputs['ScenarioScalarWhereInput'][] | null; // [ScenarioScalarWhereInput!]
-    disconnect?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    set?: NexusGenInputs['ScenarioWhereUniqueInput'][] | null; // [ScenarioWhereUniqueInput!]
-    update?: NexusGenInputs['ScenarioUpdateWithWhereUniqueWithoutMerchantInput'][] | null; // [ScenarioUpdateWithWhereUniqueWithoutMerchantInput!]
-    updateMany?: NexusGenInputs['ScenarioUpdateManyWithWhereWithoutMerchantInput'][] | null; // [ScenarioUpdateManyWithWhereWithoutMerchantInput!]
-    upsert?: NexusGenInputs['ScenarioUpsertWithWhereUniqueWithoutMerchantInput'][] | null; // [ScenarioUpsertWithWhereUniqueWithoutMerchantInput!]
+    delete: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    deleteMany: NexusGenInputs['ScenarioScalarWhereInput'][]; // [ScenarioScalarWhereInput!]!
+    disconnect: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    set: NexusGenInputs['ScenarioWhereUniqueInput'][]; // [ScenarioWhereUniqueInput!]!
+    update: NexusGenInputs['ScenarioUpdateWithWhereUniqueWithoutMerchantInput'][]; // [ScenarioUpdateWithWhereUniqueWithoutMerchantInput!]!
+    updateMany: NexusGenInputs['ScenarioUpdateManyWithWhereWithoutMerchantInput'][]; // [ScenarioUpdateManyWithWhereWithoutMerchantInput!]!
+    upsert: NexusGenInputs['ScenarioUpsertWithWhereUniqueWithoutMerchantInput'][]; // [ScenarioUpsertWithWhereUniqueWithoutMerchantInput!]!
   }
   ScenarioUpdateWithWhereUniqueWithoutClientInput: { // input type
     data: NexusGenInputs['ScenarioUpdateWithoutClientInput']; // ScenarioUpdateWithoutClientInput!
@@ -555,9 +555,9 @@ export interface NexusGenInputs {
     where: NexusGenInputs['ScenarioWhereUniqueInput']; // ScenarioWhereUniqueInput!
   }
   ScenarioWhereInput: { // input type
-    AND?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
-    NOT?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
-    OR?: NexusGenInputs['ScenarioWhereInput'][] | null; // [ScenarioWhereInput!]
+    AND: NexusGenInputs['ScenarioWhereInput'][]; // [ScenarioWhereInput!]!
+    NOT: NexusGenInputs['ScenarioWhereInput'][]; // [ScenarioWhereInput!]!
+    OR: NexusGenInputs['ScenarioWhereInput'][]; // [ScenarioWhereInput!]!
     VAT?: NexusGenInputs['EnumVATFilter'] | null; // EnumVATFilter
     client?: NexusGenInputs['ClientWhereInput'] | null; // ClientWhereInput
     clientId?: NexusGenInputs['IntFilter'] | null; // IntFilter
@@ -584,12 +584,12 @@ export interface NexusGenInputs {
     equals?: string | null; // String
     gt?: string | null; // String
     gte?: string | null; // String
-    in?: string[] | null; // [String!]
+    in: string[]; // [String!]!
     lt?: string | null; // String
     lte?: string | null; // String
     mode?: NexusGenEnums['QueryMode'] | null; // QueryMode
     not?: NexusGenInputs['NestedStringFilter'] | null; // NestedStringFilter
-    notIn?: string[] | null; // [String!]
+    notIn: string[]; // [String!]!
     startsWith?: string | null; // String
   }
   StringNullableFilter: { // input type
@@ -598,12 +598,12 @@ export interface NexusGenInputs {
     equals?: string | null; // String
     gt?: string | null; // String
     gte?: string | null; // String
-    in?: string[] | null; // [String!]
+    in: string[]; // [String!]!
     lt?: string | null; // String
     lte?: string | null; // String
     mode?: NexusGenEnums['QueryMode'] | null; // QueryMode
     not?: NexusGenInputs['NestedStringNullableFilter'] | null; // NestedStringNullableFilter
-    notIn?: string[] | null; // [String!]
+    notIn: string[]; // [String!]!
     startsWith?: string | null; // String
   }
 }
@@ -637,8 +637,8 @@ export interface NexusGenObjects {
     postCode: string; // String!
   }
   ClientList: { // root type
-    list?: Array<NexusGenRootTypes['Client'] | null> | null; // [Client]
-    totalCount?: number | null; // Int
+    list: NexusGenRootTypes['Client'][]; // [Client!]!
+    totalCount: number; // Int!
   }
   Merchant: { // root type
     VATId: string; // String!
@@ -655,28 +655,28 @@ export interface NexusGenObjects {
     postCode: string; // String!
   }
   MerchantList: { // root type
-    list?: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
-    totalCount?: number | null; // Int
+    list: NexusGenRootTypes['Merchant'][]; // [Merchant!]!
+    totalCount: number; // Int!
   }
   Mutation: {};
   PaginatedClientList: { // root type
-    filters?: NexusGenRootTypes['PaginatedClientListFilters'] | null; // PaginatedClientListFilters
-    list?: Array<NexusGenRootTypes['Client'] | null> | null; // [Client]
-    totalCount?: number | null; // Int
+    filters: NexusGenRootTypes['PaginatedClientListFilters']; // PaginatedClientListFilters!
+    list: NexusGenRootTypes['Client'][]; // [Client!]!
+    totalCount: number; // Int!
   }
   PaginatedClientListFilters: { // root type
-    city?: Array<string | null> | null; // [String]
-    country?: Array<string | null> | null; // [String]
+    city: string[]; // [String!]!
+    country: string[]; // [String!]!
   }
   PaginatedMerchantList: { // root type
-    filters?: NexusGenRootTypes['PaginatedMerchantListFilters'] | null; // PaginatedMerchantListFilters
-    list?: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
-    totalCount?: number | null; // Int
+    filters: NexusGenRootTypes['PaginatedMerchantListFilters']; // PaginatedMerchantListFilters!
+    list: NexusGenRootTypes['Merchant'][]; // [Merchant!]!
+    totalCount: number; // Int!
   }
   PaginatedMerchantListFilters: { // root type
-    bank?: Array<string | null> | null; // [String]
-    city?: Array<string | null> | null; // [String]
-    country?: Array<string | null> | null; // [String]
+    bank: string[]; // [String!]!
+    city: string[]; // [String!]!
+    country: string[]; // [String!]!
   }
   Query: {};
   Scenario: { // root type
@@ -719,8 +719,8 @@ export interface NexusGenFieldTypes {
     postCode: string; // String!
   }
   ClientList: { // field return type
-    list: Array<NexusGenRootTypes['Client'] | null> | null; // [Client]
-    totalCount: number | null; // Int
+    list: NexusGenRootTypes['Client'][]; // [Client!]!
+    totalCount: number; // Int!
   }
   Merchant: { // field return type
     Scenario: NexusGenRootTypes['Scenario'][]; // [Scenario!]!
@@ -738,8 +738,8 @@ export interface NexusGenFieldTypes {
     postCode: string; // String!
   }
   MerchantList: { // field return type
-    list: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
-    totalCount: number | null; // Int
+    list: NexusGenRootTypes['Merchant'][]; // [Merchant!]!
+    totalCount: number; // Int!
   }
   Mutation: { // field return type
     createOneClient: NexusGenRootTypes['Client']; // Client!
@@ -752,33 +752,33 @@ export interface NexusGenFieldTypes {
     updateOneScenario: NexusGenRootTypes['Scenario'] | null; // Scenario
   }
   PaginatedClientList: { // field return type
-    filters: NexusGenRootTypes['PaginatedClientListFilters'] | null; // PaginatedClientListFilters
-    list: Array<NexusGenRootTypes['Client'] | null> | null; // [Client]
-    totalCount: number | null; // Int
+    filters: NexusGenRootTypes['PaginatedClientListFilters']; // PaginatedClientListFilters!
+    list: NexusGenRootTypes['Client'][]; // [Client!]!
+    totalCount: number; // Int!
   }
   PaginatedClientListFilters: { // field return type
-    city: Array<string | null> | null; // [String]
-    country: Array<string | null> | null; // [String]
+    city: string[]; // [String!]!
+    country: string[]; // [String!]!
   }
   PaginatedMerchantList: { // field return type
-    filters: NexusGenRootTypes['PaginatedMerchantListFilters'] | null; // PaginatedMerchantListFilters
-    list: Array<NexusGenRootTypes['Merchant'] | null> | null; // [Merchant]
-    totalCount: number | null; // Int
+    filters: NexusGenRootTypes['PaginatedMerchantListFilters']; // PaginatedMerchantListFilters!
+    list: NexusGenRootTypes['Merchant'][]; // [Merchant!]!
+    totalCount: number; // Int!
   }
   PaginatedMerchantListFilters: { // field return type
-    bank: Array<string | null> | null; // [String]
-    city: Array<string | null> | null; // [String]
-    country: Array<string | null> | null; // [String]
+    bank: string[]; // [String!]!
+    city: string[]; // [String!]!
+    country: string[]; // [String!]!
   }
   Query: { // field return type
     client: NexusGenRootTypes['Client'] | null; // Client
-    clientList: NexusGenRootTypes['ClientList'] | null; // ClientList
+    clientList: NexusGenRootTypes['ClientList']; // ClientList!
     clients: NexusGenRootTypes['Client'][]; // [Client!]!
     merchant: NexusGenRootTypes['Merchant'] | null; // Merchant
-    merchantList: NexusGenRootTypes['MerchantList'] | null; // MerchantList
+    merchantList: NexusGenRootTypes['MerchantList']; // MerchantList!
     merchants: NexusGenRootTypes['Merchant'][]; // [Merchant!]!
-    paginatedClientList: NexusGenRootTypes['PaginatedClientList'] | null; // PaginatedClientList
-    paginatedMerchantList: NexusGenRootTypes['PaginatedMerchantList'] | null; // PaginatedMerchantList
+    paginatedClientList: NexusGenRootTypes['PaginatedClientList']; // PaginatedClientList!
+    paginatedMerchantList: NexusGenRootTypes['PaginatedMerchantList']; // PaginatedMerchantList!
     scenario: NexusGenRootTypes['Scenario'] | null; // Scenario
     scenarios: NexusGenRootTypes['Scenario'][]; // [Scenario!]!
   }
@@ -901,15 +901,15 @@ export interface NexusGenArgTypes {
   Client: {
     Scenario: { // args
       cursor?: NexusGenInputs['ScenarioWhereUniqueInput'] | null; // ScenarioWhereUniqueInput
-      skip?: number | null; // Int
-      take?: number | null; // Int
+      skip: number; // Int!
+      take: number; // Int!
     }
   }
   Merchant: {
     Scenario: { // args
       cursor?: NexusGenInputs['ScenarioWhereUniqueInput'] | null; // ScenarioWhereUniqueInput
-      skip?: number | null; // Int
-      take?: number | null; // Int
+      skip: number; // Int!
+      take: number; // Int!
     }
   }
   Mutation: {
@@ -947,9 +947,9 @@ export interface NexusGenArgTypes {
     }
     clients: { // args
       cursor?: NexusGenInputs['ClientWhereUniqueInput'] | null; // ClientWhereUniqueInput
-      orderBy?: NexusGenInputs['ClientOrderByInput'][] | null; // [ClientOrderByInput!]
-      skip?: number | null; // Int
-      take?: number | null; // Int
+      orderBy: NexusGenInputs['ClientOrderByInput'][]; // [ClientOrderByInput!]!
+      skip: number; // Int!
+      take: number; // Int!
       where?: NexusGenInputs['ClientWhereInput'] | null; // ClientWhereInput
     }
     merchant: { // args
@@ -957,19 +957,19 @@ export interface NexusGenArgTypes {
     }
     merchants: { // args
       cursor?: NexusGenInputs['MerchantWhereUniqueInput'] | null; // MerchantWhereUniqueInput
-      orderBy?: NexusGenInputs['MerchantOrderByInput'][] | null; // [MerchantOrderByInput!]
-      skip?: number | null; // Int
-      take?: number | null; // Int
+      orderBy: NexusGenInputs['MerchantOrderByInput'][]; // [MerchantOrderByInput!]!
+      skip: number; // Int!
+      take: number; // Int!
       where?: NexusGenInputs['MerchantWhereInput'] | null; // MerchantWhereInput
     }
     paginatedClientList: { // args
-      orderBy?: Array<NexusGenInputs['ClientOrderByInput'] | null> | null; // [ClientOrderByInput]
+      orderBy?: NexusGenInputs['ClientOrderByInput'][] | null; // [ClientOrderByInput!]
       skip: number; // Int!
       take: number; // Int!
       where?: NexusGenInputs['ClientWhereInput'] | null; // ClientWhereInput
     }
     paginatedMerchantList: { // args
-      orderBy?: Array<NexusGenInputs['MerchantOrderByInput'] | null> | null; // [MerchantOrderByInput]
+      orderBy?: NexusGenInputs['MerchantOrderByInput'][] | null; // [MerchantOrderByInput!]
       skip: number; // Int!
       take: number; // Int!
       where?: NexusGenInputs['MerchantWhereInput'] | null; // MerchantWhereInput
@@ -979,8 +979,8 @@ export interface NexusGenArgTypes {
     }
     scenarios: { // args
       cursor?: NexusGenInputs['ScenarioWhereUniqueInput'] | null; // ScenarioWhereUniqueInput
-      skip?: number | null; // Int
-      take?: number | null; // Int
+      skip: number; // Int!
+      take: number; // Int!
     }
   }
 }

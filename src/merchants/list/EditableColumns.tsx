@@ -2,25 +2,27 @@ import React, { FC } from 'react'
 
 import { Td, useToast } from '@chakra-ui/react'
 
-import { Merchant } from 'prisma/prisma-client'
-
-import { useUpdateMerchantMutation } from 'src/generated/graphql'
+import {
+  MerchantContentFragment,
+  MerchantUpdateInput,
+  useUpdateMerchantMutation,
+} from 'src/generated/graphql'
 
 import Editable from 'src/components/Editable'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
-
 const EditableColumns: FC<{
   isEditable: boolean
-  merchant: Merchant
-  onMerchantUpdate: (updatedMerchant: Merchant) => void
+  merchant: MerchantContentFragment
+  onMerchantUpdate: (updatedMerchant: MerchantContentFragment) => void
 }> = ({ isEditable, merchant, onMerchantUpdate }) => {
   const toast = useToast()
 
   const [updateMerchant] = useUpdateMerchantMutation({
     onCompleted({ updatedMerchant }) {
+      if (!updatedMerchant) throw new Error('no merchant to update')
       toast({ ...successToastContent, title: 'Merchant updated' })
-      onMerchantUpdate(updatedMerchant as Merchant)
+      onMerchantUpdate(updatedMerchant)
     },
     onError() {
       toast(errorToastContent)
@@ -28,7 +30,7 @@ const EditableColumns: FC<{
     },
   })
 
-  function handleUpdate(data: Partial<Merchant>, id: number) {
+  function handleUpdate(data: MerchantUpdateInput, id: number) {
     const [value] = Object.values(data)
 
     if (value === '' && data.VATId !== value) {

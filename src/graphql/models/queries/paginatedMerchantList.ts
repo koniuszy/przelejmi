@@ -31,8 +31,8 @@ export const PaginatedMerchantListQuery = extendType({
       args: {
         take: intArg({ required: true }),
         skip: intArg({ required: true }),
-        where: arg({ type: 'MerchantWhereInput' }),
-        orderBy: arg({ type: 'MerchantOrderByInput', list: true }),
+        where: arg({ type: 'MerchantWhereInput', nullable: true }),
+        orderBy: arg({ type: 'MerchantOrderByInput', list: true, nullable: true }),
       },
       async resolve(_root, variables) {
         const paginatedMerchantListData = await getPaginatedMerchantListData(
