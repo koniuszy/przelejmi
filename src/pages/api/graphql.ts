@@ -1,3 +1,5 @@
+import { NextApiHandler } from 'next'
+
 import { ApolloServer } from 'apollo-server-micro'
 
 import { createContext } from 'src/graphql/context'
@@ -16,4 +18,22 @@ export const config = {
 
 apolloServer.graphqlPath = 'api/graphql'
 
-export default apolloServer.start().then(() => apolloServer.createHandler())
+const startServer = apolloServer.start()
+
+const handler: NextApiHandler = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+  res.setHeader('Access-Control-Allow-Origin', 'https://studio.apollographql.com')
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+
+  if (req.method === 'OPTIONS') {
+    res.end()
+    return
+  }
+
+  await startServer
+  await apolloServer.createHandler({
+    path: '/api/graphql',
+  })(req, res)
+}
+
+export default handler
