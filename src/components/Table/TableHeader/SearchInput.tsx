@@ -37,11 +37,11 @@ const SearchInput: FC<{
         return
       }
 
-      const parsedSearch = {
+      const parsedSearch: Search = {
         [DBConditions.or]: keyList.map((keyListItem) => ({
           [keyListItem]: { [DBConditions.contains]: search },
         })),
-      } as Search
+      }
 
       props.onSearch({ ...prevFilters, ...parsedSearch })
     }, 300)

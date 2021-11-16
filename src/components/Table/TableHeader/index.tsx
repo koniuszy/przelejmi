@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { Props } from '../Table'
+import type { Props } from '..'
 import DrawerFilters, { TriggerFiltersButton, Filters } from './DrawerFilters'
 import SearchInput, { Search, SearchInputPlaceholder } from './SearchInput'
 

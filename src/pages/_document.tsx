@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 import { ColorModeScript } from '@chakra-ui/react'

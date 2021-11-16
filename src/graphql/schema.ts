@@ -20,6 +20,10 @@ const baseSchema = makeSchema({
       },
     }),
   ],
+  nonNullDefaults: {
+    input: false,
+    output: false,
+  },
   outputs: {
     schema: join(process.cwd(), 'src', 'generated', 'schema.graphql'),
     typegen: join(process.cwd(), 'src', 'generated', 'nexus-typegen.ts'),

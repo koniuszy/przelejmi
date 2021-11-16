@@ -15,6 +15,7 @@ const FieldBox: FC<{ border: boolean }> = ({ children, border }) =>
       {children}
     </Box>
   ) : (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>{children}</>
   )
 

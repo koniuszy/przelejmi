@@ -3,6 +3,7 @@ export default function convertCurrencyToWordsEN(
   lang = 'pl',
   currency = 'PLN'
 ): string {
+  // eslint-disable-next-line no-param-reassign
   value = Math.floor(value)
 
   const ones = [

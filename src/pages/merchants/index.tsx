@@ -6,7 +6,7 @@ import { Tr, Td } from '@chakra-ui/react'
 
 import { Merchant } from 'prisma/prisma-client'
 
-import {  usePaginatedMerchantListQuery } from 'src/generated/graphql'
+import { usePaginatedMerchantListQuery } from 'src/generated/graphql'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
 import ActionsColumn from 'src/merchants/list/ActionsColumn'
@@ -18,13 +18,12 @@ const TITLE = 'Total merchants'
 const MerchantList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)
 
-  const { data, refetch, variables,  loading, updateQuery } =
-    usePaginatedMerchantListQuery({
-      variables: { skip: 0, take: PER_PAGE },
-      fetchPolicy: 'cache-and-network',
-    })
+  const { data, refetch, variables, loading, updateQuery } = usePaginatedMerchantListQuery({
+    variables: { skip: 0, take: PER_PAGE },
+    fetchPolicy: 'cache-and-network',
+  })
 
-  if (!data) return <TablePlaceholder title={TITLE} />
+  if (!data?.paginatedMerchantList) return <TablePlaceholder title={TITLE} />
 
   const {
     list: merchantList,
@@ -107,9 +106,8 @@ const MerchantListPage: FC = () => (
     <Head>
       <title>Merchants | przelejmi</title>
     </Head>
-    <MerchantList  />
+    <MerchantList />
   </main>
 )
-
 
 export default MerchantListPage

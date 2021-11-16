@@ -43,6 +43,7 @@ module.exports = {
 
     'react/jsx-no-constructed-context-values': 'off',
 
+    '@typescript-eslint/no-invalid-this': 'off',
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'off',
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     '@typescript-eslint/no-unused-vars': [

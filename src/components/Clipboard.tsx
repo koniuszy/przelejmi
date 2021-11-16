@@ -6,14 +6,14 @@ const Clipboard: FC<{ value: string; onCopy: () => void }> = ({ children, value,
   const clipboard = useClipboard(value)
 
   return (
-    <div
+    <button
       onClick={() => {
         clipboard.onCopy()
         onCopy()
       }}
     >
       {isValidElement(children) ? children : null}
-    </div>
+    </button>
   )
 }
 

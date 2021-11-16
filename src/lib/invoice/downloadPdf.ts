@@ -1,4 +1,4 @@
-import jsPDF from 'jspdf'
+import JsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
 import RobotoBold from 'src/fonts/RobotoBold'
@@ -13,7 +13,7 @@ const config = {
 }
 
 export default function downloadPdf({ language }: { language: 'pl' }) {
-  const doc = new jsPDF()
+  const doc = new JsPDF()
   const columnsCount = 1
   const columnsHeight = 5
   const translatedMessages = getInvoiceMessages({ columnsCount, columnsHeight })[language]

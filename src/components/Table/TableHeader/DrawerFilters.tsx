@@ -88,7 +88,7 @@ const DrawerFilters: FC<{
       return { name: item.name, groupedOptionList }
     })
 
-    const parsedFilters = groupedTouched.reduce((acc, item) => {
+    const parsedFilters = groupedTouched.reduce<Filters>((acc, item) => {
       const { checked, unchecked } = item.groupedOptionList
       const filter =
         checked.length < unchecked.length
@@ -96,7 +96,7 @@ const DrawerFilters: FC<{
           : { [DBConditions.notIncludes]: unchecked }
 
       return { ...acc, [item.name]: filter }
-    }, {} as Filters)
+    }, {})
 
     onChange({ ...prevFilters, ...parsedFilters })
   }

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import { Flex, Text, Divider, Textarea, Button } from '@chakra-ui/react'
+import { Flex, Text, Divider, Button } from '@chakra-ui/react'
 
 import { PaymentType, Scenario } from 'src/generated/graphql'
 

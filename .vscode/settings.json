@@ -1,9 +1,20 @@
 {
-    "cSpell.words": [
-        "Formik",
-        "chakra",
-        "next",
-        "nextjs",
-        "nprogress"
-    ]
+  "files.eol": "\n",
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true,
+    "**/.next/**": true
+  },
+  "search.exclude": {
+    ".next": true
+  },
+  "cSpell.words": ["Formik", "chakra", "next", "nextjs", "nprogress"]
 }
