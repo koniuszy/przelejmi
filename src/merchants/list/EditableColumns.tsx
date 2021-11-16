@@ -14,13 +14,12 @@ import { errorToastContent, successToastContent, warningToastContent } from 'src
 const EditableColumns: FC<{
   isEditable: boolean
   merchant: MerchantContentFragment
-  onMerchantUpdate: (updatedMerchant: MerchantContentFragment) => void
+  onMerchantUpdate: (updatedMerchant: MerchantContentFragment | null | undefined) => void
 }> = ({ isEditable, merchant, onMerchantUpdate }) => {
   const toast = useToast()
 
   const [updateMerchant] = useUpdateMerchantMutation({
     onCompleted({ updatedMerchant }) {
-      if (!updatedMerchant) throw new Error('no merchant to update')
       toast({ ...successToastContent, title: 'Merchant updated' })
       onMerchantUpdate(updatedMerchant)
     },

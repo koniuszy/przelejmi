@@ -5,10 +5,67 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Center, Spinner } from '@chakra-ui/react'
+import { Center, Spinner, useToast } from '@chakra-ui/react'
+
+import { useUpdateMerchantMutation, useMerchantQuery } from 'src/generated/graphql'
 
 import prisma from 'src/lib/prisma/prismaClient'
-import EditMerchantForm from 'src/merchants/EditMerchantForm'
+import { errorToastContent, successToastContent } from 'src/lib/toastContent'
+import MerchantForm from 'src/merchants/MerchantForm'
+
+const EditMerchantForm: FC<{
+  merchantId: number
+}> = ({ merchantId }) => {
+  const toast = useToast()
+
+  const { data, updateQuery } = useMerchantQuery({ variables: { where: { id: merchantId } } })
+
+  const [updateMerchant, { loading }] = useUpdateMerchantMutation({
+    onCompleted({ updatedMerchant }) {
+      toast({
+        ...successToastContent,
+        title: 'Client updated.',
+      })
+
+      updateQuery((p) => ({ ...p, merchant: updatedMerchant }))
+    },
+    onError(err) {
+      console.error(err)
+      toast(errorToastContent)
+    },
+  })
+
+  if (!data?.merchant)
+    return (
+      <div>
+        <MerchantForm
+          isLoading={true}
+          initialValues={{
+            companyName: '',
+            address: '',
+            postCode: '',
+            city: '',
+            country: '',
+            VATId: '',
+            bankAccountPln: '',
+            bankAccountEur: '',
+            bankName: '',
+            email: '',
+            issuerName: '',
+          }}
+          onSubmit={() => {}}
+        />
+      </div>
+    )
+
+  return (
+    <MerchantForm
+      isLoading={loading}
+      initialValues={{ ...data.merchant, bankAccountEur: data.merchant.bankAccountEur ?? '' }}
+      onSubmit={(values) => updateMerchant({ variables: { data: values, id: merchantId } })}
+    />
+  )
+}
 
 type SSGProps = {
   merchantId: number
@@ -53,7 +110,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
   return {
     props: {
-      merchantId: Number(params.id),
+      merchantId: Number(params?.id),
     },
   }
 }

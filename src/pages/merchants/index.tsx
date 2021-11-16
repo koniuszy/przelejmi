@@ -72,7 +72,7 @@ const MerchantList: FC = () => {
                 paginatedMerchantList: {
                   ...prev.paginatedMerchantList,
                   list: prev.paginatedMerchantList.list.map((item) =>
-                    item.id === updatedMerchant.id ? updatedMerchant : item
+                    item.id === updatedMerchant?.id ? updatedMerchant : item
                   ),
                 },
               }))

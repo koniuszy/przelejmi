@@ -1,0 +1,66 @@
+fragment MerchantContent on Merchant {
+  id
+  companyName
+  address
+  postCode
+  city
+  country
+  VATId
+  bankAccountPln
+  bankAccountEur
+  bankName
+  email
+  issuerName
+}
+
+mutation createMerchant($data: MerchantCreateInput!) {
+  createdMerchant: createOneMerchant(data: $data) {
+    id
+  }
+}
+
+mutation deleteMerchant($id: Int!) {
+  deletedMerchant: deleteOneMerchant(where: { id: $id }) {
+    id
+  }
+}
+
+mutation updateMerchant($data: MerchantUpdateInput!, $id: Int!) {
+  updatedMerchant: updateOneMerchant(data: $data, where: { id: $id }) {
+    ...MerchantContent
+  }
+}
+
+query merchant($where: MerchantWhereUniqueInput!) {
+  merchant(where: $where) {
+    ...MerchantContent
+  }
+}
+
+query merchantList {
+  merchantList {
+    totalCount
+    list {
+      ...MerchantContent
+    }
+  }
+}
+
+query paginatedMerchantList(
+  $orderBy: [MerchantOrderByInput!]
+  $where: MerchantWhereInput
+  $skip: Int!
+  $take: Int!
+) {
+  paginatedMerchantList(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
+    totalCount
+    filters {
+      country
+      city
+      bank
+    }
+    list {
+      ...MerchantContent
+    }
+  }
+}
