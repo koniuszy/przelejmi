@@ -1,7 +1,5 @@
 import React, { FC } from 'react'
 
-import NextImage from 'next/image'
-
 import {
   Flex,
   Text,
@@ -14,21 +12,20 @@ import {
   Button,
   InputGroup,
   InputRightAddon,
-  Center,
 } from '@chakra-ui/react'
 
 import { Scenario, Unit, Vat, Currency } from 'src/generated/graphql'
 
-import tradeImg from './trade.jpeg'
 export type Trade = Pick<Scenario, 'unitType' | 'netPerOne' | 'VAT' | 'currency'>
 
 function getVatValue(vatKey: keyof Vat) {
   if (Vat[vatKey] === Vat.Percent_0) return '0%'
+  if (Vat[vatKey] === Vat.Percent_8) return '8%'
   if (Vat[vatKey] === Vat.Percent_23) return '23%'
   if (Vat[vatKey] === Vat.DoesNotConcern) return 'np'
   if (Vat[vatKey] === Vat.Freed) return 'zw'
 
-  return null
+  return vatKey
 }
 
 function getGrossValue(trade: Trade) {
@@ -36,6 +33,7 @@ function getGrossValue(trade: Trade) {
   let value = 0
 
   if (VAT === Vat.Percent_23) value = Math.round(netPerOne * 0.23 * 100) / 100
+  if (VAT === Vat.Percent_8) value = Math.round(netPerOne * 0.8 * 100) / 100
   if (!value) return null
   return `+ ${value} ${trade.currency} VAT`
 }
@@ -113,10 +111,6 @@ const TradeSection: FC<{
       </NumberInput>
       {getGrossValue(trade) && <InputRightAddon>{getGrossValue(trade)}</InputRightAddon>}
     </InputGroup>
-
-    <Center>
-      <NextImage placeholder="blur" src={tradeImg} objectFit="cover" height={180} />
-    </Center>
   </>
 )
 export default TradeSection
