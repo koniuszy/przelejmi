@@ -7,8 +7,8 @@ import { Tr, Td } from '@chakra-ui/react'
 import { MerchantWhereInput, usePaginatedMerchantListQuery } from 'src/generated/graphql'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
-import ActionsColumn from 'src/merchants/list/ActionsColumn'
-import EditableColumns from 'src/merchants/list/EditableColumns'
+import ActionsColumn from 'src/modules/merchants/list/ActionsColumn'
+import EditableColumns from 'src/modules/merchants/list/EditableColumns'
 
 const TITLE = 'Total merchants'
 const PER_PAGE = 10
@@ -48,6 +48,7 @@ const MerchantList: FC = () => {
           const { bank, ...filters } = nullableFilters || {}
           const where: MerchantWhereInput = { ...filters }
           if (bank) where.bankName = bank
+
           await refetch({ where })
         },
       }}

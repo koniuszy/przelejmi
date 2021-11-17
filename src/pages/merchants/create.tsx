@@ -7,7 +7,7 @@ import { useToast } from '@chakra-ui/react'
 import { useCreateMerchantMutation } from 'src/generated/graphql'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
-import MerchantForm from 'src/merchants/MerchantForm'
+import MerchantForm from 'src/modules/merchants/MerchantForm'
 
 const CreateMerchantForm: FC = () => {
   const toast = useToast()

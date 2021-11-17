@@ -45,7 +45,7 @@ export const TriggerFiltersButton: FC<{ onOpen: () => void; isActive: boolean }>
   </Button>
 )
 
-export type Filters = any | null
+export type Filters = Record<string, any> | null
 
 function getInitialFilters(filters: Record<string, string[]>) {
   return Object.entries(filters).map((entry) => {
@@ -68,7 +68,8 @@ const DrawerFilters: FC<{
     )
 
     if (touchedFilterList.length === 0) {
-      onChange(prevFilters?.OR ?? {})
+      const searchFilters = prevFilters.OR ? { OR: prevFilters.OR } : {}
+      onChange(searchFilters)
       return
     }
 
