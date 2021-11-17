@@ -25,7 +25,12 @@ const Logo = () => {
   const { push } = useRouter()
 
   return (
-    <Center bg="red" cursor="pointer" onClick={() => push('/')}>
+    <Center
+      _hover={{ filter: 'brightness(1.6)' }}
+      transition="ease filter 100ms"
+      cursor="pointer"
+      onClick={() => push('/')}
+    >
       <svg fill="teal" width="48" height="48" viewBox="0 0 512 512">
         <path d="M464 64h-416c-26.4 0-48 21.6-48 48v288c0 26.4 21.6 48 48 48h416c26.4 0 48-21.6 48-48v-288c0-26.4-21.6-48-48-48zM48 96h416c8.673 0 16 7.327 16 16v48h-448v-48c0-8.673 7.327-16 16-16zM464 416h-416c-8.673 0-16-7.327-16-16v-144h448v144c0 8.673-7.327 16-16 16zM64 320h32v64h-32zM128 320h32v64h-32zM192 320h32v64h-32z" />
       </svg>
