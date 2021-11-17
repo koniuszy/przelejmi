@@ -18,7 +18,7 @@ const extendedTheme = extendTheme({
   styles: {
     global: {
       html: {},
-      body: {},
+      body: { overflow: 'hidden' },
     },
   },
 })

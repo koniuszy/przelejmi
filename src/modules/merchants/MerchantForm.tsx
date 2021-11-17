@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import NextImg from 'next/image'
+import NextImage from 'next/image'
 
 import {
   Flex,
@@ -11,6 +11,11 @@ import {
   Button,
   Box,
   SimpleGrid,
+  Tab,
+  TabList,
+  Tabs,
+  TabPanels,
+  TabPanel,
 } from '@chakra-ui/react'
 
 import { useFormik } from 'formik'
@@ -66,140 +71,162 @@ const MerchantForm: FC<{
   })
 
   return (
-    <SimpleGrid columns={2} spacing={10}>
-      <Box w="75%">
-        <NextImg placeholder="blur" src={womanWithFoldersImg} />
+    <SimpleGrid my="10" columns={2} spacing={10}>
+      <Box m="auto" w="50%">
+        <NextImage placeholder="blur" src={womanWithFoldersImg} />
       </Box>
 
       <Flex direction="row">
         <form onSubmit={handleSubmit}>
-          <FormControl isRequired id="companyName" isInvalid={!!errors.companyName}>
-            <FormLabel htmlFor="companyName">Company name</FormLabel>
-            <Input
-              name="companyName"
-              placeholder="John Smith"
-              value={values.companyName}
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors.companyName}</FormErrorMessage>
-          </FormControl>
+          <Tabs isFitted variant="enclosed" colorScheme="teal">
+            <TabList mb="1em">
+              <Tab _focus={{ boxShadow: 'none' }}>Main</Tab>
+              <Tab _focus={{ boxShadow: 'none' }}>Address</Tab>
+              <Tab _focus={{ boxShadow: 'none' }}>Bank</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <Flex direction="row">
+                  <FormControl isRequired id="companyName" isInvalid={!!errors.companyName}>
+                    <FormLabel htmlFor="companyName">Company name</FormLabel>
+                    <Input
+                      name="companyName"
+                      placeholder="John Smith"
+                      value={values.companyName}
+                      onChange={handleChange}
+                    />
+                    <FormErrorMessage>{errors.companyName}</FormErrorMessage>
+                  </FormControl>
 
-          <Flex direction="row">
-            <FormControl isRequired mt="5" id="VATId" isInvalid={!!errors.VATId}>
-              <FormLabel htmlFor="VATId">VAT Id</FormLabel>
-              <Input
-                name="VATId"
-                placeholder="12345678"
-                value={values.VATId}
-                onChange={handleChange}
-              />
-              <FormErrorMessage>{errors.VATId}</FormErrorMessage>
-            </FormControl>
+                  <FormControl isRequired ml="7" id="VATId" isInvalid={!!errors.VATId}>
+                    <FormLabel htmlFor="VATId">VAT Id</FormLabel>
+                    <Input
+                      name="VATId"
+                      placeholder="12345678"
+                      value={values.VATId}
+                      onChange={handleChange}
+                    />
+                    <FormErrorMessage>{errors.VATId}</FormErrorMessage>
+                  </FormControl>
+                </Flex>
 
-            <FormControl isRequired mt="5" ml="7" id="country" isInvalid={!!errors.country}>
-              <FormLabel htmlFor="country">Country</FormLabel>
-              <Input
-                name="country"
-                placeholder="Polska"
-                value={values.country}
-                onChange={handleChange}
-              />
-              <FormErrorMessage>{errors.country}</FormErrorMessage>
-            </FormControl>
-          </Flex>
+                <FormControl mt="4" id="Email" isInvalid={!!errors.email}>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <Input
+                    name="email"
+                    placeholder="merchant@example.com"
+                    value={values.email}
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                </FormControl>
+              </TabPanel>
+              <TabPanel>
+                <Flex direction="row">
+                  <FormControl isRequired id="address" isInvalid={!!errors.address}>
+                    <FormLabel htmlFor="address">Street name and number</FormLabel>
+                    <Input
+                      name="address"
+                      placeholder="Street 10/2"
+                      value={values.address}
+                      onChange={handleChange}
+                    />
+                    <FormErrorMessage>{errors.address}</FormErrorMessage>
+                  </FormControl>
 
-          <FormControl isRequired id="address" mt="5" isInvalid={!!errors.address}>
-            <FormLabel htmlFor="address">Street name and number</FormLabel>
-            <Input
-              name="address"
-              placeholder="Street 10/2"
-              value={values.address}
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors.address}</FormErrorMessage>
-          </FormControl>
+                  <FormControl isRequired ml="7" id="country" isInvalid={!!errors.country}>
+                    <FormLabel htmlFor="country">Country</FormLabel>
+                    <Input
+                      name="country"
+                      placeholder="Polska"
+                      value={values.country}
+                      onChange={handleChange}
+                    />
+                    <FormErrorMessage>{errors.country}</FormErrorMessage>
+                  </FormControl>
+                </Flex>
 
-          <Flex direction="row">
-            <FormControl isRequired mt="4" id="city" isInvalid={!!errors.city}>
-              <FormLabel htmlFor="city">City</FormLabel>
-              <Input name="city" placeholder="Poznań" value={values.city} onChange={handleChange} />
-              <FormErrorMessage>{errors.country}</FormErrorMessage>
-            </FormControl>
+                <Flex direction="row">
+                  <FormControl isRequired mt="4" id="city" isInvalid={!!errors.city}>
+                    <FormLabel htmlFor="city">City</FormLabel>
+                    <Input
+                      name="city"
+                      placeholder="Poznań"
+                      value={values.city}
+                      onChange={handleChange}
+                    />
+                    <FormErrorMessage>{errors.country}</FormErrorMessage>
+                  </FormControl>
 
-            <FormControl isRequired mt="4" ml="7" id="postCode" isInvalid={!!errors.postCode}>
-              <FormLabel htmlFor="postCode">Post code</FormLabel>
-              <Input
-                name="postCode"
-                placeholder="60-687"
-                value={values.postCode}
-                onChange={handleChange}
-              />
-              <FormErrorMessage>{errors.postCode}</FormErrorMessage>
-            </FormControl>
-          </Flex>
+                  <FormControl isRequired mt="4" ml="7" id="postCode" isInvalid={!!errors.postCode}>
+                    <FormLabel htmlFor="postCode">Post code</FormLabel>
+                    <Input
+                      name="postCode"
+                      placeholder="60-687"
+                      value={values.postCode}
+                      onChange={handleChange}
+                    />
+                    <FormErrorMessage>{errors.postCode}</FormErrorMessage>
+                  </FormControl>
+                </Flex>
+              </TabPanel>
+              <TabPanel>
+                <Flex direction="row">
+                  <FormControl isRequired id="bankName" isInvalid={!!errors.bankName}>
+                    <FormLabel htmlFor="bankName">Bank name</FormLabel>
+                    <Input
+                      name="bankName"
+                      placeholder="Mbank"
+                      value={values.bankName}
+                      onChange={handleChange}
+                    />
+                    <FormErrorMessage>{errors.bankName}</FormErrorMessage>
+                  </FormControl>
 
-          <Flex direction="row">
-            <FormControl isRequired id="bankName" mt="4" isInvalid={!!errors.bankName}>
-              <FormLabel htmlFor="bankName">Bank name</FormLabel>
-              <Input
-                name="bankName"
-                placeholder="Mbank"
-                value={values.bankName}
-                onChange={handleChange}
-              />
-              <FormErrorMessage>{errors.bankName}</FormErrorMessage>
-            </FormControl>
+                  <FormControl isRequired id="issuerName" ml="7" isInvalid={!!errors.issuerName}>
+                    <FormLabel htmlFor="issuerNAme">Issuer name</FormLabel>
+                    <Input
+                      name="issuerName"
+                      placeholder="John Smith"
+                      value={values.issuerName}
+                      onChange={handleChange}
+                    />
+                    <FormErrorMessage>{errors.issuerName}</FormErrorMessage>
+                  </FormControl>
+                </Flex>
 
-            <FormControl isRequired id="issuerName" mt="4" ml="7" isInvalid={!!errors.issuerName}>
-              <FormLabel htmlFor="issuerNAme">Issuer name</FormLabel>
-              <Input
-                name="issuerName"
-                placeholder="John Smith"
-                value={values.issuerName}
-                onChange={handleChange}
-              />
-              <FormErrorMessage>{errors.issuerName}</FormErrorMessage>
-            </FormControl>
-          </Flex>
+                <FormControl mt="4" id="bankAccount" isInvalid={!!errors.bankAccountPln}>
+                  <FormLabel htmlFor="bankAccount">Bank account in PLN</FormLabel>
+                  <Input
+                    name="bankAccountPln"
+                    placeholder="04 1140 2004 9892 3802 6728 1373"
+                    value={values.bankAccountPln}
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors.bankAccountPln}</FormErrorMessage>
+                </FormControl>
 
-          <FormControl mt="4" id="bankAccount" isInvalid={!!errors.bankAccountPln}>
-            <FormLabel htmlFor="bankAccount">Bank account in PLN</FormLabel>
-            <Input
-              name="bankAccountPln"
-              placeholder="04 1140 2004 9892 3802 6728 1373"
-              value={values.bankAccountPln}
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors.bankAccountPln}</FormErrorMessage>
-          </FormControl>
-
-          <FormControl mt="4" id="bankAccountEur" isInvalid={!!errors.bankAccountEur}>
-            <FormLabel htmlFor="bankAccountEur">Bank account in EUR</FormLabel>
-            <Input
-              name="bankAccountEur"
-              placeholder="PL 04 1140 2004 9892 3802 6728 1373"
-              value={values.bankAccountEur}
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors.bankAccountEur}</FormErrorMessage>
-          </FormControl>
-
-          <FormControl mt="4" id="Email" isInvalid={!!errors.email}>
-            <FormLabel htmlFor="email">Email</FormLabel>
-            <Input
-              name="email"
-              placeholder="merchant@example.com"
-              value={values.email}
-              onChange={handleChange}
-            />
-            <FormErrorMessage>{errors.email}</FormErrorMessage>
-          </FormControl>
+                <FormControl mt="4" id="bankAccountEur" isInvalid={!!errors.bankAccountEur}>
+                  <FormLabel htmlFor="bankAccountEur">Bank account in EUR</FormLabel>
+                  <Input
+                    name="bankAccountEur"
+                    placeholder="PL 04 1140 2004 9892 3802 6728 1373"
+                    value={values.bankAccountEur}
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>{errors.bankAccountEur}</FormErrorMessage>
+                </FormControl>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
 
           <Button
-            mt="10"
+            display="flex"
+            mt={10}
+            ml="auto"
+            mr={4}
             type="submit"
             colorScheme="teal"
-            width="100%"
             disabled={!isValid}
             isLoading={isLoading}
           >
