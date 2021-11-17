@@ -3,7 +3,17 @@ import React, { FC, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Button, Box, SimpleGrid, Divider, Flex, Text, Textarea, useToast } from '@chakra-ui/react'
+import {
+  Button,
+  Box,
+  SimpleGrid,
+  Divider,
+  Flex,
+  Text,
+  Textarea,
+  useToast,
+  Input,
+} from '@chakra-ui/react'
 
 import ImageSection from 'scenarios/createScenarioForm/ImageSection'
 import PaymentDetailsSection, {
@@ -25,6 +35,7 @@ const CreateScenarioForm: FC = () => {
     'https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
   )
   const [notes, setNotes] = useState('')
+  const [name, setName] = useState('')
   const [clientId, setClientId] = useState<number | null>(null)
   const [merchantId, setMerchantId] = useState<number | null>(null)
 
@@ -56,6 +67,7 @@ const CreateScenarioForm: FC = () => {
     if (!clientId) errorMsg = 'Client is not selected'
     if (!merchantId) errorMsg = 'Merchant is not selected'
     if (!imgUrl) errorMsg = 'Image URL is missing'
+    if (!name) errorMsg = 'Name is missing'
 
     if (errorMsg) {
       toast({ ...errorToastContent, description: errorMsg })
@@ -69,7 +81,7 @@ const CreateScenarioForm: FC = () => {
           ...paymentDetails,
           notes,
           imgUrl,
-          name: 'test',
+          name,
           client: { connect: { id: clientId } },
           merchant: { connect: { id: merchantId } },
         },
@@ -110,12 +122,20 @@ const CreateScenarioForm: FC = () => {
       <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
         <Flex mt={4} justifyContent="space-between">
           <Text fontWeight="bold" fontSize="lg">
+            Name
+          </Text>
+        </Flex>
+        <Divider my={4} />
+        <Input placeholder="Overtimes" value={name} onChange={(e) => setName(e.target.value)} />
+        <Flex mt={4} justifyContent="space-between">
+          <Text fontWeight="bold" fontSize="lg">
             Notes
           </Text>
         </Flex>
         <Divider my={4} />
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
       </Box>
+
       <Button
         position="fixed"
         bottom={170}

@@ -7,6 +7,7 @@ function unique(array: string[]) {
 export const MerchantListQuery = extendType({
   type: 'Query',
   definition(t) {
+    t.crud.merchant()
     t.crud.merchants({
       pagination: true,
       ordering: true,

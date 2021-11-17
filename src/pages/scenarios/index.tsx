@@ -2,6 +2,68 @@ import React, { FC } from 'react'
 
 import Head from 'next/head'
 
+import { SimpleGrid, Image, Button, Skeleton } from '@chakra-ui/react'
+
+import styled from '@emotion/styled'
+
+import { useScenarioListQuery } from 'src/generated/graphql'
+
+const HiddenImageContent = styled.div`
+  opacity: 0;
+  transition: ease opacity 150ms;
+  position: absolute;
+`
+const ImageBox = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  :hover {
+    img {
+      opacity: 0.2;
+    }
+    div {
+      opacity: 1;
+    }
+  }
+`
+
+const ScenarioList: FC = () => {
+  const { data } = useScenarioListQuery({ fetchPolicy: 'cache-and-network' })
+
+  if (!data?.scenarioList)
+    return (
+      <SimpleGrid columns={3} gap={10}>
+        {new Array(6).fill(null).map((i, index) => (
+          <Skeleton w={400} h={200} key={index} />
+        ))}
+      </SimpleGrid>
+    )
+
+  return (
+    <SimpleGrid columns={3} gap={10}>
+      {data.scenarioList.map((i, index) => (
+        <ImageBox key={index}>
+          <Image
+            transition="ease opacity 150ms"
+            cursor="pointer"
+            w={400}
+            h={200}
+            objectFit="cover"
+            fallbackSrc="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+            alt={i.name}
+            src={i.imgUrl}
+          />
+          <HiddenImageContent>
+            <Button colorScheme="teal">Invoice</Button>
+          </HiddenImageContent>
+        </ImageBox>
+      ))}
+    </SimpleGrid>
+  )
+}
+
 const App: FC = () => {
   return (
     <div>
@@ -9,7 +71,9 @@ const App: FC = () => {
         <title>Merchants | przelejmi</title>
       </Head>
 
-      <main>soon</main>
+      <main>
+        <ScenarioList />
+      </main>
     </div>
   )
 }

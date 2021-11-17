@@ -7,6 +7,7 @@ function unique(array: string[]) {
 export const ClientListQuery = extendType({
   type: 'Query',
   definition(t) {
+    t.crud.client()
     t.crud.clients({
       pagination: true,
       ordering: true,

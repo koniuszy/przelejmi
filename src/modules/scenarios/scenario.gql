@@ -20,3 +20,9 @@ mutation createScenario($data: ScenarioCreateInput!) {
     ...ScenarioContent
   }
 }
+
+query scenarioList {
+  scenarioList: scenarios {
+    ...ScenarioContent
+  }
+}
