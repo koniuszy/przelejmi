@@ -39,4 +39,4 @@ db/.env
 # graphql
 api.graphql
 .tmp_build/
-# generated/
+generated/
