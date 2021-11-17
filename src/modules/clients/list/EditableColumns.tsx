@@ -2,25 +2,23 @@ import React, { FC } from 'react'
 
 import { Td, useToast } from '@chakra-ui/react'
 
-import { Client } from 'prisma/prisma-client'
-
-import { useUpdateClientMutation } from 'src/generated/graphql'
+import { ClientContentFragment, useUpdateClientMutation } from 'src/generated/graphql'
 
 import Editable from 'src/components/Editable'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
 
 const EditableColumns: FC<{
-  client: Client
+  client: ClientContentFragment
   isEditable: boolean
-  onClientUpdate: (client: Client) => void
+  onClientUpdate: (client: ClientContentFragment) => void
 }> = ({ client, isEditable, onClientUpdate }) => {
   const toast = useToast()
 
   const [updateClient] = useUpdateClientMutation({
     onCompleted({ updatedClient }) {
       toast({ ...successToastContent, title: 'Client updated' })
-      onClientUpdate(updatedClient as Client)
+      onClientUpdate(updatedClient as ClientContentFragment)
     },
     onError() {
       toast(errorToastContent)
@@ -28,7 +26,7 @@ const EditableColumns: FC<{
     },
   })
 
-  function handleUpdate(data: Partial<Client>, id: number) {
+  function handleUpdate(data: Partial<ClientContentFragment>, id: number) {
     const [value] = Object.values(data)
 
     if (value === '' && data.VATId !== value) {

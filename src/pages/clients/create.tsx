@@ -1,10 +1,50 @@
 import React, { FC } from 'react'
 
+import { NextPage } from 'next'
+
 import Head from 'next/head'
 
-import CreateClientForm from 'src/clients/CreateClientForm'
+import { useToast } from '@chakra-ui/react'
 
-const CreateClientPage: FC = () => (
+import ClientForm from 'clients/ClientForm'
+
+import { useCreateClientMutation } from 'src/generated/graphql'
+
+import { errorToastContent, successToastContent } from 'src/lib/toastContent'
+import { ClientType } from 'src/types'
+
+const CreateClientForm: FC = () => {
+  const toast = useToast()
+  const [createClient, { loading }] = useCreateClientMutation({
+    onCompleted() {
+      toast({
+        ...successToastContent,
+        title: 'Client created.',
+      })
+    },
+    onError(err) {
+      console.error(err)
+      toast(errorToastContent)
+    },
+  })
+
+  return (
+    <ClientForm
+      isLoading={loading}
+      initialValues={{ name: '', address: '', postCode: '', city: '', country: '', VATId: '' }}
+      onSubmit={(values) => {
+        const { VATId, clientType, ...data } = values
+        createClient({
+          variables: {
+            data: { ...data, VATId: clientType === ClientType.company ? VATId : null },
+          },
+        })
+      }}
+    />
+  )
+}
+
+const CreateClientPage: NextPage = () => (
   <>
     <Head>
       <title>Create client | przelejmi</title>

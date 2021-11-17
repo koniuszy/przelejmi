@@ -4,11 +4,12 @@ import Head from 'next/head'
 
 import { Tr, Td } from '@chakra-ui/react'
 
+import ActionsColumn from 'merchants/list/ActionsColumn'
+import EditableColumns from 'merchants/list/EditableColumns'
+
 import { MerchantWhereInput, usePaginatedMerchantListQuery } from 'src/generated/graphql'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
-import ActionsColumn from 'src/modules/merchants/list/ActionsColumn'
-import EditableColumns from 'src/modules/merchants/list/EditableColumns'
 
 const TITLE = 'Total merchants'
 const PER_PAGE = 10

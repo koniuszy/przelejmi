@@ -4,6 +4,11 @@
     "rootDir": ".",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "paths": {
+      "clients/*": ["./src/modules/clients/*"],
+      "scenarios/*": ["./src/modules/scenarios/*"],
+      "merchants/*": ["./src/modules/merchants/*"]
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -12,6 +17,7 @@
     "downlevelIteration": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "noImplicitAny": false,
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,

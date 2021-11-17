@@ -7,11 +7,12 @@ import { useRouter } from 'next/router'
 
 import { Center, Spinner, useToast } from '@chakra-ui/react'
 
+import MerchantForm from 'merchants/MerchantForm'
+
 import { useUpdateMerchantMutation, useMerchantQuery } from 'src/generated/graphql'
 
 import prisma from 'src/lib/prisma/prismaClient'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
-import MerchantForm from 'src/modules/merchants/MerchantForm'
 
 const EditMerchantForm: FC<{
   merchantId: number

@@ -14,3 +14,9 @@ fragment ScenarioContent on Scenario {
   clientId
   merchantId
 }
+
+mutation createScenario($data: ScenarioCreateInput!) {
+  createdScenario: createOneScenario(data: $data) {
+    ...ScenarioContent
+  }
+}

@@ -43,8 +43,7 @@ const ClientForm: FC<{
       onSubmit({ ...values, clientType })
     },
     validate(values) {
-      // @ts-ignore
-      const errors: Record<keyof Form, string> = {}
+      const errors: Partial<Record<keyof Form, string>> = {}
 
       if (values.name.length > 100) errors.name = 'Name should be shorter'
       if (values.address.length > 100) errors.address = 'Address should be shorter'

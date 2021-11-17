@@ -5,10 +5,63 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Spinner, Center } from '@chakra-ui/react'
+import { Spinner, Center, useToast } from '@chakra-ui/react'
 
-import EditClientForm from 'src/clients/EditClientForm'
+import ClientForm from 'clients/ClientForm'
+
+import { useUpdateClientMutation, useClientQuery } from 'src/generated/graphql'
+
 import prisma from 'src/lib/prisma/prismaClient'
+import { errorToastContent, successToastContent } from 'src/lib/toastContent'
+import { ClientType } from 'src/types'
+
+const EditClientForm: FC<{
+  clientId: number
+}> = ({ clientId }) => {
+  const toast = useToast()
+
+  const { data, updateQuery } = useClientQuery({ variables: { where: { id: clientId } } })
+
+  const [updateClient, { loading }] = useUpdateClientMutation({
+    onCompleted({ updatedClient }) {
+      toast({
+        ...successToastContent,
+        title: 'Client updated.',
+      })
+
+      updateQuery((prev) => ({ ...prev, client: updatedClient }))
+    },
+    onError(err) {
+      console.error(err)
+      toast(errorToastContent)
+    },
+  })
+
+  if (!data?.client)
+    return (
+      <ClientForm
+        isLoading={true}
+        initialValues={{ name: '', address: '', postCode: '', city: '', country: '', VATId: '' }}
+        onSubmit={() => {}}
+      />
+    )
+
+  return (
+    <ClientForm
+      isLoading={loading}
+      initialValues={{ ...data.client, VATId: data.client.VATId ?? '' } || {}}
+      onSubmit={(values) => {
+        const { VATId, clientType, ...data } = values
+        updateClient({
+          variables: {
+            data: { ...data, VATId: clientType === ClientType.company ? VATId : null },
+            id: clientId,
+          },
+        })
+      }}
+    />
+  )
+}
 
 type SSGProps = {
   clientId: number
@@ -51,7 +104,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
   return {
     props: {
-      clientId: Number(params.id),
+      clientId: Number(params?.id),
     },
   }
 }

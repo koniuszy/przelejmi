@@ -4,23 +4,23 @@ function unique(array: string[]) {
   return [...new Set(array)]
 }
 
-export const MerchantListQuery = extendType({
+export const ClientListQuery = extendType({
   type: 'Query',
   definition(t) {
-    t.crud.merchants({
+    t.crud.clients({
       pagination: true,
       ordering: true,
       filtering: true,
     })
-    t.field('totalMerchantsCount', {
+    t.field('totalClientsCount', {
       type: 'Int',
       async resolve(_root, _variables, { db }) {
         const totalCount = await db.merchant.count()
         return totalCount
       },
     })
-    t.field('merchantsFilters', {
-      type: PaginatedMerchantListFilters,
+    t.field('clientsFilters', {
+      type: ClientListFilters,
       async resolve(_root, _vars, { db }) {
         const distinctList = await db.merchant.findMany({
           distinct: ['country', 'city', 'bankName'],
@@ -37,8 +37,8 @@ export const MerchantListQuery = extendType({
   },
 })
 
-const PaginatedMerchantListFilters = objectType({
-  name: 'PaginatedMerchantListFilters',
+const ClientListFilters = objectType({
+  name: 'ClientListFilters',
   definition(t) {
     t.list.string('country')
     t.list.string('city')

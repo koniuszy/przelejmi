@@ -106,7 +106,6 @@ function Table<Item>({
                   <SortTh
                     title={headerListItem.title}
                     sortOrder={
-                      // @ts-ignore
                       variables?.orderBy ? variables.orderBy[headerListItem.sortableKey] : null
                     }
                     onChange={(sortOrder) =>

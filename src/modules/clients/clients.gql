@@ -1,0 +1,62 @@
+fragment ClientContent on Client {
+  id
+  name
+  address
+  postCode
+  city
+  country
+  VATId
+}
+
+mutation createClient($data: ClientCreateInput!) {
+  createdClient: createOneClient(data: $data) {
+    id
+  }
+}
+
+mutation deleteClient($id: Int!) {
+  deletedClient: deleteOneClient(where: { id: $id }) {
+    id
+  }
+}
+
+mutation updateClient($data: ClientUpdateInput!, $id: Int!) {
+  updatedClient: updateOneClient(data: $data, where: { id: $id }) {
+    ...ClientContent
+  }
+}
+
+query client($where: ClientWhereUniqueInput!) {
+  client(where: $where) {
+    ...ClientContent
+  }
+}
+
+query clientList(
+  $orderBy: [ClientOrderByInput!] = []
+  $where: ClientWhereInput
+  $skip: Int = 0
+  $take: Int = 100
+) {
+  clientList: clients(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
+    ...ClientContent
+  }
+  totalCount: totalClientsCount
+}
+
+query paginatedClientList(
+  $orderBy: [ClientOrderByInput!] = []
+  $where: ClientWhereInput
+  $skip: Int!
+  $take: Int = 10
+) {
+  totalCount: totalClientsCount
+  filters: clientsFilters {
+    country
+    city
+    bank
+  }
+  clientList: clients(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
+    ...ClientContent
+  }
+}
