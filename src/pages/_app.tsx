@@ -70,7 +70,8 @@ function MyApp({ Component, pageProps }) {
           <ChakraProvider theme={extendedTheme}>
             <Flex
               px={20}
-              overflow="scroll"
+              overflowY="scroll"
+              overflowX="hidden"
               height="100vh"
               flexDir="column"
               justifyContent="space-between"

@@ -12,7 +12,7 @@ import { ClientContentFragment, usePaginatedClientListQuery } from 'src/generate
 import Table, { TablePlaceholder } from 'src/components/Table'
 import { ClientType, DBConditions } from 'src/types'
 
-const PER_PAGE = 10
+const PER_PAGE = 5
 const TITLE = 'Total clients'
 
 const ClientList: FC = () => {

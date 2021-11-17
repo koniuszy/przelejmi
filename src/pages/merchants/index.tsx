@@ -13,7 +13,7 @@ import Table, { TablePlaceholder } from 'src/components/Table'
 import { errorToastContent } from 'src/lib/toastContent'
 
 const TITLE = 'Total merchants'
-const PER_PAGE = 10
+const PER_PAGE = 5
 
 const MerchantList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 
 import { CalendarIcon, TimeIcon, UnlockIcon } from '@chakra-ui/icons'
-import { Center, List, ListIcon, ListItem, Progress, Spinner, Box, Flex } from '@chakra-ui/react'
+import { Center, List, ListIcon, ListItem, Spinner, Box, Flex } from '@chakra-ui/react'
 
 import useSession from 'src/hooks/useSession'
 
@@ -16,7 +16,6 @@ const Home: FC = () => {
   return (
     <Flex flexDir="column" flexWrap="nowrap" alignContent="space-between">
       <Box w="100%">
-        <Progress mb="5" size="xs" colorScheme="teal" value={100} />
         <List spacing={3}>
           <ListItem>
             <ListIcon as={UnlockIcon} color="teal.200" />
