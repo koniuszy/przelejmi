@@ -47,22 +47,22 @@ const ClientSelect: FC<{
   </React.Fragment>
 )
 
-const SelectClientSection: FC<{ selectedClientId: number; onClientSelect: (id: number) => void }> = ({
-  selectedClientId,
-  onClientSelect,
-}) => {
+const SelectClientSection: FC<{
+  selectedClientId: number | null
+  onClientSelect: (id: number | null) => void
+}> = ({ selectedClientId, onClientSelect }) => {
   const { data, loading } = useClientListQuery({ fetchPolicy: 'cache-and-network' })
 
   return (
     <>
       <Flex justifyContent="space-between">
         <Text fontWeight="bold" fontSize="lg">
-          Total Clients: {data?.clientList.totalCount}
+          Total Clients: {data?.totalCount}
         </Text>
 
         {selectedClientId && (
           <Text fontWeight="bold">
-            {data?.clientList.list.find(({ id }) => id === selectedClientId).name}
+            {data?.clientList.find(({ id }) => id === selectedClientId)?.name}
           </Text>
         )}
       </Flex>
@@ -72,7 +72,7 @@ const SelectClientSection: FC<{ selectedClientId: number; onClientSelect: (id: n
           <SkeletonsStack />
         ) : (
           <SimpleGrid my="2" columns={3} spacing={10}>
-            {data.clientList.list.map((clientListItem) => (
+            {data?.clientList.map((clientListItem) => (
               <ClientSelect
                 key={clientListItem.id}
                 client={clientListItem}

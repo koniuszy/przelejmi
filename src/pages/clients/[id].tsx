@@ -11,7 +11,7 @@ import ClientForm from 'clients/ClientForm'
 
 import { useUpdateClientMutation, useClientQuery } from 'src/generated/graphql'
 
-import prisma from 'src/lib/prisma/prismaClient'
+import prisma from 'src/lib/prisma'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
 

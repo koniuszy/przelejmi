@@ -4,7 +4,7 @@ import { Session } from 'next-auth'
 import { getSession } from 'next-auth/client'
 import { PrismaClient } from 'prisma/prisma-client'
 
-import prisma from 'src/lib/prisma/prismaClient'
+import prisma from 'src/lib/prisma'
 
 type NextApi = {
   req: NextApiRequest

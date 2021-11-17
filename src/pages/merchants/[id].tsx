@@ -11,7 +11,7 @@ import MerchantForm from 'merchants/MerchantForm'
 
 import { useUpdateMerchantMutation, useMerchantQuery } from 'src/generated/graphql'
 
-import prisma from 'src/lib/prisma/prismaClient'
+import prisma from 'src/lib/prisma'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 const EditMerchantForm: FC<{

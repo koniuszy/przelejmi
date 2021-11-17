@@ -9,7 +9,7 @@ import ActionButtons from './ActionButtons'
 import bigInvoiceAnimation from './bigInvoiceAnimation.json'
 import statsAnimation from './statsAnimation.json'
 
-const AnimationSection: FC<{ session: Session }> = ({ session }) => (
+const AnimationSection: FC<{ session: Session | null }> = ({ session }) => (
   <>
     <Center>
       <Lottie

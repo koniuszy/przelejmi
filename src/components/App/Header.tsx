@@ -21,7 +21,7 @@ import {
 import { Session } from 'next-auth'
 import { signOut } from 'next-auth/client'
 
-const Header: FC<{ session: Session }> = ({ session }) => {
+const Header: FC<{ session: Session | null }> = ({ session }) => {
   const { pathname, push } = useRouter()
 
   return (
@@ -114,7 +114,13 @@ const Header: FC<{ session: Session }> = ({ session }) => {
         </Menu>
 
         <Center>
-          <Avatar mx={5} zIndex={2} size="sm" name={session?.user.name} src={session?.user.image}>
+          <Avatar
+            mx={5}
+            zIndex={2}
+            size="sm"
+            name={session?.user?.name || ''}
+            src={session?.user?.image || ''}
+          >
             <AvatarBadge _hover={{ bg: 'gray.700' }} bg="black" cursor="pointer">
               <Menu>
                 <MenuButton color="white" as={ChevronDownIcon} />

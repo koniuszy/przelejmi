@@ -4,7 +4,7 @@ import NextAuth from 'next-auth'
 import Adapters from 'next-auth/adapters'
 import Providers from 'next-auth/providers'
 
-import prisma from 'src/lib/prisma/prismaClient'
+import prisma from 'src/lib/prisma'
 
 const whiteList = [
   'michal.stefan.konczak@gmail.com',
@@ -23,7 +23,7 @@ const authHandler: NextApiHandler = (req, res) =>
     ],
     callbacks: {
       async signIn(user, account, profile) {
-        return profile.verified_email && whiteList.includes(profile.email)
+        return Boolean(profile.verified_email && whiteList.includes(profile.email || ''))
       },
     },
   })

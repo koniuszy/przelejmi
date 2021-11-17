@@ -50,7 +50,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
-export const sessionContext = createContext<[Session, boolean]>([undefined, true])
+export const sessionContext = createContext<[Session | null, boolean]>([null, true])
 
 function MyApp({ Component, pageProps }) {
   const [session, isSessionLoading] = useSession()
@@ -59,14 +59,14 @@ function MyApp({ Component, pageProps }) {
   //   if (session && !session.user && pathname !== '/') signIn('google')
   // }, [session?.user])
 
-  const sessionContextValue: [Session, boolean] =
+  const sessionContextValue: [Session | null, boolean] =
     process.env.NODE_ENV === 'development'
       ? [
           {
             user: {
-              name: null,
-              email: null,
-              image: null,
+              name: '',
+              email: '',
+              image: '',
             },
             expires: '',
           },
