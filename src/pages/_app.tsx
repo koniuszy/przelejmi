@@ -1,13 +1,15 @@
-import React, { createContext } from 'react'
+import React from 'react'
 
-import { ChakraProvider, extendTheme, Box, Flex } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme, Box, Flex, useToast } from '@chakra-ui/react'
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
-import { Session } from 'next-auth'
-import { useSession } from 'next-auth/client'
 import NextProgressBar from 'nextjs-progressbar'
 
-import { Footer, Header } from 'src/components/App'
+import ErrorBoundary from 'src/components/App/ErrorBoundary'
+import Footer from 'src/components/App/Footer'
+import Header from 'src/components/App/Header'
+import { SessionProvider } from 'src/components/App/Session'
+import { errorToastContent } from 'src/lib/toastContent'
 
 const extendedTheme = extendTheme({
   config: {
@@ -48,34 +50,14 @@ const extendedTheme = extendTheme({
 const client = new ApolloClient({
   uri: '/api/graphql',
   cache: new InMemoryCache(),
+  defaultOptions: { query: { fetchPolicy: 'cache-first', errorPolicy: 'all' } },
 })
 
-export const sessionContext = createContext<[Session | null, boolean]>([null, true])
-
 function MyApp({ Component, pageProps }) {
-  const [session, isSessionLoading] = useSession()
-
-  // useEffect(() => {
-  //   if (session && !session.user && pathname !== '/') signIn('google')
-  // }, [session?.user])
-
-  const sessionContextValue: [Session | null, boolean] =
-    process.env.NODE_ENV === 'development'
-      ? [
-          {
-            user: {
-              name: '',
-              email: '',
-              image: '',
-            },
-            expires: '',
-          },
-          false,
-        ]
-      : [session, isSessionLoading]
+  const toast = useToast()
 
   return (
-    <>
+    <ErrorBoundary onError={(errorMessage) => toast({ ...errorToastContent, title: errorMessage })}>
       <NextProgressBar
         color={extendedTheme.colors.teal[300]}
         startPosition={0.3}
@@ -83,7 +65,7 @@ function MyApp({ Component, pageProps }) {
         height={3}
       />
 
-      <sessionContext.Provider value={sessionContextValue}>
+      <SessionProvider>
         <ApolloProvider client={client}>
           <ChakraProvider theme={extendedTheme}>
             <Flex
@@ -94,7 +76,7 @@ function MyApp({ Component, pageProps }) {
               justifyContent="space-between"
             >
               <Box>
-                <Header session={sessionContextValue[0]} />
+                <Header />
                 <Component {...pageProps} />
               </Box>
 
@@ -102,8 +84,8 @@ function MyApp({ Component, pageProps }) {
             </Flex>
           </ChakraProvider>
         </ApolloProvider>
-      </sessionContext.Provider>
-    </>
+      </SessionProvider>
+    </ErrorBoundary>
   )
 }
 

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react'
 
 import Head from 'next/head'
 
-import { Tr, Td } from '@chakra-ui/react'
+import { Tr, Td, useToast } from '@chakra-ui/react'
 
 import ActionsColumn from 'merchants/list/ActionsColumn'
 import EditableColumns from 'merchants/list/EditableColumns'
@@ -10,16 +10,22 @@ import EditableColumns from 'merchants/list/EditableColumns'
 import { MerchantWhereInput, usePaginatedMerchantListQuery } from 'src/generated/graphql'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
+import { errorToastContent } from 'src/lib/toastContent'
 
 const TITLE = 'Total merchants'
 const PER_PAGE = 10
 
 const MerchantList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)
+  const toast = useToast()
 
   const { data, refetch, variables, loading, updateQuery } = usePaginatedMerchantListQuery({
     variables: { skip: 0, take: PER_PAGE },
     fetchPolicy: 'cache-and-network',
+    onError(err) {
+      console.error(err)
+      toast({ ...errorToastContent, title: err.message })
+    },
   })
 
   if (!data?.merchantList) return <TablePlaceholder title={TITLE} />
