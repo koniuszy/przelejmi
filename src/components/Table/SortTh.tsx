@@ -3,13 +3,13 @@ import React, { FC } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { Th, Flex, Center, IconButton } from '@chakra-ui/react'
 
+import { SortOrder } from 'src/generated/graphql'
+
 const SortTh: FC<{
   title: string
-  isAsc: boolean
-  isDesc: boolean
-  onAsc: () => void
-  onDesc: () => void
-}> = ({ title, isAsc, isDesc, onAsc, onDesc }) => (
+  onChange: (s: SortOrder) => void
+  sortOrder: SortOrder | null | undefined
+}> = ({ title, onChange, sortOrder }) => (
   <Th>
     <Flex>
       <Center>{title}</Center>
@@ -18,17 +18,17 @@ const SortTh: FC<{
           cursor="pointer"
           size="xxs"
           aria-label="asc"
-          colorScheme={isAsc ? 'teal' : undefined}
+          colorScheme={sortOrder === SortOrder.Asc ? 'teal' : undefined}
           icon={<TriangleUpIcon />}
-          onClick={onAsc}
+          onClick={() => onChange(SortOrder.Asc)}
         />
         <IconButton
           size="xxs"
           aria-label="desc"
           cursor="pointer"
-          colorScheme={isDesc ? 'teal' : undefined}
+          colorScheme={sortOrder === SortOrder.Desc ? 'teal' : undefined}
           icon={<TriangleDownIcon />}
-          onClick={onDesc}
+          onClick={() => onChange(SortOrder.Desc)}
         />
       </Flex>
     </Flex>

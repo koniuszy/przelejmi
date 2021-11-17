@@ -37,30 +37,31 @@ query merchant($where: MerchantWhereUniqueInput!) {
   }
 }
 
-query merchantList {
-  merchantList {
-    totalCount
-    list {
-      ...MerchantContent
-    }
+query merchantList(
+  $orderBy: [MerchantOrderByInput!] = []
+  $where: MerchantWhereInput
+  $skip: Int = 0
+  $take: Int = 100
+) {
+  merchantList: merchants(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
+    ...MerchantContent
   }
+  totalCount: totalMerchantsCount
 }
 
 query paginatedMerchantList(
-  $orderBy: [MerchantOrderByInput!]
+  $orderBy: [MerchantOrderByInput!] = []
   $where: MerchantWhereInput
   $skip: Int!
-  $take: Int!
+  $take: Int = 10
 ) {
-  paginatedMerchantList(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
-    totalCount
-    filters {
-      country
-      city
-      bank
-    }
-    list {
-      ...MerchantContent
-    }
+  totalCount: totalMerchantsCount
+  filters: merchantsFilters {
+    country
+    city
+    bank
+  }
+  merchantList: merchants(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
+    ...MerchantContent
   }
 }

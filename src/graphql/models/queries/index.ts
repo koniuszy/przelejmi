@@ -1,5 +1,4 @@
-export * from './merchantList'
+export * from './merchants'
 export * from './clientList'
-export * from './paginatedMerchantList'
 export * from './paginatedClientList'
 export * from './queries'

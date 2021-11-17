@@ -58,12 +58,12 @@ const SelectMerchantSection: FC<{
     <>
       <Flex justifyContent="space-between">
         <Text fontWeight="bold" fontSize="lg">
-          Total Merchants: {data?.merchantList.totalCount}
+          Total Merchants: {data?.totalCount}
         </Text>
 
         {selectedMerchantId && (
           <Text fontWeight="bold">
-            {data?.merchantList.list.find(({ id }) => id === selectedMerchantId).companyName}
+            {data?.merchantList.find(({ id }) => id === selectedMerchantId)?.companyName}
           </Text>
         )}
       </Flex>
@@ -75,7 +75,7 @@ const SelectMerchantSection: FC<{
           <SkeletonsStack />
         ) : (
           <SimpleGrid my="2" columns={4} spacing={10}>
-            {data.merchantList.list.map((merchantListItem) => (
+            {data?.merchantList.map((merchantListItem) => (
               <MerchantSelect
                 key={merchantListItem.id}
                 merchant={merchantListItem}

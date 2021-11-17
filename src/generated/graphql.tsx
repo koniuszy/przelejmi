@@ -252,12 +252,6 @@ export type MerchantCreateWithoutScenarioInput = {
   postCode: Scalars['String'];
 };
 
-export type MerchantList = {
-  __typename?: 'MerchantList';
-  list: Array<Merchant>;
-  totalCount: Scalars['Int'];
-};
-
 export type MerchantOrderByInput = {
   VATId?: InputMaybe<SortOrder>;
   address?: InputMaybe<SortOrder>;
@@ -484,13 +478,6 @@ export type PaginatedClientListFilters = {
   country: Array<Scalars['String']>;
 };
 
-export type PaginatedMerchantList = {
-  __typename?: 'PaginatedMerchantList';
-  filters: PaginatedMerchantListFilters;
-  list: Array<Merchant>;
-  totalCount: Scalars['Int'];
-};
-
 export type PaginatedMerchantListFilters = {
   __typename?: 'PaginatedMerchantListFilters';
   bank: Array<Scalars['String']>;
@@ -509,12 +496,12 @@ export type Query = {
   clientList: ClientList;
   clients: Array<Client>;
   merchant?: Maybe<Merchant>;
-  merchantList: MerchantList;
   merchants: Array<Merchant>;
+  merchantsFilters: PaginatedMerchantListFilters;
   paginatedClientList: PaginatedClientList;
-  paginatedMerchantList: PaginatedMerchantList;
   scenario?: Maybe<Scenario>;
   scenarios: Array<Scenario>;
+  totalMerchantsCount: Scalars['Int'];
 };
 
 
@@ -551,14 +538,6 @@ export type QueryPaginatedClientListArgs = {
   skip: Scalars['Int'];
   take: Scalars['Int'];
   where?: InputMaybe<ClientWhereInput>;
-};
-
-
-export type QueryPaginatedMerchantListArgs = {
-  orderBy?: InputMaybe<Array<MerchantOrderByInput>>;
-  skip: Scalars['Int'];
-  take: Scalars['Int'];
-  where?: InputMaybe<MerchantWhereInput>;
 };
 
 
@@ -930,33 +909,7 @@ export enum Vat {
   Percent_23 = 'PERCENT_23'
 }
 
-export type ClientContentFragment = { __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined };
-
 export type MerchantContentFragment = { __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string };
-
-export type ScenarioContentFragment = { __typename?: 'Scenario', id: number, name: string, paymentType: PaymentType, imgUrl: string, netPerOne: number, VAT: Vat, unitType: Unit, currency: Currency, notes: string, dueDateDays: number, createdAt: any, updatedAt: any, clientId: number, merchantId: number };
-
-export type CreateClientMutationVariables = Exact<{
-  data: ClientCreateInput;
-}>;
-
-
-export type CreateClientMutation = { __typename?: 'Mutation', createdClient: { __typename?: 'Client', id: number } };
-
-export type DeleteClientMutationVariables = Exact<{
-  id: Scalars['Int'];
-}>;
-
-
-export type DeleteClientMutation = { __typename?: 'Mutation', deletedClient?: { __typename?: 'Client', id: number } | null | undefined };
-
-export type UpdateClientMutationVariables = Exact<{
-  data: ClientUpdateInput;
-  id: Scalars['Int'];
-}>;
-
-
-export type UpdateClientMutation = { __typename?: 'Mutation', updatedClient?: { __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined } | null | undefined };
 
 export type CreateMerchantMutationVariables = Exact<{
   data: MerchantCreateInput;
@@ -980,35 +933,6 @@ export type UpdateMerchantMutationVariables = Exact<{
 
 export type UpdateMerchantMutation = { __typename?: 'Mutation', updatedMerchant?: { __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string } | null | undefined };
 
-export type CreateScenarioMutationVariables = Exact<{
-  data: ScenarioCreateInput;
-}>;
-
-
-export type CreateScenarioMutation = { __typename?: 'Mutation', createdScenario: { __typename?: 'Scenario', id: number, name: string, paymentType: PaymentType, imgUrl: string, netPerOne: number, VAT: Vat, unitType: Unit, currency: Currency, notes: string, dueDateDays: number, createdAt: any, updatedAt: any, clientId: number, merchantId: number } };
-
-export type ClientQueryVariables = Exact<{
-  where: ClientWhereUniqueInput;
-}>;
-
-
-export type ClientQuery = { __typename?: 'Query', client?: { __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined } | null | undefined };
-
-export type ClientListQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ClientListQuery = { __typename?: 'Query', clientList: { __typename?: 'ClientList', totalCount: number, list: Array<{ __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined }> } };
-
-export type PaginatedClientListQueryVariables = Exact<{
-  orderBy?: Maybe<Array<ClientOrderByInput> | ClientOrderByInput>;
-  where?: Maybe<ClientWhereInput>;
-  skip: Scalars['Int'];
-  take: Scalars['Int'];
-}>;
-
-
-export type PaginatedClientListQuery = { __typename?: 'Query', paginatedClientList: { __typename?: 'PaginatedClientList', totalCount: number, filters: { __typename?: 'PaginatedClientListFilters', country: Array<string>, city: Array<string> }, list: Array<{ __typename?: 'Client', id: number, name: string, address: string, postCode: string, city: string, country: string, VATId?: string | null | undefined }> } };
-
 export type MerchantQueryVariables = Exact<{
   where: MerchantWhereUniqueInput;
 }>;
@@ -1016,32 +940,26 @@ export type MerchantQueryVariables = Exact<{
 
 export type MerchantQuery = { __typename?: 'Query', merchant?: { __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string } | null | undefined };
 
-export type MerchantListQueryVariables = Exact<{ [key: string]: never; }>;
+export type MerchantListQueryVariables = Exact<{
+  orderBy?: Maybe<Array<MerchantOrderByInput> | MerchantOrderByInput>;
+  where?: Maybe<MerchantWhereInput>;
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+}>;
 
 
-export type MerchantListQuery = { __typename?: 'Query', merchantList: { __typename?: 'MerchantList', totalCount: number, list: Array<{ __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string }> } };
+export type MerchantListQuery = { __typename?: 'Query', totalCount: number, merchantList: Array<{ __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string }> };
 
 export type PaginatedMerchantListQueryVariables = Exact<{
   orderBy?: Maybe<Array<MerchantOrderByInput> | MerchantOrderByInput>;
   where?: Maybe<MerchantWhereInput>;
   skip: Scalars['Int'];
-  take: Scalars['Int'];
+  take?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type PaginatedMerchantListQuery = { __typename?: 'Query', paginatedMerchantList: { __typename?: 'PaginatedMerchantList', totalCount: number, filters: { __typename?: 'PaginatedMerchantListFilters', country: Array<string>, city: Array<string>, bank: Array<string> }, list: Array<{ __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string }> } };
+export type PaginatedMerchantListQuery = { __typename?: 'Query', totalCount: number, filters: { __typename?: 'PaginatedMerchantListFilters', country: Array<string>, city: Array<string>, bank: Array<string> }, merchantList: Array<{ __typename?: 'Merchant', id: number, companyName: string, address: string, postCode: string, city: string, country: string, VATId: string, bankAccountPln: string, bankAccountEur?: string | null | undefined, bankName: string, email: string, issuerName: string }> };
 
-export const ClientContentFragmentDoc = gql`
-    fragment ClientContent on Client {
-  id
-  name
-  address
-  postCode
-  city
-  country
-  VATId
-}
-    `;
 export const MerchantContentFragmentDoc = gql`
     fragment MerchantContent on Merchant {
   id
@@ -1058,124 +976,6 @@ export const MerchantContentFragmentDoc = gql`
   issuerName
 }
     `;
-export const ScenarioContentFragmentDoc = gql`
-    fragment ScenarioContent on Scenario {
-  id
-  name
-  paymentType
-  imgUrl
-  netPerOne
-  VAT
-  unitType
-  currency
-  notes
-  dueDateDays
-  createdAt
-  updatedAt
-  clientId
-  merchantId
-}
-    `;
-export const CreateClientDocument = gql`
-    mutation createClient($data: ClientCreateInput!) {
-  createdClient: createOneClient(data: $data) {
-    id
-  }
-}
-    `;
-export type CreateClientMutationFn = Apollo.MutationFunction<CreateClientMutation, CreateClientMutationVariables>;
-
-/**
- * __useCreateClientMutation__
- *
- * To run a mutation, you first call `useCreateClientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateClientMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createClientMutation, { data, loading, error }] = useCreateClientMutation({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useCreateClientMutation(baseOptions?: Apollo.MutationHookOptions<CreateClientMutation, CreateClientMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateClientMutation, CreateClientMutationVariables>(CreateClientDocument, options);
-      }
-export type CreateClientMutationHookResult = ReturnType<typeof useCreateClientMutation>;
-export type CreateClientMutationResult = Apollo.MutationResult<CreateClientMutation>;
-export type CreateClientMutationOptions = Apollo.BaseMutationOptions<CreateClientMutation, CreateClientMutationVariables>;
-export const DeleteClientDocument = gql`
-    mutation deleteClient($id: Int!) {
-  deletedClient: deleteOneClient(where: {id: $id}) {
-    id
-  }
-}
-    `;
-export type DeleteClientMutationFn = Apollo.MutationFunction<DeleteClientMutation, DeleteClientMutationVariables>;
-
-/**
- * __useDeleteClientMutation__
- *
- * To run a mutation, you first call `useDeleteClientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteClientMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteClientMutation, { data, loading, error }] = useDeleteClientMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteClientMutation(baseOptions?: Apollo.MutationHookOptions<DeleteClientMutation, DeleteClientMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteClientMutation, DeleteClientMutationVariables>(DeleteClientDocument, options);
-      }
-export type DeleteClientMutationHookResult = ReturnType<typeof useDeleteClientMutation>;
-export type DeleteClientMutationResult = Apollo.MutationResult<DeleteClientMutation>;
-export type DeleteClientMutationOptions = Apollo.BaseMutationOptions<DeleteClientMutation, DeleteClientMutationVariables>;
-export const UpdateClientDocument = gql`
-    mutation updateClient($data: ClientUpdateInput!, $id: Int!) {
-  updatedClient: updateOneClient(data: $data, where: {id: $id}) {
-    ...ClientContent
-  }
-}
-    ${ClientContentFragmentDoc}`;
-export type UpdateClientMutationFn = Apollo.MutationFunction<UpdateClientMutation, UpdateClientMutationVariables>;
-
-/**
- * __useUpdateClientMutation__
- *
- * To run a mutation, you first call `useUpdateClientMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateClientMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateClientMutation, { data, loading, error }] = useUpdateClientMutation({
- *   variables: {
- *      data: // value for 'data'
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useUpdateClientMutation(baseOptions?: Apollo.MutationHookOptions<UpdateClientMutation, UpdateClientMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateClientMutation, UpdateClientMutationVariables>(UpdateClientDocument, options);
-      }
-export type UpdateClientMutationHookResult = ReturnType<typeof useUpdateClientMutation>;
-export type UpdateClientMutationResult = Apollo.MutationResult<UpdateClientMutation>;
-export type UpdateClientMutationOptions = Apollo.BaseMutationOptions<UpdateClientMutation, UpdateClientMutationVariables>;
 export const CreateMerchantDocument = gql`
     mutation createMerchant($data: MerchantCreateInput!) {
   createdMerchant: createOneMerchant(data: $data) {
@@ -1276,156 +1076,6 @@ export function useUpdateMerchantMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateMerchantMutationHookResult = ReturnType<typeof useUpdateMerchantMutation>;
 export type UpdateMerchantMutationResult = Apollo.MutationResult<UpdateMerchantMutation>;
 export type UpdateMerchantMutationOptions = Apollo.BaseMutationOptions<UpdateMerchantMutation, UpdateMerchantMutationVariables>;
-export const CreateScenarioDocument = gql`
-    mutation createScenario($data: ScenarioCreateInput!) {
-  createdScenario: createOneScenario(data: $data) {
-    ...ScenarioContent
-  }
-}
-    ${ScenarioContentFragmentDoc}`;
-export type CreateScenarioMutationFn = Apollo.MutationFunction<CreateScenarioMutation, CreateScenarioMutationVariables>;
-
-/**
- * __useCreateScenarioMutation__
- *
- * To run a mutation, you first call `useCreateScenarioMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateScenarioMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createScenarioMutation, { data, loading, error }] = useCreateScenarioMutation({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useCreateScenarioMutation(baseOptions?: Apollo.MutationHookOptions<CreateScenarioMutation, CreateScenarioMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateScenarioMutation, CreateScenarioMutationVariables>(CreateScenarioDocument, options);
-      }
-export type CreateScenarioMutationHookResult = ReturnType<typeof useCreateScenarioMutation>;
-export type CreateScenarioMutationResult = Apollo.MutationResult<CreateScenarioMutation>;
-export type CreateScenarioMutationOptions = Apollo.BaseMutationOptions<CreateScenarioMutation, CreateScenarioMutationVariables>;
-export const ClientDocument = gql`
-    query client($where: ClientWhereUniqueInput!) {
-  client(where: $where) {
-    ...ClientContent
-  }
-}
-    ${ClientContentFragmentDoc}`;
-
-/**
- * __useClientQuery__
- *
- * To run a query within a React component, call `useClientQuery` and pass it any options that fit your needs.
- * When your component renders, `useClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useClientQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
-export function useClientQuery(baseOptions: Apollo.QueryHookOptions<ClientQuery, ClientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ClientQuery, ClientQueryVariables>(ClientDocument, options);
-      }
-export function useClientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClientQuery, ClientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ClientQuery, ClientQueryVariables>(ClientDocument, options);
-        }
-export type ClientQueryHookResult = ReturnType<typeof useClientQuery>;
-export type ClientLazyQueryHookResult = ReturnType<typeof useClientLazyQuery>;
-export type ClientQueryResult = Apollo.QueryResult<ClientQuery, ClientQueryVariables>;
-export const ClientListDocument = gql`
-    query clientList {
-  clientList {
-    totalCount
-    list {
-      ...ClientContent
-    }
-  }
-}
-    ${ClientContentFragmentDoc}`;
-
-/**
- * __useClientListQuery__
- *
- * To run a query within a React component, call `useClientListQuery` and pass it any options that fit your needs.
- * When your component renders, `useClientListQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useClientListQuery({
- *   variables: {
- *   },
- * });
- */
-export function useClientListQuery(baseOptions?: Apollo.QueryHookOptions<ClientListQuery, ClientListQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ClientListQuery, ClientListQueryVariables>(ClientListDocument, options);
-      }
-export function useClientListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClientListQuery, ClientListQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ClientListQuery, ClientListQueryVariables>(ClientListDocument, options);
-        }
-export type ClientListQueryHookResult = ReturnType<typeof useClientListQuery>;
-export type ClientListLazyQueryHookResult = ReturnType<typeof useClientListLazyQuery>;
-export type ClientListQueryResult = Apollo.QueryResult<ClientListQuery, ClientListQueryVariables>;
-export const PaginatedClientListDocument = gql`
-    query paginatedClientList($orderBy: [ClientOrderByInput!], $where: ClientWhereInput, $skip: Int!, $take: Int!) {
-  paginatedClientList(orderBy: $orderBy, where: $where, take: $take, skip: $skip) {
-    totalCount
-    filters {
-      country
-      city
-    }
-    list {
-      ...ClientContent
-    }
-  }
-}
-    ${ClientContentFragmentDoc}`;
-
-/**
- * __usePaginatedClientListQuery__
- *
- * To run a query within a React component, call `usePaginatedClientListQuery` and pass it any options that fit your needs.
- * When your component renders, `usePaginatedClientListQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePaginatedClientListQuery({
- *   variables: {
- *      orderBy: // value for 'orderBy'
- *      where: // value for 'where'
- *      skip: // value for 'skip'
- *      take: // value for 'take'
- *   },
- * });
- */
-export function usePaginatedClientListQuery(baseOptions: Apollo.QueryHookOptions<PaginatedClientListQuery, PaginatedClientListQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PaginatedClientListQuery, PaginatedClientListQueryVariables>(PaginatedClientListDocument, options);
-      }
-export function usePaginatedClientListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PaginatedClientListQuery, PaginatedClientListQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PaginatedClientListQuery, PaginatedClientListQueryVariables>(PaginatedClientListDocument, options);
-        }
-export type PaginatedClientListQueryHookResult = ReturnType<typeof usePaginatedClientListQuery>;
-export type PaginatedClientListLazyQueryHookResult = ReturnType<typeof usePaginatedClientListLazyQuery>;
-export type PaginatedClientListQueryResult = Apollo.QueryResult<PaginatedClientListQuery, PaginatedClientListQueryVariables>;
 export const MerchantDocument = gql`
     query merchant($where: MerchantWhereUniqueInput!) {
   merchant(where: $where) {
@@ -1462,13 +1112,16 @@ export type MerchantQueryHookResult = ReturnType<typeof useMerchantQuery>;
 export type MerchantLazyQueryHookResult = ReturnType<typeof useMerchantLazyQuery>;
 export type MerchantQueryResult = Apollo.QueryResult<MerchantQuery, MerchantQueryVariables>;
 export const MerchantListDocument = gql`
-    query merchantList {
-  merchantList {
-    totalCount
-    list {
-      ...MerchantContent
-    }
+    query merchantList($orderBy: [MerchantOrderByInput!] = [], $where: MerchantWhereInput, $skip: Int = 0, $take: Int = 100) {
+  merchantList: merchants(
+    orderBy: $orderBy
+    where: $where
+    skip: $skip
+    take: $take
+  ) {
+    ...MerchantContent
   }
+  totalCount: totalMerchantsCount
 }
     ${MerchantContentFragmentDoc}`;
 
@@ -1484,6 +1137,10 @@ export const MerchantListDocument = gql`
  * @example
  * const { data, loading, error } = useMerchantListQuery({
  *   variables: {
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
  *   },
  * });
  */
@@ -1499,22 +1156,20 @@ export type MerchantListQueryHookResult = ReturnType<typeof useMerchantListQuery
 export type MerchantListLazyQueryHookResult = ReturnType<typeof useMerchantListLazyQuery>;
 export type MerchantListQueryResult = Apollo.QueryResult<MerchantListQuery, MerchantListQueryVariables>;
 export const PaginatedMerchantListDocument = gql`
-    query paginatedMerchantList($orderBy: [MerchantOrderByInput!], $where: MerchantWhereInput, $skip: Int!, $take: Int!) {
-  paginatedMerchantList(
+    query paginatedMerchantList($orderBy: [MerchantOrderByInput!] = [], $where: MerchantWhereInput, $skip: Int!, $take: Int = 20) {
+  totalCount: totalMerchantsCount
+  filters: merchantsFilters {
+    country
+    city
+    bank
+  }
+  merchantList: merchants(
     orderBy: $orderBy
     where: $where
     skip: $skip
     take: $take
   ) {
-    totalCount
-    filters {
-      country
-      city
-      bank
-    }
-    list {
-      ...MerchantContent
-    }
+    ...MerchantContent
   }
 }
     ${MerchantContentFragmentDoc}`;

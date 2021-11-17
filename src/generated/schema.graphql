@@ -223,11 +223,6 @@ input MerchantCreateWithoutScenarioInput {
   postCode: String!
 }
 
-type MerchantList {
-  list: [Merchant!]!
-  totalCount: Int!
-}
-
 input MerchantOrderByInput {
   VATId: SortOrder
   address: SortOrder
@@ -408,12 +403,6 @@ type PaginatedClientListFilters {
   country: [String!]!
 }
 
-type PaginatedMerchantList {
-  filters: PaginatedMerchantListFilters!
-  list: [Merchant!]!
-  totalCount: Int!
-}
-
 type PaginatedMerchantListFilters {
   bank: [String!]!
   city: [String!]!
@@ -430,12 +419,12 @@ type Query {
   clientList: ClientList!
   clients(cursor: ClientWhereUniqueInput, orderBy: [ClientOrderByInput!]!, skip: Int!, take: Int!, where: ClientWhereInput): [Client!]!
   merchant(where: MerchantWhereUniqueInput!): Merchant
-  merchantList: MerchantList!
   merchants(cursor: MerchantWhereUniqueInput, orderBy: [MerchantOrderByInput!]!, skip: Int!, take: Int!, where: MerchantWhereInput): [Merchant!]!
+  merchantsFilters: PaginatedMerchantListFilters!
   paginatedClientList(orderBy: [ClientOrderByInput!], skip: Int!, take: Int!, where: ClientWhereInput): PaginatedClientList!
-  paginatedMerchantList(orderBy: [MerchantOrderByInput!], skip: Int!, take: Int!, where: MerchantWhereInput): PaginatedMerchantList!
   scenario(where: ScenarioWhereUniqueInput!): Scenario
   scenarios(cursor: ScenarioWhereUniqueInput, skip: Int!, take: Int!): [Scenario!]!
+  totalMerchantsCount: Int!
 }
 
 enum QueryMode {

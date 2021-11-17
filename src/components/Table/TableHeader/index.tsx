@@ -11,9 +11,12 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import type { Props } from '..'
+import { PaginatedMerchantListQueryVariables } from 'src/generated/graphql'
+
 import DrawerFilters, { TriggerFiltersButton, Filters } from './DrawerFilters'
 import SearchInput, { Search, SearchInputPlaceholder } from './SearchInput'
+
+export type Variables = Partial<PaginatedMerchantListQueryVariables> | undefined
 
 export type TableHeaderProps = {
   title: string
@@ -52,7 +55,9 @@ export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (
   </Flex>
 )
 
-const TableHeader: FC<TableHeaderProps & Props> = ({
+const TableHeader: FC<
+  TableHeaderProps & { variables: Variables; refetch: (v: Variables) => Promise<any> }
+> = ({
   title,
   variables,
   isEditable,
@@ -84,18 +89,18 @@ const TableHeader: FC<TableHeaderProps & Props> = ({
         <Center pr="5">
           <SearchInput
             keyList={searchKeys}
-            prevFilters={variables.where}
+            prevFilters={variables?.where || {}}
             onSearch={handleFiltersRefetch}
           />
         </Center>
 
         <Center pr="5">
           <TriggerFiltersButton
-            isActive={
-              variables.where &&
-              Object.keys(variables.where).length > 0 &&
-              !Object.keys(variables.where).includes('OR')
-            }
+            isActive={Boolean(
+              variables?.where &&
+                Object.keys(variables?.where).length > 0 &&
+                !Object.keys(variables?.where).includes('OR')
+            )}
             onOpen={drawerOptions.onOpen}
           />
         </Center>
@@ -117,7 +122,7 @@ const TableHeader: FC<TableHeaderProps & Props> = ({
       <DrawerFilters
         filters={filterOptions}
         disclosureOptions={drawerOptions}
-        prevFilters={variables.where}
+        prevFilters={variables?.where || {}}
         onChange={onDrawerChange}
       />
     </Flex>

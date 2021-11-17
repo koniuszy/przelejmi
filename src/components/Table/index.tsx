@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, ReactNode, useState } from 'react'
+import React, { FC, ReactElement, useState } from 'react'
 
 import NextLink from 'next/link'
 
@@ -15,22 +15,9 @@ import {
   Skeleton,
 } from '@chakra-ui/react'
 
-import { Merchant, Client } from 'prisma/prisma-client'
-
-import {
-  PaginatedMerchantListQueryVariables,
-  MerchantWhereInput,
-  ClientWhereInput,
-  MerchantOrderByInput,
-  SortOrder,
-  ClientOrderByInput,
-  ClientContentFragment,
-  MerchantContentFragment,
-} from 'src/generated/graphql'
-
 import Pagination from './Pagination'
 import SortTh from './SortTh'
-import TableHeader, { TableHeaderPlaceholder, TableHeaderProps } from './TableHeader'
+import TableHeader, { TableHeaderPlaceholder, TableHeaderProps, Variables } from './TableHeader'
 
 export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
   <>
@@ -43,20 +30,6 @@ export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
     </Stack>
   </>
 )
-
-type RefetchParams = {
-  where?: MerchantWhereInput | ClientWhereInput
-  skip?: number
-  orderBy?:
-    | MerchantOrderByInput
-    | MerchantOrderByInput[]
-    | ClientOrderByInput
-    | ClientOrderByInput[]
-}
-export type Props = {
-  refetch: (params: RefetchParams) => Promise<any>
-  variables: PaginatedMerchantListQueryVariables | undefined
-}
 
 function Table<Item>({
   filtersHeaderProps: { isLoading, onDrawerChange, ...filtersHeaderProps },
@@ -78,10 +51,12 @@ function Table<Item>({
   filtersHeaderProps: Omit<TableHeaderProps, 'variables' | 'refetch' | 'searchKeys'>
   headerList: Array<string | { title: string; sortableKey: string }>
   rowRender: (item: Item, index: number) => ReactElement
-} & Props): ReactElement {
+  refetch: (params: Variables) => Promise<any>
+  variables: Variables
+}): ReactElement {
   const [isRefetching, setIsRefetching] = useState(false)
 
-  async function handleRefetch(params: RefetchParams) {
+  async function handleRefetch(params: Variables) {
     setIsRefetching(true)
     await refetch(params)
     setIsRefetching(false)
@@ -130,15 +105,12 @@ function Table<Item>({
                 ) : (
                   <SortTh
                     title={headerListItem.title}
-                    isAsc={(variables?.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Asc}
-                    isDesc={
-                      (variables?.orderBy ?? {})[headerListItem.sortableKey] === SortOrder.Desc
+                    sortOrder={
+                      // @ts-ignore
+                      variables?.orderBy ? variables.orderBy[headerListItem.sortableKey] : null
                     }
-                    onAsc={() =>
-                      handleRefetch({ orderBy: { [headerListItem.sortableKey]: SortOrder.Asc } })
-                    }
-                    onDesc={() =>
-                      handleRefetch({ orderBy: { [headerListItem.sortableKey]: SortOrder.Desc } })
+                    onChange={(sortOrder) =>
+                      handleRefetch({ orderBy: { [headerListItem.sortableKey]: sortOrder } })
                     }
                   />
                 )}

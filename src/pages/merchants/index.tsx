@@ -10,8 +10,8 @@ import Table, { TablePlaceholder } from 'src/components/Table'
 import ActionsColumn from 'src/merchants/list/ActionsColumn'
 import EditableColumns from 'src/merchants/list/EditableColumns'
 
-const PER_PAGE = 10
 const TITLE = 'Total merchants'
+const PER_PAGE = 10
 
 const MerchantList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)
@@ -21,13 +21,13 @@ const MerchantList: FC = () => {
     fetchPolicy: 'cache-and-network',
   })
 
-  if (!data?.paginatedMerchantList) return <TablePlaceholder title={TITLE} />
+  if (!data?.merchantList) return <TablePlaceholder title={TITLE} />
 
   const {
-    list: merchantList,
+    merchantList,
     totalCount,
     filters: { __typename, ...filters },
-  } = data.paginatedMerchantList
+  } = data
 
   return (
     <Table
@@ -69,12 +69,9 @@ const MerchantList: FC = () => {
             onMerchantUpdate={(updatedMerchant) =>
               updateQuery((prev) => ({
                 ...prev,
-                paginatedMerchantList: {
-                  ...prev.paginatedMerchantList,
-                  list: prev.paginatedMerchantList.list.map((item) =>
-                    item.id === updatedMerchant?.id ? updatedMerchant : item
-                  ),
-                },
+                merchantList: prev.merchantList.map((item) =>
+                  item.id === updatedMerchant?.id ? updatedMerchant : item
+                ),
               }))
             }
           />
@@ -84,13 +81,8 @@ const MerchantList: FC = () => {
             onMerchantDelete={(deletedMerchantId) =>
               updateQuery((prev) => ({
                 ...prev,
-                paginatedMerchantList: {
-                  ...prev.paginatedMerchantList,
-                  totalCount: prev.paginatedMerchantList.totalCount - 1,
-                  list: prev.paginatedMerchantList.list.filter(
-                    ({ id }) => id !== deletedMerchantId
-                  ),
-                },
+                totalCount: prev.totalCount - 1,
+                merchantList: prev.merchantList.filter(({ id }) => id !== deletedMerchantId),
               }))
             }
           />
