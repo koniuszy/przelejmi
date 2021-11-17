@@ -2,7 +2,16 @@ import React, { FC } from 'react'
 
 import NextImg from 'next/image'
 
-import { Flex, FormControl, FormLabel, Input, FormErrorMessage, Button } from '@chakra-ui/react'
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  FormErrorMessage,
+  Button,
+  Box,
+  SimpleGrid,
+} from '@chakra-ui/react'
 
 import { useFormik } from 'formik'
 
@@ -57,8 +66,10 @@ const MerchantForm: FC<{
   })
 
   return (
-    <Flex>
-      <NextImg height={770} src={womanWithFoldersImg} />
+    <SimpleGrid columns={2} spacing={10}>
+      <Box w="75%">
+        <NextImg placeholder="blur" src={womanWithFoldersImg} />
+      </Box>
 
       <Flex direction="row">
         <form onSubmit={handleSubmit}>
@@ -196,7 +207,7 @@ const MerchantForm: FC<{
           </Button>
         </form>
       </Flex>
-    </Flex>
+    </SimpleGrid>
   )
 }
 

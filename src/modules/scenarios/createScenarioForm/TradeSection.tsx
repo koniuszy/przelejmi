@@ -117,14 +117,6 @@ const TradeSection: FC<{
     <Center>
       <NextImage placeholder="blur" src={tradeImg} objectFit="cover" height={180} />
     </Center>
-    <style global jsx>
-      {`
-        .nextImgBox {
-          margin-right: 0 !important;
-          width: 100%;
-        }
-      `}
-    </style>
   </>
 )
 export default TradeSection

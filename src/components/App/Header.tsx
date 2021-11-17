@@ -17,6 +17,7 @@ import {
   Avatar,
   AvatarBadge,
   Progress,
+  Box,
 } from '@chakra-ui/react'
 
 import useSession from 'src/hooks/useSession'
@@ -55,7 +56,7 @@ const Header: FC = () => {
   const { user, signOut } = useSession()
 
   return (
-    <>
+    <Box h="fit-content">
       <Flex width="100%" as="header" py={5} justifyContent="space-between" alignItems="center">
         <Logo />
 
@@ -152,7 +153,7 @@ const Header: FC = () => {
         </Flex>
       </Flex>
       <Progress mb="5" size="xs" colorScheme="teal" value={100} />
-    </>
+    </Box>
   )
 }
 

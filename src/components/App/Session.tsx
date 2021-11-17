@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/client'
 export const sessionContext = createContext<[Session | null, boolean]>([null, true])
 
 export const SessionProvider: FC = ({ children }) => {
-  const [session, isSessionLoading] = useSession()
+  const [session, loading] = useSession()
   const router = useRouter()
 
   const sessionContextValue: [Session | null, boolean] =
@@ -24,11 +24,15 @@ export const SessionProvider: FC = ({ children }) => {
           },
           false,
         ]
-      : [session, isSessionLoading]
+      : [session, loading]
+
+  const user = sessionContextValue[0]?.user
+  const isLoading = sessionContextValue[1]
 
   useEffect(() => {
-    if (!session?.user) router.push('/')
-  }, [session?.user?.name])
+    if (isLoading) return
+    if (!user) router.push('/')
+  }, [isLoading, user?.name])
 
   return <sessionContext.Provider value={sessionContextValue}>{children}</sessionContext.Provider>
 }

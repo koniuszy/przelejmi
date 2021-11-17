@@ -13,6 +13,7 @@ import {
   Heading,
   Stack,
   Skeleton,
+  Box,
 } from '@chakra-ui/react'
 
 import Pagination from './Pagination'
@@ -63,7 +64,7 @@ function Table<Item>({
   }
 
   return (
-    <>
+    <Box overflow="auto" maxW="100%">
       <TableHeader
         {...filtersHeaderProps}
         isLoading={isLoading || isRefetching}
@@ -119,7 +120,7 @@ function Table<Item>({
         </Thead>
         <Tbody>{list.map(rowRender)}</Tbody>
       </ChakraTable>
-    </>
+    </Box>
   )
 }
 

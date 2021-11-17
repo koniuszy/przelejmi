@@ -15,22 +15,22 @@ export const ClientListQuery = extendType({
     t.field('totalClientsCount', {
       type: 'Int',
       async resolve(_root, _variables, { db }) {
-        const totalCount = await db.merchant.count()
+        const totalCount = await db.client.count()
         return totalCount
       },
     })
     t.field('clientsFilters', {
       type: ClientListFilters,
       async resolve(_root, _vars, { db }) {
-        const distinctList = await db.merchant.findMany({
-          distinct: ['country', 'city', 'bankName'],
-          select: { country: true, city: true, bankName: true },
+        const distinctList = await db.client.findMany({
+          distinct: ['country', 'city', 'postCode'],
+          select: { country: true, city: true, postCode: true },
         })
 
         return {
           country: unique(distinctList.map((i) => i.country)),
           city: unique(distinctList.map((i) => i.city)),
-          bank: unique(distinctList.map((i) => i.bankName)),
+          bank: unique(distinctList.map((i) => i.postCode)),
         }
       },
     })

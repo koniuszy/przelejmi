@@ -17,32 +17,8 @@ const extendedTheme = extendTheme({
   },
   styles: {
     global: {
-      html: {
-        overflow: 'hidden',
-      },
-      '.nextImgBox': {
-        borderRadius: 15,
-        mr: '100',
-        position: 'relative',
-        overflow: 'hidden',
-        height: 'fit-content',
-      },
-      '.nextImgBox > div': {
-        display: 'block !important',
-      },
-      '.nextImgPlaceholder': {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        objectPosition: 'center',
-        filter: 'blur(2rem)',
-        transform: 'scale(1.1)',
-      },
+      html: {},
+      body: {},
     },
   },
 })
@@ -68,19 +44,11 @@ function MyApp({ Component, pageProps }) {
       <SessionProvider>
         <ApolloProvider client={client}>
           <ChakraProvider theme={extendedTheme}>
-            <Flex
-              px={20}
-              overflowY="scroll"
-              overflowX="hidden"
-              height="100vh"
-              flexDir="column"
-              justifyContent="space-between"
-            >
-              <Box>
-                <Header />
+            <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">
+              <Header />
+              <Box overflowY="scroll" overflowX="hidden" mb="auto" w="100%">
                 <Component {...pageProps} />
               </Box>
-
               <Footer />
             </Flex>
           </ChakraProvider>
