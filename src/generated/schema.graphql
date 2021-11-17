@@ -3,7 +3,7 @@
 
 
 type Client {
-  Scenario(cursor: ScenarioWhereUniqueInput, skip: Int!, take: Int!): [Scenario!]!
+  Scenario(cursor: ScenarioWhereUniqueInput, skip: Int, take: Int): [Scenario!]!
   VATId: String
   address: String!
   city: String!
@@ -91,9 +91,9 @@ input ClientUpsertWithoutScenarioInput {
 }
 
 input ClientWhereInput {
-  AND: [ClientWhereInput!]!
-  NOT: [ClientWhereInput!]!
-  OR: [ClientWhereInput!]!
+  AND: [ClientWhereInput!]
+  NOT: [ClientWhereInput!]
+  OR: [ClientWhereInput!]
   Scenario: ScenarioListRelationFilter
   VATId: StringNullableFilter
   address: StringFilter
@@ -121,54 +121,54 @@ input DateTimeFilter {
   equals: DateTime
   gt: DateTime
   gte: DateTime
-  in: [DateTime!]!
+  in: [DateTime!]
   lt: DateTime
   lte: DateTime
   not: NestedDateTimeFilter
-  notIn: [DateTime!]!
+  notIn: [DateTime!]
 }
 
 input EnumCurrencyFilter {
   equals: Currency
-  in: [Currency!]!
+  in: [Currency!]
   not: NestedEnumCurrencyFilter
-  notIn: [Currency!]!
+  notIn: [Currency!]
 }
 
 input EnumPaymentTypeFilter {
   equals: PaymentType
-  in: [PaymentType!]!
+  in: [PaymentType!]
   not: NestedEnumPaymentTypeFilter
-  notIn: [PaymentType!]!
+  notIn: [PaymentType!]
 }
 
 input EnumUnitFilter {
   equals: Unit
-  in: [Unit!]!
+  in: [Unit!]
   not: NestedEnumUnitFilter
-  notIn: [Unit!]!
+  notIn: [Unit!]
 }
 
 input EnumVATFilter {
   equals: VAT
-  in: [VAT!]!
+  in: [VAT!]
   not: NestedEnumVATFilter
-  notIn: [VAT!]!
+  notIn: [VAT!]
 }
 
 input IntFilter {
   equals: Int
   gt: Int
   gte: Int
-  in: [Int!]!
+  in: [Int!]
   lt: Int
   lte: Int
   not: NestedIntFilter
-  notIn: [Int!]!
+  notIn: [Int!]
 }
 
 type Merchant {
-  Scenario(cursor: ScenarioWhereUniqueInput, skip: Int!, take: Int!): [Scenario!]!
+  Scenario(cursor: ScenarioWhereUniqueInput, skip: Int, take: Int): [Scenario!]!
   VATId: String!
   address: String!
   bankAccountEur: String
@@ -281,9 +281,9 @@ input MerchantUpsertWithoutScenarioInput {
 }
 
 input MerchantWhereInput {
-  AND: [MerchantWhereInput!]!
-  NOT: [MerchantWhereInput!]!
-  OR: [MerchantWhereInput!]!
+  AND: [MerchantWhereInput!]
+  NOT: [MerchantWhereInput!]
+  OR: [MerchantWhereInput!]
   Scenario: ScenarioListRelationFilter
   VATId: StringFilter
   address: StringFilter
@@ -318,50 +318,50 @@ input NestedDateTimeFilter {
   equals: DateTime
   gt: DateTime
   gte: DateTime
-  in: [DateTime!]!
+  in: [DateTime!]
   lt: DateTime
   lte: DateTime
   not: NestedDateTimeFilter
-  notIn: [DateTime!]!
+  notIn: [DateTime!]
 }
 
 input NestedEnumCurrencyFilter {
   equals: Currency
-  in: [Currency!]!
+  in: [Currency!]
   not: NestedEnumCurrencyFilter
-  notIn: [Currency!]!
+  notIn: [Currency!]
 }
 
 input NestedEnumPaymentTypeFilter {
   equals: PaymentType
-  in: [PaymentType!]!
+  in: [PaymentType!]
   not: NestedEnumPaymentTypeFilter
-  notIn: [PaymentType!]!
+  notIn: [PaymentType!]
 }
 
 input NestedEnumUnitFilter {
   equals: Unit
-  in: [Unit!]!
+  in: [Unit!]
   not: NestedEnumUnitFilter
-  notIn: [Unit!]!
+  notIn: [Unit!]
 }
 
 input NestedEnumVATFilter {
   equals: VAT
-  in: [VAT!]!
+  in: [VAT!]
   not: NestedEnumVATFilter
-  notIn: [VAT!]!
+  notIn: [VAT!]
 }
 
 input NestedIntFilter {
   equals: Int
   gt: Int
   gte: Int
-  in: [Int!]!
+  in: [Int!]
   lt: Int
   lte: Int
   not: NestedIntFilter
-  notIn: [Int!]!
+  notIn: [Int!]
 }
 
 input NestedStringFilter {
@@ -370,11 +370,11 @@ input NestedStringFilter {
   equals: String
   gt: String
   gte: String
-  in: [String!]!
+  in: [String!]
   lt: String
   lte: String
   not: NestedStringFilter
-  notIn: [String!]!
+  notIn: [String!]
   startsWith: String
 }
 
@@ -384,11 +384,11 @@ input NestedStringNullableFilter {
   equals: String
   gt: String
   gte: String
-  in: [String!]!
+  in: [String!]
   lt: String
   lte: String
   not: NestedStringNullableFilter
-  notIn: [String!]!
+  notIn: [String!]
   startsWith: String
 }
 
@@ -417,13 +417,13 @@ enum PaymentType {
 type Query {
   client(where: ClientWhereUniqueInput!): Client
   clientList: ClientList!
-  clients(cursor: ClientWhereUniqueInput, orderBy: [ClientOrderByInput!]!, skip: Int!, take: Int!, where: ClientWhereInput): [Client!]!
+  clients(cursor: ClientWhereUniqueInput, orderBy: [ClientOrderByInput!], skip: Int, take: Int, where: ClientWhereInput): [Client!]!
   merchant(where: MerchantWhereUniqueInput!): Merchant
-  merchants(cursor: MerchantWhereUniqueInput, orderBy: [MerchantOrderByInput!]!, skip: Int!, take: Int!, where: MerchantWhereInput): [Merchant!]!
+  merchants(cursor: MerchantWhereUniqueInput, orderBy: [MerchantOrderByInput!], skip: Int, take: Int, where: MerchantWhereInput): [Merchant!]!
   merchantsFilters: PaginatedMerchantListFilters!
-  paginatedClientList(orderBy: [ClientOrderByInput!], skip: Int!, take: Int!, where: ClientWhereInput): PaginatedClientList!
+  paginatedClientList(orderBy: [ClientOrderByInput], skip: Int!, take: Int!, where: ClientWhereInput): PaginatedClientList!
   scenario(where: ScenarioWhereUniqueInput!): Scenario
-  scenarios(cursor: ScenarioWhereUniqueInput, skip: Int!, take: Int!): [Scenario!]!
+  scenarios(cursor: ScenarioWhereUniqueInput, skip: Int, take: Int): [Scenario!]!
   totalMerchantsCount: Int!
 }
 
@@ -484,7 +484,7 @@ input ScenarioCreateManyClientInput {
 }
 
 input ScenarioCreateManyClientInputEnvelope {
-  data: [ScenarioCreateManyClientInput!]!
+  data: [ScenarioCreateManyClientInput!]
   skipDuplicates: Boolean
 }
 
@@ -505,21 +505,21 @@ input ScenarioCreateManyMerchantInput {
 }
 
 input ScenarioCreateManyMerchantInputEnvelope {
-  data: [ScenarioCreateManyMerchantInput!]!
+  data: [ScenarioCreateManyMerchantInput!]
   skipDuplicates: Boolean
 }
 
 input ScenarioCreateNestedManyWithoutClientInput {
-  connect: [ScenarioWhereUniqueInput!]!
-  connectOrCreate: [ScenarioCreateOrConnectWithoutClientInput!]!
-  create: [ScenarioCreateWithoutClientInput!]!
+  connect: [ScenarioWhereUniqueInput!]
+  connectOrCreate: [ScenarioCreateOrConnectWithoutClientInput!]
+  create: [ScenarioCreateWithoutClientInput!]
   createMany: ScenarioCreateManyClientInputEnvelope
 }
 
 input ScenarioCreateNestedManyWithoutMerchantInput {
-  connect: [ScenarioWhereUniqueInput!]!
-  connectOrCreate: [ScenarioCreateOrConnectWithoutMerchantInput!]!
-  create: [ScenarioCreateWithoutMerchantInput!]!
+  connect: [ScenarioWhereUniqueInput!]
+  connectOrCreate: [ScenarioCreateOrConnectWithoutMerchantInput!]
+  create: [ScenarioCreateWithoutMerchantInput!]
   createMany: ScenarioCreateManyMerchantInputEnvelope
 }
 
@@ -570,9 +570,9 @@ input ScenarioListRelationFilter {
 }
 
 input ScenarioScalarWhereInput {
-  AND: [ScenarioScalarWhereInput!]!
-  NOT: [ScenarioScalarWhereInput!]!
-  OR: [ScenarioScalarWhereInput!]!
+  AND: [ScenarioScalarWhereInput!]
+  NOT: [ScenarioScalarWhereInput!]
+  OR: [ScenarioScalarWhereInput!]
   VAT: EnumVATFilter
   clientId: IntFilter
   createdAt: DateTimeFilter
@@ -630,31 +630,31 @@ input ScenarioUpdateManyWithWhereWithoutMerchantInput {
 }
 
 input ScenarioUpdateManyWithoutClientInput {
-  connect: [ScenarioWhereUniqueInput!]!
-  connectOrCreate: [ScenarioCreateOrConnectWithoutClientInput!]!
-  create: [ScenarioCreateWithoutClientInput!]!
+  connect: [ScenarioWhereUniqueInput!]
+  connectOrCreate: [ScenarioCreateOrConnectWithoutClientInput!]
+  create: [ScenarioCreateWithoutClientInput!]
   createMany: ScenarioCreateManyClientInputEnvelope
-  delete: [ScenarioWhereUniqueInput!]!
-  deleteMany: [ScenarioScalarWhereInput!]!
-  disconnect: [ScenarioWhereUniqueInput!]!
-  set: [ScenarioWhereUniqueInput!]!
-  update: [ScenarioUpdateWithWhereUniqueWithoutClientInput!]!
-  updateMany: [ScenarioUpdateManyWithWhereWithoutClientInput!]!
-  upsert: [ScenarioUpsertWithWhereUniqueWithoutClientInput!]!
+  delete: [ScenarioWhereUniqueInput!]
+  deleteMany: [ScenarioScalarWhereInput!]
+  disconnect: [ScenarioWhereUniqueInput!]
+  set: [ScenarioWhereUniqueInput!]
+  update: [ScenarioUpdateWithWhereUniqueWithoutClientInput!]
+  updateMany: [ScenarioUpdateManyWithWhereWithoutClientInput!]
+  upsert: [ScenarioUpsertWithWhereUniqueWithoutClientInput!]
 }
 
 input ScenarioUpdateManyWithoutMerchantInput {
-  connect: [ScenarioWhereUniqueInput!]!
-  connectOrCreate: [ScenarioCreateOrConnectWithoutMerchantInput!]!
-  create: [ScenarioCreateWithoutMerchantInput!]!
+  connect: [ScenarioWhereUniqueInput!]
+  connectOrCreate: [ScenarioCreateOrConnectWithoutMerchantInput!]
+  create: [ScenarioCreateWithoutMerchantInput!]
   createMany: ScenarioCreateManyMerchantInputEnvelope
-  delete: [ScenarioWhereUniqueInput!]!
-  deleteMany: [ScenarioScalarWhereInput!]!
-  disconnect: [ScenarioWhereUniqueInput!]!
-  set: [ScenarioWhereUniqueInput!]!
-  update: [ScenarioUpdateWithWhereUniqueWithoutMerchantInput!]!
-  updateMany: [ScenarioUpdateManyWithWhereWithoutMerchantInput!]!
-  upsert: [ScenarioUpsertWithWhereUniqueWithoutMerchantInput!]!
+  delete: [ScenarioWhereUniqueInput!]
+  deleteMany: [ScenarioScalarWhereInput!]
+  disconnect: [ScenarioWhereUniqueInput!]
+  set: [ScenarioWhereUniqueInput!]
+  update: [ScenarioUpdateWithWhereUniqueWithoutMerchantInput!]
+  updateMany: [ScenarioUpdateManyWithWhereWithoutMerchantInput!]
+  upsert: [ScenarioUpsertWithWhereUniqueWithoutMerchantInput!]
 }
 
 input ScenarioUpdateWithWhereUniqueWithoutClientInput {
@@ -710,9 +710,9 @@ input ScenarioUpsertWithWhereUniqueWithoutMerchantInput {
 }
 
 input ScenarioWhereInput {
-  AND: [ScenarioWhereInput!]!
-  NOT: [ScenarioWhereInput!]!
-  OR: [ScenarioWhereInput!]!
+  AND: [ScenarioWhereInput!]
+  NOT: [ScenarioWhereInput!]
+  OR: [ScenarioWhereInput!]
   VAT: EnumVATFilter
   client: ClientWhereInput
   clientId: IntFilter
@@ -746,12 +746,12 @@ input StringFilter {
   equals: String
   gt: String
   gte: String
-  in: [String!]!
+  in: [String!]
   lt: String
   lte: String
   mode: QueryMode
   not: NestedStringFilter
-  notIn: [String!]!
+  notIn: [String!]
   startsWith: String
 }
 
@@ -761,12 +761,12 @@ input StringNullableFilter {
   equals: String
   gt: String
   gte: String
-  in: [String!]!
+  in: [String!]
   lt: String
   lte: String
   mode: QueryMode
   not: NestedStringNullableFilter
-  notIn: [String!]!
+  notIn: [String!]
   startsWith: String
 }
 

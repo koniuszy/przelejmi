@@ -22,7 +22,7 @@ const baseSchema = makeSchema({
     }),
   ],
   nonNullDefaults: {
-    input: true,
+    input: false,
     output: true,
   },
   outputs: {

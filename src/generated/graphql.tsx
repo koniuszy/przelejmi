@@ -31,8 +31,8 @@ export type Client = {
 
 export type ClientScenarioArgs = {
   cursor?: InputMaybe<ScenarioWhereUniqueInput>;
-  skip: Scalars['Int'];
-  take: Scalars['Int'];
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 export type ClientCreateInput = {
@@ -114,9 +114,9 @@ export type ClientUpsertWithoutScenarioInput = {
 };
 
 export type ClientWhereInput = {
-  AND: Array<ClientWhereInput>;
-  NOT: Array<ClientWhereInput>;
-  OR: Array<ClientWhereInput>;
+  AND?: InputMaybe<Array<ClientWhereInput>>;
+  NOT?: InputMaybe<Array<ClientWhereInput>>;
+  OR?: InputMaybe<Array<ClientWhereInput>>;
   Scenario?: InputMaybe<ScenarioListRelationFilter>;
   VATId?: InputMaybe<StringNullableFilter>;
   address?: InputMaybe<StringFilter>;
@@ -142,50 +142,50 @@ export type DateTimeFilter = {
   equals?: InputMaybe<Scalars['DateTime']>;
   gt?: InputMaybe<Scalars['DateTime']>;
   gte?: InputMaybe<Scalars['DateTime']>;
-  in: Array<Scalars['DateTime']>;
+  in?: InputMaybe<Array<Scalars['DateTime']>>;
   lt?: InputMaybe<Scalars['DateTime']>;
   lte?: InputMaybe<Scalars['DateTime']>;
   not?: InputMaybe<NestedDateTimeFilter>;
-  notIn: Array<Scalars['DateTime']>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']>>;
 };
 
 export type EnumCurrencyFilter = {
   equals?: InputMaybe<Currency>;
-  in: Array<Currency>;
+  in?: InputMaybe<Array<Currency>>;
   not?: InputMaybe<NestedEnumCurrencyFilter>;
-  notIn: Array<Currency>;
+  notIn?: InputMaybe<Array<Currency>>;
 };
 
 export type EnumPaymentTypeFilter = {
   equals?: InputMaybe<PaymentType>;
-  in: Array<PaymentType>;
+  in?: InputMaybe<Array<PaymentType>>;
   not?: InputMaybe<NestedEnumPaymentTypeFilter>;
-  notIn: Array<PaymentType>;
+  notIn?: InputMaybe<Array<PaymentType>>;
 };
 
 export type EnumUnitFilter = {
   equals?: InputMaybe<Unit>;
-  in: Array<Unit>;
+  in?: InputMaybe<Array<Unit>>;
   not?: InputMaybe<NestedEnumUnitFilter>;
-  notIn: Array<Unit>;
+  notIn?: InputMaybe<Array<Unit>>;
 };
 
 export type EnumVatFilter = {
   equals?: InputMaybe<Vat>;
-  in: Array<Vat>;
+  in?: InputMaybe<Array<Vat>>;
   not?: InputMaybe<NestedEnumVatFilter>;
-  notIn: Array<Vat>;
+  notIn?: InputMaybe<Array<Vat>>;
 };
 
 export type IntFilter = {
   equals?: InputMaybe<Scalars['Int']>;
   gt?: InputMaybe<Scalars['Int']>;
   gte?: InputMaybe<Scalars['Int']>;
-  in: Array<Scalars['Int']>;
+  in?: InputMaybe<Array<Scalars['Int']>>;
   lt?: InputMaybe<Scalars['Int']>;
   lte?: InputMaybe<Scalars['Int']>;
   not?: InputMaybe<NestedIntFilter>;
-  notIn: Array<Scalars['Int']>;
+  notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
 export type Merchant = {
@@ -208,8 +208,8 @@ export type Merchant = {
 
 export type MerchantScenarioArgs = {
   cursor?: InputMaybe<ScenarioWhereUniqueInput>;
-  skip: Scalars['Int'];
-  take: Scalars['Int'];
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 export type MerchantCreateInput = {
@@ -310,9 +310,9 @@ export type MerchantUpsertWithoutScenarioInput = {
 };
 
 export type MerchantWhereInput = {
-  AND: Array<MerchantWhereInput>;
-  NOT: Array<MerchantWhereInput>;
-  OR: Array<MerchantWhereInput>;
+  AND?: InputMaybe<Array<MerchantWhereInput>>;
+  NOT?: InputMaybe<Array<MerchantWhereInput>>;
+  OR?: InputMaybe<Array<MerchantWhereInput>>;
   Scenario?: InputMaybe<ScenarioListRelationFilter>;
   VATId?: InputMaybe<StringFilter>;
   address?: InputMaybe<StringFilter>;
@@ -391,50 +391,50 @@ export type NestedDateTimeFilter = {
   equals?: InputMaybe<Scalars['DateTime']>;
   gt?: InputMaybe<Scalars['DateTime']>;
   gte?: InputMaybe<Scalars['DateTime']>;
-  in: Array<Scalars['DateTime']>;
+  in?: InputMaybe<Array<Scalars['DateTime']>>;
   lt?: InputMaybe<Scalars['DateTime']>;
   lte?: InputMaybe<Scalars['DateTime']>;
   not?: InputMaybe<NestedDateTimeFilter>;
-  notIn: Array<Scalars['DateTime']>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']>>;
 };
 
 export type NestedEnumCurrencyFilter = {
   equals?: InputMaybe<Currency>;
-  in: Array<Currency>;
+  in?: InputMaybe<Array<Currency>>;
   not?: InputMaybe<NestedEnumCurrencyFilter>;
-  notIn: Array<Currency>;
+  notIn?: InputMaybe<Array<Currency>>;
 };
 
 export type NestedEnumPaymentTypeFilter = {
   equals?: InputMaybe<PaymentType>;
-  in: Array<PaymentType>;
+  in?: InputMaybe<Array<PaymentType>>;
   not?: InputMaybe<NestedEnumPaymentTypeFilter>;
-  notIn: Array<PaymentType>;
+  notIn?: InputMaybe<Array<PaymentType>>;
 };
 
 export type NestedEnumUnitFilter = {
   equals?: InputMaybe<Unit>;
-  in: Array<Unit>;
+  in?: InputMaybe<Array<Unit>>;
   not?: InputMaybe<NestedEnumUnitFilter>;
-  notIn: Array<Unit>;
+  notIn?: InputMaybe<Array<Unit>>;
 };
 
 export type NestedEnumVatFilter = {
   equals?: InputMaybe<Vat>;
-  in: Array<Vat>;
+  in?: InputMaybe<Array<Vat>>;
   not?: InputMaybe<NestedEnumVatFilter>;
-  notIn: Array<Vat>;
+  notIn?: InputMaybe<Array<Vat>>;
 };
 
 export type NestedIntFilter = {
   equals?: InputMaybe<Scalars['Int']>;
   gt?: InputMaybe<Scalars['Int']>;
   gte?: InputMaybe<Scalars['Int']>;
-  in: Array<Scalars['Int']>;
+  in?: InputMaybe<Array<Scalars['Int']>>;
   lt?: InputMaybe<Scalars['Int']>;
   lte?: InputMaybe<Scalars['Int']>;
   not?: InputMaybe<NestedIntFilter>;
-  notIn: Array<Scalars['Int']>;
+  notIn?: InputMaybe<Array<Scalars['Int']>>;
 };
 
 export type NestedStringFilter = {
@@ -443,11 +443,11 @@ export type NestedStringFilter = {
   equals?: InputMaybe<Scalars['String']>;
   gt?: InputMaybe<Scalars['String']>;
   gte?: InputMaybe<Scalars['String']>;
-  in: Array<Scalars['String']>;
+  in?: InputMaybe<Array<Scalars['String']>>;
   lt?: InputMaybe<Scalars['String']>;
   lte?: InputMaybe<Scalars['String']>;
   not?: InputMaybe<NestedStringFilter>;
-  notIn: Array<Scalars['String']>;
+  notIn?: InputMaybe<Array<Scalars['String']>>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -457,11 +457,11 @@ export type NestedStringNullableFilter = {
   equals?: InputMaybe<Scalars['String']>;
   gt?: InputMaybe<Scalars['String']>;
   gte?: InputMaybe<Scalars['String']>;
-  in: Array<Scalars['String']>;
+  in?: InputMaybe<Array<Scalars['String']>>;
   lt?: InputMaybe<Scalars['String']>;
   lte?: InputMaybe<Scalars['String']>;
   not?: InputMaybe<NestedStringNullableFilter>;
-  notIn: Array<Scalars['String']>;
+  notIn?: InputMaybe<Array<Scalars['String']>>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -512,9 +512,9 @@ export type QueryClientArgs = {
 
 export type QueryClientsArgs = {
   cursor?: InputMaybe<ClientWhereUniqueInput>;
-  orderBy: Array<ClientOrderByInput>;
-  skip: Scalars['Int'];
-  take: Scalars['Int'];
+  orderBy?: InputMaybe<Array<ClientOrderByInput>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<ClientWhereInput>;
 };
 
@@ -526,15 +526,15 @@ export type QueryMerchantArgs = {
 
 export type QueryMerchantsArgs = {
   cursor?: InputMaybe<MerchantWhereUniqueInput>;
-  orderBy: Array<MerchantOrderByInput>;
-  skip: Scalars['Int'];
-  take: Scalars['Int'];
+  orderBy?: InputMaybe<Array<MerchantOrderByInput>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<MerchantWhereInput>;
 };
 
 
 export type QueryPaginatedClientListArgs = {
-  orderBy?: InputMaybe<Array<ClientOrderByInput>>;
+  orderBy?: InputMaybe<Array<InputMaybe<ClientOrderByInput>>>;
   skip: Scalars['Int'];
   take: Scalars['Int'];
   where?: InputMaybe<ClientWhereInput>;
@@ -548,8 +548,8 @@ export type QueryScenarioArgs = {
 
 export type QueryScenariosArgs = {
   cursor?: InputMaybe<ScenarioWhereUniqueInput>;
-  skip: Scalars['Int'];
-  take: Scalars['Int'];
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 export enum QueryMode {
@@ -610,7 +610,7 @@ export type ScenarioCreateManyClientInput = {
 };
 
 export type ScenarioCreateManyClientInputEnvelope = {
-  data: Array<ScenarioCreateManyClientInput>;
+  data?: InputMaybe<Array<ScenarioCreateManyClientInput>>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -631,21 +631,21 @@ export type ScenarioCreateManyMerchantInput = {
 };
 
 export type ScenarioCreateManyMerchantInputEnvelope = {
-  data: Array<ScenarioCreateManyMerchantInput>;
+  data?: InputMaybe<Array<ScenarioCreateManyMerchantInput>>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ScenarioCreateNestedManyWithoutClientInput = {
-  connect: Array<ScenarioWhereUniqueInput>;
-  connectOrCreate: Array<ScenarioCreateOrConnectWithoutClientInput>;
-  create: Array<ScenarioCreateWithoutClientInput>;
+  connect?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ScenarioCreateOrConnectWithoutClientInput>>;
+  create?: InputMaybe<Array<ScenarioCreateWithoutClientInput>>;
   createMany?: InputMaybe<ScenarioCreateManyClientInputEnvelope>;
 };
 
 export type ScenarioCreateNestedManyWithoutMerchantInput = {
-  connect: Array<ScenarioWhereUniqueInput>;
-  connectOrCreate: Array<ScenarioCreateOrConnectWithoutMerchantInput>;
-  create: Array<ScenarioCreateWithoutMerchantInput>;
+  connect?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ScenarioCreateOrConnectWithoutMerchantInput>>;
+  create?: InputMaybe<Array<ScenarioCreateWithoutMerchantInput>>;
   createMany?: InputMaybe<ScenarioCreateManyMerchantInputEnvelope>;
 };
 
@@ -696,9 +696,9 @@ export type ScenarioListRelationFilter = {
 };
 
 export type ScenarioScalarWhereInput = {
-  AND: Array<ScenarioScalarWhereInput>;
-  NOT: Array<ScenarioScalarWhereInput>;
-  OR: Array<ScenarioScalarWhereInput>;
+  AND?: InputMaybe<Array<ScenarioScalarWhereInput>>;
+  NOT?: InputMaybe<Array<ScenarioScalarWhereInput>>;
+  OR?: InputMaybe<Array<ScenarioScalarWhereInput>>;
   VAT?: InputMaybe<EnumVatFilter>;
   clientId?: InputMaybe<IntFilter>;
   createdAt?: InputMaybe<DateTimeFilter>;
@@ -756,31 +756,31 @@ export type ScenarioUpdateManyWithWhereWithoutMerchantInput = {
 };
 
 export type ScenarioUpdateManyWithoutClientInput = {
-  connect: Array<ScenarioWhereUniqueInput>;
-  connectOrCreate: Array<ScenarioCreateOrConnectWithoutClientInput>;
-  create: Array<ScenarioCreateWithoutClientInput>;
+  connect?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ScenarioCreateOrConnectWithoutClientInput>>;
+  create?: InputMaybe<Array<ScenarioCreateWithoutClientInput>>;
   createMany?: InputMaybe<ScenarioCreateManyClientInputEnvelope>;
-  delete: Array<ScenarioWhereUniqueInput>;
-  deleteMany: Array<ScenarioScalarWhereInput>;
-  disconnect: Array<ScenarioWhereUniqueInput>;
-  set: Array<ScenarioWhereUniqueInput>;
-  update: Array<ScenarioUpdateWithWhereUniqueWithoutClientInput>;
-  updateMany: Array<ScenarioUpdateManyWithWhereWithoutClientInput>;
-  upsert: Array<ScenarioUpsertWithWhereUniqueWithoutClientInput>;
+  delete?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<ScenarioScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  set?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  update?: InputMaybe<Array<ScenarioUpdateWithWhereUniqueWithoutClientInput>>;
+  updateMany?: InputMaybe<Array<ScenarioUpdateManyWithWhereWithoutClientInput>>;
+  upsert?: InputMaybe<Array<ScenarioUpsertWithWhereUniqueWithoutClientInput>>;
 };
 
 export type ScenarioUpdateManyWithoutMerchantInput = {
-  connect: Array<ScenarioWhereUniqueInput>;
-  connectOrCreate: Array<ScenarioCreateOrConnectWithoutMerchantInput>;
-  create: Array<ScenarioCreateWithoutMerchantInput>;
+  connect?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ScenarioCreateOrConnectWithoutMerchantInput>>;
+  create?: InputMaybe<Array<ScenarioCreateWithoutMerchantInput>>;
   createMany?: InputMaybe<ScenarioCreateManyMerchantInputEnvelope>;
-  delete: Array<ScenarioWhereUniqueInput>;
-  deleteMany: Array<ScenarioScalarWhereInput>;
-  disconnect: Array<ScenarioWhereUniqueInput>;
-  set: Array<ScenarioWhereUniqueInput>;
-  update: Array<ScenarioUpdateWithWhereUniqueWithoutMerchantInput>;
-  updateMany: Array<ScenarioUpdateManyWithWhereWithoutMerchantInput>;
-  upsert: Array<ScenarioUpsertWithWhereUniqueWithoutMerchantInput>;
+  delete?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  deleteMany?: InputMaybe<Array<ScenarioScalarWhereInput>>;
+  disconnect?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  set?: InputMaybe<Array<ScenarioWhereUniqueInput>>;
+  update?: InputMaybe<Array<ScenarioUpdateWithWhereUniqueWithoutMerchantInput>>;
+  updateMany?: InputMaybe<Array<ScenarioUpdateManyWithWhereWithoutMerchantInput>>;
+  upsert?: InputMaybe<Array<ScenarioUpsertWithWhereUniqueWithoutMerchantInput>>;
 };
 
 export type ScenarioUpdateWithWhereUniqueWithoutClientInput = {
@@ -836,9 +836,9 @@ export type ScenarioUpsertWithWhereUniqueWithoutMerchantInput = {
 };
 
 export type ScenarioWhereInput = {
-  AND: Array<ScenarioWhereInput>;
-  NOT: Array<ScenarioWhereInput>;
-  OR: Array<ScenarioWhereInput>;
+  AND?: InputMaybe<Array<ScenarioWhereInput>>;
+  NOT?: InputMaybe<Array<ScenarioWhereInput>>;
+  OR?: InputMaybe<Array<ScenarioWhereInput>>;
   VAT?: InputMaybe<EnumVatFilter>;
   client?: InputMaybe<ClientWhereInput>;
   clientId?: InputMaybe<IntFilter>;
@@ -872,12 +872,12 @@ export type StringFilter = {
   equals?: InputMaybe<Scalars['String']>;
   gt?: InputMaybe<Scalars['String']>;
   gte?: InputMaybe<Scalars['String']>;
-  in: Array<Scalars['String']>;
+  in?: InputMaybe<Array<Scalars['String']>>;
   lt?: InputMaybe<Scalars['String']>;
   lte?: InputMaybe<Scalars['String']>;
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringFilter>;
-  notIn: Array<Scalars['String']>;
+  notIn?: InputMaybe<Array<Scalars['String']>>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -887,12 +887,12 @@ export type StringNullableFilter = {
   equals?: InputMaybe<Scalars['String']>;
   gt?: InputMaybe<Scalars['String']>;
   gte?: InputMaybe<Scalars['String']>;
-  in: Array<Scalars['String']>;
+  in?: InputMaybe<Array<Scalars['String']>>;
   lt?: InputMaybe<Scalars['String']>;
   lte?: InputMaybe<Scalars['String']>;
   mode?: InputMaybe<QueryMode>;
   not?: InputMaybe<NestedStringNullableFilter>;
-  notIn: Array<Scalars['String']>;
+  notIn?: InputMaybe<Array<Scalars['String']>>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
@@ -1156,7 +1156,7 @@ export type MerchantListQueryHookResult = ReturnType<typeof useMerchantListQuery
 export type MerchantListLazyQueryHookResult = ReturnType<typeof useMerchantListLazyQuery>;
 export type MerchantListQueryResult = Apollo.QueryResult<MerchantListQuery, MerchantListQueryVariables>;
 export const PaginatedMerchantListDocument = gql`
-    query paginatedMerchantList($orderBy: [MerchantOrderByInput!] = [], $where: MerchantWhereInput, $skip: Int!, $take: Int = 20) {
+    query paginatedMerchantList($orderBy: [MerchantOrderByInput!] = [], $where: MerchantWhereInput, $skip: Int!, $take: Int = 10) {
   totalCount: totalMerchantsCount
   filters: merchantsFilters {
     country

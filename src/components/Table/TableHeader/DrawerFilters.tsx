@@ -22,7 +22,6 @@ import {
 
 import debounce from 'lodash.debounce'
 
-import useConstant from 'src/hooks'
 import { DBConditions } from 'src/types'
 
 export const TriggerFiltersButton: FC<{ onOpen: () => void; isActive: boolean }> = ({
@@ -101,7 +100,7 @@ const DrawerFilters: FC<{
     onChange({ ...prevFilters, ...parsedFilters })
   }
 
-  const debouncedFiltersChange = useConstant(() => debounce(handleFiltersChange, 200))
+  const [debouncedFiltersChange] = useState(() => debounce(handleFiltersChange, 200))
 
   function handleOptionListChange(newFilterList: typeof filterList) {
     setFilterList(newFilterList)

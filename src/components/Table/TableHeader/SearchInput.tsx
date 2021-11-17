@@ -1,11 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 
 import { Search2Icon } from '@chakra-ui/icons'
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 
 import debounce from 'lodash.debounce'
 
-import useConstant from 'src/hooks'
 import { DBConditions } from 'src/types'
 
 export type Search =
@@ -28,8 +27,12 @@ const SearchInput: FC<{
   keyList: string[]
   prevFilters: Record<string, any>
 }> = (props) => {
-  const debouncedSearch = useConstant(() =>
-    debounce((search: string, prevFilters: Record<string, any>, keyList: string[]) => {
+  const [keyList] = useState(
+    props.keyList.filter((listItem) => !searchKeyBlackList.includes(listItem))
+  )
+
+  const [debouncedSearch] = useState(() =>
+    debounce((search: string, prevFilters: Record<string, any>) => {
       if (!search) {
         const { OR, ...rest } = prevFilters ?? {}
         props.onSearch(rest)
@@ -39,7 +42,7 @@ const SearchInput: FC<{
 
       const parsedSearch: Search = {
         [DBConditions.or]: keyList.map((keyListItem) => ({
-          [keyListItem]: { [DBConditions.contains]: search },
+          [keyListItem]: { [DBConditions.contains]: search, mode: 'insensitive' },
         })),
       }
 
@@ -54,13 +57,9 @@ const SearchInput: FC<{
       </InputRightElement>
       <Input
         placeholder="Search"
-        onChange={(e) =>
-          debouncedSearch(
-            e.target.value,
-            props.prevFilters,
-            props.keyList.filter((listItem) => !searchKeyBlackList.includes(listItem))
-          )
-        }
+        onChange={(e) => {
+          debouncedSearch(e.target.value, props.prevFilters)
+        }}
       />
     </InputGroup>
   )
