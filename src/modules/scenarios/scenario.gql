@@ -3,9 +3,6 @@ fragment ScenarioContent on Scenario {
   name
   paymentType
   imgUrl
-  netPerOne
-  VAT
-  unitType
   currency
   notes
   dueDateDays
@@ -23,6 +20,19 @@ mutation createScenario($data: ScenarioCreateInput!) {
 
 query scenarioList {
   scenarioList: scenarios {
+    id
+    imgUrl
+  }
+}
+
+query scenario($where: ScenarioWhereUniqueInput!) {
+  scenario(where: $where) {
     ...ScenarioContent
+    merchant {
+      ...MerchantContent
+    }
+    client {
+      ...ClientContent
+    }
   }
 }

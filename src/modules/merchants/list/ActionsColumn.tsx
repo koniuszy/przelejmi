@@ -3,16 +3,27 @@ import React, { FC, useState } from 'react'
 import NextLink from 'next/link'
 
 import { CopyIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import { Td, Text, Menu, MenuButton, Button, MenuList, MenuItem, useToast } from '@chakra-ui/react'
+import {
+  Td,
+  Text,
+  Menu,
+  MenuButton,
+  Button,
+  MenuList,
+  MenuItem,
+  useToast,
+  ListItem,
+  UnorderedList,
+} from '@chakra-ui/react'
 
-import { MerchantContentFragment, useDeleteMerchantMutation } from 'src/generated/graphql'
+import { MerchantListItemContentFragment, useDeleteMerchantMutation } from 'src/generated/graphql'
 
 import Clipboard from 'src/components/Clipboard'
-import Confirmation from 'src/components/Confirmation'
+import ConfirmationPopup from 'src/components/ConfirmationPopup'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const ActionsColumn: FC<{
-  merchant: MerchantContentFragment
+  merchant: MerchantListItemContentFragment
   onMerchantDelete: (id: number) => void
 }> = ({ merchant, onMerchantDelete }) => {
   const toast = useToast()
@@ -37,7 +48,7 @@ const ActionsColumn: FC<{
 
   return (
     <Td>
-      <Menu closeOnSelect={false} onClose={() => setMerchantDeletionId(null)}>
+      <Menu>
         <MenuButton
           as={Button}
           variant="ghost"
@@ -84,29 +95,46 @@ const ActionsColumn: FC<{
             </MenuItem>
           </Clipboard>
 
-          <Confirmation
-            confirmText="Delete"
-            isLoading={deleteMerchantOptions.loading}
-            id={merchant.id === merchantDeletionId ? merchantDeletionId : null}
-            onClick={() => deleteMerchant({ variables: { id: merchant.id } })}
-            onClose={() => {
-              setMerchantDeletionId(null)
-              setOpenActionsRowId(null)
-            }}
+          <MenuItem
+            py="0.4rem"
+            px="0.8rem"
+            color="red"
+            _focus={{ color: 'white', bg: 'red' }}
+            icon={<DeleteIcon w={3} h={3} />}
+            onClick={() => setMerchantDeletionId(merchant.id)}
           >
-            <MenuItem
-              py="0.4rem"
-              px="0.8rem"
-              color="red"
-              _focus={{ color: 'white', bg: 'red' }}
-              icon={<DeleteIcon w={3} h={3} />}
-              onClick={() => setMerchantDeletionId(merchant.id)}
-            >
-              <Text>Delete</Text>
-            </MenuItem>
-          </Confirmation>
+            <Text>Delete</Text>
+          </MenuItem>
         </MenuList>
       </Menu>
+      <ConfirmationPopup
+        confirmText="Delete"
+        isLoading={deleteMerchantOptions.loading}
+        isOpen={merchant.id === merchantDeletionId}
+        onConfirm={() => deleteMerchant({ variables: { id: merchant.id } })}
+        onClose={() => {
+          setMerchantDeletionId(null)
+          setOpenActionsRowId(null)
+        }}
+      >
+        <Text>You are going to delete company:</Text>
+        <UnorderedList mb={4}>
+          <ListItem fontWeight="600">{merchant.companyName}</ListItem>
+        </UnorderedList>
+
+        {Boolean(merchant.Scenario.length) && (
+          <>
+            <Text>You are going to delete scenarios:</Text>
+            <UnorderedList>
+              {merchant.Scenario.map((i) => (
+                <ListItem fontWeight="600" key={i.id}>
+                  {i.name}
+                </ListItem>
+              ))}
+            </UnorderedList>
+          </>
+        )}
+      </ConfirmationPopup>
     </Td>
   )
 }

@@ -4,6 +4,25 @@ function unique(array: string[]) {
   return [...new Set(array)]
 }
 
+export const Merchant = objectType({
+  name: 'Merchant',
+  definition(t) {
+    t.model.id()
+    t.model.Scenario()
+    t.model.address()
+    t.model.postCode()
+    t.model.city()
+    t.model.country()
+    t.model.VATId()
+    t.model.companyName()
+    t.model.email()
+    t.model.bankAccountPln()
+    t.model.bankAccountEur()
+    t.model.bankName()
+    t.model.issuerName()
+  },
+})
+
 export const MerchantListQuery = extendType({
   type: 'Query',
   definition(t) {

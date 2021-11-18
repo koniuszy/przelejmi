@@ -65,29 +65,40 @@ enum PaymentType {
 model Scenario {
   id          Int         @id @default(autoincrement())
   name        String
-  paymentType PaymentType
   imgUrl      String
-  netPerOne   Int
-  VAT         VAT
-  unitType    Unit
-  currency    Currency
   notes       String
   dueDateDays Int
+  paymentType PaymentType
+  currency    Currency
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @default(now()) @updatedAt
   client      Client      @relation(fields: [clientId], references: [id])
   merchant    Merchant    @relation(fields: [merchantId], references: [id])
   clientId    Int
   merchantId  Int
+  Invoice     Invoice[]
+}
+
+model InvoiceItem {
+  id         Int     @id @default(autoincrement())
+  name       String
+  quantity   Int
+  price      Int
+  vat        VAT
+  scenarioId Int
+  invoice    Invoice @relation(fields: [scenarioId], references: [id])
 }
 
 model Invoice {
-  id        String   @id
-  issueDate DateTime
-  amount    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  content   Json
+  id            Int           @id @default(autoincrement())
+  invoiceNumber String
+  issueDate     DateTime
+  items         InvoiceItem[]
+  amount        Int
+  scenario      Scenario      @relation(fields: [scenarioId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+  scenarioId    Int
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>> AUTH <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

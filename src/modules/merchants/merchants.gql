@@ -49,6 +49,14 @@ query merchantList(
   totalCount: totalMerchantsCount
 }
 
+fragment MerchantListItemContent on Merchant {
+  ...MerchantContent
+  Scenario {
+    id
+    name
+  }
+}
+
 query paginatedMerchantList(
   $orderBy: [MerchantOrderByInput!] = []
   $where: MerchantWhereInput
@@ -62,6 +70,6 @@ query paginatedMerchantList(
     bank
   }
   merchantList: merchants(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
-    ...MerchantContent
+    ...MerchantListItemContent
   }
 }

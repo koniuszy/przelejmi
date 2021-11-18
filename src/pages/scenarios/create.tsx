@@ -16,14 +16,11 @@ import {
 } from '@chakra-ui/react'
 
 import ImageSection from 'scenarios/createScenarioForm/ImageSection'
-import PaymentDetailsSection, {
-  PaymentDetails,
-} from 'scenarios/createScenarioForm/PaymentDetailsSection'
+import PaymentDetailsSection from 'scenarios/createScenarioForm/PaymentDetailsSection'
 import SelectClientSection from 'scenarios/createScenarioForm/SelectClientSection'
 import SelectMerchantSection from 'scenarios/createScenarioForm/SelectMerchantSection'
-import TradeSection, { Trade } from 'scenarios/createScenarioForm/TradeSection'
 
-import { Unit, Vat, Currency, PaymentType, useCreateScenarioMutation } from 'src/generated/graphql'
+import { Currency, PaymentType, useCreateScenarioMutation } from 'src/generated/graphql'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
@@ -38,19 +35,9 @@ const CreateScenarioForm: FC = () => {
   const [name, setName] = useState('')
   const [clientId, setClientId] = useState<number | null>(null)
   const [merchantId, setMerchantId] = useState<number | null>(null)
-
-  const [trade, setTrade] = useState<Trade>({
-    unitType: Unit.Item,
-    VAT: Vat.Percent_23,
-    netPerOne: 1000,
-    currency: Currency.Pln,
-  })
-
-  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({
-    dueDateDays: 5,
-    notes: '',
-    paymentType: PaymentType.Transfer,
-  })
+  const [currency, setCurrency] = useState(Currency.Pln)
+  const [dueDateDays, setDueDateDays] = useState(5)
+  const [paymentType, setPaymentType] = useState(PaymentType.Transfer)
 
   const [createScenario, { loading }] = useCreateScenarioMutation({
     onCompleted() {
@@ -77,8 +64,9 @@ const CreateScenarioForm: FC = () => {
     createScenario({
       variables: {
         data: {
-          ...trade,
-          ...paymentDetails,
+          currency,
+          dueDateDays,
+          paymentType,
           notes,
           imgUrl,
           name,
@@ -102,9 +90,13 @@ const CreateScenarioForm: FC = () => {
       </Box>
 
       <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
-        <TradeSection
-          trade={trade}
-          onTradeChange={(data) => setTrade((prev) => ({ ...prev, ...data }))}
+        <PaymentDetailsSection
+          dueDateDays={dueDateDays}
+          currency={currency}
+          paymentType={paymentType}
+          onDueDateDays={setDueDateDays}
+          onCurrencyChange={setCurrency}
+          onPaymentTypeChange={setPaymentType}
         />
       </Box>
 
@@ -113,10 +105,13 @@ const CreateScenarioForm: FC = () => {
       </Box>
 
       <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
-        <PaymentDetailsSection
-          paymentDetails={paymentDetails}
-          onPaymentDetailsChange={(data) => setPaymentDetails((prev) => ({ ...prev, ...data }))}
-        />
+        <Flex mt={4} justifyContent="space-between">
+          <Text fontWeight="bold" fontSize="lg">
+            Notes
+          </Text>
+        </Flex>
+        <Divider my={4} />
+        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
       </Box>
 
       <Box shadow="dark-lg" borderRadius={5} bg="gray.700" p={6}>
@@ -127,19 +122,13 @@ const CreateScenarioForm: FC = () => {
         </Flex>
         <Divider my={4} />
         <Input placeholder="Overtimes" value={name} onChange={(e) => setName(e.target.value)} />
-        <Flex mt={4} justifyContent="space-between">
-          <Text fontWeight="bold" fontSize="lg">
-            Notes
-          </Text>
-        </Flex>
-        <Divider my={4} />
-        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
       </Box>
 
       <Button
         position="fixed"
         bottom={170}
         right={100}
+        zIndex={1}
         m="auto"
         size="lg"
         display="block"

@@ -2,14 +2,23 @@ import React, { FC } from 'react'
 
 import { Flex, Text, Divider, Button } from '@chakra-ui/react'
 
-import { PaymentType, Scenario } from 'src/generated/graphql'
-
-export type PaymentDetails = Pick<Scenario, 'paymentType' | 'dueDateDays' | 'notes'>
+import { PaymentType, Currency } from 'src/generated/graphql'
 
 const PaymentDetailsSection: FC<{
-  paymentDetails: PaymentDetails
-  onPaymentDetailsChange: (data: Partial<PaymentDetails>) => void
-}> = ({ paymentDetails, onPaymentDetailsChange }) => (
+  paymentType: PaymentType
+  onPaymentTypeChange: (data: PaymentType) => void
+  currency: Currency
+  onCurrencyChange: (data: Currency) => void
+  dueDateDays: number
+  onDueDateDays: (d: number) => void
+}> = ({
+  paymentType,
+  onPaymentTypeChange,
+  currency,
+  onCurrencyChange,
+  dueDateDays,
+  onDueDateDays,
+}) => (
   <>
     <Flex mt={4} justifyContent="space-between">
       <Text fontWeight="bold" fontSize="lg">
@@ -26,15 +35,27 @@ const PaymentDetailsSection: FC<{
         <Button
           key={paymentTypeKey}
           mr={5}
-          colorScheme={
-            paymentDetails.paymentType === PaymentType[paymentTypeKey] ? 'green' : 'blue'
-          }
-          onClick={() => onPaymentDetailsChange({ paymentType: PaymentType[paymentTypeKey] })}
+          colorScheme={paymentType === PaymentType[paymentTypeKey] ? 'green' : 'blue'}
+          onClick={() => onPaymentTypeChange(PaymentType[paymentTypeKey])}
         >
           {paymentTypeKey}
         </Button>
       ))}
     </Flex>
+
+    <Text mt={4} fontSize={12} fontWeight={500}>
+      Currency
+    </Text>
+    {Object.keys(Currency).map((currencyKey) => (
+      <Button
+        key={currencyKey}
+        mr={5}
+        colorScheme={currency === Currency[currencyKey] ? 'green' : 'blue'}
+        onClick={() => onCurrencyChange(Currency[currencyKey])}
+      >
+        {Currency[currencyKey]}
+      </Button>
+    ))}
 
     <Text mt={4} fontSize={12} fontWeight={500}>
       Due date (days)
@@ -44,8 +65,8 @@ const PaymentDetailsSection: FC<{
         <Button
           key={days}
           mr={5}
-          colorScheme={paymentDetails.dueDateDays === days ? 'green' : 'blue'}
-          onClick={() => onPaymentDetailsChange({ dueDateDays: days })}
+          colorScheme={dueDateDays === days ? 'green' : 'blue'}
+          onClick={() => onDueDateDays(days)}
         >
           {days}
         </Button>

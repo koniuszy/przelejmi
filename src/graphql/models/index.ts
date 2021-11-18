@@ -1,4 +1,3 @@
-export * from './objects'
 export * from './mutations'
 
 export * from './clients'

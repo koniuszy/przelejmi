@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import { SimpleGrid, Image, Button, Skeleton } from '@chakra-ui/react'
 
@@ -13,13 +14,15 @@ const HiddenImageContent = styled.div`
   transition: ease opacity 150ms;
   position: absolute;
 `
-const ImageBox = styled.div`
+const ImageBox = styled.li`
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10000;
 
-  :hover {
+  :hover,
+  :focus {
     img {
       opacity: 0.2;
     }
@@ -30,19 +33,20 @@ const ImageBox = styled.div`
 `
 
 const ScenarioList: FC = () => {
+  const router = useRouter()
   const { data } = useScenarioListQuery({ fetchPolicy: 'cache-and-network' })
 
   if (!data?.scenarioList)
     return (
       <SimpleGrid columns={3} gap={10}>
         {new Array(6).fill(null).map((i, index) => (
-          <Skeleton w={400} h={200} key={index} />
+          <Skeleton w="100%" maxW={400} h={200} key={index} />
         ))}
       </SimpleGrid>
     )
 
   return (
-    <SimpleGrid columns={3} gap={10}>
+    <SimpleGrid as="ul" columns={3} gap={10}>
       {data.scenarioList.map((i, index) => (
         <ImageBox key={index}>
           <Image
@@ -56,7 +60,9 @@ const ScenarioList: FC = () => {
             src={i.imgUrl}
           />
           <HiddenImageContent>
-            <Button colorScheme="teal">Invoice</Button>
+            <Button colorScheme="teal" onClick={() => router.push(`/scenarios/invoice/${i.id}`)}>
+              Invoice
+            </Button>
           </HiddenImageContent>
         </ImageBox>
       ))}
