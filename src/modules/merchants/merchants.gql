@@ -27,7 +27,7 @@ mutation deleteMerchant($id: Int!) {
 
 mutation updateMerchant($data: MerchantUpdateInput!, $id: Int!) {
   updatedMerchant: updateOneMerchant(data: $data, where: { id: $id }) {
-    ...MerchantContent
+    ...MerchantListItemContent
   }
 }
 
