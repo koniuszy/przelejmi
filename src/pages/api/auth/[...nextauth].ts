@@ -1,12 +1,12 @@
 import { NextApiHandler } from 'next'
 
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import NextAuth from 'next-auth'
-import Adapters from 'next-auth/adapters'
-import Providers from 'next-auth/providers'
+import EmailProvider from 'next-auth/providers/email'
 
 import prisma from 'src/lib/prisma'
 
-const whiteList = [
+const WHITE_LIST = [
   'michal.stefan.konczak@gmail.com',
   'ms.magdalena.kozlowska@gmail.com',
   'bogusz.konczak@gmail.com',
@@ -14,16 +14,22 @@ const whiteList = [
 
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
-    adapter: Adapters.Prisma.Adapter({ prisma }),
+    adapter: PrismaAdapter(prisma),
     providers: [
-      Providers.Google({
-        clientId: process.env.GOOGLE_ID,
-        clientSecret: process.env.GOOGLE_SECRET,
+      EmailProvider({
+        server: process.env.EMAIL_SERVER,
       }),
     ],
     callbacks: {
-      async signIn(user, account, profile) {
-        return Boolean(profile.verified_email && whiteList.includes(profile.email || ''))
+      async session({ session }) {
+        ;(session.user || {}).image =
+          'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/06/Itachi-Cropped.jpg?q=50&fit=crop&w=960&h=500&dpr=1.5'
+        return session
+      },
+      async signIn({ user, profile }) {
+        console.log({ user, profile })
+
+        return WHITE_LIST.includes(user.email || '')
       },
     },
   })

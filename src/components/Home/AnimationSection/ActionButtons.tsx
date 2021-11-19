@@ -4,9 +4,11 @@ import NextLink from 'next/link'
 
 import { Button } from '@chakra-ui/react'
 
-import { signIn, signOut } from 'next-auth/client'
+import useSession from 'src/hooks/useSession'
 
 const ActionButtons: FC<{ isSession: boolean }> = ({ isSession }) => {
+  const { signIn, signOut } = useSession()
+
   if (!isSession)
     return (
       <Button

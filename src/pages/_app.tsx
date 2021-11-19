@@ -29,7 +29,7 @@ const client = new ApolloClient({
   defaultOptions: { query: { fetchPolicy: 'cache-first', errorPolicy: 'all' } },
 })
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const toast = useToast()
 
   return (
@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }) {
         height={3}
       />
 
-      <SessionProvider>
+      <SessionProvider session={session}>
         <ApolloProvider client={client}>
           <ChakraProvider theme={extendedTheme}>
             <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">

@@ -11,13 +11,7 @@ export const ScenarioMutation = mutationType({
     t.crud.deleteOneClient()
 
     t.crud.createOneMerchant()
-    t.crud.deleteOneMerchant({
-      async resolve(root, vars, ctx, info, originalResolver) {
-        const results = await originalResolver(root, vars, ctx, info)
-
-        return results
-      },
-    })
+    t.crud.deleteOneMerchant()
     t.crud.updateOneMerchant()
   },
 })

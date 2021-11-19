@@ -38,7 +38,7 @@ query merchant($where: MerchantWhereUniqueInput!) {
 }
 
 query merchantList(
-  $orderBy: [MerchantOrderByInput!] = []
+  $orderBy: [MerchantOrderByWithRelationInput!] = []
   $where: MerchantWhereInput
   $skip: Int = 0
   $take: Int = 100
@@ -58,7 +58,7 @@ fragment MerchantListItemContent on Merchant {
 }
 
 query paginatedMerchantList(
-  $orderBy: [MerchantOrderByInput!] = []
+  $orderBy: [MerchantOrderByWithRelationInput!] = []
   $where: MerchantWhereInput
   $skip: Int!
   $take: Int = 10

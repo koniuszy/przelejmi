@@ -33,7 +33,7 @@ query client($where: ClientWhereUniqueInput!) {
 }
 
 query clientList(
-  $orderBy: [ClientOrderByInput!] = []
+  $orderBy: [ClientOrderByWithRelationInput!] = []
   $where: ClientWhereInput
   $skip: Int = 0
   $take: Int = 100
@@ -45,7 +45,7 @@ query clientList(
 }
 
 query paginatedClientList(
-  $orderBy: [ClientOrderByInput!] = []
+  $orderBy: [ClientOrderByWithRelationInput!] = []
   $where: ClientWhereInput
   $skip: Int!
   $take: Int = 10

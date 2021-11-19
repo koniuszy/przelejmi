@@ -2,37 +2,36 @@ import { createContext, FC, useEffect } from 'react'
 
 import { useRouter } from 'next/router'
 
-import { Session } from 'next-auth'
-import { useSession } from 'next-auth/client'
+import {
+  useSession,
+  SessionProvider as NextAuthProvider,
+  SessionContextValue,
+} from 'next-auth/react'
 
-export const sessionContext = createContext<[Session | null, boolean]>([null, true])
+export const sessionContext = createContext<SessionContextValue>({
+  status: 'loading',
+  data: null,
+})
 
-export const SessionProvider: FC = ({ children }) => {
-  const [session, loading] = useSession()
+export const SessionProvider: FC<{ session: any }> = (props) => (
+  <NextAuthProvider session={props.session}>
+    <OwnSessionProvider>{props.children}</OwnSessionProvider>
+  </NextAuthProvider>
+)
+
+const OwnSessionProvider: FC = (props) => {
+  const session = useSession({ required: false })
   const router = useRouter()
 
-  const sessionContextValue: [Session | null, boolean] =
-    process.env.NODE_ENV === 'development'
-      ? [
-          {
-            user: {
-              name: 'test user',
-              email: '',
-              image: '',
-            },
-            expires: '',
-          },
-          false,
-        ]
-      : [session, loading]
-
-  const user = sessionContextValue[0]?.user
-  const isLoading = sessionContextValue[1]
+  // const sessionContextValue: typeof session =
+  //   process.env.NODE_ENV === 'development'
+  //     ? { data: { user: { name: 'michu' }, expires: '' }, status: 'authenticated' }
+  //     : session
 
   useEffect(() => {
-    if (isLoading) return
-    if (!user) router.push('/')
-  }, [isLoading, user?.name])
+    if (session.status === 'loading') return
+    if (session.status === 'unauthenticated') router.push('/')
+  }, [session.status])
 
-  return <sessionContext.Provider value={sessionContextValue}>{children}</sessionContext.Provider>
+  return <sessionContext.Provider value={session}>{props.children}</sessionContext.Provider>
 }

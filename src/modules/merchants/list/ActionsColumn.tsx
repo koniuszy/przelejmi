@@ -40,7 +40,8 @@ const ActionsColumn: FC<{
       setMerchantDeletionId(null)
       onMerchantDelete(merchant.id)
     },
-    onError() {
+    onError(err) {
+      console.error(err)
       toast(errorToastContent)
       toast(warningToastContent)
     },

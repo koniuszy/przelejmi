@@ -1,12 +1,12 @@
 import { useContext } from 'react'
 
-import { signOut, signIn } from 'next-auth/client'
+import { signOut, signIn } from 'next-auth/react'
 
 import { sessionContext } from 'src/components/App/Session'
 
 function useSession() {
-  const [session, isLoading] = useContext(sessionContext)
-  return { user: session?.user, isLoading, signOut, signIn }
+  const { data, status } = useContext(sessionContext)
+  return { user: data?.user, isLoading: status === 'loading', signOut, signIn }
 }
 
 export default useSession
