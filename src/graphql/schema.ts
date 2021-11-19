@@ -36,7 +36,7 @@ const baseSchema = makeSchema({
       experimentalCRUD: true,
       atomicOperations: false,
       paginationStrategy: 'prisma',
-      shouldGenerateArtifacts: true,
+      shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
       outputs: {
         typegen: join(process.cwd(), 'src', 'generated', 'typegen-nexus-plugin-prisma.d.ts'),
       },
