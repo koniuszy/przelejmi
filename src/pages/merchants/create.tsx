@@ -31,7 +31,7 @@ const CreateMerchantForm: FC = () => {
 
   return (
     <MerchantForm
-      isLoading={loading}
+      isSubmitting={loading}
       initialValues={{
         companyName: '',
         address: '',

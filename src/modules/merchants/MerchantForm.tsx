@@ -36,10 +36,10 @@ type Form = {
 }
 
 const MerchantForm: FC<{
-  isLoading: boolean
+  isSubmitting: boolean
   initialValues: Form
   onSubmit: (values: Form) => void
-}> = ({ onSubmit, isLoading, initialValues }) => (
+}> = ({ onSubmit, isSubmitting, initialValues }) => (
   <SimpleGrid my="10" columns={2} spacing={10}>
     <Box mx="auto" w="50%">
       <NextImage placeholder="blur" src={womanWithFoldersImg} />
@@ -154,7 +154,7 @@ const MerchantForm: FC<{
               type="submit"
               colorScheme="teal"
               disabled={!formikProps.isValid}
-              isLoading={isLoading}
+              isLoading={isSubmitting}
             >
               Submit
             </Button>
