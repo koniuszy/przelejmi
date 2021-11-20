@@ -15,7 +15,6 @@
     "db:deploy": "prisma migrate deploy",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "serve": "NODE_ENV=production npx next start -p 4000",
     "ts-check": "tsc -p tsconfig.json",
     "tidy": "eslint --fix --ext .ts,.tsx ."
   },

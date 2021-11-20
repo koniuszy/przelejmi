@@ -36,9 +36,10 @@ const baseSchema = makeSchema({
       experimentalCRUD: true,
       atomicOperations: false,
       paginationStrategy: 'prisma',
-      shouldGenerateArtifacts: process.env.NODE_ENV === 'development',
+      // lambda bug does not allow to create those on build time
+      shouldGenerateArtifacts: process.env.NODE_ENV !== 'production',
       outputs: {
-        typegen: join(process.cwd(), 'src', 'generated', 'typegen-nexus-plugin-prisma.d.ts'),
+        typegen: join(process.cwd(), 'src', 'typegen-nexus-plugin-prisma.d.ts'),
       },
     }),
   ],
