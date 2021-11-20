@@ -5,7 +5,7 @@ fragment ClientContent on Client {
   postCode
   city
   country
-  VATId
+  vatId
 }
 
 mutation createClient($data: ClientCreateInput!) {

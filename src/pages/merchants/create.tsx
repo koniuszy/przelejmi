@@ -38,7 +38,7 @@ const CreateMerchantForm: FC = () => {
         postCode: '',
         city: '',
         country: '',
-        VATId: '',
+        vatId: '',
         bankAccountPln: '',
         bankAccountEur: '',
         bankName: '',

@@ -29,7 +29,8 @@ const OwnSessionProvider: FC = (props) => {
   //     : session
 
   useEffect(() => {
-    console.log(session.status, router.pathname)
+    if (process.env.NODE_ENV === 'development') return
+
     if (session.status === 'loading' || router.pathname === '/') return
     if (session.status === 'unauthenticated')
       router.push({ pathname: '/api/auth/signin', query: { callbackUrl: window.location.href } })

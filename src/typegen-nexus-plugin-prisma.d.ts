@@ -28,12 +28,12 @@ interface PrismaModels {
 interface NexusPrismaInputs {
   Query: {
     clients: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'address' | 'postCode' | 'city' | 'country' | 'VATId' | 'Scenario'
-      ordering: 'id' | 'name' | 'address' | 'postCode' | 'city' | 'country' | 'VATId' | 'Scenario'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'address' | 'postCode' | 'city' | 'country' | 'vatId' | 'Scenario'
+      ordering: 'id' | 'name' | 'address' | 'postCode' | 'city' | 'country' | 'vatId' | 'Scenario'
     }
     merchants: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'issuerName' | 'companyName' | 'address' | 'postCode' | 'city' | 'country' | 'VATId' | 'email' | 'bankName' | 'bankAccountPln' | 'bankAccountEur' | 'Scenario'
-      ordering: 'id' | 'issuerName' | 'companyName' | 'address' | 'postCode' | 'city' | 'country' | 'VATId' | 'email' | 'bankName' | 'bankAccountPln' | 'bankAccountEur' | 'Scenario'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'issuerName' | 'companyName' | 'address' | 'postCode' | 'city' | 'country' | 'vatId' | 'email' | 'bankName' | 'bankAccountPln' | 'bankAccountEur' | 'Scenario'
+      ordering: 'id' | 'issuerName' | 'companyName' | 'address' | 'postCode' | 'city' | 'country' | 'vatId' | 'email' | 'bankName' | 'bankAccountPln' | 'bankAccountEur' | 'Scenario'
     }
     scenarios: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'imgUrl' | 'notes' | 'dueDateDays' | 'paymentType' | 'currency' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId' | 'Invoice'
@@ -197,7 +197,7 @@ interface NexusPrismaOutputs {
     postCode: 'String'
     city: 'String'
     country: 'String'
-    VATId: 'String'
+    vatId: 'String'
     Scenario: 'Scenario'
   }
   Merchant: {
@@ -208,7 +208,7 @@ interface NexusPrismaOutputs {
     postCode: 'String'
     city: 'String'
     country: 'String'
-    VATId: 'String'
+    vatId: 'String'
     email: 'String'
     bankName: 'String'
     bankAccountPln: 'String'

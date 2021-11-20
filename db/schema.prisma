@@ -19,7 +19,7 @@ model Client {
   postCode String
   city     String
   country  String
-  VATId    String?
+  vatId    String?
   Scenario Scenario[]
 }
 
@@ -31,7 +31,7 @@ model Merchant {
   postCode       String
   city           String
   country        String
-  VATId          String
+  vatId          String
   email          String
   bankName       String
   bankAccountPln String
