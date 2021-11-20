@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import { Skeleton } from '@chakra-ui/react'
+
 import styled from '@emotion/styled'
 import { Document, Page, pdfjs } from 'react-pdf'
 
@@ -17,9 +19,11 @@ const StyledPdfImageViewer = styled.div`
 `
 
 const PdfImageViewer: FC<{ url: string }> = ({ url }) => {
+  if (!url) return <Skeleton w="100%" h="80vh" />
+
   return (
     <StyledPdfImageViewer>
-      <Document file={url}>
+      <Document loading={<Skeleton w="100%" h="80vh" />} file={url}>
         <Page className="pdfPage" pageNumber={1} />
       </Document>
     </StyledPdfImageViewer>

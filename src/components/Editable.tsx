@@ -26,12 +26,7 @@ const Editable: FC<{
   border?: boolean
 }> = ({ defaultValue, onSubmit, border, isDisabled }) => (
   <FieldBox border={Boolean(border)}>
-    <ChakraEditable
-      isDisabled={isDisabled}
-      defaultValue={defaultValue}
-      submitOnBlur={false}
-      onSubmit={onSubmit}
-    >
+    <ChakraEditable isDisabled={isDisabled} defaultValue={defaultValue} onSubmit={onSubmit}>
       <Flex>
         <Center>
           <EditablePreview />

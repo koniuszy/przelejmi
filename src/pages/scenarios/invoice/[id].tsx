@@ -1,9 +1,8 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 
 import Head from 'next/head'
-import NextImage from 'next/image'
 
 import {
   Box,
@@ -137,7 +136,7 @@ const CreateInvoice: FC<{ scenarioId: number }> = ({ scenarioId }) => {
   return (
     <SimpleGrid my="10" columns={2} spacing={10}>
       <Box m="auto" w="100%">
-        {pdfPreviewUrl && <PdfImageViewer url={pdfPreviewUrl} />}
+        <PdfImageViewer url={pdfPreviewUrl} />
       </Box>
 
       <Flex direction="row">
