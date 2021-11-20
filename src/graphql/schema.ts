@@ -50,7 +50,7 @@ const baseSchema = makeSchema({
   sourceTypes: {
     modules: [
       {
-        module: 'prisma/prisma-client',
+        module: '@prisma/client',
         alias: 'prisma',
       },
     ],
