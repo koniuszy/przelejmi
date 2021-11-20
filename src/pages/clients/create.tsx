@@ -24,7 +24,7 @@ const CreateClientForm: FC = () => {
         ...successToastContent,
         title: 'Client created.',
       })
-      router.push('/merchants')
+      router.push('/clients')
     },
     onError(err) {
       console.error(err)

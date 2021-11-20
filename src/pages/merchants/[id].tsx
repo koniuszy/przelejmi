@@ -59,11 +59,12 @@ const EditMerchantForm: FC<{
       </div>
     )
 
+  const { __typename, id, ...initialValues } = data.merchant
   return (
     <MerchantForm
       isSubmitting={loading}
-      initialValues={{ ...data.merchant, bankAccountEur: data.merchant.bankAccountEur ?? '' }}
-      onSubmit={(values) => updateMerchant({ variables: { data: values, id: merchantId } })}
+      initialValues={{ ...initialValues, bankAccountEur: initialValues.bankAccountEur ?? '' }}
+      onSubmit={(values) => updateMerchant({ variables: { data: values, id } })}
     />
   )
 }

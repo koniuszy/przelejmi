@@ -39,23 +39,26 @@ const EditClientForm: FC<{
 
   if (!data?.client)
     return (
-      <ClientForm
-        isLoading={true}
-        initialValues={{ name: '', address: '', postCode: '', city: '', country: '', vatId: '' }}
-        onSubmit={() => {}}
-      />
+      <div>
+        <ClientForm
+          isLoading={true}
+          initialValues={{ name: '', address: '', postCode: '', city: '', country: '', vatId: '' }}
+          onSubmit={() => {}}
+        />
+      </div>
     )
 
+  const { __typename, id, ...initialValues } = data.client
   return (
     <ClientForm
       isLoading={loading}
-      initialValues={{ ...data.client, vatId: data.client.vatId ?? '' } || {}}
+      initialValues={{ ...initialValues, vatId: initialValues.vatId ?? '' } || {}}
       onSubmit={(values) => {
         const { vatId, clientType, ...data } = values
         updateClient({
           variables: {
             data: { ...data, vatId: clientType === ClientType.company ? vatId : null },
-            id: clientId,
+            id,
           },
         })
       }}
