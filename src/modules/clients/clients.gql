@@ -23,6 +23,10 @@ mutation deleteClient($id: Int!) {
 mutation updateClient($data: ClientUpdateInput!, $id: Int!) {
   updatedClient: updateOneClient(data: $data, where: { id: $id }) {
     ...ClientContent
+    Scenario {
+      id
+      name
+    }
   }
 }
 
@@ -58,5 +62,9 @@ query paginatedClientList(
   }
   clientList: clients(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
     ...ClientContent
+    Scenario {
+      id
+      name
+    }
   }
 }

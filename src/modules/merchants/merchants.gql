@@ -27,7 +27,11 @@ mutation deleteMerchant($id: Int!) {
 
 mutation updateMerchant($data: MerchantUpdateInput!, $id: Int!) {
   updatedMerchant: updateOneMerchant(data: $data, where: { id: $id }) {
-    ...MerchantListItemContent
+    ...MerchantContent
+    Scenario {
+      id
+      name
+    }
   }
 }
 
@@ -49,14 +53,6 @@ query merchantList(
   totalCount: totalMerchantsCount
 }
 
-fragment MerchantListItemContent on Merchant {
-  ...MerchantContent
-  Scenario {
-    id
-    name
-  }
-}
-
 query paginatedMerchantList(
   $orderBy: [MerchantOrderByWithRelationInput!] = []
   $where: MerchantWhereInput
@@ -70,6 +66,10 @@ query paginatedMerchantList(
     bank
   }
   merchantList: merchants(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
-    ...MerchantListItemContent
+    ...MerchantContent
+    Scenario {
+      id
+      name
+    }
   }
 }

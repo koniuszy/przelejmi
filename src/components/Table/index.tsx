@@ -102,7 +102,7 @@ function Table<Item>({
             {headerList.map((headerListItem, index) => (
               <React.Fragment key={index}>
                 {typeof headerListItem === 'string' ? (
-                  <Th>{headerListItem}</Th>
+                  <Th whiteSpace="nowrap">{headerListItem}</Th>
                 ) : (
                   <SortTh
                     title={headerListItem.title}

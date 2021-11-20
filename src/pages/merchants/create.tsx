@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import { useToast } from '@chakra-ui/react'
 
@@ -12,6 +13,7 @@ import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 const CreateMerchantForm: FC = () => {
   const toast = useToast()
+  const router = useRouter()
 
   const [createMerchant, { loading }] = useCreateMerchantMutation({
     onCompleted() {
@@ -19,6 +21,7 @@ const CreateMerchantForm: FC = () => {
         ...successToastContent,
         title: 'Merchant created.',
       })
+      router.push('/merchants')
     },
     onError(err) {
       console.error(err)

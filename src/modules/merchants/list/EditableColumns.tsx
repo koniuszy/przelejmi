@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { Td, useToast } from '@chakra-ui/react'
 
 import {
-  MerchantListItemContentFragment,
+  PaginatedMerchantListQuery,
   MerchantUpdateInput,
   useUpdateMerchantMutation,
 } from 'src/generated/graphql'
@@ -13,8 +13,10 @@ import { errorToastContent, successToastContent, warningToastContent } from 'src
 
 const EditableColumns: FC<{
   isEditable: boolean
-  merchant: MerchantListItemContentFragment
-  onMerchantUpdate: (updatedMerchant: MerchantListItemContentFragment | null | undefined) => void
+  merchant: PaginatedMerchantListQuery['merchantList'][number]
+  onMerchantUpdate: (
+    updatedMerchant: PaginatedMerchantListQuery['merchantList'][number] | null | undefined
+  ) => void
 }> = ({ isEditable, merchant, onMerchantUpdate }) => {
   const toast = useToast()
 

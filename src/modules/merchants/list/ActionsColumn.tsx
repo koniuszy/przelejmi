@@ -16,14 +16,14 @@ import {
   UnorderedList,
 } from '@chakra-ui/react'
 
-import { MerchantListItemContentFragment, useDeleteMerchantMutation } from 'src/generated/graphql'
+import { PaginatedMerchantListQuery, useDeleteMerchantMutation } from 'src/generated/graphql'
 
 import Clipboard from 'src/components/Clipboard'
 import ConfirmationPopup from 'src/components/ConfirmationPopup'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const ActionsColumn: FC<{
-  merchant: MerchantListItemContentFragment
+  merchant: PaginatedMerchantListQuery['merchantList'][number]
   onMerchantDelete: (id: number) => void
 }> = ({ merchant, onMerchantDelete }) => {
   const toast = useToast()
@@ -60,7 +60,7 @@ const ActionsColumn: FC<{
           …
         </MenuButton>
         <MenuList>
-          <NextLink href={`merchants/${merchant.id}`}>
+          <NextLink prefetch={false} href={`merchants/${merchant.id}`}>
             <MenuItem justifyContent="start" icon={<EditIcon w={3} h={3} />}>
               Edit
             </MenuItem>

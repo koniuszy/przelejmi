@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
 
 import Head from 'next/head'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 
-import { SimpleGrid, Image, Button, Skeleton } from '@chakra-ui/react'
+import { SimpleGrid, Image, Button, Skeleton, Heading, Center } from '@chakra-ui/react'
 
 import styled from '@emotion/styled'
 
@@ -44,6 +45,19 @@ const ScenarioList: FC = () => {
         ))}
       </SimpleGrid>
     )
+
+  if (data.scenarioList.length === 0) {
+    return (
+      <Center mt={10} display="flex" flexDirection="column">
+        <Heading as="h2">No scenarios yet 🤫</Heading>
+        <NextLink href="scenarios/create">
+          <Button mt={5} colorScheme="teal">
+            Create
+          </Button>
+        </NextLink>
+      </Center>
+    )
+  }
 
   return (
     <SimpleGrid as="ul" columns={3} gap={10}>
