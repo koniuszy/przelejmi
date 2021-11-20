@@ -13,7 +13,7 @@ export const Merchant = objectType({
     t.model.postCode()
     t.model.city()
     t.model.country()
-    t.model.VATId()
+    t.model.vatId()
     t.model.companyName()
     t.model.email()
     t.model.bankAccountPln()

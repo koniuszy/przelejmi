@@ -5,7 +5,7 @@ fragment MerchantContent on Merchant {
   postCode
   city
   country
-  VATId
+  vatId
   bankAccountPln
   bankAccountEur
   bankName

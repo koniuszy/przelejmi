@@ -24,6 +24,7 @@ import {
 
 import { useFormik } from 'formik'
 
+import { FormField } from 'src/components/Form'
 import { ClientType } from 'src/types'
 
 import calmInTrolleyImg from './calmInTrolley.jpg'
@@ -65,7 +66,7 @@ const ClientForm: FC<{
 
   return (
     <SimpleGrid my="10" columns={2} spacing={10}>
-      <Box m="auto" w="50%">
+      <Box mx="auto" w="50%">
         <NextImage placeholder="blur" src={calmInTrolleyImg} />
       </Box>
 
@@ -93,16 +94,15 @@ const ClientForm: FC<{
                 </RadioGroup>
 
                 <Flex direction="row" mt="8">
-                  <FormControl isRequired id="name" isInvalid={!!errors.name}>
-                    <FormLabel htmlFor="name">Name</FormLabel>
-                    <Input
-                      name="name"
-                      placeholder="John Smith"
-                      value={values.name}
-                      onChange={handleChange}
-                    />
-                    <FormErrorMessage>{errors.name}</FormErrorMessage>
-                  </FormControl>
+                  <FormField
+                    id="name"
+                    label="Name"
+                    placeholder="JohnSmith"
+                    error={errors.name}
+                    value={values.name}
+                    formControl={{ isRequired: true }}
+                    onChange={handleChange}
+                  />
 
                   <FormControl
                     ml="7"
