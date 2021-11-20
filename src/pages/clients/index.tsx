@@ -7,7 +7,7 @@ import { Tr, Td } from '@chakra-ui/react'
 import ActionsColumn from 'clients/list/ActionsColumn'
 import EditableColumns from 'clients/list/EditableColumns'
 
-import { ClientContentFragment, usePaginatedClientListQuery } from 'src/generated/graphql'
+import { usePaginatedClientListQuery } from 'src/generated/graphql'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
 import { ClientType, DBConditions } from 'src/types'
@@ -89,7 +89,7 @@ const ClientList: FC = () => {
           await refetch({ where: { ...rest, ...VATIdFilters } })
         },
       }}
-      rowRender={(item: ClientContentFragment, index) => (
+      rowRender={(item, index) => (
         <Tr key={item.id}>
           <Td>{index + 1}.</Td>
           <EditableColumns
