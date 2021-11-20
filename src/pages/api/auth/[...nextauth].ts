@@ -15,6 +15,9 @@ const WHITE_LIST = [
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
     adapter: PrismaAdapter(prisma),
+    session: {
+      maxAge: 4 * 30 * 24 * 60 * 60, // 4 * 30 days
+    },
     providers: [
       EmailProvider({
         server: process.env.EMAIL_SERVER,

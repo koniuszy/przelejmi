@@ -24,7 +24,7 @@
     "@chakra-ui/react": "^1.7.2",
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
-    "@next-auth/prisma-adapter": "^0.5.2-next.19",
+    "@next-auth/prisma-adapter": "0.5.2-next.19",
     "@prisma/client": "3.5.0",
     "apollo-server-micro": "^3.5.0",
     "easyinvoice": "^1.0.148",

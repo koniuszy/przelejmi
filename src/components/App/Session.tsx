@@ -29,9 +29,11 @@ const OwnSessionProvider: FC = (props) => {
   //     : session
 
   useEffect(() => {
-    if (session.status === 'loading') return
-    if (session.status === 'unauthenticated') router.push('/')
-  }, [session.status])
+    console.log(session.status, router.pathname)
+    if (session.status === 'loading' || router.pathname === '/') return
+    if (session.status === 'unauthenticated')
+      router.push({ pathname: '/api/auth/signin', query: { callbackUrl: window.location.href } })
+  }, [session.status, router.pathname])
 
   return <sessionContext.Provider value={session}>{props.children}</sessionContext.Provider>
 }
