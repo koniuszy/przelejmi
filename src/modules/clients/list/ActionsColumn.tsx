@@ -71,12 +71,12 @@ const ActionsColumn: FC<{
               toast({
                 ...successToastContent,
                 title: 'Saved in clipboard',
-                description: `VAT id: ${client.VATId}`,
+                description: `VAT ID: ${client.VATId}`,
               })
             }
           >
             <MenuItem isDisabled={!client.VATId} bg="gray.700" icon={<CopyIcon w={3} h={3} />}>
-              <Text>Copy VAT id</Text>
+              <Text>Copy VAT ID</Text>
             </MenuItem>
           </Clipboard>
 

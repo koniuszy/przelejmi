@@ -99,7 +99,7 @@ const MerchantForm: FC<{
                   </FormControl>
 
                   <FormControl isRequired ml="7" id="VATId" isInvalid={!!errors.VATId}>
-                    <FormLabel htmlFor="VATId">VAT Id</FormLabel>
+                    <FormLabel htmlFor="VATId">VAT ID</FormLabel>
                     <Input
                       name="VATId"
                       placeholder="12345678"
