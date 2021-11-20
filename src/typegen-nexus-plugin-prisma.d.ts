@@ -236,7 +236,7 @@ interface NexusPrismaOutputs {
     name: 'String'
     quantity: 'Int'
     price: 'Int'
-    vat: 'VAT'
+    vat: 'Vat'
     scenarioId: 'Int'
     invoice: 'Invoice'
   }

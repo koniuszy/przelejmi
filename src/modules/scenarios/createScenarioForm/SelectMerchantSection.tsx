@@ -31,7 +31,7 @@ const MerchantSelect: FC<{
   <React.Fragment key={merchant.id}>
     <Center justifyContent="flex-start">{merchant.companyName}</Center>
     <Center justifyContent="flex-start">{merchant.issuerName}</Center>
-    <Center justifyContent="flex-start">{merchant.VATId}</Center>
+    <Center justifyContent="flex-start">{merchant.vatId}</Center>
     <Button
       colorScheme={isSelected ? 'green' : 'blue'}
       onClick={() => {

@@ -66,16 +66,16 @@ const ActionsColumn: FC<{
           </NextLink>
 
           <Clipboard
-            value={client.VATId || ''}
+            value={client.vatId || ''}
             onCopy={() =>
               toast({
                 ...successToastContent,
                 title: 'Saved in clipboard',
-                description: `VAT ID: ${client.VATId}`,
+                description: `VAT ID: ${client.vatId}`,
               })
             }
           >
-            <MenuItem isDisabled={!client.VATId} bg="gray.700" icon={<CopyIcon w={3} h={3} />}>
+            <MenuItem isDisabled={!client.vatId} bg="gray.700" icon={<CopyIcon w={3} h={3} />}>
               <Text>Copy VAT ID</Text>
             </MenuItem>
           </Clipboard>

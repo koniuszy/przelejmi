@@ -34,7 +34,7 @@ const EditableColumns: FC<{
   function handleUpdate(data: MerchantUpdateInput, id: number) {
     const [value] = Object.values(data)
 
-    if (value === '' && data.VATId !== value) {
+    if (value === '' && data.vatId !== value) {
       toast(errorToastContent)
       toast(warningToastContent)
       return

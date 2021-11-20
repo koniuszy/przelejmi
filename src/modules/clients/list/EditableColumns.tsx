@@ -35,7 +35,7 @@ const EditableColumns: FC<{
   function handleUpdate(data: ClientUpdateInput, id: number) {
     const [value] = Object.values(data)
 
-    if (value === '' && data.VATId !== value) {
+    if (value === '' && data.vatId !== value) {
       toast(errorToastContent)
       toast(warningToastContent)
       return
@@ -53,8 +53,8 @@ const EditableColumns: FC<{
           onSubmit={(name) => handleUpdate({ name }, client.id)}
         />
       </Td>
-      <Td>{client.VATId ? ClientType.company : ClientType.person}</Td>
-      {['VATId', 'address', 'post Code', 'city', 'country'].map((key) => (
+      <Td>{client.vatId ? ClientType.company : ClientType.person}</Td>
+      {['vatId', 'address', 'post Code', 'city', 'country'].map((key) => (
         <Td key={key}>
           <Editable
             defaultValue={client[key]}

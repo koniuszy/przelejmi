@@ -14,7 +14,7 @@ export const Client = objectType({
     t.model.postCode()
     t.model.city()
     t.model.country()
-    t.model.VATId()
+    t.model.vatId()
   },
 })
 

@@ -44,7 +44,7 @@ enum Unit {
   HOUR
 }
 
-enum VAT {
+enum Vat {
   PERCENT_0
   PERCENT_8
   PERCENT_23
@@ -86,7 +86,7 @@ model InvoiceItem {
   name       String
   quantity   Int
   price      Int
-  vat        VAT
+  vat        Vat
   scenarioId Int
   invoice    Invoice @relation(fields: [scenarioId], references: [id])
 }

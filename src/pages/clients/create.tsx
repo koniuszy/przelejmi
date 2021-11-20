@@ -35,12 +35,12 @@ const CreateClientForm: FC = () => {
   return (
     <ClientForm
       isLoading={loading}
-      initialValues={{ name: '', address: '', postCode: '', city: '', country: '', VATId: '' }}
+      initialValues={{ name: '', address: '', postCode: '', city: '', country: '', vatId: '' }}
       onSubmit={(values) => {
-        const { VATId, clientType, ...data } = values
+        const { vatId, clientType, ...data } = values
         createClient({
           variables: {
-            data: { ...data, VATId: clientType === ClientType.company ? VATId : null },
+            data: { ...data, vatId: clientType === ClientType.company ? vatId : null },
           },
         })
       }}

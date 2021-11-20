@@ -30,7 +30,7 @@ const ClientSelect: FC<{
 }> = ({ client, isSelected, onClientSelect }) => (
   <React.Fragment key={client.id}>
     <Center justifyContent="flex-start">{client.name}</Center>
-    <Center justifyContent="flex-start">{client.VATId}</Center>
+    <Center justifyContent="flex-start">{client.vatId}</Center>
     <Button
       colorScheme={isSelected ? 'green' : 'blue'}
       onClick={() => {

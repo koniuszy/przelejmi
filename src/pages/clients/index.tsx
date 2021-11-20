@@ -44,7 +44,7 @@ const ClientList: FC = () => {
         `total: ${totalCount}`,
         { title: 'name', sortableKey: 'name' },
         'type',
-        'VATId',
+        'vatId',
         'address',
         'post Code',
         'city',
@@ -67,26 +67,26 @@ const ClientList: FC = () => {
           }
 
           const { type, ...rest } = newFilters
-          let VATIdFilters = {}
+          let VatIdFilters = {}
 
           if (type) {
             if (type[DBConditions.notIncludes]) {
               const [clientType] = type[DBConditions.notIncludes]
 
               if (clientType === ClientType.company)
-                VATIdFilters = { VATId: { [DBConditions.equals]: null } }
+                VatIdFilters = { VATId: { [DBConditions.equals]: null } }
 
               if (clientType === ClientType.person)
-                VATIdFilters = {
+                VatIdFilters = {
                   [DBConditions.not]: { VATId: { [DBConditions.equals]: null } },
                 }
             }
 
             if (type[DBConditions.includes]?.length === 0)
-              VATIdFilters = { VATId: { [DBConditions.includes]: [] } }
+              VatIdFilters = { VATId: { [DBConditions.includes]: [] } }
           }
 
-          await refetch({ where: { ...rest, ...VATIdFilters } })
+          await refetch({ where: { ...rest, ...VatIdFilters } })
         },
       }}
       rowRender={(item, index) => (
