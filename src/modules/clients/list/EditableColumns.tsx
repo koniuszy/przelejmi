@@ -54,7 +54,7 @@ const EditableColumns: FC<{
         />
       </Td>
       <Td>{client.vatId ? ClientType.company : ClientType.person}</Td>
-      {['vatId', 'address', 'post Code', 'city', 'country'].map((key) => (
+      {['vatId', 'address', 'postCode', 'city', 'country'].map((key) => (
         <Td key={key}>
           <Editable
             defaultValue={client[key]}
