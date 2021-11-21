@@ -40,12 +40,12 @@ interface NexusPrismaInputs {
       ordering: 'id' | 'name' | 'imgUrl' | 'notes' | 'dueDateDays' | 'paymentType' | 'currency' | 'createdAt' | 'updatedAt' | 'client' | 'merchant' | 'clientId' | 'merchantId' | 'Invoice'
     }
     invoiceItems: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'quantity' | 'price' | 'vat' | 'scenarioId' | 'invoice'
-      ordering: 'id' | 'name' | 'quantity' | 'price' | 'vat' | 'scenarioId' | 'invoice'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'quantity' | 'price' | 'vat' | 'scenarioId' | 'invoice' | 'createdAt' | 'updatedAt'
+      ordering: 'id' | 'name' | 'quantity' | 'price' | 'vat' | 'scenarioId' | 'invoice' | 'createdAt' | 'updatedAt'
     }
     invoices: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'invoiceNumber' | 'issueDate' | 'items' | 'amount' | 'scenario' | 'createdAt' | 'updatedAt' | 'scenarioId'
-      ordering: 'id' | 'invoiceNumber' | 'issueDate' | 'items' | 'amount' | 'scenario' | 'createdAt' | 'updatedAt' | 'scenarioId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'invoiceNumber' | 'issueDate' | 'items' | 'scenarioId' | 'scenario' | 'createdAt' | 'updatedAt'
+      ordering: 'id' | 'invoiceNumber' | 'issueDate' | 'items' | 'scenarioId' | 'scenario' | 'createdAt' | 'updatedAt'
     }
     accounts: {
       filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'userId' | 'type' | 'provider' | 'providerAccountId' | 'refresh_token' | 'access_token' | 'expires_at' | 'token_type' | 'scope' | 'id_token' | 'session_state' | 'oauth_token_secret' | 'oauth_token' | 'user'
@@ -78,8 +78,8 @@ interface NexusPrismaInputs {
   }
   Scenario: {
     Invoice: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'invoiceNumber' | 'issueDate' | 'items' | 'amount' | 'scenario' | 'createdAt' | 'updatedAt' | 'scenarioId'
-      ordering: 'id' | 'invoiceNumber' | 'issueDate' | 'items' | 'amount' | 'scenario' | 'createdAt' | 'updatedAt' | 'scenarioId'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'invoiceNumber' | 'issueDate' | 'items' | 'scenarioId' | 'scenario' | 'createdAt' | 'updatedAt'
+      ordering: 'id' | 'invoiceNumber' | 'issueDate' | 'items' | 'scenarioId' | 'scenario' | 'createdAt' | 'updatedAt'
     }
   }
   InvoiceItem: {
@@ -87,8 +87,8 @@ interface NexusPrismaInputs {
   }
   Invoice: {
     items: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'quantity' | 'price' | 'vat' | 'scenarioId' | 'invoice'
-      ordering: 'id' | 'name' | 'quantity' | 'price' | 'vat' | 'scenarioId' | 'invoice'
+      filtering: 'AND' | 'OR' | 'NOT' | 'id' | 'name' | 'quantity' | 'price' | 'vat' | 'scenarioId' | 'invoice' | 'createdAt' | 'updatedAt'
+      ordering: 'id' | 'name' | 'quantity' | 'price' | 'vat' | 'scenarioId' | 'invoice' | 'createdAt' | 'updatedAt'
     }
   }
   Account: {
@@ -239,17 +239,18 @@ interface NexusPrismaOutputs {
     vat: 'Vat'
     scenarioId: 'Int'
     invoice: 'Invoice'
+    createdAt: 'DateTime'
+    updatedAt: 'DateTime'
   }
   Invoice: {
     id: 'Int'
     invoiceNumber: 'String'
-    issueDate: 'DateTime'
+    issueDate: 'String'
     items: 'InvoiceItem'
-    amount: 'Int'
+    scenarioId: 'Int'
     scenario: 'Scenario'
     createdAt: 'DateTime'
     updatedAt: 'DateTime'
-    scenarioId: 'Int'
   }
   Account: {
     id: 'String'

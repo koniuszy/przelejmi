@@ -1,4 +1,4 @@
-import { objectType, queryType } from 'nexus'
+import { objectType, extendType } from 'nexus'
 
 export const Scenario = objectType({
   name: 'Scenario',
@@ -19,7 +19,8 @@ export const Scenario = objectType({
   },
 })
 
-export const ScenarioQuery = queryType({
+export const ScenarioQuery = extendType({
+  type: 'Query',
   definition(t) {
     t.crud.scenarios()
     t.crud.scenario()

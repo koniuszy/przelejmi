@@ -3,12 +3,6 @@ export enum Currency {
   EUR = 'EUR',
 }
 
-export enum VAT {
-  '23%' = '23%',
-  '8%' = '8%',
-  np = 'np',
-}
-
 export enum Unit {
   ITEM = 'item',
   HOURS = 'hours',

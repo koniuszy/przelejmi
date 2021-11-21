@@ -1,6 +1,6 @@
 import { mutationType } from 'nexus'
 
-export const ScenarioMutation = mutationType({
+export const Mutations = mutationType({
   definition(t) {
     t.crud.createOneScenario()
     t.crud.updateOneScenario()
@@ -13,5 +13,7 @@ export const ScenarioMutation = mutationType({
     t.crud.createOneMerchant()
     t.crud.deleteOneMerchant()
     t.crud.updateOneMerchant()
+
+    t.crud.createOneInvoice()
   },
 })

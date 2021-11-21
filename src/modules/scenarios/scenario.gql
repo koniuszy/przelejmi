@@ -18,6 +18,12 @@ mutation createScenario($data: ScenarioCreateInput!) {
   }
 }
 
+mutation createInvoice($data: InvoiceCreateInput!) {
+  createdInvoice: createOneInvoice(data: $data) {
+    id
+  }
+}
+
 query scenarioList {
   scenarioList: scenarios {
     id

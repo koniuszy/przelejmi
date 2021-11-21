@@ -18,12 +18,15 @@ const StyledPdfImageViewer = styled.div`
   }
 `
 
-const PdfImageViewer: FC<{ url: string }> = ({ url }) => {
+const PdfImageViewer: FC<{ url: string; onLoaded?: () => void }> = ({
+  url,
+  onLoaded = () => {},
+}) => {
   if (!url) return <Skeleton w="100%" h="80vh" />
 
   return (
     <StyledPdfImageViewer>
-      <Document loading={<Skeleton w="100%" h="80vh" />} file={url}>
+      <Document loading={<Skeleton w="100%" h="80vh" />} file={url} onLoadSuccess={onLoaded}>
         <Page className="pdfPage" pageNumber={1} />
       </Document>
     </StyledPdfImageViewer>

@@ -1,156 +1,103 @@
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
-import {
-  Box,
-  SimpleGrid,
-  Flex,
-  Tab,
-  TabList,
-  Tabs,
-  TabPanels,
-  TabPanel,
-  useToast,
-} from '@chakra-ui/react'
+import { Box, SimpleGrid, Flex, useToast } from '@chakra-ui/react'
 
-import easyinvoice, { InvoiceData } from 'easyinvoice'
+import { Formik } from 'formik'
+import CreateInvoiceForm from 'scenarios/CreateInvoiceForm'
+import { getBusinessHoursInCurrentMonth } from 'scenarios/CreateInvoiceForm/helpers'
 import PdfImageViewer from 'scenarios/PdfImageViewer'
 
-import { useScenarioQuery } from 'src/generated/graphql'
+import {
+  InvoiceItemCreateManyInvoiceInput,
+  useCreateInvoiceMutation,
+  Vat,
+} from 'src/generated/graphql'
 
 import prisma from 'src/lib/prisma'
-import { errorToastContent } from 'src/lib/toastContent'
-
-function base64toBlob(base64Data, contentType = 'application/pdf') {
-  const sliceSize = 1024
-  const byteCharacters = atob(base64Data)
-  const bytesLength = byteCharacters.length
-  const slicesCount = Math.ceil(bytesLength / sliceSize)
-  const byteArrays = new Array(slicesCount)
-
-  for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-    const begin = sliceIndex * sliceSize
-    const end = Math.min(begin + sliceSize, bytesLength)
-
-    const bytes = new Array(end - begin)
-
-    for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
-      bytes[i] = byteCharacters[offset].charCodeAt(0)
-    }
-
-    byteArrays[sliceIndex] = new Uint8Array(bytes)
-  }
-
-  return new Blob(byteArrays, {
-    type: contentType,
-  })
-}
-
-const data: InvoiceData = {
-  // "documentTitle": "RECEIPT", //Defaults to INVOICE
-
-  locale: 'de-DE',
-  // Defaults to en-US. List of locales: https://datahub.io/core/language-codes/r/3.html
-
-  taxNotation: 'vat', // or gst
-  marginTop: 25,
-  marginRight: 25,
-  marginLeft: 25,
-  marginBottom: 25,
-  // logo: 'https://public.easyinvoice.cloud/img/logo_en_original.png', // or base64
-  // background: 'https://public.easyinvoice.cloud/img/watermark-draft.jpg', // or base64
-  invoiceNumber: '2021.0001',
-  invoiceDate: '1.1.2021',
-  products: [
-    {
-      quantity: '2',
-      description: 'Test1',
-      tax: 6,
-      price: 33.87,
-    },
-    {
-      quantity: '4',
-      description: 'Test2',
-      tax: 21,
-      price: 10.45,
-    },
-  ],
-  // Used for translating the headers to your preferred language
-  // Defaults to English. Below example is translated to Dutch
-  // "translate": {
-  //     "invoiceNumber": "Factuurnummer",
-  //     "invoiceDate": "Factuurdatum",
-  //     "products": "Producten",
-  //     "quantity": "Aantal",
-  //     "price": "Prijs",
-  //     "subtotal": "Subtotaal",
-  //     "total": "Totaal"
-  // }
-}
+import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 const CreateInvoice: FC<{ scenarioId: number }> = ({ scenarioId }) => {
-  const [pdfPreviewUrl, setPdfPreviewUrl] = useState('')
   const toast = useToast()
+  const router = useRouter()
 
-  useScenarioQuery({
-    variables: { where: { id: scenarioId } },
-    onCompleted({ scenario }) {
-      if (!scenario) {
-        toast({ ...errorToastContent, title: 'could not find the scenario' })
-        return
-      }
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState('')
+  const [invoiceItems, setInvoiceItems] = useState<InvoiceItemCreateManyInvoiceInput[]>(() => {
+    const initialArray = new Array(5)
+      .fill(null)
+      .map(() => ({ name: '', price: 0, quantity: 0, vat: Vat.Percent_23 }))
 
-      easyinvoice
-        .createInvoice({
-          ...data,
-          bottomNotice: scenario?.notes,
-          currency: scenario.currency,
-          sender: {
-            address: scenario.merchant.address,
-            city: scenario.merchant.city,
-            company: scenario.merchant.companyName,
-            country: scenario.merchant.country,
-            zip: scenario.merchant.postCode,
-          },
-          client: {
-            address: scenario.client.address,
-            city: scenario.client.city,
-            company: scenario.client.name,
-            country: scenario.client.country,
-            zip: scenario.client.postCode,
-          },
-        })
-        .then((r) => {
-          const blob = base64toBlob(r.pdf)
-          const blobUrl = URL.createObjectURL(blob)
-          setPdfPreviewUrl(blobUrl)
-        })
+    return [
+      {
+        name: 'Services',
+        price: 100,
+        quantity: getBusinessHoursInCurrentMonth(),
+        vat: Vat.Percent_23,
+      },
+      ...initialArray,
+    ]
+  })
+  const [createInvoice, { loading }] = useCreateInvoiceMutation({
+    onCompleted() {
+      toast({
+        ...successToastContent,
+        title: 'Invoice created.',
+      })
+      router.push('/invoices')
+    },
+    onError(err) {
+      console.error(err)
+      toast(errorToastContent)
     },
   })
+  const [isLoadingPreview, setIsLoadingPreview] = useState(true)
 
-  function handleSubmit() {}
-
+  const invoiceOrder = 1
   return (
     <SimpleGrid my="10" columns={2} spacing={10}>
       <Box m="auto" w="100%">
-        <PdfImageViewer url={pdfPreviewUrl} />
+        <PdfImageViewer url={pdfPreviewUrl} onLoaded={() => setIsLoadingPreview(false)} />
       </Box>
 
       <Flex direction="row">
-        <form onSubmit={handleSubmit}>
-          <Tabs isFitted variant="enclosed" colorScheme="teal">
-            <TabList mb="1em">
-              <Tab _focus={{ boxShadow: 'none' }}>Main</Tab>
-              <Tab _focus={{ boxShadow: 'none' }}>Address</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>s</TabPanel>
-            </TabPanels>
-          </Tabs>
-        </form>
+        <Formik
+          initialValues={{
+            invoiceNumber: new Date(new Date().setDate(invoiceOrder)).toLocaleDateString(),
+            issueDate: new Date().toLocaleDateString(),
+          }}
+          onSubmit={(v) =>
+            createInvoice({
+              variables: {
+                data: {
+                  ...v,
+                  items: {
+                    createMany: { data: invoiceItems.filter((i) => i.quantity && i.price) },
+                  },
+                  scenario: { connect: { id: scenarioId } },
+                },
+              },
+            })
+          }
+        >
+          {(p) => (
+            <CreateInvoiceForm
+              invoiceItems={invoiceItems}
+              isLoadingPreview={isLoadingPreview}
+              isValid={p.isValid}
+              invoiceNumber={p.values.invoiceNumber}
+              issueDate={p.values.issueDate}
+              isCreating={loading}
+              scenarioId={scenarioId}
+              onInvoiceItemsChange={setInvoiceItems}
+              onLoadingPreview={setIsLoadingPreview}
+              onPreviewPdfChange={setPdfPreviewUrl}
+            />
+          )}
+        </Formik>
       </Flex>
     </SimpleGrid>
   )
