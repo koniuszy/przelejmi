@@ -13,7 +13,7 @@ import Table, { TablePlaceholder } from 'src/components/Table'
 import { ClientType, DBConditions } from 'src/types'
 
 const PER_PAGE = 10
-const TITLE = 'Total clients'
+const TITLE = 'Clients'
 
 const ClientList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)

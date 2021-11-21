@@ -1,0 +1,53 @@
+fragment InvoicePaginatedListItemContent on Invoice {
+  id
+  invoiceNumber
+  issueDate
+  updatedAt
+  items {
+    price
+    quantity
+  }
+  scenario {
+    currency
+    client {
+      name
+    }
+    merchant {
+      companyName
+    }
+  }
+}
+
+query paginatedInvoiceList(
+  $orderBy: [InvoiceOrderByWithRelationInput!] = []
+  $where: InvoiceWhereInput
+  $skip: Int!
+  $take: Int = 10
+) {
+  invoiceList: invoices(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
+    ...InvoicePaginatedListItemContent
+  }
+  totalCount: totalInvoicesCount
+  filters: invoiceFilters {
+    scenario {
+      id
+      name
+    }
+  }
+}
+
+mutation updateInvoice($data: InvoiceUpdateInput!, $id: Int!) {
+  updatedInvoice: updateOneInvoice(data: $data, where: { id: $id }) {
+    ...InvoicePaginatedListItemContent
+    scenario {
+      id
+      name
+    }
+  }
+}
+
+mutation deleteInvoice($id: Int!) {
+  deletedInvoice: deleteOneInvoice(where: { id: $id }) {
+    id
+  }
+}

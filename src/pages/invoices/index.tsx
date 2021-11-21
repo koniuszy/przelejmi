@@ -4,22 +4,22 @@ import Head from 'next/head'
 
 import { Tr, Td, useToast } from '@chakra-ui/react'
 
-import ActionsColumn from 'merchants/list/ActionsColumn'
-import EditableColumns from 'merchants/list/EditableColumns'
+import ActionsColumn from 'invoices/list/ActionsColumn'
+import Columns from 'invoices/list/Columns'
 
-import { MerchantWhereInput, usePaginatedMerchantListQuery } from 'src/generated/graphql'
+import { MerchantWhereInput, usePaginatedInvoiceListQuery } from 'src/generated/graphql'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
 import { errorToastContent } from 'src/lib/toastContent'
 
-const TITLE = 'Merchants'
+const TITLE = 'Invoices'
 const PER_PAGE = 10
 
 const MerchantList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)
   const toast = useToast()
 
-  const { data, refetch, variables, loading, updateQuery } = usePaginatedMerchantListQuery({
+  const { data, refetch, variables, loading, updateQuery } = usePaginatedInvoiceListQuery({
     variables: { skip: 0, take: PER_PAGE },
     fetchPolicy: 'cache-and-network',
     onError(err) {
@@ -28,28 +28,24 @@ const MerchantList: FC = () => {
     },
   })
 
-  if (!data?.merchantList) return <TablePlaceholder title={TITLE} />
+  if (!data?.invoiceList) return <TablePlaceholder title={TITLE} />
 
-  const {
-    merchantList,
-    totalCount,
-    filters: { __typename, ...filters },
-  } = data
+  const { invoiceList, totalCount, filters } = data
 
   return (
     <Table
-      emptyListHeading="No merchants yet 🤫"
+      emptyListHeading="No invoices yet 🤫"
       createHref="merchants/create"
       perPage={PER_PAGE}
       totalRecordsCount={totalCount}
-      list={merchantList}
+      list={invoiceList}
       variables={variables}
       refetch={refetch}
       filtersHeaderProps={{
         isLoading: loading,
         title: TITLE,
         isEditable,
-        filterOptions: { ...filters },
+        filterOptions: { scenario: filters.scenario.map((i) => i.name) },
         onEditableToggle: setIsEditable,
         async onDrawerChange(nullableFilters) {
           const { bank, ...filters } = nullableFilters || {}
@@ -61,23 +57,24 @@ const MerchantList: FC = () => {
       }}
       headerList={[
         `total: ${totalCount}`,
-        { title: 'company', sortableKey: 'companyName' },
-        { title: 'issuer', sortableKey: 'issuerName' },
-        'email',
-        'bank',
+        { title: 'Invoice number', sortableKey: 'invoiceNumber' },
+        { title: 'Issue date', sortableKey: 'issueDate' },
+        'subtotal',
+        'client',
+        'merchant',
         'actions',
       ]}
       rowRender={(item, index) => (
         <Tr key={item.id}>
           <Td>{index + 1}.</Td>
 
-          <EditableColumns
-            merchant={item}
+          <Columns
+            invoice={item}
             isEditable={isEditable}
-            onMerchantUpdate={(updatedMerchant) =>
+            onInvoiceUpdate={(updatedMerchant) =>
               updateQuery((prev) => ({
                 ...prev,
-                merchantList: prev.merchantList.map((item) =>
+                merchantList: prev.invoiceList.map((item) =>
                   item.id === updatedMerchant?.id ? updatedMerchant : item
                 ),
               }))
@@ -85,12 +82,12 @@ const MerchantList: FC = () => {
           />
 
           <ActionsColumn
-            merchant={item}
-            onMerchantDelete={(deletedMerchantId) =>
+            invoice={item}
+            onInvoiceDelete={(deletedMerchantId) =>
               updateQuery((prev) => ({
                 ...prev,
                 totalCount: prev.totalCount - 1,
-                merchantList: prev.merchantList.filter(({ id }) => id !== deletedMerchantId),
+                merchantList: prev.invoiceList.filter(({ id }) => id !== deletedMerchantId),
               }))
             }
           />

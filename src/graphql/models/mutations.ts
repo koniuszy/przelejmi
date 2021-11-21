@@ -15,5 +15,7 @@ export const Mutations = mutationType({
     t.crud.updateOneMerchant()
 
     t.crud.createOneInvoice()
+    t.crud.updateOneInvoice()
+    t.crud.deleteOneInvoice()
   },
 })

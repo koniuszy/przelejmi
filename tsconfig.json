@@ -7,7 +7,8 @@
     "paths": {
       "clients/*": ["./src/modules/clients/*"],
       "scenarios/*": ["./src/modules/scenarios/*"],
-      "merchants/*": ["./src/modules/merchants/*"]
+      "merchants/*": ["./src/modules/merchants/*"],
+      "invoices/*": ["./src/modules/invoices/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,

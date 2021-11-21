@@ -8,8 +8,8 @@ import { useRouter } from 'next/router'
 import { Box, SimpleGrid, Flex, useToast } from '@chakra-ui/react'
 
 import { Formik } from 'formik'
-import CreateInvoiceForm from 'scenarios/CreateInvoiceForm'
-import { getBusinessHoursInCurrentMonth } from 'scenarios/CreateInvoiceForm/helpers'
+import CreateInvoiceForm from 'invoices/CreateInvoiceForm'
+import { getBusinessHoursInCurrentMonth } from 'invoices/CreateInvoiceForm/helpers'
 import PdfImageViewer from 'scenarios/PdfImageViewer'
 
 import {

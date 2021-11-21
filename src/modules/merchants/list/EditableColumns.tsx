@@ -72,7 +72,7 @@ const EditableColumns: FC<{
           isDisabled={!isEditable}
           onSubmit={(bankName) => handleUpdate({ bankName }, merchant.id)}
         />
-      </Td>{' '}
+      </Td>
     </>
   )
 }

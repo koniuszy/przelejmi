@@ -113,7 +113,7 @@ const Header: FC = () => {
             >
               Create
             </MenuButton>
-            <MenuList zIndex={20000}>
+            <MenuList zIndex={20}>
               <NextLink href="/scenarios/create">
                 <MenuItem>Scenario</MenuItem>
               </NextLink>
@@ -127,7 +127,7 @@ const Header: FC = () => {
           </Menu>
 
           <Center>
-            <Avatar mx={5} zIndex={20000} size="sm" name={user?.name || ''} src={user?.image || ''}>
+            <Avatar mx={5} zIndex={20} size="sm" name={user?.name || ''} src={user?.image || ''}>
               <AvatarBadge _hover={{ bg: 'gray.700' }} bg="black" cursor="pointer">
                 <Menu>
                   <MenuButton color="white" as={ChevronDownIcon} />

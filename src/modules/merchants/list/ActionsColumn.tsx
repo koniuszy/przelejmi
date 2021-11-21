@@ -35,7 +35,7 @@ const ActionsColumn: FC<{
     onCompleted() {
       toast({
         ...successToastContent,
-        title: 'Client deleted.',
+        title: 'Merchant deleted.',
       })
       setMerchantDeletionId(null)
       onMerchantDelete(merchant.id)
