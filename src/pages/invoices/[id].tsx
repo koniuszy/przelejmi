@@ -1,47 +1,28 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Box, SimpleGrid, Flex, useToast } from '@chakra-ui/react'
+import { Center, Spinner, Flex, SimpleGrid, Box, useToast } from '@chakra-ui/react'
 
 import { Formik } from 'formik'
 import InvoiceForm from 'invoices/InvoiceForm'
-import { getBusinessHoursInCurrentMonth } from 'invoices/InvoiceForm/helpers'
 import PdfImageViewer from 'scenarios/PdfImageViewer'
 
-import {
-  InvoiceItemCreateManyInvoiceInput,
-  useCreateInvoiceMutation,
-  Vat,
-} from 'src/generated/graphql'
+import { InvoiceQuery, useInvoiceQuery, useUpdateInvoiceMutation } from 'src/generated/graphql'
 
 import prisma from 'src/lib/prisma'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-const CreateInvoice: FC<{ scenarioId: number }> = ({ scenarioId }) => {
+const CreateInvoice: FC<{ invoice: NonNullable<InvoiceQuery['invoice']> }> = ({ invoice }) => {
   const toast = useToast()
   const router = useRouter()
 
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState('')
-  const [invoiceItems, setInvoiceItems] = useState<InvoiceItemCreateManyInvoiceInput[]>(() => {
-    const initialArray = new Array(5)
-      .fill(null)
-      .map(() => ({ name: '', price: 0, quantity: 0, vat: Vat.Percent_23 }))
-
-    return [
-      {
-        name: 'Services',
-        price: 100,
-        quantity: getBusinessHoursInCurrentMonth(),
-        vat: Vat.Percent_23,
-      },
-      ...initialArray,
-    ]
-  })
-  const [createInvoice, { loading }] = useCreateInvoiceMutation({
+  const [invoiceItems, setInvoiceItems] = useState(invoice.items)
+  const [updateInvoice, { loading }] = useUpdateInvoiceMutation({
     onCompleted() {
       toast({
         ...successToastContent,
@@ -70,7 +51,7 @@ const CreateInvoice: FC<{ scenarioId: number }> = ({ scenarioId }) => {
             issueDate: new Date().toLocaleDateString(),
           }}
           onSubmit={(v) =>
-            createInvoice({
+            updateInvoice({
               variables: {
                 data: {
                   ...v,
@@ -104,25 +85,36 @@ const CreateInvoice: FC<{ scenarioId: number }> = ({ scenarioId }) => {
 }
 
 type SSGProps = {
-  scenarioId: number
+  invoiceId: number
 }
 
-const CreateInvoicePage: NextPage<SSGProps> = (ssgProps) => (
-  <>
-    <Head>
-      <title>Create invoice | przelejmi</title>
-    </Head>
+const EditInvoiceFormPage: FC<SSGProps> = (props) => {
+  const route = useRouter()
 
-    <main>
-      <CreateInvoice scenarioId={ssgProps.scenarioId} />
-    </main>
-  </>
-)
+  const { data } = useInvoiceQuery({ variables: { id: props.invoiceId } })
+
+  return (
+    <>
+      <Head>
+        <title>Edit merchant | przelejmi</title>
+      </Head>
+      <main>
+        {route.isFallback || !data?.invoice ? (
+          <Center>
+            <Spinner />
+          </Center>
+        ) : (
+          <CreateInvoice invoice={data.invoice} />
+        )}
+      </main>
+    </>
+  )
+}
 
 type Params = { id: string }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const idList = await prisma.scenario.findMany({ select: { id: true } })
+  const idList = await prisma.invoice.findMany({ select: { id: true } })
 
   const paths = idList.map(({ id }) => ({
     params: { id: id.toString() },
@@ -137,9 +129,9 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
   return {
     props: {
-      scenarioId: Number(params?.id),
+      invoiceId: Number(params?.id),
     },
   }
 }
 
-export default CreateInvoicePage
+export default EditInvoiceFormPage

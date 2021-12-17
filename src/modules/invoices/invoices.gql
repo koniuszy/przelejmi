@@ -18,6 +18,17 @@ fragment InvoicePaginatedListItemContent on Invoice {
   }
 }
 
+query invoice($id: Int) {
+  invoice(where: { id: $id }) {
+    issueDate
+    invoiceNumber
+    items {
+      name
+      price
+      quantity
+    }
+  }
+}
 query paginatedInvoiceList(
   $orderBy: [InvoiceOrderByWithRelationInput!] = []
   $where: InvoiceWhereInput

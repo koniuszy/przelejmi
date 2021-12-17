@@ -1,18 +1,3 @@
-export enum Currency {
-  PLN = 'PLN',
-  EUR = 'EUR',
-}
-
-export enum Unit {
-  ITEM = 'item',
-  HOURS = 'hours',
-}
-
-export enum PaymentType {
-  CASH = 'cash',
-  TRANSFER = 'transfer',
-}
-
 export enum ClientType {
   company = 'Company',
   person = 'Person',

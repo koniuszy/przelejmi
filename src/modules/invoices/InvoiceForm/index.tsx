@@ -33,12 +33,12 @@ import { errorToastContent } from 'src/lib/toastContent'
 
 import { mapVatToNumber, base64toBlob } from './helpers'
 
-const CreateInvoiceForm: FC<{
+const InvoiceForm: FC<{
   scenarioId: number
   isLoadingPreview: boolean
   onLoadingPreview: (v: boolean) => void
   onPreviewPdfChange: (url: string) => void
-  isCreating: boolean
+  isSubmitting: boolean
   issueDate: string
   invoiceNumber: string
   isValid: boolean
@@ -49,7 +49,7 @@ const CreateInvoiceForm: FC<{
   onPreviewPdfChange,
   onLoadingPreview,
   isLoadingPreview,
-  isCreating,
+  isSubmitting,
   issueDate,
   invoiceNumber,
   isValid,
@@ -240,7 +240,13 @@ const CreateInvoiceForm: FC<{
           Refresh
         </Button>
 
-        <Button type="submit" colorScheme="teal" mr={4} disabled={!isValid} isLoading={isCreating}>
+        <Button
+          type="submit"
+          colorScheme="teal"
+          mr={4}
+          disabled={!isValid}
+          isLoading={isSubmitting}
+        >
           Submit
         </Button>
       </Flex>
@@ -248,4 +254,4 @@ const CreateInvoiceForm: FC<{
   )
 }
 
-export default CreateInvoiceForm
+export default InvoiceForm
