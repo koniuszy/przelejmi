@@ -6,7 +6,7 @@ import EmailProvider from 'next-auth/providers/email'
 
 import prisma from 'src/lib/prisma'
 
-const WHITE_LIST = [
+const ADMIN_EMAIL_LIST = [
   'michal.stefan.konczak@gmail.com',
   'ms.magdalena.kozlowska@gmail.com',
   'bogusz.konczak@gmail.com',
@@ -40,10 +40,29 @@ const authHandler: NextApiHandler = (req, res) =>
 
         return session
       },
+      async jwt(jwt) {
+        if (jwt.user?.email === ADMIN_EMAIL_LIST[0]) {
+          jwt.token['https://hasura.io/jwt/claims'] = {
+            claims: {
+              'x-hasura-allowed-roles': ['user'],
+              'x-hasura-default-role': 'user',
+            },
+          }
+          return jwt
+        }
+
+        jwt.token['https://hasura.io/jwt/claims'] = {
+          claims: {
+            'x-hasura-allowed-roles': ['user'],
+            'x-hasura-default-role': 'user',
+          },
+        }
+        return jwt
+      },
       async signIn({ user, profile }) {
         console.log({ user, profile })
 
-        return WHITE_LIST.includes(user.email || '')
+        return ADMIN_EMAIL_LIST.includes(user.email || '')
       },
     },
   })
