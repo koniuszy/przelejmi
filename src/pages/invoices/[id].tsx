@@ -56,8 +56,10 @@ const CreateInvoice: FC<{ invoice: NonNullable<InvoiceQuery['invoice']> }> = ({ 
                 data: {
                   ...v,
                   items: {
+                    // @ts-ignore
                     createMany: { data: invoiceItems.filter((i) => i.quantity && i.price) },
                   },
+                  // @ts-ignore
                   scenario: { connect: { id: scenarioId } },
                 },
               },
@@ -66,12 +68,14 @@ const CreateInvoice: FC<{ invoice: NonNullable<InvoiceQuery['invoice']> }> = ({ 
         >
           {(p) => (
             <InvoiceForm
+              // @ts-ignore
               invoiceItems={invoiceItems}
               isLoadingPreview={isLoadingPreview}
               isValid={p.isValid}
               invoiceNumber={p.values.invoiceNumber}
               issueDate={p.values.issueDate}
               isSubmitting={loading}
+              // @ts-ignore
               scenarioId={scenarioId}
               onInvoiceItemsChange={setInvoiceItems}
               onLoadingPreview={setIsLoadingPreview}
