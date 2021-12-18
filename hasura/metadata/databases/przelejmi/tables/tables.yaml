@@ -1,1 +1,3 @@
 - "!include public_Client.yaml"
+- "!include public_Merchant.yaml"
+- "!include public__prisma_migrations.yaml"
