@@ -29,7 +29,7 @@ const OwnSessionProvider: FC = (props) => {
   //     : session
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') return
+    // if (process.env.NODE_ENV === 'development') return
 
     if (session.status === 'loading' || router.pathname === '/') return
     if (session.status === 'unauthenticated')

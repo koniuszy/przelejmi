@@ -10,7 +10,7 @@ import * as types from './models'
 
 const isAuthenticated = ruleType({
   resolve: (root, args, ctx) => {
-    if (process.env.NODE_ENV === 'development') return true
+    // if (process.env.NODE_ENV === 'development') return true
 
     const allowed = Boolean(ctx.user)
     if (!allowed) throw new ForbiddenError('Not allowed')
