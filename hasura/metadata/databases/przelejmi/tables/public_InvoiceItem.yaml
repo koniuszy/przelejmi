@@ -1,0 +1,7 @@
+table:
+  name: InvoiceItem
+  schema: public
+object_relationships:
+- name: Invoice
+  using:
+    foreign_key_constraint_on: invoiceId

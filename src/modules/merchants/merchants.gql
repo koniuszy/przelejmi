@@ -48,11 +48,9 @@ query merchantDistinct {
   }
 }
 
-mutation createMerchant($objects: [Merchant_insert_input!] = {}) {
-  insert_Merchant(objects: $objects) {
-    returning {
-      ...Merchant
-    }
+mutation createMerchant($object: Merchant_insert_input!) {
+  insert_Merchant_one(object: $object) {
+    ...Merchant
   }
 }
 

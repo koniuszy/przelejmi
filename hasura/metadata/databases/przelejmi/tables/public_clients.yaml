@@ -1,13 +1,13 @@
 table:
-  name: Client
+  name: clients
   schema: public
 array_relationships:
-- name: Scenarios
+- name: scenarios
   using:
     foreign_key_constraint_on:
       column: clientId
       table:
-        name: Scenario
+        name: scenarios
         schema: public
 insert_permissions:
 - permission:

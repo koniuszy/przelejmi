@@ -20,8 +20,6 @@ import PaymentDetailsSection from 'scenarios/createScenarioForm/PaymentDetailsSe
 import SelectClientSection from 'scenarios/createScenarioForm/SelectClientSection'
 import SelectMerchantSection from 'scenarios/createScenarioForm/SelectMerchantSection'
 
-import { Currency, PaymentType, useCreateScenarioMutation } from 'src/generated/graphql'
-
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 const CreateScenarioForm: FC = () => {

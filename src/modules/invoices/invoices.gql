@@ -1,4 +1,4 @@
-fragment InvoicePaginatedListItemContent on Invoice {
+fragment Invoice on Invoice {
   id
   invoiceNumber
   issueDate
@@ -7,19 +7,19 @@ fragment InvoicePaginatedListItemContent on Invoice {
     price
     quantity
   }
-  scenario {
+  Scenario {
     currency
-    # client {
-    # name
-    # }
-    # merchant {
-    #   companyName
-    # }
+    Client {
+      name
+    }
+    Merchant {
+      companyName
+    }
   }
 }
 
-query invoice($id: Int) {
-  invoice(where: { id: $id }) {
+query invoice($id: Int_comparison_exp!) {
+  Invoice(where: { id: $id }) {
     issueDate
     invoiceNumber
     items {
@@ -29,36 +29,39 @@ query invoice($id: Int) {
     }
   }
 }
-query paginatedInvoiceList(
-  $orderBy: [InvoiceOrderByWithRelationInput!] = []
-  $where: InvoiceWhereInput
-  $skip: Int!
-  $take: Int = 10
+
+mutation updateInvoice($id: Int_comparison_exp!, $_set: Invoice_set_input!) {
+  update_Invoice(where: { id: $id }, _set: $_set) {
+    returning {
+      ...Invoice
+      Scenario {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation deleteInvoice($id: Int_comparison_exp!) {
+  delete_Invoice(where: { id: $id }) {
+    returning {
+      id
+    }
+  }
+}
+
+query invoiceList(
+  $limit: Int = 10
+  $offset: Int = 0
+  $order_by: [Invoice_order_by!] = {}
+  $where: Invoice_bool_exp = {}
 ) {
-  invoiceList: invoices(orderBy: $orderBy, where: $where, skip: $skip, take: $take) {
-    ...InvoicePaginatedListItemContent
+  Invoice(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
+    ...Invoice
   }
-  totalCount: totalInvoicesCount
-  filters: invoiceFilters {
-    scenario {
-      id
-      name
+  Invoice_aggregate {
+    aggregate {
+      totalCount: count
     }
-  }
-}
-
-mutation updateInvoice($data: InvoiceUpdateInput!, $id: Int!) {
-  updatedInvoice: updateOneInvoice(data: $data, where: { id: $id }) {
-    ...InvoicePaginatedListItemContent
-    scenario {
-      id
-      name
-    }
-  }
-}
-
-mutation deleteInvoice($id: Int!) {
-  deletedInvoice: deleteOneInvoice(where: { id: $id }) {
-    id
   }
 }

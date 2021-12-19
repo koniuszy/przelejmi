@@ -6,6 +6,6 @@ generates:
       - 'typescript-operations'
       - 'typescript-react-apollo'
     schema: 'http://localhost:8080/v1/graphql'
-    documents: 'hasura/**/*.gql'
+    documents: 'src/**/*.gql'
     config:
       withHooks: true

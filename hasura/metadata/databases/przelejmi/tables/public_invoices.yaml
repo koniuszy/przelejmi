@@ -1,0 +1,15 @@
+table:
+  name: invoices
+  schema: public
+object_relationships:
+- name: scenario
+  using:
+    foreign_key_constraint_on: scenarioId
+array_relationships:
+- name: items
+  using:
+    foreign_key_constraint_on:
+      column: invoiceId
+      table:
+        name: invoice_items
+        schema: public

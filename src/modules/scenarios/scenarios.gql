@@ -1,4 +1,4 @@
-fragment ScenarioContent on Scenario {
+fragment Scenario on Scenario {
   id
   name
   paymentType
@@ -8,38 +8,38 @@ fragment ScenarioContent on Scenario {
   dueDateDays
   createdAt
   updatedAt
-  # clientId
-  # merchantId
+  merchantId
+  clientId
 }
 
-mutation createScenario($data: ScenarioCreateInput!) {
-  createdScenario: createOneScenario(data: $data) {
-    ...ScenarioContent
+mutation createScenario($object: Scenario_insert_input!) {
+  insert_Scenario_one(object: $object) {
+    ...Scenario
   }
 }
 
-mutation createInvoice($data: InvoiceCreateInput!) {
-  createdInvoice: createOneInvoice(data: $data) {
+mutation createInvoice($object: Invoice_insert_input!) {
+  insert_Invoice_one(object: $object) {
     id
   }
 }
 
-query scenarioList {
-  scenarioList: scenarios {
+query scenarioList($limit: Int = 10, $offset: Int = 0) {
+  Scenario(limit: $limit, offset: $offset) {
     id
     imgUrl
     name
   }
 }
 
-query scenario($where: ScenarioWhereUniqueInput!) {
-  scenario(where: $where) {
-    ...ScenarioContent
-    # merchant {
-    #   ...MerchantContent
-    # }
-    # client {
-    # ...ClientContent
-    # }
+query scenario($id: Int_comparison_exp = {}) {
+  Scenario(where: { id: $id }) {
+    ...Scenario
+    Client {
+      ...Client
+    }
+    Merchant {
+      ...Merchant
+    }
   }
 }
