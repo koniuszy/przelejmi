@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { NextPage } from 'next'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -12,7 +12,7 @@ import { useClientQuery, useUpdateClientMutation } from 'src/generated/hasura'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
 
-const EditClientForm: FC = () => {
+const EditClientFormPage: NextPage = () => {
   const toast = useToast()
   const router = useRouter()
   const clientId = Number(router.query.id)
@@ -20,15 +20,15 @@ const EditClientForm: FC = () => {
   const { data, updateQuery } = useClientQuery({ variables: { id: { _eq: clientId } } })
 
   const [updateClient, { loading }] = useUpdateClientMutation({
-    onCompleted({ update_Client }) {
-      if (!update_Client) throw new Error()
+    onCompleted({ update_clients }) {
+      if (!update_clients) throw new Error()
 
       toast({
         ...successToastContent,
         title: 'Client updated.',
       })
 
-      updateQuery((prev) => ({ ...prev, Client: update_Client[0] }))
+      updateQuery((prev) => ({ ...prev, clients: update_clients[0] }))
     },
     onError(err) {
       console.error(err)
@@ -36,7 +36,7 @@ const EditClientForm: FC = () => {
     },
   })
 
-  if (!data?.Client.length)
+  if (!data)
     return (
       <div>
         <ClientForm
@@ -47,31 +47,27 @@ const EditClientForm: FC = () => {
       </div>
     )
 
-  const { __typename, id, ...initialValues } = data.Client[0]
+  const { __typename, id, ...initialValues } = data.clients[0]
   return (
-    <ClientForm
-      isLoading={loading}
-      initialValues={{ ...initialValues, vatId: initialValues.vatId ?? '' } || {}}
-      onSubmit={(values) => {
-        const { vatId, clientType, ...data } = values
-        updateClient({
-          variables: {
-            where: { id: { _eq: id } },
-            _set: { ...data, vatId: clientType === ClientType.company ? vatId : null },
-          },
-        })
-      }}
-    />
+    <>
+      <Head>
+        <title>Edit client | przelejmi</title>
+      </Head>
+      <ClientForm
+        isLoading={loading}
+        initialValues={{ ...initialValues, vatId: initialValues.vatId ?? '' } || {}}
+        onSubmit={(values) => {
+          const { vatId, clientType, ...data } = values
+          updateClient({
+            variables: {
+              where: { id: { _eq: id } },
+              _set: { ...data, vatId: clientType === ClientType.company ? vatId : null },
+            },
+          })
+        }}
+      />
+    </>
   )
 }
-
-const EditClientFormPage: FC = () => (
-  <>
-    <Head>
-      <title>Edit client | przelejmi</title>
-    </Head>
-    <EditClientForm />
-  </>
-)
 
 export default EditClientFormPage

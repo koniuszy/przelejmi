@@ -24,8 +24,8 @@ const ClientList: FC = () => {
   })
 
   if (!data) return <TablePlaceholder title={TITLE} />
-  const totalCount = Number(data.Client_aggregate.aggregate?.totalCount)
-  const clientList = data.Client
+  const totalCount = Number(data.clients_aggregate.aggregate?.totalCount)
+  const clientList = data.clients
 
   return (
     <Table
@@ -94,7 +94,7 @@ const ClientList: FC = () => {
             onClientUpdate={(updatedClient) =>
               updateQuery((prev) => ({
                 ...prev,
-                Client: prev.Client.map((item) =>
+                clients: prev.clients.map((item) =>
                   item.id === updatedClient?.id ? updatedClient : item
                 ),
               }))
@@ -105,14 +105,14 @@ const ClientList: FC = () => {
             onClientDelete={(deletedClientId) =>
               updateQuery((prev) => ({
                 ...prev,
-                Client_aggregate: {
-                  ...prev.Client_aggregate,
+                clients_aggregate: {
+                  ...prev.clients_aggregate,
                   aggregate: {
-                    ...prev.Client_aggregate.aggregate,
-                    totalCount: Number(prev.Client_aggregate.aggregate?.totalCount) - 1,
+                    ...prev.clients_aggregate.aggregate,
+                    totalCount: Number(prev.clients_aggregate.aggregate?.totalCount) - 1,
                   },
                 },
-                Client: prev.Client.filter(({ id }) => id !== deletedClientId),
+                clients: prev.clients.filter(({ id }) => id !== deletedClientId),
               }))
             }
           />

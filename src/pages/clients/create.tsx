@@ -1,5 +1,3 @@
-import React, { FC } from 'react'
-
 import { NextPage } from 'next'
 
 import Head from 'next/head'
@@ -14,7 +12,7 @@ import { useCreateClientMutation } from 'src/generated/hasura'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
 
-const CreateClientForm: FC = () => {
+const CreateClientPage: NextPage = () => {
   const toast = useToast()
   const router = useRouter()
 
@@ -33,29 +31,27 @@ const CreateClientForm: FC = () => {
   })
 
   return (
-    <ClientForm
-      isLoading={loading}
-      initialValues={{ name: '', address: '', postCode: '', city: '', country: '', vatId: '' }}
-      onSubmit={(values) => {
-        const { vatId, clientType, ...data } = values
-        createClient({
-          variables: {
-            objects: { ...data, vatId: clientType === ClientType.company ? vatId : null },
-          },
-        })
-      }}
-    />
+    <>
+      <Head>
+        <title>Create client | przelejmi</title>
+      </Head>
+
+      <main>
+        <ClientForm
+          isLoading={loading}
+          initialValues={{ name: '', address: '', postCode: '', city: '', country: '', vatId: '' }}
+          onSubmit={(values) => {
+            const { vatId, clientType, ...data } = values
+            createClient({
+              variables: {
+                object: { ...data, vatId: clientType === ClientType.company ? vatId : null },
+              },
+            })
+          }}
+        />
+      </main>
+    </>
   )
 }
-
-const CreateClientPage: NextPage = () => (
-  <>
-    <Head>
-      <title>Create client | przelejmi</title>
-    </Head>
-
-    <CreateClientForm />
-  </>
-)
 
 export default CreateClientPage

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { NextPage } from 'next'
 
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
@@ -10,49 +10,45 @@ import useSession from 'src/hooks/useSession'
 
 const AnimationSection = dynamic(() => import('src/components/Home/AnimationSection'))
 
-const Home: FC = () => {
+const HomePage: NextPage = () => {
   const { user, isLoading } = useSession()
 
   return (
-    <Flex flexDir="column" flexWrap="nowrap" alignContent="space-between">
-      <Box w="100%">
-        <List spacing={3}>
-          <ListItem>
-            <ListIcon as={UnlockIcon} color="teal.200" />
-            Sign in
-          </ListItem>
-          <ListItem>
-            <ListIcon as={CalendarIcon} color="teal.200" />
-            Customize your client base
-          </ListItem>
-          <ListItem>
-            <ListIcon as={TimeIcon} color="teal.200" />
-            Get your money
-          </ListItem>
-        </List>
+    <>
+      <Head>
+        <title>Home page | przelejmi</title>
+      </Head>
 
-        {isLoading ? (
-          <Center>
-            <Spinner />
-          </Center>
-        ) : (
-          <AnimationSection isSession={Boolean(user)} />
-        )}
-      </Box>
-    </Flex>
+      <main>
+        <Flex flexDir="column" flexWrap="nowrap" alignContent="space-between">
+          <Box w="100%">
+            <List spacing={3}>
+              <ListItem>
+                <ListIcon as={UnlockIcon} color="teal.200" />
+                Sign in
+              </ListItem>
+              <ListItem>
+                <ListIcon as={CalendarIcon} color="teal.200" />
+                Customize your client base
+              </ListItem>
+              <ListItem>
+                <ListIcon as={TimeIcon} color="teal.200" />
+                Get your money
+              </ListItem>
+            </List>
+
+            {isLoading ? (
+              <Center>
+                <Spinner />
+              </Center>
+            ) : (
+              <AnimationSection isSession={Boolean(user)} />
+            )}
+          </Box>
+        </Flex>
+      </main>
+    </>
   )
 }
-
-const HomePage: FC = () => (
-  <>
-    <Head>
-      <title>Home page | przelejmi</title>
-    </Head>
-
-    <main>
-      <Home />
-    </main>
-  </>
-)
 
 export default HomePage
