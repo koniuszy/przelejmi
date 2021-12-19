@@ -11,12 +11,10 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import { PaginatedMerchantListQueryVariables } from 'src/generated/graphql'
-
 import DrawerFilters, { TriggerFiltersButton, Filters } from './DrawerFilters'
 import SearchInput, { Search, SearchInputPlaceholder } from './SearchInput'
 
-export type Variables = Partial<PaginatedMerchantListQueryVariables> | undefined
+// export type Variables = Partial<PaginatedMerchantListQueryVariables> | undefined
 
 export type TableHeaderProps = {
   title: string
@@ -55,9 +53,7 @@ export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (
   </Flex>
 )
 
-const TableHeader: FC<
-  TableHeaderProps & { variables: Variables; refetch: (v: Variables) => Promise<any> }
-> = ({
+const TableHeader: FC<TableHeaderProps & { variables: any; refetch: (v: any) => Promise<any> }> = ({
   title,
   variables,
   isEditable,

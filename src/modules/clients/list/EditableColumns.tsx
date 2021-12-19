@@ -2,29 +2,24 @@ import React, { FC } from 'react'
 
 import { Td, useToast } from '@chakra-ui/react'
 
-import {
-  PaginatedClientListQuery,
-  ClientUpdateInput,
-  useUpdateClientMutation,
-} from 'src/generated/graphql'
+import { ClientFragment, useUpdateClientMutation } from 'src/generated/hasura'
 
 import Editable from 'src/components/Editable'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
 
-type Client = PaginatedClientListQuery['clientList'][number]
-
 const EditableColumns: FC<{
-  client: Client
+  client: ClientFragment
   isEditable: boolean
-  onClientUpdate: (client: Client) => void
+  onClientUpdate: (client: ClientFragment) => void
 }> = ({ client, isEditable, onClientUpdate }) => {
   const toast = useToast()
 
   const [updateClient] = useUpdateClientMutation({
-    onCompleted({ updatedClient }) {
+    onCompleted({ update_Client }) {
+      if (!update_Client) throw new Error()
       toast({ ...successToastContent, title: 'Client updated' })
-      onClientUpdate(updatedClient as Client)
+      update_Client.returning.map(onClientUpdate)
     },
     onError() {
       toast(errorToastContent)
@@ -32,7 +27,7 @@ const EditableColumns: FC<{
     },
   })
 
-  function handleUpdate(data: ClientUpdateInput, id: number) {
+  function handleUpdate(data: Partial<ClientFragment>, id: number) {
     const [value] = Object.values(data)
 
     if (value === '' && data.vatId !== value) {
@@ -41,7 +36,7 @@ const EditableColumns: FC<{
       return
     }
 
-    updateClient({ variables: { data, id } })
+    updateClient({ variables: { where: { id: { _eq: id } }, _set: data } })
   }
 
   return (

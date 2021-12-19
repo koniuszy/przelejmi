@@ -9,9 +9,9 @@ fragment InvoicePaginatedListItemContent on Invoice {
   }
   scenario {
     currency
-    client {
-      name
-    }
+    # client {
+    # name
+    # }
     merchant {
       companyName
     }

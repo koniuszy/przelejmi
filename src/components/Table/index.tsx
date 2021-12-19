@@ -18,7 +18,7 @@ import {
 
 import Pagination from './Pagination'
 import SortTh from './SortTh'
-import TableHeader, { TableHeaderPlaceholder, TableHeaderProps, Variables } from './TableHeader'
+import TableHeader, { TableHeaderPlaceholder, TableHeaderProps } from './TableHeader'
 
 export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
   <>
@@ -32,6 +32,8 @@ export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
   </>
 )
 
+// failed attempt of generic table
+// TODO: remove variables/refetch functions and add callbacks
 function Table<Item>({
   filtersHeaderProps: { isLoading, onDrawerChange, ...filtersHeaderProps },
   list,
@@ -52,12 +54,12 @@ function Table<Item>({
   filtersHeaderProps: Omit<TableHeaderProps, 'variables' | 'refetch' | 'searchKeys'>
   headerList: Array<string | { title: string; sortableKey: string }>
   rowRender: (item: Item, index: number) => ReactElement
-  refetch: (params: Variables) => Promise<any>
-  variables: Variables
+  refetch: (params) => Promise<any>
+  variables: any
 }): ReactElement {
   const [isRefetching, setIsRefetching] = useState(false)
 
-  async function handleRefetch(params: Variables) {
+  async function handleRefetch(params) {
     setIsRefetching(true)
     await refetch(params)
     setIsRefetching(false)

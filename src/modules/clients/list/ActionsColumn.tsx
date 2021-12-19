@@ -16,14 +16,14 @@ import {
   ListItem,
 } from '@chakra-ui/react'
 
-import { PaginatedClientListQuery, useDeleteClientMutation } from 'src/generated/graphql'
+import { ClientFragment, useDeleteClientMutation } from 'src/generated/hasura'
 
 import Clipboard from 'src/components/Clipboard'
 import ConfirmationPopup from 'src/components/ConfirmationPopup'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const ActionsColumn: FC<{
-  client: PaginatedClientListQuery['clientList'][number]
+  client: ClientFragment
   onClientDelete: (id: number) => void
 }> = ({ client, onClientDelete }) => {
   const toast = useToast()
@@ -111,7 +111,7 @@ const ActionsColumn: FC<{
         confirmText="Delete"
         isLoading={deleteClientOptions.loading}
         isOpen={client.id === clientIdToDelete}
-        onConfirm={() => deleteClient({ variables: { id: client.id } })}
+        onConfirm={() => deleteClient({ variables: { where: { id: { _eq: client.id } } } })}
         onClose={() => {
           setClientIdToDelete(null)
           setOpenActionsRowId(null)
@@ -122,7 +122,7 @@ const ActionsColumn: FC<{
           <ListItem fontWeight="600">{client.name}</ListItem>
         </UnorderedList>
 
-        {Boolean(client.Scenario.length) && (
+        {/* {Boolean(client.Scenario.length) && (
           <>
             <Text>You are going to delete scenarios:</Text>
             <UnorderedList>
@@ -133,7 +133,7 @@ const ActionsColumn: FC<{
               ))}
             </UnorderedList>
           </>
-        )}
+        )} */}
       </ConfirmationPopup>
     </Td>
   )

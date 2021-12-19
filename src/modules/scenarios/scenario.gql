@@ -8,7 +8,7 @@ fragment ScenarioContent on Scenario {
   dueDateDays
   createdAt
   updatedAt
-  clientId
+  # clientId
   merchantId
 }
 
@@ -38,8 +38,8 @@ query scenario($where: ScenarioWhereUniqueInput!) {
     merchant {
       ...MerchantContent
     }
-    client {
-      ...ClientContent
-    }
+    # client {
+    # ...ClientContent
+    # }
   }
 }

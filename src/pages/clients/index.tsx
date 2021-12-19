@@ -7,7 +7,7 @@ import { Tr, Td } from '@chakra-ui/react'
 import ActionsColumn from 'clients/list/ActionsColumn'
 import EditableColumns from 'clients/list/EditableColumns'
 
-import { usePaginatedClientListQuery } from 'src/generated/graphql'
+import { useClientListQuery } from 'src/generated/hasura'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
 import { ClientType, DBConditions } from 'src/types'
@@ -18,18 +18,14 @@ const TITLE = 'Clients'
 const ClientList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)
 
-  const { data, refetch, variables, loading, updateQuery } = usePaginatedClientListQuery({
-    variables: { skip: 0, take: PER_PAGE },
+  const { data, refetch, variables, loading, updateQuery } = useClientListQuery({
+    variables: { limit: PER_PAGE, offset: 0 },
     fetchPolicy: 'cache-and-network',
   })
 
-  if (!data?.clientList) return <TablePlaceholder title={TITLE} />
-
-  const {
-    clientList,
-    totalCount,
-    filters: { __typename, ...filters },
-  } = data
+  if (!data) return <TablePlaceholder title={TITLE} />
+  const totalCount = Number(data.Client_aggregate.aggregate?.totalCount)
+  const clientList = data.Client
 
   return (
     <Table
@@ -56,7 +52,7 @@ const ClientList: FC = () => {
         isEditable: isEditable,
         isLoading: loading,
         filterOptions: {
-          ...filters,
+          // ...filters,
           type: Object.values(ClientType),
         },
         onEditableToggle: setIsEditable,
@@ -98,7 +94,7 @@ const ClientList: FC = () => {
             onClientUpdate={(updatedClient) =>
               updateQuery((prev) => ({
                 ...prev,
-                clientList: prev.clientList.map((item) =>
+                Client: prev.Client.map((item) =>
                   item.id === updatedClient?.id ? updatedClient : item
                 ),
               }))
@@ -109,8 +105,14 @@ const ClientList: FC = () => {
             onClientDelete={(deletedClientId) =>
               updateQuery((prev) => ({
                 ...prev,
-                totalCount: prev.totalCount - 1,
-                clientList: prev.clientList.filter(({ id }) => id !== deletedClientId),
+                Client_aggregate: {
+                  ...prev.Client_aggregate,
+                  aggregate: {
+                    ...prev.Client_aggregate.aggregate,
+                    totalCount: Number(prev.Client_aggregate.aggregate?.totalCount) - 1,
+                  },
+                },
+                Client: prev.Client.filter(({ id }) => id !== deletedClientId),
               }))
             }
           />

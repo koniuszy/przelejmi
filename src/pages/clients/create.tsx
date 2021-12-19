@@ -9,7 +9,7 @@ import { useToast } from '@chakra-ui/react'
 
 import ClientForm from 'clients/ClientForm'
 
-import { useCreateClientMutation } from 'src/generated/graphql'
+import { useCreateClientMutation } from 'src/generated/hasura'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
@@ -40,7 +40,7 @@ const CreateClientForm: FC = () => {
         const { vatId, clientType, ...data } = values
         createClient({
           variables: {
-            data: { ...data, vatId: clientType === ClientType.company ? vatId : null },
+            objects: { ...data, vatId: clientType === ClientType.company ? vatId : null },
           },
         })
       }}

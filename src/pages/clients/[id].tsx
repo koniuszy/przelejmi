@@ -1,35 +1,34 @@
 import React, { FC } from 'react'
 
-import { GetStaticPaths, GetStaticProps } from 'next'
-
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Spinner, Center, useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 
 import ClientForm from 'clients/ClientForm'
 
-import { useUpdateClientMutation, useClientQuery } from 'src/generated/graphql'
+import { useClientQuery, useUpdateClientMutation } from 'src/generated/hasura'
 
-import prisma from 'src/lib/prisma'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
 
-const EditClientForm: FC<{
-  clientId: number
-}> = ({ clientId }) => {
+const EditClientForm: FC = () => {
   const toast = useToast()
+  const router = useRouter()
+  const clientId = Number(router.query.id)
 
-  const { data, updateQuery } = useClientQuery({ variables: { where: { id: clientId } } })
+  const { data, updateQuery } = useClientQuery({ variables: { id: { _eq: clientId } } })
 
   const [updateClient, { loading }] = useUpdateClientMutation({
-    onCompleted({ updatedClient }) {
+    onCompleted({ update_Client }) {
+      if (!update_Client) throw new Error()
+
       toast({
         ...successToastContent,
         title: 'Client updated.',
       })
 
-      updateQuery((prev) => ({ ...prev, client: updatedClient }))
+      updateQuery((prev) => ({ ...prev, Client: update_Client[0] }))
     },
     onError(err) {
       console.error(err)
@@ -37,7 +36,7 @@ const EditClientForm: FC<{
     },
   })
 
-  if (!data?.client)
+  if (!data?.Client.length)
     return (
       <div>
         <ClientForm
@@ -48,7 +47,7 @@ const EditClientForm: FC<{
       </div>
     )
 
-  const { __typename, id, ...initialValues } = data.client
+  const { __typename, id, ...initialValues } = data.Client[0]
   return (
     <ClientForm
       isLoading={loading}
@@ -57,8 +56,8 @@ const EditClientForm: FC<{
         const { vatId, clientType, ...data } = values
         updateClient({
           variables: {
-            data: { ...data, vatId: clientType === ClientType.company ? vatId : null },
-            id,
+            where: { id: { _eq: id } },
+            _set: { ...data, vatId: clientType === ClientType.company ? vatId : null },
           },
         })
       }}
@@ -66,50 +65,13 @@ const EditClientForm: FC<{
   )
 }
 
-type SSGProps = {
-  clientId: number
-}
-
-const EditClientFormPage: FC<SSGProps> = (props) => {
-  const route = useRouter()
-
-  return (
-    <>
-      <Head>
-        <title>Edit client | przelejmi</title>
-      </Head>
-      {route.isFallback ? (
-        <Center>
-          <Spinner />
-        </Center>
-      ) : (
-        <EditClientForm {...props} />
-      )}
-    </>
-  )
-}
-
-type Params = { id: string }
-
-export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const idList = await prisma.client.findMany({ select: { id: true } })
-
-  const paths = idList.map(({ id }) => ({
-    params: { id: id.toString() },
-  }))
-
-  return {
-    paths,
-    fallback: true,
-  }
-}
-
-export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
-  return {
-    props: {
-      clientId: Number(params?.id),
-    },
-  }
-}
+const EditClientFormPage: FC = () => (
+  <>
+    <Head>
+      <title>Edit client | przelejmi</title>
+    </Head>
+    <EditClientForm />
+  </>
+)
 
 export default EditClientFormPage

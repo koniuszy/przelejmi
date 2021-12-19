@@ -24,7 +24,7 @@ const extendedTheme = extendTheme({
 })
 
 const client = new ApolloClient({
-  uri: '/api/graphql',
+  uri: 'http://localhost:8080/v1/graphql',
   cache: new InMemoryCache(),
   defaultOptions: { query: { fetchPolicy: 'cache-first', errorPolicy: 'all' } },
 })

@@ -1,0 +1,68 @@
+fragment Client on Client {
+  address
+  city
+  country
+  id
+  name
+  postCode
+  vatId
+}
+
+query client($id: Int_comparison_exp = {}) {
+  Client(where: { id: $id }) {
+    ...Client
+  }
+}
+
+query clientList(
+  $limit: Int = 10
+  $offset: Int = 0
+  $order_by: [Client_order_by!] = {}
+  $where: Client_bool_exp = {}
+) {
+  Client(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
+    ...Client
+  }
+  Client_aggregate {
+    aggregate {
+      totalCount: count
+    }
+  }
+}
+
+query clientDistinct {
+  Client_distinct_on_city: Client_aggregate(distinct_on: city) {
+    nodes {
+      city
+    }
+  }
+  Client_distinct_on_bank: Client_aggregate(distinct_on: country) {
+    nodes {
+      country
+    }
+  }
+}
+
+mutation createClient($objects: [Client_insert_input!] = {}) {
+  insert_Client(objects: $objects) {
+    returning {
+      ...Client
+    }
+  }
+}
+
+mutation deleteClient($where: Client_bool_exp = {}) {
+  delete_Client(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+
+mutation updateClient($where: Client_bool_exp = {}, $_set: Client_set_input = {}) {
+  update_Client(where: $where, _set: $_set) {
+    returning {
+      ...Client
+    }
+  }
+}

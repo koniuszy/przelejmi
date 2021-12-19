@@ -1,11 +1,20 @@
 overwrite: true
-schema: 'src/generated/schema.graphql'
-documents: 'src/**/*.gql'
 generates:
+  src/generated/hasura.tsx:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    schema: 'http://localhost:8080/v1/graphql'
+    documents: 'hasura/**/*.gql'
+    config:
+      withHooks: true
   src/generated/graphql.tsx:
     plugins:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'
+    schema: 'src/generated/schema.graphql'
+    documents: 'src/**/*.gql'
     config:
       withHooks: true
