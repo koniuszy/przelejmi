@@ -16,7 +16,7 @@ if (!JWT_SECRET) throw new Error('missing JWT_SECRET env')
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
     session: {
-      jwt: true,
+      strategy: 'jwt',
       maxAge: 4 * 30 * 24 * 60 * 60, // 4 * 30 days
     },
     jwt: {
