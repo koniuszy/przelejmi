@@ -16,5 +16,5 @@
       "noImplicitAny": false
     }
   },
-  "exclude": ["node_modules", "prisma", ".next"]
+  "exclude": ["node_modules", ".next"]
 }

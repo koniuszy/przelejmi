@@ -32,6 +32,6 @@
     "typeRoots": ["node_modules/@types", "types", "src/types"],
     "incremental": true
   },
-  "exclude": ["node_modules", "prisma", ".next"],
+  "exclude": ["node_modules", ".next"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types.d.ts", "."]
 }

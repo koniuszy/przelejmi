@@ -13,7 +13,6 @@ import PdfImageViewer from 'scenarios/PdfImageViewer'
 
 import { InvoiceQuery, useInvoiceQuery, useUpdateInvoiceMutation } from 'src/generated/graphql'
 
-import prisma from 'src/lib/prisma'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 const CreateInvoice: FC<{ invoice: NonNullable<InvoiceQuery['invoice']> }> = ({ invoice }) => {
@@ -92,10 +91,11 @@ type SSGProps = {
   invoiceId: number
 }
 
-const EditInvoiceFormPage: FC<SSGProps> = (props) => {
-  const route = useRouter()
+const EditInvoiceFormPage: FC<SSGProps> = () => {
+  const router = useRouter()
+  const invoiceId = Number(router.query.id)
 
-  const { data } = useInvoiceQuery({ variables: { id: props.invoiceId } })
+  const { data } = useInvoiceQuery({ variables: { id: invoiceId } })
 
   return (
     <>
@@ -103,7 +103,7 @@ const EditInvoiceFormPage: FC<SSGProps> = (props) => {
         <title>Edit merchant | przelejmi</title>
       </Head>
       <main>
-        {route.isFallback || !data?.invoice ? (
+        {!data?.invoice ? (
           <Center>
             <Spinner />
           </Center>
@@ -113,29 +113,6 @@ const EditInvoiceFormPage: FC<SSGProps> = (props) => {
       </main>
     </>
   )
-}
-
-type Params = { id: string }
-
-export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const idList = await prisma.invoice.findMany({ select: { id: true } })
-
-  const paths = idList.map(({ id }) => ({
-    params: { id: id.toString() },
-  }))
-
-  return {
-    paths,
-    fallback: true,
-  }
-}
-
-export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
-  return {
-    props: {
-      invoiceId: Number(params?.id),
-    },
-  }
 }
 
 export default EditInvoiceFormPage

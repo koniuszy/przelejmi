@@ -1,10 +1,7 @@
 import { NextApiHandler } from 'next'
 
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import NextAuth from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
-
-import prisma from 'src/lib/prisma'
 
 const ADMIN_EMAIL_LIST = [
   'michal.stefan.konczak@gmail.com',
@@ -18,7 +15,6 @@ if (!JWT_SECRET) throw new Error('missing JWT_SECRET env')
 
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
-    adapter: PrismaAdapter(prisma),
     session: {
       jwt: true,
       maxAge: 4 * 30 * 24 * 60 * 60, // 4 * 30 days

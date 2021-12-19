@@ -18,12 +18,12 @@ import {
   Vat,
 } from 'src/generated/graphql'
 
-import prisma from 'src/lib/prisma'
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-const CreateInvoice: FC<{ scenarioId: number }> = ({ scenarioId }) => {
+const CreateInvoice: FC = () => {
   const toast = useToast()
   const router = useRouter()
+  const scenarioId = Number(router.query.id)
 
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState('')
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItemCreateManyInvoiceInput[]>(() => {
@@ -103,43 +103,18 @@ const CreateInvoice: FC<{ scenarioId: number }> = ({ scenarioId }) => {
   )
 }
 
-type SSGProps = {
-  scenarioId: number
-}
+const CreateInvoicePage: NextPage = () => {
+  return (
+    <>
+      <Head>
+        <title>Create invoice | przelejmi</title>
+      </Head>
 
-const CreateInvoicePage: NextPage<SSGProps> = (ssgProps) => (
-  <>
-    <Head>
-      <title>Create invoice | przelejmi</title>
-    </Head>
-
-    <main>
-      <CreateInvoice scenarioId={ssgProps.scenarioId} />
-    </main>
-  </>
-)
-
-type Params = { id: string }
-
-export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  const idList = await prisma.scenario.findMany({ select: { id: true } })
-
-  const paths = idList.map(({ id }) => ({
-    params: { id: id.toString() },
-  }))
-
-  return {
-    paths,
-    fallback: true,
-  }
-}
-
-export const getStaticProps: GetStaticProps<SSGProps, Params> = async ({ params }) => {
-  return {
-    props: {
-      scenarioId: Number(params?.id),
-    },
-  }
+      <main>
+        <CreateInvoice />
+      </main>
+    </>
+  )
 }
 
 export default CreateInvoicePage

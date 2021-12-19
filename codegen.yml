@@ -9,12 +9,3 @@ generates:
     documents: 'hasura/**/*.gql'
     config:
       withHooks: true
-  src/generated/graphql.tsx:
-    plugins:
-      - 'typescript'
-      - 'typescript-operations'
-      - 'typescript-react-apollo'
-    schema: 'src/generated/schema.graphql'
-    documents: 'src/**/*.gql'
-    config:
-      withHooks: true

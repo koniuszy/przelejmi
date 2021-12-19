@@ -16,9 +16,5 @@
   "search.exclude": {
     ".next": true
   },
-  "cSpell.words": ["chakra", "easyinvoice", "Formik", "next", "nextjs", "nprogress"],
-
-  "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
-  }
+  "cSpell.words": ["chakra", "easyinvoice", "Formik", "next", "nextjs", "nprogress"]
 }
