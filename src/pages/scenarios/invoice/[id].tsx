@@ -12,11 +12,7 @@ import InvoiceForm from 'invoices/InvoiceForm'
 import { getBusinessHoursInCurrentMonth } from 'invoices/InvoiceForm/helpers'
 import PdfImageViewer from 'scenarios/PdfImageViewer'
 
-import {
-  InvoiceItemCreateManyInvoiceInput,
-  useCreateInvoiceMutation,
-  Vat,
-} from 'src/generated/graphql'
+import { useCreateInvoiceMutation } from 'src/generated/hasura'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 

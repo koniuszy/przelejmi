@@ -1,4 +1,4 @@
-fragment Invoice on Invoice {
+fragment Invoice on invoices {
   id
   invoiceNumber
   issueDate
@@ -7,19 +7,19 @@ fragment Invoice on Invoice {
     price
     quantity
   }
-  Scenario {
+  scenario {
     currency
-    Client {
+    client {
       name
     }
-    Merchant {
+    merchant {
       companyName
     }
   }
 }
 
 query invoice($id: Int_comparison_exp!) {
-  Invoice(where: { id: $id }) {
+  invoices(where: { id: $id }) {
     issueDate
     invoiceNumber
     items {
@@ -30,11 +30,11 @@ query invoice($id: Int_comparison_exp!) {
   }
 }
 
-mutation updateInvoice($id: Int_comparison_exp!, $_set: Invoice_set_input!) {
-  update_Invoice(where: { id: $id }, _set: $_set) {
+mutation updateInvoice($id: Int_comparison_exp!, $_set: invoices_set_input!) {
+  update_invoices(where: { id: $id }, _set: $_set) {
     returning {
       ...Invoice
-      Scenario {
+      scenario {
         id
         name
       }
@@ -43,7 +43,7 @@ mutation updateInvoice($id: Int_comparison_exp!, $_set: Invoice_set_input!) {
 }
 
 mutation deleteInvoice($id: Int_comparison_exp!) {
-  delete_Invoice(where: { id: $id }) {
+  delete_invoices(where: { id: $id }) {
     returning {
       id
     }
@@ -53,13 +53,13 @@ mutation deleteInvoice($id: Int_comparison_exp!) {
 query invoiceList(
   $limit: Int = 10
   $offset: Int = 0
-  $order_by: [Invoice_order_by!] = {}
-  $where: Invoice_bool_exp = {}
+  $order_by: [invoices_order_by!] = {}
+  $where: invoices_bool_exp = {}
 ) {
-  Invoice(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
+  invoices(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
     ...Invoice
   }
-  Invoice_aggregate {
+  invoices_aggregate {
     aggregate {
       totalCount: count
     }

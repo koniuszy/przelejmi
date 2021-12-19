@@ -1,4 +1,4 @@
-fragment Scenario on Scenario {
+fragment Scenario on scenarios {
   id
   name
   paymentType
@@ -12,33 +12,33 @@ fragment Scenario on Scenario {
   clientId
 }
 
-mutation createScenario($object: Scenario_insert_input!) {
-  insert_Scenario_one(object: $object) {
+mutation createScenario($object: scenarios_insert_input!) {
+  insert_scenarios_one(object: $object) {
     ...Scenario
   }
 }
 
-mutation createInvoice($object: Invoice_insert_input!) {
-  insert_Invoice_one(object: $object) {
+mutation createInvoice($object: invoices_insert_input!) {
+  insert_invoices_one(object: $object) {
     id
   }
 }
 
 query scenarioList($limit: Int = 10, $offset: Int = 0) {
-  Scenario(limit: $limit, offset: $offset) {
+  scenarios(limit: $limit, offset: $offset) {
     id
     imgUrl
     name
   }
 }
 
-query scenario($id: Int_comparison_exp = {}) {
-  Scenario(where: { id: $id }) {
+query scenario($id: Int_comparison_exp!) {
+  scenarios(where: { id: $id }) {
     ...Scenario
-    Client {
+    client {
       ...Client
     }
-    Merchant {
+    merchant {
       ...Merchant
     }
   }

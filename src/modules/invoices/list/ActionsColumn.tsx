@@ -16,7 +16,7 @@ import {
   UnorderedList,
 } from '@chakra-ui/react'
 
-import { PaginatedInvoiceListQuery, useDeleteInvoiceMutation } from 'src/generated/graphql'
+import { useDeleteInvoiceMutation } from 'src/generated/hasura'
 
 import ConfirmationPopup from 'src/components/ConfirmationPopup'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'

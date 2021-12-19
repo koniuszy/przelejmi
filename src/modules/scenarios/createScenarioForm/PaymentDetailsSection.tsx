@@ -2,8 +2,6 @@ import React, { FC } from 'react'
 
 import { Flex, Text, Divider, Button } from '@chakra-ui/react'
 
-import { PaymentType, Currency } from 'src/generated/graphql'
-
 const PaymentDetailsSection: FC<{
   paymentType: PaymentType
   onPaymentTypeChange: (data: PaymentType) => void

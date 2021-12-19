@@ -8,7 +8,7 @@ import { SimpleGrid, Image, Button, Skeleton, Heading, Center } from '@chakra-ui
 
 import styled from '@emotion/styled'
 
-import { useScenarioListQuery } from 'src/generated/graphql'
+import { useScenarioListQuery } from 'src/generated/hasura'
 
 const HiddenImageContent = styled.div`
   opacity: 0;

@@ -20,13 +20,17 @@ import {
 import easyinvoice from 'easyinvoice'
 import { Form } from 'formik'
 
-import {
-  Currency,
-  InvoiceItemCreateManyInvoiceInput,
-  ScenarioQuery,
-  useScenarioQuery,
-  Vat,
-} from 'src/generated/graphql'
+enum Vat {
+  Percent_8,
+  Percent_23,
+  DoesNotConcern,
+  Percent_0,
+  Freed,
+}
+
+enum Currency {
+  Eur,
+}
 
 import { FormField } from 'src/components/Form'
 import { errorToastContent } from 'src/lib/toastContent'

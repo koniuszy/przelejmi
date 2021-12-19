@@ -3,7 +3,10 @@ import React, { FC } from 'react'
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { Th, Flex, Center, IconButton } from '@chakra-ui/react'
 
-import { SortOrder } from 'src/generated/graphql'
+enum SortOrder {
+  Asc,
+  Desc,
+}
 
 const SortTh: FC<{
   title: string

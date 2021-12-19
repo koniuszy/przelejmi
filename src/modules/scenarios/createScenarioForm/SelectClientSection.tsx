@@ -12,7 +12,7 @@ import {
   Center,
 } from '@chakra-ui/react'
 
-import { ClientContentFragment, useClientListQuery } from 'src/generated/graphql'
+import { useClientListQuery } from 'src/generated/hasura'
 
 const SkeletonsStack: FC = () => (
   <VStack mt="2" spacing={4} align="stretch">

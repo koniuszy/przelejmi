@@ -1,4 +1,10 @@
-import { Vat } from 'src/generated/graphql'
+enum Vat {
+  Percent_8,
+  Percent_23,
+  DoesNotConcern,
+  Percent_0,
+  Freed,
+}
 
 export function base64toBlob(base64Data, contentType = 'application/pdf') {
   const sliceSize = 1024

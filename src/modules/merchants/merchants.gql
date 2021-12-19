@@ -1,4 +1,4 @@
-fragment Merchant on Merchant {
+fragment Merchant on merchants {
   address
   bankAccountEur
   bankName
@@ -13,8 +13,8 @@ fragment Merchant on Merchant {
   vatId
 }
 
-query merchant($id: Int_comparison_exp = {}) {
-  Merchant(where: { id: $id }) {
+query merchant($id: Int_comparison_exp!) {
+  merchants(where: { id: $id }) {
     ...Merchant
   }
 }
@@ -22,13 +22,13 @@ query merchant($id: Int_comparison_exp = {}) {
 query merchantList(
   $limit: Int = 10
   $offset: Int = 0
-  $order_by: [Merchant_order_by!] = {}
-  $where: Merchant_bool_exp = {}
+  $order_by: [merchants_order_by!] = {}
+  $where: merchants_bool_exp = {}
 ) {
-  Merchant(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
+  merchants(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
     ...Merchant
   }
-  Merchant_aggregate {
+  merchants_aggregate {
     aggregate {
       totalCount: count
     }
@@ -36,34 +36,34 @@ query merchantList(
 }
 
 query merchantDistinct {
-  Merchant_distinct_on_city: Merchant_aggregate(distinct_on: city) {
+  merchants_distinct_on_city: merchants_aggregate(distinct_on: city) {
     nodes {
       city
     }
   }
-  Merchant_distinct_on_bank: Merchant_aggregate(distinct_on: country) {
+  merchants_distinct_on_bank: merchants_aggregate(distinct_on: country) {
     nodes {
       country
     }
   }
 }
 
-mutation createMerchant($object: Merchant_insert_input!) {
-  insert_Merchant_one(object: $object) {
+mutation createMerchant($object: merchants_insert_input!) {
+  insert_merchants_one(object: $object) {
     ...Merchant
   }
 }
 
-mutation deleteMerchant($where: Merchant_bool_exp = {}) {
-  delete_Merchant(where: $where) {
+mutation deleteMerchant($where: merchants_bool_exp = {}) {
+  delete_merchants(where: $where) {
     returning {
       id
     }
   }
 }
 
-mutation updateMerchant($where: Merchant_bool_exp = {}, $_set: Merchant_set_input = {}) {
-  update_Merchant(where: $where, _set: $_set) {
+mutation updateMerchant($where: merchants_bool_exp = {}, $_set: merchants_set_input = {}) {
+  update_merchants(where: $where, _set: $_set) {
     returning {
       ...Merchant
     }

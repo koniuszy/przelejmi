@@ -1,4 +1,4 @@
-fragment Client on Client {
+fragment Client on clients {
   address
   city
   country
@@ -9,7 +9,7 @@ fragment Client on Client {
 }
 
 query client($id: Int_comparison_exp = {}) {
-  Client(where: { id: $id }) {
+  clients(where: { id: $id }) {
     ...Client
   }
 }
@@ -17,13 +17,13 @@ query client($id: Int_comparison_exp = {}) {
 query clientList(
   $limit: Int = 10
   $offset: Int = 0
-  $order_by: [Client_order_by!] = {}
-  $where: Client_bool_exp = {}
+  $order_by: [clients_order_by!] = {}
+  $where: clients_bool_exp = {}
 ) {
-  Client(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
+  clients(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
     ...Client
   }
-  Client_aggregate {
+  clients_aggregate {
     aggregate {
       totalCount: count
     }
@@ -31,34 +31,34 @@ query clientList(
 }
 
 query clientDistinct {
-  Client_distinct_on_city: Client_aggregate(distinct_on: city) {
+  clients_distinct_on_city: clients_aggregate(distinct_on: city) {
     nodes {
       city
     }
   }
-  Client_distinct_on_bank: Client_aggregate(distinct_on: country) {
+  clients_distinct_on_bank: clients_aggregate(distinct_on: country) {
     nodes {
       country
     }
   }
 }
 
-mutation createClient($object: Client_insert_input!) {
-  insert_Client_one(object: $object) {
+mutation createClient($object: clients_insert_input!) {
+  insert_clients_one(object: $object) {
     ...Client
   }
 }
 
-mutation deleteClient($where: Client_bool_exp!) {
-  delete_Client(where: $where) {
+mutation deleteClient($where: clients_bool_exp!) {
+  delete_clients(where: $where) {
     returning {
       id
     }
   }
 }
 
-mutation updateClient($where: Client_bool_exp!, $_set: Client_set_input!) {
-  update_Client(where: $where, _set: $_set) {
+mutation updateClient($where: clients_bool_exp!, $_set: clients_set_input!) {
+  update_clients(where: $where, _set: $_set) {
     returning {
       ...Client
     }

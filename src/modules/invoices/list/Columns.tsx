@@ -2,11 +2,7 @@ import React, { FC } from 'react'
 
 import { Td, useToast, Text } from '@chakra-ui/react'
 
-import {
-  PaginatedInvoiceListQuery,
-  InvoiceUpdateInput,
-  useUpdateInvoiceMutation,
-} from 'src/generated/graphql'
+import { useUpdateInvoiceMutation } from 'src/generated/hasura'
 
 import Editable from 'src/components/Editable'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'

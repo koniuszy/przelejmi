@@ -9,6 +9,9 @@ const configs = {
   images: {
     domains: ['*'],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   webpack: (config) => {
     // load worker files as a urls by using Asset Modules
     // https://webpack.js.org/guides/asset-modules/

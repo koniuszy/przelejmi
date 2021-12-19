@@ -7,7 +7,7 @@ import { Tr, Td, useToast } from '@chakra-ui/react'
 import ActionsColumn from 'invoices/list/ActionsColumn'
 import Columns from 'invoices/list/Columns'
 
-import { MerchantWhereInput, usePaginatedInvoiceListQuery } from 'src/generated/graphql'
+import { useInvoiceListQuery } from 'src/generated/hasura'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
 import { errorToastContent } from 'src/lib/toastContent'
@@ -19,7 +19,7 @@ const MerchantList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)
   const toast = useToast()
 
-  const { data, refetch, variables, loading, updateQuery } = usePaginatedInvoiceListQuery({
+  const { data, refetch, variables, loading, updateQuery } = useInvoiceListQuery({
     variables: { skip: 0, take: PER_PAGE },
     fetchPolicy: 'cache-and-network',
     onError(err) {

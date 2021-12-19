@@ -1,7 +1,5 @@
 import { FC, useState } from 'react'
 
-import { GetStaticPaths, GetStaticProps } from 'next'
-
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
@@ -11,7 +9,7 @@ import { Formik } from 'formik'
 import InvoiceForm from 'invoices/InvoiceForm'
 import PdfImageViewer from 'scenarios/PdfImageViewer'
 
-import { InvoiceQuery, useInvoiceQuery, useUpdateInvoiceMutation } from 'src/generated/graphql'
+import { useInvoiceQuery, useUpdateInvoiceMutation } from 'src/generated/hasura'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
