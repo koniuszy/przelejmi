@@ -3,27 +3,26 @@ import React, { FC } from 'react'
 import { Td, useToast } from '@chakra-ui/react'
 
 import {
-  PaginatedMerchantListQuery,
-  MerchantUpdateInput,
+  MerchantFragment,
+  Merchant_Set_Input,
   useUpdateMerchantMutation,
-} from 'src/generated/graphql'
+} from 'src/generated/hasura'
 
 import Editable from 'src/components/Editable'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const EditableColumns: FC<{
   isEditable: boolean
-  merchant: PaginatedMerchantListQuery['merchantList'][number]
-  onMerchantUpdate: (
-    updatedMerchant: PaginatedMerchantListQuery['merchantList'][number] | null | undefined
-  ) => void
+  merchant: MerchantFragment
+  onMerchantUpdate: (updatedMerchant: MerchantFragment) => void
 }> = ({ isEditable, merchant, onMerchantUpdate }) => {
   const toast = useToast()
 
   const [updateMerchant] = useUpdateMerchantMutation({
-    onCompleted({ updatedMerchant }) {
+    onCompleted({ update_Merchant }) {
+      if (!update_Merchant) throw new Error()
       toast({ ...successToastContent, title: 'Merchant updated' })
-      onMerchantUpdate(updatedMerchant)
+      update_Merchant.returning.map(onMerchantUpdate)
     },
     onError() {
       toast(errorToastContent)
@@ -31,16 +30,16 @@ const EditableColumns: FC<{
     },
   })
 
-  function handleUpdate(data: MerchantUpdateInput, id: number) {
-    const [value] = Object.values(data)
+  function handleUpdate(set: Merchant_Set_Input, id: number) {
+    const [value] = Object.values(set)
 
-    if (value === '' && data.vatId !== value) {
+    if (value === '' && set.vatId !== value) {
       toast(errorToastContent)
       toast(warningToastContent)
       return
     }
 
-    updateMerchant({ variables: { data, id } })
+    updateMerchant({ variables: { where: { id: { _eq: id } }, _set: set } })
   }
 
   return (

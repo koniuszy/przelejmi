@@ -12,9 +12,9 @@ fragment InvoicePaginatedListItemContent on Invoice {
     # client {
     # name
     # }
-    merchant {
-      companyName
-    }
+    # merchant {
+    #   companyName
+    # }
   }
 }
 

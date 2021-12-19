@@ -16,14 +16,14 @@ import {
   UnorderedList,
 } from '@chakra-ui/react'
 
-import { PaginatedMerchantListQuery, useDeleteMerchantMutation } from 'src/generated/graphql'
+import { MerchantFragment, useDeleteMerchantMutation } from 'src/generated/hasura'
 
 import Clipboard from 'src/components/Clipboard'
 import ConfirmationPopup from 'src/components/ConfirmationPopup'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const ActionsColumn: FC<{
-  merchant: PaginatedMerchantListQuery['merchantList'][number]
+  merchant: MerchantFragment
   onMerchantDelete: (id: number) => void
 }> = ({ merchant, onMerchantDelete }) => {
   const toast = useToast()
@@ -112,7 +112,7 @@ const ActionsColumn: FC<{
         confirmText="Delete"
         isLoading={deleteMerchantOptions.loading}
         isOpen={merchant.id === merchantDeletionId}
-        onConfirm={() => deleteMerchant({ variables: { id: merchant.id } })}
+        onConfirm={() => deleteMerchant({ variables: { where: { id: { _eq: merchant.id } } } })}
         onClose={() => {
           setMerchantDeletionId(null)
           setOpenActionsRowId(null)
@@ -123,7 +123,7 @@ const ActionsColumn: FC<{
           <ListItem fontWeight="600">{merchant.companyName}</ListItem>
         </UnorderedList>
 
-        {Boolean(merchant.Scenario.length) && (
+        {/* {Boolean(merchant.Scenario.length) && (
           <>
             <Text>You are going to delete scenarios:</Text>
             <UnorderedList>
@@ -134,7 +134,7 @@ const ActionsColumn: FC<{
               ))}
             </UnorderedList>
           </>
-        )}
+        )} */}
       </ConfirmationPopup>
     </Td>
   )

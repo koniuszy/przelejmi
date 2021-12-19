@@ -9,7 +9,7 @@ fragment ScenarioContent on Scenario {
   createdAt
   updatedAt
   # clientId
-  merchantId
+  # merchantId
 }
 
 mutation createScenario($data: ScenarioCreateInput!) {
@@ -35,9 +35,9 @@ query scenarioList {
 query scenario($where: ScenarioWhereUniqueInput!) {
   scenario(where: $where) {
     ...ScenarioContent
-    merchant {
-      ...MerchantContent
-    }
+    # merchant {
+    #   ...MerchantContent
+    # }
     # client {
     # ...ClientContent
     # }

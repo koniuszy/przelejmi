@@ -6,10 +6,6 @@ export const Mutations = mutationType({
     t.crud.updateOneScenario()
     t.crud.deleteOneScenario()
 
-    t.crud.createOneMerchant()
-    t.crud.deleteOneMerchant()
-    t.crud.updateOneMerchant()
-
     t.crud.createOneInvoice()
     t.crud.updateOneInvoice()
     t.crud.deleteOneInvoice()

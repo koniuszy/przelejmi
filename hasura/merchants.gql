@@ -1,0 +1,73 @@
+fragment Merchant on Merchant {
+  address
+  bankAccountEur
+  bankName
+  bankAccountPln
+  city
+  companyName
+  country
+  email
+  id
+  issuerName
+  postCode
+  vatId
+}
+
+query merchant($id: Int_comparison_exp = {}) {
+  Merchant(where: { id: $id }) {
+    ...Merchant
+  }
+}
+
+query merchantList(
+  $limit: Int = 10
+  $offset: Int = 0
+  $order_by: [Merchant_order_by!] = {}
+  $where: Merchant_bool_exp = {}
+) {
+  Merchant(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
+    ...Merchant
+  }
+  Merchant_aggregate {
+    aggregate {
+      totalCount: count
+    }
+  }
+}
+
+query merchantDistinct {
+  Merchant_distinct_on_city: Merchant_aggregate(distinct_on: city) {
+    nodes {
+      city
+    }
+  }
+  Merchant_distinct_on_bank: Merchant_aggregate(distinct_on: country) {
+    nodes {
+      country
+    }
+  }
+}
+
+mutation createMerchant($objects: [Merchant_insert_input!] = {}) {
+  insert_Merchant(objects: $objects) {
+    returning {
+      ...Merchant
+    }
+  }
+}
+
+mutation deleteMerchant($where: Merchant_bool_exp = {}) {
+  delete_Merchant(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+
+mutation updateMerchant($where: Merchant_bool_exp = {}, $_set: Merchant_set_input = {}) {
+  update_Merchant(where: $where, _set: $_set) {
+    returning {
+      ...Merchant
+    }
+  }
+}

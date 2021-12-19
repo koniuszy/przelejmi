@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 
 import { Td, useToast } from '@chakra-ui/react'
 
-import { ClientFragment, useUpdateClientMutation } from 'src/generated/hasura'
+import { ClientFragment, Client_Set_Input, useUpdateClientMutation } from 'src/generated/hasura'
 
 import Editable from 'src/components/Editable'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
@@ -27,16 +27,16 @@ const EditableColumns: FC<{
     },
   })
 
-  function handleUpdate(data: Partial<ClientFragment>, id: number) {
-    const [value] = Object.values(data)
+  function handleUpdate(set: Client_Set_Input, id: number) {
+    const [value] = Object.values(set)
 
-    if (value === '' && data.vatId !== value) {
+    if (value === '' && set.vatId !== value) {
       toast(errorToastContent)
       toast(warningToastContent)
       return
     }
 
-    updateClient({ variables: { where: { id: { _eq: id } }, _set: data } })
+    updateClient({ variables: { where: { id: { _eq: id } }, _set: set } })
   }
 
   return (

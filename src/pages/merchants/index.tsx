@@ -7,7 +7,7 @@ import { Tr, Td, useToast } from '@chakra-ui/react'
 import ActionsColumn from 'merchants/list/ActionsColumn'
 import EditableColumns from 'merchants/list/EditableColumns'
 
-import { MerchantWhereInput, usePaginatedMerchantListQuery } from 'src/generated/graphql'
+import { useMerchantListQuery } from 'src/generated/hasura'
 
 import Table, { TablePlaceholder } from 'src/components/Table'
 import { errorToastContent } from 'src/lib/toastContent'
@@ -19,8 +19,8 @@ const MerchantList: FC = () => {
   const [isEditable, setIsEditable] = useState(true)
   const toast = useToast()
 
-  const { data, refetch, variables, loading, updateQuery } = usePaginatedMerchantListQuery({
-    variables: { skip: 0, take: PER_PAGE },
+  const { data, refetch, variables, loading, updateQuery } = useMerchantListQuery({
+    variables: { offset: 0, limit: PER_PAGE },
     fetchPolicy: 'cache-and-network',
     onError(err) {
       console.error(err)
@@ -28,13 +28,9 @@ const MerchantList: FC = () => {
     },
   })
 
-  if (!data?.merchantList) return <TablePlaceholder title={TITLE} />
-
-  const {
-    merchantList,
-    totalCount,
-    filters: { __typename, ...filters },
-  } = data
+  if (!data) return <TablePlaceholder title={TITLE} />
+  const totalCount = Number(data.Merchant_aggregate.aggregate?.totalCount)
+  const merchantList = data.Merchant
 
   return (
     <Table
@@ -49,11 +45,13 @@ const MerchantList: FC = () => {
         isLoading: loading,
         title: TITLE,
         isEditable,
-        filterOptions: { ...filters },
+        filterOptions: {
+          // ...filters
+        },
         onEditableToggle: setIsEditable,
         async onDrawerChange(nullableFilters) {
           const { bank, ...filters } = nullableFilters || {}
-          const where: MerchantWhereInput = { ...filters }
+          const where = { ...filters }
           if (bank) where.bankName = bank
 
           await refetch({ where })
@@ -77,7 +75,7 @@ const MerchantList: FC = () => {
             onMerchantUpdate={(updatedMerchant) =>
               updateQuery((prev) => ({
                 ...prev,
-                merchantList: prev.merchantList.map((item) =>
+                Merchant: prev.Merchant.map((item) =>
                   item.id === updatedMerchant?.id ? updatedMerchant : item
                 ),
               }))
@@ -89,8 +87,14 @@ const MerchantList: FC = () => {
             onMerchantDelete={(deletedMerchantId) =>
               updateQuery((prev) => ({
                 ...prev,
-                totalCount: prev.totalCount - 1,
-                merchantList: prev.merchantList.filter(({ id }) => id !== deletedMerchantId),
+                Merchant_aggregate: {
+                  ...prev.Merchant_aggregate,
+                  aggregate: {
+                    ...prev.Merchant_aggregate.aggregate,
+                    totalCount: Number(prev.Merchant_aggregate.aggregate?.totalCount) - 1,
+                  },
+                },
+                Merchant: prev.Merchant.filter(({ id }) => id !== deletedMerchantId),
               }))
             }
           />

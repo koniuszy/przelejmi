@@ -7,7 +7,7 @@ import { useToast } from '@chakra-ui/react'
 
 import MerchantForm from 'merchants/MerchantForm'
 
-import { useCreateMerchantMutation } from 'src/generated/graphql'
+import { useCreateMerchantMutation } from 'src/generated/hasura'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
@@ -45,10 +45,10 @@ const CreateMerchantForm: FC = () => {
         email: '',
         issuerName: '',
       }}
-      onSubmit={(values) =>
+      onSubmit={(objects) =>
         createMerchant({
           variables: {
-            data: values,
+            objects,
           },
         })
       }
