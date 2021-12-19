@@ -1,4 +1,4 @@
 module.exports = {
-  schema: 'http://localhost:8080/v1/graphql',
+  schema: './hasura/schema.graphql',
   documents: 'src/**/*.{graphql,js,ts,jsx,tsx}',
 }

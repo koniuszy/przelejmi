@@ -1,0 +1,2184 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+"whether this query should be cached (Hasura Cloud only)"
+directive @cached("measured in seconds" ttl: Int! = 60, "refresh the cache entry" refresh: Boolean! = false) on QUERY
+scalar Currency
+"""
+Boolean expression to compare columns of type "Currency". All fields are combined with logical 'AND'.
+"""
+input Currency_comparison_exp {
+  _eq: Currency
+  _gt: Currency
+  _gte: Currency
+  _in: [Currency!]
+  _is_null: Boolean
+  _lt: Currency
+  _lte: Currency
+  _neq: Currency
+  _nin: [Currency!]
+}
+scalar Float
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  "does the column match the given case-insensitive pattern"
+  _ilike: String
+  _in: [String!]
+  "does the column match the given POSIX regular expression, case insensitive"
+  _iregex: String
+  _is_null: Boolean
+  "does the column match the given pattern"
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  "does the column NOT match the given case-insensitive pattern"
+  _nilike: String
+  _nin: [String!]
+  "does the column NOT match the given POSIX regular expression, case insensitive"
+  _niregex: String
+  "does the column NOT match the given pattern"
+  _nlike: String
+  "does the column NOT match the given POSIX regular expression, case sensitive"
+  _nregex: String
+  "does the column NOT match the given SQL regular expression"
+  _nsimilar: String
+  "does the column match the given POSIX regular expression, case sensitive"
+  _regex: String
+  "does the column match the given SQL regular expression"
+  _similar: String
+}
+scalar Vat
+"""
+Boolean expression to compare columns of type "Vat". All fields are combined with logical 'AND'.
+"""
+input Vat_comparison_exp {
+  _eq: Vat
+  _gt: Vat
+  _gte: Vat
+  _in: [Vat!]
+  _is_null: Boolean
+  _lt: Vat
+  _lte: Vat
+  _neq: Vat
+  _nin: [Vat!]
+}
+"""
+columns and relationships of "clients"
+"""
+type clients {
+  address: String!
+  city: String!
+  country: String!
+  id: Int!
+  name: String!
+  postCode: String!
+  """
+  fetch data from the table: "scenarios"
+  """
+  scenarios("distinct select on columns" distinct_on: [scenarios_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [scenarios_order_by!], "filter the rows returned" where: scenarios_bool_exp): [scenarios!]!
+  "An aggregate relationship"
+  scenarios_aggregate("distinct select on columns" distinct_on: [scenarios_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [scenarios_order_by!], "filter the rows returned" where: scenarios_bool_exp): scenarios_aggregate!
+  vatId: String
+}
+"""
+aggregated selection of "clients"
+"""
+type clients_aggregate {
+  aggregate: clients_aggregate_fields
+  nodes: [clients!]!
+}
+"""
+aggregate fields of "clients"
+"""
+type clients_aggregate_fields {
+  avg: clients_avg_fields
+  count(columns: [clients_select_column!], distinct: Boolean): Int!
+  max: clients_max_fields
+  min: clients_min_fields
+  stddev: clients_stddev_fields
+  stddev_pop: clients_stddev_pop_fields
+  stddev_samp: clients_stddev_samp_fields
+  sum: clients_sum_fields
+  var_pop: clients_var_pop_fields
+  var_samp: clients_var_samp_fields
+  variance: clients_variance_fields
+}
+"aggregate avg on columns"
+type clients_avg_fields {
+  id: Float
+}
+"""
+Boolean expression to filter rows from the table "clients". All fields are combined with a logical 'AND'.
+"""
+input clients_bool_exp {
+  _and: [clients_bool_exp!]
+  _not: clients_bool_exp
+  _or: [clients_bool_exp!]
+  address: String_comparison_exp
+  city: String_comparison_exp
+  country: String_comparison_exp
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  postCode: String_comparison_exp
+  scenarios: scenarios_bool_exp
+  vatId: String_comparison_exp
+}
+"""
+unique or primary key constraints on table "clients"
+"""
+enum clients_constraint {
+  "unique or primary key constraint"
+  Client_id_key
+  "unique or primary key constraint"
+  Client_pkey
+}
+"""
+input type for incrementing numeric columns in table "clients"
+"""
+input clients_inc_input {
+  id: Int
+}
+"""
+input type for inserting data into table "clients"
+"""
+input clients_insert_input {
+  address: String
+  city: String
+  country: String
+  id: Int
+  name: String
+  postCode: String
+  scenarios: scenarios_arr_rel_insert_input
+  vatId: String
+}
+"aggregate max on columns"
+type clients_max_fields {
+  address: String
+  city: String
+  country: String
+  id: Int
+  name: String
+  postCode: String
+  vatId: String
+}
+"aggregate min on columns"
+type clients_min_fields {
+  address: String
+  city: String
+  country: String
+  id: Int
+  name: String
+  postCode: String
+  vatId: String
+}
+"""
+response of any mutation on the table "clients"
+"""
+type clients_mutation_response {
+  "number of rows affected by the mutation"
+  affected_rows: Int!
+  "data from the rows affected by the mutation"
+  returning: [clients!]!
+}
+"""
+input type for inserting object relation for remote table "clients"
+"""
+input clients_obj_rel_insert_input {
+  data: clients_insert_input!
+  "on conflict condition"
+  on_conflict: clients_on_conflict
+}
+"""
+on conflict condition type for table "clients"
+"""
+input clients_on_conflict {
+  constraint: clients_constraint!
+  update_columns: [clients_update_column!]! = []
+  where: clients_bool_exp
+}
+"""
+Ordering options when selecting data from "clients".
+"""
+input clients_order_by {
+  address: order_by
+  city: order_by
+  country: order_by
+  id: order_by
+  name: order_by
+  postCode: order_by
+  scenarios_aggregate: scenarios_aggregate_order_by
+  vatId: order_by
+}
+"primary key columns input for table: clients"
+input clients_pk_columns_input {
+  id: Int!
+}
+"""
+select columns of table "clients"
+"""
+enum clients_select_column {
+  "column name"
+  address
+  "column name"
+  city
+  "column name"
+  country
+  "column name"
+  id
+  "column name"
+  name
+  "column name"
+  postCode
+  "column name"
+  vatId
+}
+"""
+input type for updating data in table "clients"
+"""
+input clients_set_input {
+  address: String
+  city: String
+  country: String
+  id: Int
+  name: String
+  postCode: String
+  vatId: String
+}
+"aggregate stddev on columns"
+type clients_stddev_fields {
+  id: Float
+}
+"aggregate stddev_pop on columns"
+type clients_stddev_pop_fields {
+  id: Float
+}
+"aggregate stddev_samp on columns"
+type clients_stddev_samp_fields {
+  id: Float
+}
+"aggregate sum on columns"
+type clients_sum_fields {
+  id: Int
+}
+"""
+update columns of table "clients"
+"""
+enum clients_update_column {
+  "column name"
+  address
+  "column name"
+  city
+  "column name"
+  country
+  "column name"
+  id
+  "column name"
+  name
+  "column name"
+  postCode
+  "column name"
+  vatId
+}
+"aggregate var_pop on columns"
+type clients_var_pop_fields {
+  id: Float
+}
+"aggregate var_samp on columns"
+type clients_var_samp_fields {
+  id: Float
+}
+"aggregate variance on columns"
+type clients_variance_fields {
+  id: Float
+}
+"""
+columns and relationships of "currency_types"
+"""
+type currency_types {
+  value: String!
+}
+"""
+aggregated selection of "currency_types"
+"""
+type currency_types_aggregate {
+  aggregate: currency_types_aggregate_fields
+  nodes: [currency_types!]!
+}
+"""
+aggregate fields of "currency_types"
+"""
+type currency_types_aggregate_fields {
+  count(columns: [currency_types_select_column!], distinct: Boolean): Int!
+  max: currency_types_max_fields
+  min: currency_types_min_fields
+}
+"""
+Boolean expression to filter rows from the table "currency_types". All fields are combined with a logical 'AND'.
+"""
+input currency_types_bool_exp {
+  _and: [currency_types_bool_exp!]
+  _not: currency_types_bool_exp
+  _or: [currency_types_bool_exp!]
+  value: String_comparison_exp
+}
+"""
+unique or primary key constraints on table "currency_types"
+"""
+enum currency_types_constraint {
+  "unique or primary key constraint"
+  CurrencyType_pkey
+}
+"""
+input type for inserting data into table "currency_types"
+"""
+input currency_types_insert_input {
+  value: String
+}
+"aggregate max on columns"
+type currency_types_max_fields {
+  value: String
+}
+"aggregate min on columns"
+type currency_types_min_fields {
+  value: String
+}
+"""
+response of any mutation on the table "currency_types"
+"""
+type currency_types_mutation_response {
+  "number of rows affected by the mutation"
+  affected_rows: Int!
+  "data from the rows affected by the mutation"
+  returning: [currency_types!]!
+}
+"""
+on conflict condition type for table "currency_types"
+"""
+input currency_types_on_conflict {
+  constraint: currency_types_constraint!
+  update_columns: [currency_types_update_column!]! = []
+  where: currency_types_bool_exp
+}
+"""
+Ordering options when selecting data from "currency_types".
+"""
+input currency_types_order_by {
+  value: order_by
+}
+"primary key columns input for table: currency_types"
+input currency_types_pk_columns_input {
+  value: String!
+}
+"""
+select columns of table "currency_types"
+"""
+enum currency_types_select_column {
+  "column name"
+  value
+}
+"""
+input type for updating data in table "currency_types"
+"""
+input currency_types_set_input {
+  value: String
+}
+"""
+update columns of table "currency_types"
+"""
+enum currency_types_update_column {
+  "column name"
+  value
+}
+"""
+columns and relationships of "invoice_items"
+"""
+type invoice_items {
+  createdAt: timestamp!
+  id: Int!
+  "An object relationship"
+  invoice: invoices!
+  invoiceId: Int!
+  name: String!
+  price: Int!
+  quantity: Int!
+  scenarioId: Int!
+  updatedAt: timestamp!
+  vat: Vat!
+}
+"""
+aggregated selection of "invoice_items"
+"""
+type invoice_items_aggregate {
+  aggregate: invoice_items_aggregate_fields
+  nodes: [invoice_items!]!
+}
+"""
+aggregate fields of "invoice_items"
+"""
+type invoice_items_aggregate_fields {
+  avg: invoice_items_avg_fields
+  count(columns: [invoice_items_select_column!], distinct: Boolean): Int!
+  max: invoice_items_max_fields
+  min: invoice_items_min_fields
+  stddev: invoice_items_stddev_fields
+  stddev_pop: invoice_items_stddev_pop_fields
+  stddev_samp: invoice_items_stddev_samp_fields
+  sum: invoice_items_sum_fields
+  var_pop: invoice_items_var_pop_fields
+  var_samp: invoice_items_var_samp_fields
+  variance: invoice_items_variance_fields
+}
+"""
+order by aggregate values of table "invoice_items"
+"""
+input invoice_items_aggregate_order_by {
+  avg: invoice_items_avg_order_by
+  count: order_by
+  max: invoice_items_max_order_by
+  min: invoice_items_min_order_by
+  stddev: invoice_items_stddev_order_by
+  stddev_pop: invoice_items_stddev_pop_order_by
+  stddev_samp: invoice_items_stddev_samp_order_by
+  sum: invoice_items_sum_order_by
+  var_pop: invoice_items_var_pop_order_by
+  var_samp: invoice_items_var_samp_order_by
+  variance: invoice_items_variance_order_by
+}
+"""
+input type for inserting array relation for remote table "invoice_items"
+"""
+input invoice_items_arr_rel_insert_input {
+  data: [invoice_items_insert_input!]!
+  "on conflict condition"
+  on_conflict: invoice_items_on_conflict
+}
+"aggregate avg on columns"
+type invoice_items_avg_fields {
+  id: Float
+  invoiceId: Float
+  price: Float
+  quantity: Float
+  scenarioId: Float
+}
+"""
+order by avg() on columns of table "invoice_items"
+"""
+input invoice_items_avg_order_by {
+  id: order_by
+  invoiceId: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+}
+"""
+Boolean expression to filter rows from the table "invoice_items". All fields are combined with a logical 'AND'.
+"""
+input invoice_items_bool_exp {
+  _and: [invoice_items_bool_exp!]
+  _not: invoice_items_bool_exp
+  _or: [invoice_items_bool_exp!]
+  createdAt: timestamp_comparison_exp
+  id: Int_comparison_exp
+  invoice: invoices_bool_exp
+  invoiceId: Int_comparison_exp
+  name: String_comparison_exp
+  price: Int_comparison_exp
+  quantity: Int_comparison_exp
+  scenarioId: Int_comparison_exp
+  updatedAt: timestamp_comparison_exp
+  vat: Vat_comparison_exp
+}
+"""
+unique or primary key constraints on table "invoice_items"
+"""
+enum invoice_items_constraint {
+  "unique or primary key constraint"
+  InvoiceItem_pkey
+}
+"""
+input type for incrementing numeric columns in table "invoice_items"
+"""
+input invoice_items_inc_input {
+  id: Int
+  invoiceId: Int
+  price: Int
+  quantity: Int
+  scenarioId: Int
+}
+"""
+input type for inserting data into table "invoice_items"
+"""
+input invoice_items_insert_input {
+  createdAt: timestamp
+  id: Int
+  invoice: invoices_obj_rel_insert_input
+  invoiceId: Int
+  name: String
+  price: Int
+  quantity: Int
+  scenarioId: Int
+  updatedAt: timestamp
+  vat: Vat
+}
+"aggregate max on columns"
+type invoice_items_max_fields {
+  createdAt: timestamp
+  id: Int
+  invoiceId: Int
+  name: String
+  price: Int
+  quantity: Int
+  scenarioId: Int
+  updatedAt: timestamp
+}
+"""
+order by max() on columns of table "invoice_items"
+"""
+input invoice_items_max_order_by {
+  createdAt: order_by
+  id: order_by
+  invoiceId: order_by
+  name: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+  updatedAt: order_by
+}
+"aggregate min on columns"
+type invoice_items_min_fields {
+  createdAt: timestamp
+  id: Int
+  invoiceId: Int
+  name: String
+  price: Int
+  quantity: Int
+  scenarioId: Int
+  updatedAt: timestamp
+}
+"""
+order by min() on columns of table "invoice_items"
+"""
+input invoice_items_min_order_by {
+  createdAt: order_by
+  id: order_by
+  invoiceId: order_by
+  name: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+  updatedAt: order_by
+}
+"""
+response of any mutation on the table "invoice_items"
+"""
+type invoice_items_mutation_response {
+  "number of rows affected by the mutation"
+  affected_rows: Int!
+  "data from the rows affected by the mutation"
+  returning: [invoice_items!]!
+}
+"""
+on conflict condition type for table "invoice_items"
+"""
+input invoice_items_on_conflict {
+  constraint: invoice_items_constraint!
+  update_columns: [invoice_items_update_column!]! = []
+  where: invoice_items_bool_exp
+}
+"""
+Ordering options when selecting data from "invoice_items".
+"""
+input invoice_items_order_by {
+  createdAt: order_by
+  id: order_by
+  invoice: invoices_order_by
+  invoiceId: order_by
+  name: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+  updatedAt: order_by
+  vat: order_by
+}
+"primary key columns input for table: invoice_items"
+input invoice_items_pk_columns_input {
+  id: Int!
+}
+"""
+select columns of table "invoice_items"
+"""
+enum invoice_items_select_column {
+  "column name"
+  createdAt
+  "column name"
+  id
+  "column name"
+  invoiceId
+  "column name"
+  name
+  "column name"
+  price
+  "column name"
+  quantity
+  "column name"
+  scenarioId
+  "column name"
+  updatedAt
+  "column name"
+  vat
+}
+"""
+input type for updating data in table "invoice_items"
+"""
+input invoice_items_set_input {
+  createdAt: timestamp
+  id: Int
+  invoiceId: Int
+  name: String
+  price: Int
+  quantity: Int
+  scenarioId: Int
+  updatedAt: timestamp
+  vat: Vat
+}
+"aggregate stddev on columns"
+type invoice_items_stddev_fields {
+  id: Float
+  invoiceId: Float
+  price: Float
+  quantity: Float
+  scenarioId: Float
+}
+"""
+order by stddev() on columns of table "invoice_items"
+"""
+input invoice_items_stddev_order_by {
+  id: order_by
+  invoiceId: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+}
+"aggregate stddev_pop on columns"
+type invoice_items_stddev_pop_fields {
+  id: Float
+  invoiceId: Float
+  price: Float
+  quantity: Float
+  scenarioId: Float
+}
+"""
+order by stddev_pop() on columns of table "invoice_items"
+"""
+input invoice_items_stddev_pop_order_by {
+  id: order_by
+  invoiceId: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+}
+"aggregate stddev_samp on columns"
+type invoice_items_stddev_samp_fields {
+  id: Float
+  invoiceId: Float
+  price: Float
+  quantity: Float
+  scenarioId: Float
+}
+"""
+order by stddev_samp() on columns of table "invoice_items"
+"""
+input invoice_items_stddev_samp_order_by {
+  id: order_by
+  invoiceId: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+}
+"aggregate sum on columns"
+type invoice_items_sum_fields {
+  id: Int
+  invoiceId: Int
+  price: Int
+  quantity: Int
+  scenarioId: Int
+}
+"""
+order by sum() on columns of table "invoice_items"
+"""
+input invoice_items_sum_order_by {
+  id: order_by
+  invoiceId: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+}
+"""
+update columns of table "invoice_items"
+"""
+enum invoice_items_update_column {
+  "column name"
+  createdAt
+  "column name"
+  id
+  "column name"
+  invoiceId
+  "column name"
+  name
+  "column name"
+  price
+  "column name"
+  quantity
+  "column name"
+  scenarioId
+  "column name"
+  updatedAt
+  "column name"
+  vat
+}
+"aggregate var_pop on columns"
+type invoice_items_var_pop_fields {
+  id: Float
+  invoiceId: Float
+  price: Float
+  quantity: Float
+  scenarioId: Float
+}
+"""
+order by var_pop() on columns of table "invoice_items"
+"""
+input invoice_items_var_pop_order_by {
+  id: order_by
+  invoiceId: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+}
+"aggregate var_samp on columns"
+type invoice_items_var_samp_fields {
+  id: Float
+  invoiceId: Float
+  price: Float
+  quantity: Float
+  scenarioId: Float
+}
+"""
+order by var_samp() on columns of table "invoice_items"
+"""
+input invoice_items_var_samp_order_by {
+  id: order_by
+  invoiceId: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+}
+"aggregate variance on columns"
+type invoice_items_variance_fields {
+  id: Float
+  invoiceId: Float
+  price: Float
+  quantity: Float
+  scenarioId: Float
+}
+"""
+order by variance() on columns of table "invoice_items"
+"""
+input invoice_items_variance_order_by {
+  id: order_by
+  invoiceId: order_by
+  price: order_by
+  quantity: order_by
+  scenarioId: order_by
+}
+"""
+columns and relationships of "invoices"
+"""
+type invoices {
+  createdAt: timestamp!
+  id: Int!
+  invoiceNumber: String!
+  issueDate: String!
+  "An array relationship"
+  items("distinct select on columns" distinct_on: [invoice_items_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoice_items_order_by!], "filter the rows returned" where: invoice_items_bool_exp): [invoice_items!]!
+  "An aggregate relationship"
+  items_aggregate("distinct select on columns" distinct_on: [invoice_items_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoice_items_order_by!], "filter the rows returned" where: invoice_items_bool_exp): invoice_items_aggregate!
+  "An object relationship"
+  scenario: scenarios!
+  scenarioId: Int!
+  updatedAt: timestamp!
+}
+"""
+aggregated selection of "invoices"
+"""
+type invoices_aggregate {
+  aggregate: invoices_aggregate_fields
+  nodes: [invoices!]!
+}
+"""
+aggregate fields of "invoices"
+"""
+type invoices_aggregate_fields {
+  avg: invoices_avg_fields
+  count(columns: [invoices_select_column!], distinct: Boolean): Int!
+  max: invoices_max_fields
+  min: invoices_min_fields
+  stddev: invoices_stddev_fields
+  stddev_pop: invoices_stddev_pop_fields
+  stddev_samp: invoices_stddev_samp_fields
+  sum: invoices_sum_fields
+  var_pop: invoices_var_pop_fields
+  var_samp: invoices_var_samp_fields
+  variance: invoices_variance_fields
+}
+"""
+order by aggregate values of table "invoices"
+"""
+input invoices_aggregate_order_by {
+  avg: invoices_avg_order_by
+  count: order_by
+  max: invoices_max_order_by
+  min: invoices_min_order_by
+  stddev: invoices_stddev_order_by
+  stddev_pop: invoices_stddev_pop_order_by
+  stddev_samp: invoices_stddev_samp_order_by
+  sum: invoices_sum_order_by
+  var_pop: invoices_var_pop_order_by
+  var_samp: invoices_var_samp_order_by
+  variance: invoices_variance_order_by
+}
+"""
+input type for inserting array relation for remote table "invoices"
+"""
+input invoices_arr_rel_insert_input {
+  data: [invoices_insert_input!]!
+  "on conflict condition"
+  on_conflict: invoices_on_conflict
+}
+"aggregate avg on columns"
+type invoices_avg_fields {
+  id: Float
+  scenarioId: Float
+}
+"""
+order by avg() on columns of table "invoices"
+"""
+input invoices_avg_order_by {
+  id: order_by
+  scenarioId: order_by
+}
+"""
+Boolean expression to filter rows from the table "invoices". All fields are combined with a logical 'AND'.
+"""
+input invoices_bool_exp {
+  _and: [invoices_bool_exp!]
+  _not: invoices_bool_exp
+  _or: [invoices_bool_exp!]
+  createdAt: timestamp_comparison_exp
+  id: Int_comparison_exp
+  invoiceNumber: String_comparison_exp
+  issueDate: String_comparison_exp
+  items: invoice_items_bool_exp
+  scenario: scenarios_bool_exp
+  scenarioId: Int_comparison_exp
+  updatedAt: timestamp_comparison_exp
+}
+"""
+unique or primary key constraints on table "invoices"
+"""
+enum invoices_constraint {
+  "unique or primary key constraint"
+  Invoice_id_key
+  "unique or primary key constraint"
+  Invoice_invoiceNumber_key
+  "unique or primary key constraint"
+  Invoice_pkey
+}
+"""
+input type for incrementing numeric columns in table "invoices"
+"""
+input invoices_inc_input {
+  id: Int
+  scenarioId: Int
+}
+"""
+input type for inserting data into table "invoices"
+"""
+input invoices_insert_input {
+  createdAt: timestamp
+  id: Int
+  invoiceNumber: String
+  issueDate: String
+  items: invoice_items_arr_rel_insert_input
+  scenario: scenarios_obj_rel_insert_input
+  scenarioId: Int
+  updatedAt: timestamp
+}
+"aggregate max on columns"
+type invoices_max_fields {
+  createdAt: timestamp
+  id: Int
+  invoiceNumber: String
+  issueDate: String
+  scenarioId: Int
+  updatedAt: timestamp
+}
+"""
+order by max() on columns of table "invoices"
+"""
+input invoices_max_order_by {
+  createdAt: order_by
+  id: order_by
+  invoiceNumber: order_by
+  issueDate: order_by
+  scenarioId: order_by
+  updatedAt: order_by
+}
+"aggregate min on columns"
+type invoices_min_fields {
+  createdAt: timestamp
+  id: Int
+  invoiceNumber: String
+  issueDate: String
+  scenarioId: Int
+  updatedAt: timestamp
+}
+"""
+order by min() on columns of table "invoices"
+"""
+input invoices_min_order_by {
+  createdAt: order_by
+  id: order_by
+  invoiceNumber: order_by
+  issueDate: order_by
+  scenarioId: order_by
+  updatedAt: order_by
+}
+"""
+response of any mutation on the table "invoices"
+"""
+type invoices_mutation_response {
+  "number of rows affected by the mutation"
+  affected_rows: Int!
+  "data from the rows affected by the mutation"
+  returning: [invoices!]!
+}
+"""
+input type for inserting object relation for remote table "invoices"
+"""
+input invoices_obj_rel_insert_input {
+  data: invoices_insert_input!
+  "on conflict condition"
+  on_conflict: invoices_on_conflict
+}
+"""
+on conflict condition type for table "invoices"
+"""
+input invoices_on_conflict {
+  constraint: invoices_constraint!
+  update_columns: [invoices_update_column!]! = []
+  where: invoices_bool_exp
+}
+"""
+Ordering options when selecting data from "invoices".
+"""
+input invoices_order_by {
+  createdAt: order_by
+  id: order_by
+  invoiceNumber: order_by
+  issueDate: order_by
+  items_aggregate: invoice_items_aggregate_order_by
+  scenario: scenarios_order_by
+  scenarioId: order_by
+  updatedAt: order_by
+}
+"primary key columns input for table: invoices"
+input invoices_pk_columns_input {
+  id: Int!
+}
+"""
+select columns of table "invoices"
+"""
+enum invoices_select_column {
+  "column name"
+  createdAt
+  "column name"
+  id
+  "column name"
+  invoiceNumber
+  "column name"
+  issueDate
+  "column name"
+  scenarioId
+  "column name"
+  updatedAt
+}
+"""
+input type for updating data in table "invoices"
+"""
+input invoices_set_input {
+  createdAt: timestamp
+  id: Int
+  invoiceNumber: String
+  issueDate: String
+  scenarioId: Int
+  updatedAt: timestamp
+}
+"aggregate stddev on columns"
+type invoices_stddev_fields {
+  id: Float
+  scenarioId: Float
+}
+"""
+order by stddev() on columns of table "invoices"
+"""
+input invoices_stddev_order_by {
+  id: order_by
+  scenarioId: order_by
+}
+"aggregate stddev_pop on columns"
+type invoices_stddev_pop_fields {
+  id: Float
+  scenarioId: Float
+}
+"""
+order by stddev_pop() on columns of table "invoices"
+"""
+input invoices_stddev_pop_order_by {
+  id: order_by
+  scenarioId: order_by
+}
+"aggregate stddev_samp on columns"
+type invoices_stddev_samp_fields {
+  id: Float
+  scenarioId: Float
+}
+"""
+order by stddev_samp() on columns of table "invoices"
+"""
+input invoices_stddev_samp_order_by {
+  id: order_by
+  scenarioId: order_by
+}
+"aggregate sum on columns"
+type invoices_sum_fields {
+  id: Int
+  scenarioId: Int
+}
+"""
+order by sum() on columns of table "invoices"
+"""
+input invoices_sum_order_by {
+  id: order_by
+  scenarioId: order_by
+}
+"""
+update columns of table "invoices"
+"""
+enum invoices_update_column {
+  "column name"
+  createdAt
+  "column name"
+  id
+  "column name"
+  invoiceNumber
+  "column name"
+  issueDate
+  "column name"
+  scenarioId
+  "column name"
+  updatedAt
+}
+"aggregate var_pop on columns"
+type invoices_var_pop_fields {
+  id: Float
+  scenarioId: Float
+}
+"""
+order by var_pop() on columns of table "invoices"
+"""
+input invoices_var_pop_order_by {
+  id: order_by
+  scenarioId: order_by
+}
+"aggregate var_samp on columns"
+type invoices_var_samp_fields {
+  id: Float
+  scenarioId: Float
+}
+"""
+order by var_samp() on columns of table "invoices"
+"""
+input invoices_var_samp_order_by {
+  id: order_by
+  scenarioId: order_by
+}
+"aggregate variance on columns"
+type invoices_variance_fields {
+  id: Float
+  scenarioId: Float
+}
+"""
+order by variance() on columns of table "invoices"
+"""
+input invoices_variance_order_by {
+  id: order_by
+  scenarioId: order_by
+}
+"""
+columns and relationships of "merchants"
+"""
+type merchants {
+  address: String!
+  bankAccountEur: String
+  bankAccountPln: String!
+  bankName: String!
+  city: String!
+  companyName: String!
+  country: String!
+  email: String!
+  id: Int!
+  issuerName: String!
+  postCode: String!
+  """
+  fetch data from the table: "scenarios"
+  """
+  scenarios("distinct select on columns" distinct_on: [scenarios_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [scenarios_order_by!], "filter the rows returned" where: scenarios_bool_exp): [scenarios!]!
+  "An aggregate relationship"
+  scenarios_aggregate("distinct select on columns" distinct_on: [scenarios_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [scenarios_order_by!], "filter the rows returned" where: scenarios_bool_exp): scenarios_aggregate!
+  vatId: String!
+}
+"""
+aggregated selection of "merchants"
+"""
+type merchants_aggregate {
+  aggregate: merchants_aggregate_fields
+  nodes: [merchants!]!
+}
+"""
+aggregate fields of "merchants"
+"""
+type merchants_aggregate_fields {
+  avg: merchants_avg_fields
+  count(columns: [merchants_select_column!], distinct: Boolean): Int!
+  max: merchants_max_fields
+  min: merchants_min_fields
+  stddev: merchants_stddev_fields
+  stddev_pop: merchants_stddev_pop_fields
+  stddev_samp: merchants_stddev_samp_fields
+  sum: merchants_sum_fields
+  var_pop: merchants_var_pop_fields
+  var_samp: merchants_var_samp_fields
+  variance: merchants_variance_fields
+}
+"aggregate avg on columns"
+type merchants_avg_fields {
+  id: Float
+}
+"""
+Boolean expression to filter rows from the table "merchants". All fields are combined with a logical 'AND'.
+"""
+input merchants_bool_exp {
+  _and: [merchants_bool_exp!]
+  _not: merchants_bool_exp
+  _or: [merchants_bool_exp!]
+  address: String_comparison_exp
+  bankAccountEur: String_comparison_exp
+  bankAccountPln: String_comparison_exp
+  bankName: String_comparison_exp
+  city: String_comparison_exp
+  companyName: String_comparison_exp
+  country: String_comparison_exp
+  email: String_comparison_exp
+  id: Int_comparison_exp
+  issuerName: String_comparison_exp
+  postCode: String_comparison_exp
+  scenarios: scenarios_bool_exp
+  vatId: String_comparison_exp
+}
+"""
+unique or primary key constraints on table "merchants"
+"""
+enum merchants_constraint {
+  "unique or primary key constraint"
+  Merchant_pkey
+}
+"""
+input type for incrementing numeric columns in table "merchants"
+"""
+input merchants_inc_input {
+  id: Int
+}
+"""
+input type for inserting data into table "merchants"
+"""
+input merchants_insert_input {
+  address: String
+  bankAccountEur: String
+  bankAccountPln: String
+  bankName: String
+  city: String
+  companyName: String
+  country: String
+  email: String
+  id: Int
+  issuerName: String
+  postCode: String
+  scenarios: scenarios_arr_rel_insert_input
+  vatId: String
+}
+"aggregate max on columns"
+type merchants_max_fields {
+  address: String
+  bankAccountEur: String
+  bankAccountPln: String
+  bankName: String
+  city: String
+  companyName: String
+  country: String
+  email: String
+  id: Int
+  issuerName: String
+  postCode: String
+  vatId: String
+}
+"aggregate min on columns"
+type merchants_min_fields {
+  address: String
+  bankAccountEur: String
+  bankAccountPln: String
+  bankName: String
+  city: String
+  companyName: String
+  country: String
+  email: String
+  id: Int
+  issuerName: String
+  postCode: String
+  vatId: String
+}
+"""
+response of any mutation on the table "merchants"
+"""
+type merchants_mutation_response {
+  "number of rows affected by the mutation"
+  affected_rows: Int!
+  "data from the rows affected by the mutation"
+  returning: [merchants!]!
+}
+"""
+input type for inserting object relation for remote table "merchants"
+"""
+input merchants_obj_rel_insert_input {
+  data: merchants_insert_input!
+  "on conflict condition"
+  on_conflict: merchants_on_conflict
+}
+"""
+on conflict condition type for table "merchants"
+"""
+input merchants_on_conflict {
+  constraint: merchants_constraint!
+  update_columns: [merchants_update_column!]! = []
+  where: merchants_bool_exp
+}
+"""
+Ordering options when selecting data from "merchants".
+"""
+input merchants_order_by {
+  address: order_by
+  bankAccountEur: order_by
+  bankAccountPln: order_by
+  bankName: order_by
+  city: order_by
+  companyName: order_by
+  country: order_by
+  email: order_by
+  id: order_by
+  issuerName: order_by
+  postCode: order_by
+  scenarios_aggregate: scenarios_aggregate_order_by
+  vatId: order_by
+}
+"primary key columns input for table: merchants"
+input merchants_pk_columns_input {
+  id: Int!
+}
+"""
+select columns of table "merchants"
+"""
+enum merchants_select_column {
+  "column name"
+  address
+  "column name"
+  bankAccountEur
+  "column name"
+  bankAccountPln
+  "column name"
+  bankName
+  "column name"
+  city
+  "column name"
+  companyName
+  "column name"
+  country
+  "column name"
+  email
+  "column name"
+  id
+  "column name"
+  issuerName
+  "column name"
+  postCode
+  "column name"
+  vatId
+}
+"""
+input type for updating data in table "merchants"
+"""
+input merchants_set_input {
+  address: String
+  bankAccountEur: String
+  bankAccountPln: String
+  bankName: String
+  city: String
+  companyName: String
+  country: String
+  email: String
+  id: Int
+  issuerName: String
+  postCode: String
+  vatId: String
+}
+"aggregate stddev on columns"
+type merchants_stddev_fields {
+  id: Float
+}
+"aggregate stddev_pop on columns"
+type merchants_stddev_pop_fields {
+  id: Float
+}
+"aggregate stddev_samp on columns"
+type merchants_stddev_samp_fields {
+  id: Float
+}
+"aggregate sum on columns"
+type merchants_sum_fields {
+  id: Int
+}
+"""
+update columns of table "merchants"
+"""
+enum merchants_update_column {
+  "column name"
+  address
+  "column name"
+  bankAccountEur
+  "column name"
+  bankAccountPln
+  "column name"
+  bankName
+  "column name"
+  city
+  "column name"
+  companyName
+  "column name"
+  country
+  "column name"
+  email
+  "column name"
+  id
+  "column name"
+  issuerName
+  "column name"
+  postCode
+  "column name"
+  vatId
+}
+"aggregate var_pop on columns"
+type merchants_var_pop_fields {
+  id: Float
+}
+"aggregate var_samp on columns"
+type merchants_var_samp_fields {
+  id: Float
+}
+"aggregate variance on columns"
+type merchants_variance_fields {
+  id: Float
+}
+"mutation root"
+type mutation_root {
+  """
+  delete data from the table: "clients"
+  """
+  delete_clients("filter the rows which have to be deleted" where: clients_bool_exp!): clients_mutation_response
+  """
+  delete single row from the table: "clients"
+  """
+  delete_clients_by_pk(id: Int!): clients
+  """
+  delete data from the table: "currency_types"
+  """
+  delete_currency_types("filter the rows which have to be deleted" where: currency_types_bool_exp!): currency_types_mutation_response
+  """
+  delete single row from the table: "currency_types"
+  """
+  delete_currency_types_by_pk(value: String!): currency_types
+  """
+  delete data from the table: "invoice_items"
+  """
+  delete_invoice_items("filter the rows which have to be deleted" where: invoice_items_bool_exp!): invoice_items_mutation_response
+  """
+  delete single row from the table: "invoice_items"
+  """
+  delete_invoice_items_by_pk(id: Int!): invoice_items
+  """
+  delete data from the table: "invoices"
+  """
+  delete_invoices("filter the rows which have to be deleted" where: invoices_bool_exp!): invoices_mutation_response
+  """
+  delete single row from the table: "invoices"
+  """
+  delete_invoices_by_pk(id: Int!): invoices
+  """
+  delete data from the table: "merchants"
+  """
+  delete_merchants("filter the rows which have to be deleted" where: merchants_bool_exp!): merchants_mutation_response
+  """
+  delete single row from the table: "merchants"
+  """
+  delete_merchants_by_pk(id: Int!): merchants
+  """
+  delete data from the table: "scenarios"
+  """
+  delete_scenarios("filter the rows which have to be deleted" where: scenarios_bool_exp!): scenarios_mutation_response
+  """
+  delete single row from the table: "scenarios"
+  """
+  delete_scenarios_by_pk(id: Int!): scenarios
+  """
+  insert data into the table: "clients"
+  """
+  insert_clients("the rows to be inserted" objects: [clients_insert_input!]!, "on conflict condition" on_conflict: clients_on_conflict): clients_mutation_response
+  """
+  insert a single row into the table: "clients"
+  """
+  insert_clients_one("the row to be inserted" object: clients_insert_input!, "on conflict condition" on_conflict: clients_on_conflict): clients
+  """
+  insert data into the table: "currency_types"
+  """
+  insert_currency_types("the rows to be inserted" objects: [currency_types_insert_input!]!, "on conflict condition" on_conflict: currency_types_on_conflict): currency_types_mutation_response
+  """
+  insert a single row into the table: "currency_types"
+  """
+  insert_currency_types_one("the row to be inserted" object: currency_types_insert_input!, "on conflict condition" on_conflict: currency_types_on_conflict): currency_types
+  """
+  insert data into the table: "invoice_items"
+  """
+  insert_invoice_items("the rows to be inserted" objects: [invoice_items_insert_input!]!, "on conflict condition" on_conflict: invoice_items_on_conflict): invoice_items_mutation_response
+  """
+  insert a single row into the table: "invoice_items"
+  """
+  insert_invoice_items_one("the row to be inserted" object: invoice_items_insert_input!, "on conflict condition" on_conflict: invoice_items_on_conflict): invoice_items
+  """
+  insert data into the table: "invoices"
+  """
+  insert_invoices("the rows to be inserted" objects: [invoices_insert_input!]!, "on conflict condition" on_conflict: invoices_on_conflict): invoices_mutation_response
+  """
+  insert a single row into the table: "invoices"
+  """
+  insert_invoices_one("the row to be inserted" object: invoices_insert_input!, "on conflict condition" on_conflict: invoices_on_conflict): invoices
+  """
+  insert data into the table: "merchants"
+  """
+  insert_merchants("the rows to be inserted" objects: [merchants_insert_input!]!, "on conflict condition" on_conflict: merchants_on_conflict): merchants_mutation_response
+  """
+  insert a single row into the table: "merchants"
+  """
+  insert_merchants_one("the row to be inserted" object: merchants_insert_input!, "on conflict condition" on_conflict: merchants_on_conflict): merchants
+  """
+  insert data into the table: "scenarios"
+  """
+  insert_scenarios("the rows to be inserted" objects: [scenarios_insert_input!]!, "on conflict condition" on_conflict: scenarios_on_conflict): scenarios_mutation_response
+  """
+  insert a single row into the table: "scenarios"
+  """
+  insert_scenarios_one("the row to be inserted" object: scenarios_insert_input!, "on conflict condition" on_conflict: scenarios_on_conflict): scenarios
+  """
+  update data of the table: "clients"
+  """
+  update_clients("increments the numeric columns with given value of the filtered values" _inc: clients_inc_input, "sets the columns of the filtered rows to the given values" _set: clients_set_input, "filter the rows which have to be updated" where: clients_bool_exp!): clients_mutation_response
+  """
+  update single row of the table: "clients"
+  """
+  update_clients_by_pk("increments the numeric columns with given value of the filtered values" _inc: clients_inc_input, "sets the columns of the filtered rows to the given values" _set: clients_set_input, pk_columns: clients_pk_columns_input!): clients
+  """
+  update data of the table: "currency_types"
+  """
+  update_currency_types("sets the columns of the filtered rows to the given values" _set: currency_types_set_input, "filter the rows which have to be updated" where: currency_types_bool_exp!): currency_types_mutation_response
+  """
+  update single row of the table: "currency_types"
+  """
+  update_currency_types_by_pk("sets the columns of the filtered rows to the given values" _set: currency_types_set_input, pk_columns: currency_types_pk_columns_input!): currency_types
+  """
+  update data of the table: "invoice_items"
+  """
+  update_invoice_items("increments the numeric columns with given value of the filtered values" _inc: invoice_items_inc_input, "sets the columns of the filtered rows to the given values" _set: invoice_items_set_input, "filter the rows which have to be updated" where: invoice_items_bool_exp!): invoice_items_mutation_response
+  """
+  update single row of the table: "invoice_items"
+  """
+  update_invoice_items_by_pk("increments the numeric columns with given value of the filtered values" _inc: invoice_items_inc_input, "sets the columns of the filtered rows to the given values" _set: invoice_items_set_input, pk_columns: invoice_items_pk_columns_input!): invoice_items
+  """
+  update data of the table: "invoices"
+  """
+  update_invoices("increments the numeric columns with given value of the filtered values" _inc: invoices_inc_input, "sets the columns of the filtered rows to the given values" _set: invoices_set_input, "filter the rows which have to be updated" where: invoices_bool_exp!): invoices_mutation_response
+  """
+  update single row of the table: "invoices"
+  """
+  update_invoices_by_pk("increments the numeric columns with given value of the filtered values" _inc: invoices_inc_input, "sets the columns of the filtered rows to the given values" _set: invoices_set_input, pk_columns: invoices_pk_columns_input!): invoices
+  """
+  update data of the table: "merchants"
+  """
+  update_merchants("increments the numeric columns with given value of the filtered values" _inc: merchants_inc_input, "sets the columns of the filtered rows to the given values" _set: merchants_set_input, "filter the rows which have to be updated" where: merchants_bool_exp!): merchants_mutation_response
+  """
+  update single row of the table: "merchants"
+  """
+  update_merchants_by_pk("increments the numeric columns with given value of the filtered values" _inc: merchants_inc_input, "sets the columns of the filtered rows to the given values" _set: merchants_set_input, pk_columns: merchants_pk_columns_input!): merchants
+  """
+  update data of the table: "scenarios"
+  """
+  update_scenarios("increments the numeric columns with given value of the filtered values" _inc: scenarios_inc_input, "sets the columns of the filtered rows to the given values" _set: scenarios_set_input, "filter the rows which have to be updated" where: scenarios_bool_exp!): scenarios_mutation_response
+  """
+  update single row of the table: "scenarios"
+  """
+  update_scenarios_by_pk("increments the numeric columns with given value of the filtered values" _inc: scenarios_inc_input, "sets the columns of the filtered rows to the given values" _set: scenarios_set_input, pk_columns: scenarios_pk_columns_input!): scenarios
+}
+"column ordering options"
+enum order_by {
+  "in ascending order, nulls last"
+  asc
+  "in ascending order, nulls first"
+  asc_nulls_first
+  "in ascending order, nulls last"
+  asc_nulls_last
+  "in descending order, nulls first"
+  desc
+  "in descending order, nulls first"
+  desc_nulls_first
+  "in descending order, nulls last"
+  desc_nulls_last
+}
+scalar payment_type
+"""
+Boolean expression to compare columns of type "payment_type". All fields are combined with logical 'AND'.
+"""
+input payment_type_comparison_exp {
+  _eq: payment_type
+  _gt: payment_type
+  _gte: payment_type
+  _in: [payment_type!]
+  _is_null: Boolean
+  _lt: payment_type
+  _lte: payment_type
+  _neq: payment_type
+  _nin: [payment_type!]
+}
+type query_root {
+  """
+  fetch data from the table: "clients"
+  """
+  clients("distinct select on columns" distinct_on: [clients_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [clients_order_by!], "filter the rows returned" where: clients_bool_exp): [clients!]!
+  """
+  fetch aggregated fields from the table: "clients"
+  """
+  clients_aggregate("distinct select on columns" distinct_on: [clients_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [clients_order_by!], "filter the rows returned" where: clients_bool_exp): clients_aggregate!
+  """
+  fetch data from the table: "clients" using primary key columns
+  """
+  clients_by_pk(id: Int!): clients
+  """
+  fetch data from the table: "currency_types"
+  """
+  currency_types("distinct select on columns" distinct_on: [currency_types_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [currency_types_order_by!], "filter the rows returned" where: currency_types_bool_exp): [currency_types!]!
+  """
+  fetch aggregated fields from the table: "currency_types"
+  """
+  currency_types_aggregate("distinct select on columns" distinct_on: [currency_types_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [currency_types_order_by!], "filter the rows returned" where: currency_types_bool_exp): currency_types_aggregate!
+  """
+  fetch data from the table: "currency_types" using primary key columns
+  """
+  currency_types_by_pk(value: String!): currency_types
+  """
+  fetch data from the table: "invoice_items"
+  """
+  invoice_items("distinct select on columns" distinct_on: [invoice_items_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoice_items_order_by!], "filter the rows returned" where: invoice_items_bool_exp): [invoice_items!]!
+  """
+  fetch aggregated fields from the table: "invoice_items"
+  """
+  invoice_items_aggregate("distinct select on columns" distinct_on: [invoice_items_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoice_items_order_by!], "filter the rows returned" where: invoice_items_bool_exp): invoice_items_aggregate!
+  """
+  fetch data from the table: "invoice_items" using primary key columns
+  """
+  invoice_items_by_pk(id: Int!): invoice_items
+  "An array relationship"
+  invoices("distinct select on columns" distinct_on: [invoices_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoices_order_by!], "filter the rows returned" where: invoices_bool_exp): [invoices!]!
+  "An aggregate relationship"
+  invoices_aggregate("distinct select on columns" distinct_on: [invoices_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoices_order_by!], "filter the rows returned" where: invoices_bool_exp): invoices_aggregate!
+  """
+  fetch data from the table: "invoices" using primary key columns
+  """
+  invoices_by_pk(id: Int!): invoices
+  """
+  fetch data from the table: "merchants"
+  """
+  merchants("distinct select on columns" distinct_on: [merchants_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [merchants_order_by!], "filter the rows returned" where: merchants_bool_exp): [merchants!]!
+  """
+  fetch aggregated fields from the table: "merchants"
+  """
+  merchants_aggregate("distinct select on columns" distinct_on: [merchants_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [merchants_order_by!], "filter the rows returned" where: merchants_bool_exp): merchants_aggregate!
+  """
+  fetch data from the table: "merchants" using primary key columns
+  """
+  merchants_by_pk(id: Int!): merchants
+  """
+  fetch data from the table: "scenarios"
+  """
+  scenarios("distinct select on columns" distinct_on: [scenarios_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [scenarios_order_by!], "filter the rows returned" where: scenarios_bool_exp): [scenarios!]!
+  "An aggregate relationship"
+  scenarios_aggregate("distinct select on columns" distinct_on: [scenarios_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [scenarios_order_by!], "filter the rows returned" where: scenarios_bool_exp): scenarios_aggregate!
+  """
+  fetch data from the table: "scenarios" using primary key columns
+  """
+  scenarios_by_pk(id: Int!): scenarios
+}
+"""
+columns and relationships of "scenarios"
+"""
+type scenarios {
+  "An object relationship"
+  client: clients!
+  clientId: Int!
+  createdAt: timestamp!
+  currency: Currency!
+  dueDateDays: Int!
+  id: Int!
+  imgUrl: String!
+  "An array relationship"
+  invoices("distinct select on columns" distinct_on: [invoices_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoices_order_by!], "filter the rows returned" where: invoices_bool_exp): [invoices!]!
+  "An aggregate relationship"
+  invoices_aggregate("distinct select on columns" distinct_on: [invoices_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoices_order_by!], "filter the rows returned" where: invoices_bool_exp): invoices_aggregate!
+  "An object relationship"
+  merchant: merchants!
+  merchantId: Int!
+  name: String!
+  notes: String!
+  paymentType: payment_type!
+  updatedAt: timestamp!
+}
+"""
+aggregated selection of "scenarios"
+"""
+type scenarios_aggregate {
+  aggregate: scenarios_aggregate_fields
+  nodes: [scenarios!]!
+}
+"""
+aggregate fields of "scenarios"
+"""
+type scenarios_aggregate_fields {
+  avg: scenarios_avg_fields
+  count(columns: [scenarios_select_column!], distinct: Boolean): Int!
+  max: scenarios_max_fields
+  min: scenarios_min_fields
+  stddev: scenarios_stddev_fields
+  stddev_pop: scenarios_stddev_pop_fields
+  stddev_samp: scenarios_stddev_samp_fields
+  sum: scenarios_sum_fields
+  var_pop: scenarios_var_pop_fields
+  var_samp: scenarios_var_samp_fields
+  variance: scenarios_variance_fields
+}
+"""
+order by aggregate values of table "scenarios"
+"""
+input scenarios_aggregate_order_by {
+  avg: scenarios_avg_order_by
+  count: order_by
+  max: scenarios_max_order_by
+  min: scenarios_min_order_by
+  stddev: scenarios_stddev_order_by
+  stddev_pop: scenarios_stddev_pop_order_by
+  stddev_samp: scenarios_stddev_samp_order_by
+  sum: scenarios_sum_order_by
+  var_pop: scenarios_var_pop_order_by
+  var_samp: scenarios_var_samp_order_by
+  variance: scenarios_variance_order_by
+}
+"""
+input type for inserting array relation for remote table "scenarios"
+"""
+input scenarios_arr_rel_insert_input {
+  data: [scenarios_insert_input!]!
+  "on conflict condition"
+  on_conflict: scenarios_on_conflict
+}
+"aggregate avg on columns"
+type scenarios_avg_fields {
+  clientId: Float
+  dueDateDays: Float
+  id: Float
+  merchantId: Float
+}
+"""
+order by avg() on columns of table "scenarios"
+"""
+input scenarios_avg_order_by {
+  clientId: order_by
+  dueDateDays: order_by
+  id: order_by
+  merchantId: order_by
+}
+"""
+Boolean expression to filter rows from the table "scenarios". All fields are combined with a logical 'AND'.
+"""
+input scenarios_bool_exp {
+  _and: [scenarios_bool_exp!]
+  _not: scenarios_bool_exp
+  _or: [scenarios_bool_exp!]
+  client: clients_bool_exp
+  clientId: Int_comparison_exp
+  createdAt: timestamp_comparison_exp
+  currency: Currency_comparison_exp
+  dueDateDays: Int_comparison_exp
+  id: Int_comparison_exp
+  imgUrl: String_comparison_exp
+  invoices: invoices_bool_exp
+  merchant: merchants_bool_exp
+  merchantId: Int_comparison_exp
+  name: String_comparison_exp
+  notes: String_comparison_exp
+  paymentType: payment_type_comparison_exp
+  updatedAt: timestamp_comparison_exp
+}
+"""
+unique or primary key constraints on table "scenarios"
+"""
+enum scenarios_constraint {
+  "unique or primary key constraint"
+  Scenario_pkey
+}
+"""
+input type for incrementing numeric columns in table "scenarios"
+"""
+input scenarios_inc_input {
+  clientId: Int
+  dueDateDays: Int
+  id: Int
+  merchantId: Int
+}
+"""
+input type for inserting data into table "scenarios"
+"""
+input scenarios_insert_input {
+  client: clients_obj_rel_insert_input
+  clientId: Int
+  createdAt: timestamp
+  currency: Currency
+  dueDateDays: Int
+  id: Int
+  imgUrl: String
+  invoices: invoices_arr_rel_insert_input
+  merchant: merchants_obj_rel_insert_input
+  merchantId: Int
+  name: String
+  notes: String
+  paymentType: payment_type
+  updatedAt: timestamp
+}
+"aggregate max on columns"
+type scenarios_max_fields {
+  clientId: Int
+  createdAt: timestamp
+  dueDateDays: Int
+  id: Int
+  imgUrl: String
+  merchantId: Int
+  name: String
+  notes: String
+  updatedAt: timestamp
+}
+"""
+order by max() on columns of table "scenarios"
+"""
+input scenarios_max_order_by {
+  clientId: order_by
+  createdAt: order_by
+  dueDateDays: order_by
+  id: order_by
+  imgUrl: order_by
+  merchantId: order_by
+  name: order_by
+  notes: order_by
+  updatedAt: order_by
+}
+"aggregate min on columns"
+type scenarios_min_fields {
+  clientId: Int
+  createdAt: timestamp
+  dueDateDays: Int
+  id: Int
+  imgUrl: String
+  merchantId: Int
+  name: String
+  notes: String
+  updatedAt: timestamp
+}
+"""
+order by min() on columns of table "scenarios"
+"""
+input scenarios_min_order_by {
+  clientId: order_by
+  createdAt: order_by
+  dueDateDays: order_by
+  id: order_by
+  imgUrl: order_by
+  merchantId: order_by
+  name: order_by
+  notes: order_by
+  updatedAt: order_by
+}
+"""
+response of any mutation on the table "scenarios"
+"""
+type scenarios_mutation_response {
+  "number of rows affected by the mutation"
+  affected_rows: Int!
+  "data from the rows affected by the mutation"
+  returning: [scenarios!]!
+}
+"""
+input type for inserting object relation for remote table "scenarios"
+"""
+input scenarios_obj_rel_insert_input {
+  data: scenarios_insert_input!
+  "on conflict condition"
+  on_conflict: scenarios_on_conflict
+}
+"""
+on conflict condition type for table "scenarios"
+"""
+input scenarios_on_conflict {
+  constraint: scenarios_constraint!
+  update_columns: [scenarios_update_column!]! = []
+  where: scenarios_bool_exp
+}
+"""
+Ordering options when selecting data from "scenarios".
+"""
+input scenarios_order_by {
+  client: clients_order_by
+  clientId: order_by
+  createdAt: order_by
+  currency: order_by
+  dueDateDays: order_by
+  id: order_by
+  imgUrl: order_by
+  invoices_aggregate: invoices_aggregate_order_by
+  merchant: merchants_order_by
+  merchantId: order_by
+  name: order_by
+  notes: order_by
+  paymentType: order_by
+  updatedAt: order_by
+}
+"primary key columns input for table: scenarios"
+input scenarios_pk_columns_input {
+  id: Int!
+}
+"""
+select columns of table "scenarios"
+"""
+enum scenarios_select_column {
+  "column name"
+  clientId
+  "column name"
+  createdAt
+  "column name"
+  currency
+  "column name"
+  dueDateDays
+  "column name"
+  id
+  "column name"
+  imgUrl
+  "column name"
+  merchantId
+  "column name"
+  name
+  "column name"
+  notes
+  "column name"
+  paymentType
+  "column name"
+  updatedAt
+}
+"""
+input type for updating data in table "scenarios"
+"""
+input scenarios_set_input {
+  clientId: Int
+  createdAt: timestamp
+  currency: Currency
+  dueDateDays: Int
+  id: Int
+  imgUrl: String
+  merchantId: Int
+  name: String
+  notes: String
+  paymentType: payment_type
+  updatedAt: timestamp
+}
+"aggregate stddev on columns"
+type scenarios_stddev_fields {
+  clientId: Float
+  dueDateDays: Float
+  id: Float
+  merchantId: Float
+}
+"""
+order by stddev() on columns of table "scenarios"
+"""
+input scenarios_stddev_order_by {
+  clientId: order_by
+  dueDateDays: order_by
+  id: order_by
+  merchantId: order_by
+}
+"aggregate stddev_pop on columns"
+type scenarios_stddev_pop_fields {
+  clientId: Float
+  dueDateDays: Float
+  id: Float
+  merchantId: Float
+}
+"""
+order by stddev_pop() on columns of table "scenarios"
+"""
+input scenarios_stddev_pop_order_by {
+  clientId: order_by
+  dueDateDays: order_by
+  id: order_by
+  merchantId: order_by
+}
+"aggregate stddev_samp on columns"
+type scenarios_stddev_samp_fields {
+  clientId: Float
+  dueDateDays: Float
+  id: Float
+  merchantId: Float
+}
+"""
+order by stddev_samp() on columns of table "scenarios"
+"""
+input scenarios_stddev_samp_order_by {
+  clientId: order_by
+  dueDateDays: order_by
+  id: order_by
+  merchantId: order_by
+}
+"aggregate sum on columns"
+type scenarios_sum_fields {
+  clientId: Int
+  dueDateDays: Int
+  id: Int
+  merchantId: Int
+}
+"""
+order by sum() on columns of table "scenarios"
+"""
+input scenarios_sum_order_by {
+  clientId: order_by
+  dueDateDays: order_by
+  id: order_by
+  merchantId: order_by
+}
+"""
+update columns of table "scenarios"
+"""
+enum scenarios_update_column {
+  "column name"
+  clientId
+  "column name"
+  createdAt
+  "column name"
+  currency
+  "column name"
+  dueDateDays
+  "column name"
+  id
+  "column name"
+  imgUrl
+  "column name"
+  merchantId
+  "column name"
+  name
+  "column name"
+  notes
+  "column name"
+  paymentType
+  "column name"
+  updatedAt
+}
+"aggregate var_pop on columns"
+type scenarios_var_pop_fields {
+  clientId: Float
+  dueDateDays: Float
+  id: Float
+  merchantId: Float
+}
+"""
+order by var_pop() on columns of table "scenarios"
+"""
+input scenarios_var_pop_order_by {
+  clientId: order_by
+  dueDateDays: order_by
+  id: order_by
+  merchantId: order_by
+}
+"aggregate var_samp on columns"
+type scenarios_var_samp_fields {
+  clientId: Float
+  dueDateDays: Float
+  id: Float
+  merchantId: Float
+}
+"""
+order by var_samp() on columns of table "scenarios"
+"""
+input scenarios_var_samp_order_by {
+  clientId: order_by
+  dueDateDays: order_by
+  id: order_by
+  merchantId: order_by
+}
+"aggregate variance on columns"
+type scenarios_variance_fields {
+  clientId: Float
+  dueDateDays: Float
+  id: Float
+  merchantId: Float
+}
+"""
+order by variance() on columns of table "scenarios"
+"""
+input scenarios_variance_order_by {
+  clientId: order_by
+  dueDateDays: order_by
+  id: order_by
+  merchantId: order_by
+}
+type subscription_root {
+  """
+  fetch data from the table: "clients"
+  """
+  clients("distinct select on columns" distinct_on: [clients_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [clients_order_by!], "filter the rows returned" where: clients_bool_exp): [clients!]!
+  """
+  fetch aggregated fields from the table: "clients"
+  """
+  clients_aggregate("distinct select on columns" distinct_on: [clients_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [clients_order_by!], "filter the rows returned" where: clients_bool_exp): clients_aggregate!
+  """
+  fetch data from the table: "clients" using primary key columns
+  """
+  clients_by_pk(id: Int!): clients
+  """
+  fetch data from the table: "currency_types"
+  """
+  currency_types("distinct select on columns" distinct_on: [currency_types_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [currency_types_order_by!], "filter the rows returned" where: currency_types_bool_exp): [currency_types!]!
+  """
+  fetch aggregated fields from the table: "currency_types"
+  """
+  currency_types_aggregate("distinct select on columns" distinct_on: [currency_types_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [currency_types_order_by!], "filter the rows returned" where: currency_types_bool_exp): currency_types_aggregate!
+  """
+  fetch data from the table: "currency_types" using primary key columns
+  """
+  currency_types_by_pk(value: String!): currency_types
+  """
+  fetch data from the table: "invoice_items"
+  """
+  invoice_items("distinct select on columns" distinct_on: [invoice_items_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoice_items_order_by!], "filter the rows returned" where: invoice_items_bool_exp): [invoice_items!]!
+  """
+  fetch aggregated fields from the table: "invoice_items"
+  """
+  invoice_items_aggregate("distinct select on columns" distinct_on: [invoice_items_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoice_items_order_by!], "filter the rows returned" where: invoice_items_bool_exp): invoice_items_aggregate!
+  """
+  fetch data from the table: "invoice_items" using primary key columns
+  """
+  invoice_items_by_pk(id: Int!): invoice_items
+  "An array relationship"
+  invoices("distinct select on columns" distinct_on: [invoices_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoices_order_by!], "filter the rows returned" where: invoices_bool_exp): [invoices!]!
+  "An aggregate relationship"
+  invoices_aggregate("distinct select on columns" distinct_on: [invoices_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [invoices_order_by!], "filter the rows returned" where: invoices_bool_exp): invoices_aggregate!
+  """
+  fetch data from the table: "invoices" using primary key columns
+  """
+  invoices_by_pk(id: Int!): invoices
+  """
+  fetch data from the table: "merchants"
+  """
+  merchants("distinct select on columns" distinct_on: [merchants_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [merchants_order_by!], "filter the rows returned" where: merchants_bool_exp): [merchants!]!
+  """
+  fetch aggregated fields from the table: "merchants"
+  """
+  merchants_aggregate("distinct select on columns" distinct_on: [merchants_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [merchants_order_by!], "filter the rows returned" where: merchants_bool_exp): merchants_aggregate!
+  """
+  fetch data from the table: "merchants" using primary key columns
+  """
+  merchants_by_pk(id: Int!): merchants
+  """
+  fetch data from the table: "scenarios"
+  """
+  scenarios("distinct select on columns" distinct_on: [scenarios_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [scenarios_order_by!], "filter the rows returned" where: scenarios_bool_exp): [scenarios!]!
+  "An aggregate relationship"
+  scenarios_aggregate("distinct select on columns" distinct_on: [scenarios_select_column!], "limit the number of rows returned" limit: Int, "skip the first n rows. Use only with order_by" offset: Int, "sort the rows by one or more columns" order_by: [scenarios_order_by!], "filter the rows returned" where: scenarios_bool_exp): scenarios_aggregate!
+  """
+  fetch data from the table: "scenarios" using primary key columns
+  """
+  scenarios_by_pk(id: Int!): scenarios
+}
+scalar timestamp
+"""
+Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'.
+"""
+input timestamp_comparison_exp {
+  _eq: timestamp
+  _gt: timestamp
+  _gte: timestamp
+  _in: [timestamp!]
+  _is_null: Boolean
+  _lt: timestamp
+  _lte: timestamp
+  _neq: timestamp
+  _nin: [timestamp!]
+}

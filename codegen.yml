@@ -5,7 +5,7 @@ generates:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'
-    schema: 'http://localhost:8080/v1/graphql'
+    schema: './hasura/schema.graphql'
     documents: 'src/**/*.gql'
     config:
       withHooks: true
