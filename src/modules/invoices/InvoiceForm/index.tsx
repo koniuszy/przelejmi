@@ -32,6 +32,8 @@ enum Currency {
   Eur,
 }
 
+import { useScenarioQuery } from 'src/generated/hasura'
+
 import { FormField } from 'src/components/Form'
 import { errorToastContent } from 'src/lib/toastContent'
 

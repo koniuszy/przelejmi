@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { NextPage } from 'next'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -25,14 +25,14 @@ const CreateInvoice: FC = () => {
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItemCreateManyInvoiceInput[]>(() => {
     const initialArray = new Array(5)
       .fill(null)
-      .map(() => ({ name: '', price: 0, quantity: 0, vat: Vat.Percent_23 }))
+      .map(() => ({ name: '', price: 0, quantity: 0, vat: 'Vat.Percent_23' }))
 
     return [
       {
         name: 'Services',
         price: 100,
         quantity: getBusinessHoursInCurrentMonth(),
-        vat: Vat.Percent_23,
+        vat: 'Vat.Percent_23',
       },
       ...initialArray,
     ]

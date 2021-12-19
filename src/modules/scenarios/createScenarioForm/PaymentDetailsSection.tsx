@@ -2,6 +2,9 @@ import React, { FC } from 'react'
 
 import { Flex, Text, Divider, Button } from '@chakra-ui/react'
 
+enum Currency {}
+enum PaymentType {}
+
 const PaymentDetailsSection: FC<{
   paymentType: PaymentType
   onPaymentTypeChange: (data: PaymentType) => void

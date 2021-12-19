@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react'
 
+import { NextPage } from 'next'
+
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
@@ -20,6 +22,8 @@ import PaymentDetailsSection from 'scenarios/createScenarioForm/PaymentDetailsSe
 import SelectClientSection from 'scenarios/createScenarioForm/SelectClientSection'
 import SelectMerchantSection from 'scenarios/createScenarioForm/SelectMerchantSection'
 
+import { useCreateScenarioMutation } from 'src/generated/hasura'
+
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
 const CreateScenarioForm: FC = () => {
@@ -33,9 +37,9 @@ const CreateScenarioForm: FC = () => {
   const [name, setName] = useState('')
   const [clientId, setClientId] = useState<number | null>(null)
   const [merchantId, setMerchantId] = useState<number | null>(null)
-  const [currency, setCurrency] = useState(Currency.Pln)
+  const [currency, setCurrency] = useState('Currency.Pln')
   const [dueDateDays, setDueDateDays] = useState(5)
-  const [paymentType, setPaymentType] = useState(PaymentType.Transfer)
+  const [paymentType, setPaymentType] = useState('PaymentType.Transfer')
 
   const [createScenario, { loading }] = useCreateScenarioMutation({
     onCompleted() {
@@ -141,7 +145,7 @@ const CreateScenarioForm: FC = () => {
   )
 }
 
-const CreateScenarioPage: FC = () => (
+const CreateScenarioPage: NextPage = () => (
   <>
     <Head>
       <title>Create scenario | przelejmi</title>
