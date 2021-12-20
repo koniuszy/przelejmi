@@ -1,4 +1,6 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
+
+import { NextPage } from 'next'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -20,14 +22,15 @@ const EditMerchantForm: FC = () => {
   const { data, updateQuery } = useMerchantQuery({ variables: { id: { _eq: merchantId } } })
 
   const [updateMerchant, { loading }] = useUpdateMerchantMutation({
-    onCompleted({ update_Merchant }) {
-      if (!update_Merchant) throw new Error()
+    onCompleted({ update_merchants }) {
+      if (!update_merchants) throw new Error()
+
       toast({
         ...successToastContent,
         title: 'Client updated.',
       })
 
-      updateQuery((p) => ({ ...p, Merchant: update_Merchant.returning }))
+      updateQuery((p) => ({ ...p, merchants: update_merchants.returning }))
     },
     onError(err) {
       console.error(err)
@@ -58,7 +61,7 @@ const EditMerchantForm: FC = () => {
       </div>
     )
 
-  const { __typename, id, ...initialValues } = data.Merchant[0]
+  const { __typename, id, ...initialValues } = data.merchants[0]
   return (
     <MerchantForm
       isSubmitting={loading}
@@ -68,11 +71,7 @@ const EditMerchantForm: FC = () => {
   )
 }
 
-type SSGProps = {
-  merchantId: number
-}
-
-const EditMerchantFormPage: FC<SSGProps> = () => (
+const EditMerchantFormPage: NextPage = () => (
   <>
     <Head>
       <title>Edit merchant | przelejmi</title>

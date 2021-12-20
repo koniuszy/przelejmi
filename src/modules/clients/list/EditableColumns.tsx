@@ -2,24 +2,24 @@ import React, { FC } from 'react'
 
 import { Td, useToast } from '@chakra-ui/react'
 
-import { ClientFragment, Client_Set_Input, useUpdateClientMutation } from 'src/generated/hasura'
+import { ClientListQuery, Clients_Set_Input, useUpdateClientMutation } from 'src/generated/hasura'
 
 import Editable from 'src/components/Editable'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 import { ClientType } from 'src/types'
 
 const EditableColumns: FC<{
-  client: ClientFragment
+  client: ClientListQuery['clients'][number]
   isEditable: boolean
-  onClientUpdate: (client: ClientFragment) => void
+  onClientUpdate: (client: ClientListQuery['clients'][number]) => void
 }> = ({ client, isEditable, onClientUpdate }) => {
   const toast = useToast()
 
   const [updateClient] = useUpdateClientMutation({
-    onCompleted({ update_Client }) {
-      if (!update_Client) throw new Error()
+    onCompleted({ update_clients }) {
+      if (!update_clients) throw new Error()
       toast({ ...successToastContent, title: 'Client updated' })
-      update_Client.returning.map(onClientUpdate)
+      update_clients.returning.map((i) => onClientUpdate({ ...client, ...i }))
     },
     onError() {
       toast(errorToastContent)
@@ -27,7 +27,7 @@ const EditableColumns: FC<{
     },
   })
 
-  function handleUpdate(set: Client_Set_Input, id: number) {
+  function handleUpdate(set: Clients_Set_Input, id: number) {
     const [value] = Object.values(set)
 
     if (value === '' && set.vatId !== value) {

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ChakraProvider, extendTheme, Box, Flex, useToast } from '@chakra-ui/react'
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, HttpOptions } from '@apollo/client'
 import NextProgressBar from 'nextjs-progressbar'
 
 import ErrorBoundary from 'src/components/App/ErrorBoundary'
@@ -23,11 +23,24 @@ const extendedTheme = extendTheme({
   },
 })
 
-const client = new ApolloClient({
-  uri: 'https://przelejemi.hasura.app/v1/graphql',
-  cache: new InMemoryCache(),
-  defaultOptions: { query: { fetchPolicy: 'cache-first', errorPolicy: 'all' } },
-})
+const createApolloClient = (headers: HttpOptions['headers']) =>
+  new ApolloClient({
+    defaultOptions: { query: { errorPolicy: 'all' } },
+    link: new HttpLink({
+      uri: 'https://przelejemi.hasura.app/v1/graphql',
+      headers: {
+        ...headers,
+        'content-type': 'application/json',
+      },
+    }),
+    cache: new InMemoryCache(),
+  })
+
+const client = createApolloClient(
+  process.env.NODE_ENV === 'development'
+    ? { 'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_TOKEN }
+    : { Authorization: `Bearer ${null}` }
+)
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const toast = useToast()

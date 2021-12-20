@@ -22,6 +22,10 @@ query clientList(
 ) {
   clients(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
     ...Client
+    scenarios {
+      id
+      name
+    }
   }
   clients_aggregate {
     aggregate {

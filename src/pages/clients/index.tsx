@@ -1,89 +1,63 @@
 import React, { FC, useState } from 'react'
 
+import { NextPage } from 'next'
+
 import Head from 'next/head'
 
-import { Tr, Td } from '@chakra-ui/react'
+import { Tr, Td, useToast } from '@chakra-ui/react'
 
 import ActionsColumn from 'clients/list/ActionsColumn'
 import EditableColumns from 'clients/list/EditableColumns'
 
-import { useClientListQuery } from 'src/generated/hasura'
+import { ClientListQuery, ClientListQueryVariables, useClientListQuery } from 'src/generated/hasura'
 
-import Table, { TablePlaceholder } from 'src/components/Table'
-import { ClientType, DBConditions } from 'src/types'
+import Table, { TablePlaceholder, ColumnListItem } from 'src/components/Table'
+import { errorToastContent } from 'src/lib/toastContent'
 
-const PER_PAGE = 10
 const TITLE = 'Clients'
+const PER_PAGE = 10
 
-const ClientList: FC = () => {
+const ClientList: FC<{
+  listQuery: ClientListQuery
+  loading: boolean
+  currentPage: number
+  onPageChange: (p: number) => void
+  onListQueryUpdate: (data: Partial<ClientListQuery>) => void
+}> = ({ listQuery, loading, currentPage, onListQueryUpdate, onPageChange }) => {
   const [isEditable, setIsEditable] = useState(true)
+  const [columnList, setColumnList] = useState<ColumnListItem[]>([
+    `total: ${listQuery.clients_aggregate.aggregate?.totalCount}`,
+    { title: 'name', sort: null },
+    'type',
+    'vatId',
+    'address',
+    'post Code',
+    'city',
+    'country',
+    'actions',
+  ])
 
-  const { data, refetch, variables, loading, updateQuery } = useClientListQuery({
-    variables: { limit: PER_PAGE, offset: 0 },
-    fetchPolicy: 'cache-and-network',
-  })
-
-  if (!data) return <TablePlaceholder title={TITLE} />
-  const totalCount = Number(data.clients_aggregate.aggregate?.totalCount)
-  const clientList = data.clients
+  const totalCount = Number(listQuery.clients_aggregate.aggregate?.totalCount)
+  const clientList = listQuery.clients
 
   return (
     <Table
       emptyListHeading="No clients yet 🤫"
       createHref="clients/create"
       perPage={PER_PAGE}
-      totalRecordsCount={totalCount}
       list={clientList}
-      variables={variables}
-      refetch={refetch}
-      headerList={[
-        `total: ${totalCount}`,
-        { title: 'name', sortableKey: 'name' },
-        'type',
-        'vatId',
-        'address',
-        'post Code',
-        'city',
-        'country',
-        'actions',
-      ]}
-      filtersHeaderProps={{
+      columnList={columnList}
+      currentPage={currentPage}
+      totalRecordsCount={totalCount}
+      filtersProps={{
+        isFilterButtonActive: true,
+        showSyncingSpinner: loading,
+        filters: [],
         title: TITLE,
         isEditable: isEditable,
-        isLoading: loading,
-        filterOptions: {
-          // ...filters,
-          type: Object.values(ClientType),
-        },
         onEditableToggle: setIsEditable,
-        async onDrawerChange(newFilters) {
-          if (!newFilters) {
-            await refetch({ where: newFilters })
-            return
-          }
-
-          const { type, ...rest } = newFilters
-          let VatIdFilters = {}
-
-          if (type) {
-            if (type[DBConditions.notIncludes]) {
-              const [clientType] = type[DBConditions.notIncludes]
-
-              if (clientType === ClientType.company)
-                VatIdFilters = { VATId: { [DBConditions.equals]: null } }
-
-              if (clientType === ClientType.person)
-                VatIdFilters = {
-                  [DBConditions.not]: { VATId: { [DBConditions.equals]: null } },
-                }
-            }
-
-            if (type[DBConditions.includes]?.length === 0)
-              VatIdFilters = { VATId: { [DBConditions.includes]: [] } }
-          }
-
-          await refetch({ where: { ...rest, ...VatIdFilters } })
-        },
+        async onSearch(search) {},
+        async onDrawerChange(newFilters) {},
       }}
       rowRender={(item, index) => (
         <Tr key={item.id}>
@@ -92,45 +66,73 @@ const ClientList: FC = () => {
             client={item}
             isEditable={isEditable}
             onClientUpdate={(updatedClient) =>
-              updateQuery((prev) => ({
-                ...prev,
-                clients: prev.clients.map((item) =>
+              onListQueryUpdate({
+                clients: clientList.map((item) =>
                   item.id === updatedClient?.id ? updatedClient : item
                 ),
-              }))
+              })
             }
           />
           <ActionsColumn
             client={item}
             onClientDelete={(deletedClientId) =>
-              updateQuery((prev) => ({
-                ...prev,
+              onListQueryUpdate({
                 clients_aggregate: {
-                  ...prev.clients_aggregate,
+                  ...listQuery.clients_aggregate,
                   aggregate: {
-                    ...prev.clients_aggregate.aggregate,
-                    totalCount: Number(prev.clients_aggregate.aggregate?.totalCount) - 1,
+                    ...listQuery.clients_aggregate.aggregate,
+                    totalCount: Number(listQuery.clients_aggregate.aggregate?.totalCount) - 1,
                   },
                 },
-                clients: prev.clients.filter(({ id }) => id !== deletedClientId),
-              }))
+                clients: clientList.filter(({ id }) => id !== deletedClientId),
+              })
             }
           />
         </Tr>
       )}
+      onPageChange={onPageChange}
+      onColumnListChange={setColumnList}
     />
   )
 }
 
-const ClientListPage: FC = () => (
-  <>
-    <Head>
-      <title>Clients | przelejmi</title>
-    </Head>
-    <main>
-      <ClientList />
-    </main>
-  </>
-)
+const ClientListPage: NextPage = () => {
+  const toast = useToast()
+
+  const [variables, setVariables] = useState<ClientListQueryVariables>({
+    limit: PER_PAGE,
+    offset: 0,
+  })
+  const { data, loading, updateQuery } = useClientListQuery({
+    variables,
+    onError(err) {
+      console.error(err)
+      toast({ ...errorToastContent, title: err.message })
+    },
+  })
+
+  return (
+    <>
+      <Head>
+        <title>Clients | przelejmi</title>
+      </Head>
+      <main>
+        {data ? (
+          <ClientList
+            listQuery={data}
+            loading={loading}
+            currentPage={
+              variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
+            }
+            onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
+            onPageChange={(page) => setVariables((p) => ({ ...p, offset: PER_PAGE * (page - 1) }))}
+          />
+        ) : (
+          <TablePlaceholder title={TITLE} />
+        )}
+      </main>
+    </>
+  )
+}
 
 export default ClientListPage

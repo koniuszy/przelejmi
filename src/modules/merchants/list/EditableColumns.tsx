@@ -3,8 +3,8 @@ import React, { FC } from 'react'
 import { Td, useToast } from '@chakra-ui/react'
 
 import {
-  MerchantFragment,
-  Merchant_Set_Input,
+  MerchantListQuery,
+  Merchants_Set_Input,
   useUpdateMerchantMutation,
 } from 'src/generated/hasura'
 
@@ -13,16 +13,16 @@ import { errorToastContent, successToastContent, warningToastContent } from 'src
 
 const EditableColumns: FC<{
   isEditable: boolean
-  merchant: MerchantFragment
-  onMerchantUpdate: (updatedMerchant: MerchantFragment) => void
+  merchant: MerchantListQuery['merchants'][number]
+  onMerchantUpdate: (updatedMerchant: MerchantListQuery['merchants'][number]) => void
 }> = ({ isEditable, merchant, onMerchantUpdate }) => {
   const toast = useToast()
 
   const [updateMerchant] = useUpdateMerchantMutation({
-    onCompleted({ update_Merchant }) {
-      if (!update_Merchant) throw new Error()
+    onCompleted({ update_merchants }) {
+      if (!update_merchants) throw new Error()
       toast({ ...successToastContent, title: 'Merchant updated' })
-      update_Merchant.returning.map(onMerchantUpdate)
+      update_merchants.returning.map((i) => onMerchantUpdate({ ...merchant, ...i }))
     },
     onError() {
       toast(errorToastContent)
@@ -30,7 +30,7 @@ const EditableColumns: FC<{
     },
   })
 
-  function handleUpdate(set: Merchant_Set_Input, id: number) {
+  function handleUpdate(set: Merchants_Set_Input, id: number) {
     const [value] = Object.values(set)
 
     if (value === '' && set.vatId !== value) {

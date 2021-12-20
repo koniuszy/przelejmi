@@ -27,6 +27,10 @@ query merchantList(
 ) {
   merchants(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
     ...Merchant
+    scenarios {
+      name
+      id
+    }
   }
   merchants_aggregate {
     aggregate {

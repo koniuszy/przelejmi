@@ -21,7 +21,6 @@ const MerchantList: FC = () => {
 
   const { data, refetch, variables, loading, updateQuery } = useMerchantListQuery({
     variables: { offset: 0, limit: PER_PAGE },
-    fetchPolicy: 'cache-and-network',
     onError(err) {
       console.error(err)
       toast({ ...errorToastContent, title: err.message })
@@ -29,8 +28,8 @@ const MerchantList: FC = () => {
   })
 
   if (!data) return <TablePlaceholder title={TITLE} />
-  const totalCount = Number(data.Merchant_aggregate.aggregate?.totalCount)
-  const merchantList = data.Merchant
+  const totalCount = Number(data.merchants_aggregate.aggregate?.totalCount)
+  const merchantList = data.merchants
 
   return (
     <Table
@@ -39,8 +38,6 @@ const MerchantList: FC = () => {
       perPage={PER_PAGE}
       totalRecordsCount={totalCount}
       list={merchantList}
-      variables={variables}
-      refetch={refetch}
       filtersHeaderProps={{
         isLoading: loading,
         title: TITLE,
@@ -75,7 +72,7 @@ const MerchantList: FC = () => {
             onMerchantUpdate={(updatedMerchant) =>
               updateQuery((prev) => ({
                 ...prev,
-                Merchant: prev.Merchant.map((item) =>
+                merchants: prev.merchants.map((item) =>
                   item.id === updatedMerchant?.id ? updatedMerchant : item
                 ),
               }))
@@ -87,14 +84,14 @@ const MerchantList: FC = () => {
             onMerchantDelete={(deletedMerchantId) =>
               updateQuery((prev) => ({
                 ...prev,
-                Merchant_aggregate: {
-                  ...prev.Merchant_aggregate,
+                merchants_aggregate: {
+                  ...prev.merchants_aggregate,
                   aggregate: {
-                    ...prev.Merchant_aggregate.aggregate,
-                    totalCount: Number(prev.Merchant_aggregate.aggregate?.totalCount) - 1,
+                    ...prev.merchants_aggregate.aggregate,
+                    totalCount: Number(prev.merchants_aggregate.aggregate?.totalCount) - 1,
                   },
                 },
-                Merchant: prev.Merchant.filter(({ id }) => id !== deletedMerchantId),
+                merchants: prev.merchants.filter(({ id }) => id !== deletedMerchantId),
               }))
             }
           />

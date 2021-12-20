@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from 'react'
+import React, { FC, ReactElement } from 'react'
 
 import NextLink from 'next/link'
 
@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 
 import Pagination from './Pagination'
-import SortTh from './SortTh'
+import SortTh, { SortDirection } from './SortTh'
 import TableHeader, { TableHeaderPlaceholder, TableHeaderProps } from './TableHeader'
 
 export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
@@ -32,60 +32,46 @@ export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
   </>
 )
 
-// failed attempt of generic table
-// TODO: remove variables/refetch functions and add callbacks
+type SimpleColumn = string
+type SortableColumn = { title: string; sort: SortDirection | null }
+
+export type ColumnListItem = SimpleColumn | SortableColumn
+
 function Table<Item>({
-  filtersHeaderProps: { isLoading, onDrawerChange, ...filtersHeaderProps },
+  filtersProps,
   list,
   createHref,
   perPage,
   totalRecordsCount,
-  variables,
-  headerList,
-  refetch,
-  rowRender,
+  columnList,
   emptyListHeading,
+  currentPage,
+  rowRender,
+  onPageChange,
+  onColumnListChange,
 }: {
   perPage: number
   createHref: string
   totalRecordsCount: number
   emptyListHeading: string
   list: Item[]
-  filtersHeaderProps: Omit<TableHeaderProps, 'variables' | 'refetch' | 'searchKeys'>
-  headerList: Array<string | { title: string; sortableKey: string }>
+  filtersProps: TableHeaderProps
+  columnList: ColumnListItem[]
+  currentPage: number
+  onColumnListChange: (l: ColumnListItem[]) => void
   rowRender: (item: Item, index: number) => ReactElement
-  refetch: (params) => Promise<any>
-  variables: any
+  onPageChange: (page: number) => void
 }): ReactElement {
-  const [isRefetching, setIsRefetching] = useState(false)
-
-  async function handleRefetch(params) {
-    setIsRefetching(true)
-    await refetch(params)
-    setIsRefetching(false)
-  }
-
   return (
     <Box overflow="auto" maxW="100%">
-      <TableHeader
-        {...filtersHeaderProps}
-        isLoading={isLoading || isRefetching}
-        searchKeys={Object.keys(list[0] ?? {})}
-        variables={variables}
-        refetch={handleRefetch}
-        onDrawerChange={async (params) => {
-          setIsRefetching(true)
-          await onDrawerChange(params)
-          setIsRefetching(false)
-        }}
-      />
+      <TableHeader {...filtersProps} />
       <ChakraTable variant="simple">
         <TableCaption>
           {list.length > 0 ? (
             <Pagination
               totalPages={Math.ceil(totalRecordsCount / perPage)}
-              currentPage={variables?.skip ? (variables.skip + perPage) / perPage : 1}
-              onPageChange={(newPage) => handleRefetch({ skip: (newPage - 1) * perPage })}
+              currentPage={currentPage}
+              onPageChange={onPageChange}
             />
           ) : (
             <>
@@ -101,18 +87,24 @@ function Table<Item>({
 
         <Thead>
           <Tr>
-            {headerList.map((headerListItem, index) => (
+            {columnList.map((columnListItem, index) => (
               <React.Fragment key={index}>
-                {typeof headerListItem === 'string' ? (
-                  <Th whiteSpace="nowrap">{headerListItem}</Th>
+                {typeof columnListItem === 'string' ? (
+                  <Th whiteSpace="nowrap">{columnListItem}</Th>
                 ) : (
                   <SortTh
-                    title={headerListItem.title}
-                    sortOrder={
-                      variables?.orderBy ? variables.orderBy[headerListItem.sortableKey] : null
-                    }
-                    onChange={(sortOrder) =>
-                      handleRefetch({ orderBy: { [headerListItem.sortableKey]: sortOrder } })
+                    title={columnListItem.title}
+                    sortOrder={columnListItem.sort}
+                    onChange={(sort) =>
+                      onColumnListChange(
+                        columnList.map((i) =>
+                          typeof i === 'string'
+                            ? i
+                            : i.title === columnListItem.title
+                            ? { title: columnListItem.title, sort }
+                            : i
+                        )
+                      )
                     }
                   />
                 )}

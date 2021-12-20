@@ -12,19 +12,7 @@ import {
 } from '@chakra-ui/react'
 
 import DrawerFilters, { TriggerFiltersButton, Filters } from './DrawerFilters'
-import SearchInput, { Search, SearchInputPlaceholder } from './SearchInput'
-
-// export type Variables = Partial<PaginatedMerchantListQueryVariables> | undefined
-
-export type TableHeaderProps = {
-  title: string
-  isEditable: boolean
-  searchKeys: string[]
-  filterOptions: Record<string, string[]>
-  onEditableToggle: (v: boolean) => void
-  isLoading: boolean
-  onDrawerChange: (newFilters: Filters) => Promise<void>
-}
+import SearchInput, { SearchInputPlaceholder } from './SearchInput'
 
 export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (
   <Flex justifyContent="space-between" pb="5">
@@ -52,23 +40,28 @@ export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (
     </Flex>
   </Flex>
 )
+export type TableHeaderProps = {
+  title: string
+  isEditable: boolean
+  filters: Filters
+  showSyncingSpinner: boolean
+  isFilterButtonActive: boolean
+  onEditableToggle: (v: boolean) => void
+  onDrawerChange: (newFilters: Filters) => Promise<void>
+  onSearch: (v: string) => void
+}
 
-const TableHeader: FC<TableHeaderProps & { variables: any; refetch: (v: any) => Promise<any> }> = ({
+const TableHeader: FC<TableHeaderProps> = ({
   title,
-  variables,
   isEditable,
-  filterOptions,
-  refetch,
+  filters,
+  isFilterButtonActive,
+  showSyncingSpinner,
   onEditableToggle,
   onDrawerChange,
-  searchKeys,
-  isLoading,
+  onSearch,
 }) => {
   const drawerOptions = useDisclosure()
-
-  function handleFiltersRefetch(filters: Search | Filters) {
-    refetch({ where: filters })
-  }
 
   return (
     <Flex justifyContent="space-between" pb="5">
@@ -77,28 +70,17 @@ const TableHeader: FC<TableHeaderProps & { variables: any; refetch: (v: any) => 
       </Text>
 
       <Flex>
-        {isLoading && (
+        {showSyncingSpinner && (
           <Center pr="5">
             <Spinner />
           </Center>
         )}
         <Center pr="5">
-          <SearchInput
-            keyList={searchKeys}
-            prevFilters={variables?.where || {}}
-            onSearch={handleFiltersRefetch}
-          />
+          <SearchInput onSearch={onSearch} />
         </Center>
 
         <Center pr="5">
-          <TriggerFiltersButton
-            isActive={Boolean(
-              variables?.where &&
-                Object.keys(variables?.where).length > 0 &&
-                !Object.keys(variables?.where).includes('OR')
-            )}
-            onOpen={drawerOptions.onOpen}
-          />
+          <TriggerFiltersButton isActive={isFilterButtonActive} onOpen={drawerOptions.onOpen} />
         </Center>
 
         <Center>
@@ -116,9 +98,9 @@ const TableHeader: FC<TableHeaderProps & { variables: any; refetch: (v: any) => 
       </Flex>
 
       <DrawerFilters
-        filters={filterOptions}
-        disclosureOptions={drawerOptions}
-        prevFilters={variables?.where || {}}
+        filters={filters}
+        isOpen={drawerOptions.isOpen}
+        onClose={drawerOptions.onClose}
         onChange={onDrawerChange}
       />
     </Flex>

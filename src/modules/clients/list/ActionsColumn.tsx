@@ -16,14 +16,14 @@ import {
   ListItem,
 } from '@chakra-ui/react'
 
-import { ClientFragment, useDeleteClientMutation } from 'src/generated/hasura'
+import { ClientListQuery, useDeleteClientMutation } from 'src/generated/hasura'
 
 import Clipboard from 'src/components/Clipboard'
 import ConfirmationPopup from 'src/components/ConfirmationPopup'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const ActionsColumn: FC<{
-  client: ClientFragment
+  client: ClientListQuery['clients'][number]
   onClientDelete: (id: number) => void
 }> = ({ client, onClientDelete }) => {
   const toast = useToast()
@@ -122,18 +122,18 @@ const ActionsColumn: FC<{
           <ListItem fontWeight="600">{client.name}</ListItem>
         </UnorderedList>
 
-        {/* {Boolean(client.Scenario.length) && (
+        {Boolean(client.scenarios.length) && (
           <>
             <Text>You are going to delete scenarios:</Text>
             <UnorderedList>
-              {client.Scenario.map((i) => (
+              {client.scenarios.map((i) => (
                 <ListItem fontWeight="600" key={i.id}>
                   {i.name}
                 </ListItem>
               ))}
             </UnorderedList>
           </>
-        )} */}
+        )}
       </ConfirmationPopup>
     </Td>
   )

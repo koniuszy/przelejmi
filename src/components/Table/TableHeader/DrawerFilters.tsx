@@ -22,8 +22,6 @@ import {
 
 import debounce from 'lodash.debounce'
 
-import { DBConditions } from 'src/types'
-
 export const TriggerFiltersButton: FC<{ onOpen: () => void; isActive: boolean }> = ({
   onOpen,
   isActive,
@@ -45,71 +43,25 @@ export const TriggerFiltersButton: FC<{ onOpen: () => void; isActive: boolean }>
   </Button>
 )
 
-export type Filters = Record<string, any> | null
-
-function getInitialFilters(filters: Record<string, string[]>) {
-  return Object.entries(filters).map((entry) => {
-    const [name, optionList] = entry
-    return { name, optionList: optionList.map((name) => ({ name, checked: true })) }
-  })
-}
+export type Filters = { name: string; options: { name: string; checked: boolean }[] }[]
 
 const DrawerFilters: FC<{
-  disclosureOptions: { onClose: (() => void) & (() => void); isOpen: boolean }
-  filters: Record<string, string[]>
-  prevFilters: Record<string, any>
+  isOpen: boolean
+  filters: Filters
+  onClose: () => void
   onChange: (where: Filters) => void
-}> = ({ filters, disclosureOptions, onChange, prevFilters }) => {
-  const [filterList, setFilterList] = useState(getInitialFilters(filters))
+}> = ({ filters, onClose, isOpen, onChange }) => {
+  const [filterList, setFilterList] = useState(filters)
 
-  function handleFiltersChange(newFilterList: typeof filterList, prevFilters: Record<string, any>) {
-    const touchedFilterList = newFilterList.filter((filterListItem) =>
-      filterListItem.optionList.find((item) => !item.checked)
-    )
-
-    if (touchedFilterList.length === 0) {
-      const searchFilters = prevFilters.OR ? { OR: prevFilters.OR } : {}
-      onChange(searchFilters)
-      return
-    }
-
-    const groupedTouched = touchedFilterList.map((item) => {
-      const groupedOptionList = item.optionList.reduce(
-        (acc, item) => {
-          acc[item.checked ? 'checked' : 'unchecked'].push(item.name)
-          return acc
-        },
-        {
-          checked: [] as string[],
-          unchecked: [] as string[],
-        }
-      )
-
-      return { name: item.name, groupedOptionList }
-    })
-
-    const parsedFilters = groupedTouched.reduce<Filters>((acc, item) => {
-      const { checked, unchecked } = item.groupedOptionList
-      const filter =
-        checked.length < unchecked.length
-          ? { [DBConditions.includes]: checked }
-          : { [DBConditions.notIncludes]: unchecked }
-
-      return { ...acc, [item.name]: filter }
-    }, {})
-
-    onChange({ ...prevFilters, ...parsedFilters })
-  }
-
-  const [debouncedFiltersChange] = useState(() => debounce(handleFiltersChange, 200))
+  const [handleDebouncedFiltersChange] = useState(() => debounce(onChange, 200))
 
   function handleOptionListChange(newFilterList: typeof filterList) {
     setFilterList(newFilterList)
-    debouncedFiltersChange(newFilterList, prevFilters)
+    handleDebouncedFiltersChange(newFilterList)
   }
 
   return (
-    <Drawer placement="right" isOpen={disclosureOptions.isOpen} onClose={disclosureOptions.onClose}>
+    <Drawer placement="right" isOpen={isOpen} onClose={onClose}>
       <DrawerOverlay>
         <DrawerContent>
           <DrawerCloseButton />
@@ -117,11 +69,11 @@ const DrawerFilters: FC<{
 
           <DrawerBody>
             <Accordion allowMultiple defaultIndex={[0]}>
-              {filterList.map(({ name, optionList }) => (
-                <AccordionItem key={name}>
+              {filterList.map((i) => (
+                <AccordionItem key={i.name}>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      {name.charAt(0).toUpperCase() + name.slice(1)}
+                      {i.name.charAt(0).toUpperCase() + i.name.slice(1)}
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -131,20 +83,18 @@ const DrawerFilters: FC<{
                       <Checkbox
                         size="sm"
                         colorScheme="green"
-                        isChecked={
-                          !optionList.find((optionListItem) => optionListItem.checked === false)
-                        }
+                        isChecked={!i.options.find((item) => item.checked === false)}
                         onChange={(e) =>
                           handleOptionListChange(
                             filterList.map((filterListItem) => ({
                               ...filterListItem,
-                              optionList:
-                                filterListItem.name === name
-                                  ? filterListItem.optionList.map((optionListItem) => ({
+                              options:
+                                filterListItem.name === i.name
+                                  ? filterListItem.options.map((optionListItem) => ({
                                       ...optionListItem,
                                       checked: e.target.checked,
                                     }))
-                                  : filterListItem.optionList,
+                                  : filterListItem.options,
                             }))
                           )
                         }
@@ -152,7 +102,7 @@ const DrawerFilters: FC<{
                         Select all
                       </Checkbox>
 
-                      {optionList.map((optionListItem) => (
+                      {i.options.map((optionListItem) => (
                         <Checkbox
                           size="lg"
                           colorScheme="green"
@@ -162,16 +112,16 @@ const DrawerFilters: FC<{
                             handleOptionListChange(
                               filterList.map((filterListItem) => ({
                                 ...filterListItem,
-                                optionList:
-                                  filterListItem.name === name
-                                    ? filterListItem.optionList.map((item) => ({
+                                options:
+                                  filterListItem.name === i.name
+                                    ? filterListItem.options.map((item) => ({
                                         ...item,
                                         checked:
                                           item.name === optionListItem.name
                                             ? e.target.checked
                                             : item.checked,
                                       }))
-                                    : filterListItem.optionList,
+                                    : filterListItem.options,
                               }))
                             )
                           }
@@ -191,8 +141,12 @@ const DrawerFilters: FC<{
               variant="outline"
               mr={3}
               onClick={() => {
-                onChange(null)
-                setFilterList(getInitialFilters(filters))
+                const allChecked = filters.map((i) => ({
+                  ...i,
+                  options: i.options.map((o) => ({ ...o, checked: true })),
+                }))
+                onChange(allChecked)
+                setFilterList(allChecked)
               }}
             >
               Reset
