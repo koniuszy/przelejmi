@@ -5,10 +5,11 @@ import { useRouter } from 'next/router'
 import { Center, Spinner } from '@chakra-ui/react'
 
 import { Auth0Provider } from '@auth0/auth0-react'
-import { motion } from 'framer-motion'
 
 import { AUTH } from 'src/constants'
 import { getToken, useSession } from 'src/lib/auth'
+
+import FadeInAnimation from '../FadeInAnimation'
 
 export const SessionProvider: FC = ({ children }) => {
   if (!process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID)
@@ -49,14 +50,5 @@ const OwnSessionProvider: FC = ({ children }) => {
       </Center>
     )
 
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  return (
-    <motion.div
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 40, opacity: 0 }}
-    >
-      {children}
-    </motion.div>
-  )
+  return <FadeInAnimation>{children}</FadeInAnimation>
 }
