@@ -48,7 +48,7 @@ const HasuraGqlProvider: FC = ({ children }) => {
   })
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
-  if (!client) return <>{client}</>
+  if (!client) return <>{children}</>
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>
 }
