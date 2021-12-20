@@ -4,10 +4,10 @@ import NextLink from 'next/link'
 
 import { Button } from '@chakra-ui/react'
 
-import useSession from 'src/hooks/useSession'
+import { useSession } from 'src/lib/auth'
 
 const ActionButtons: FC<{ isSession: boolean }> = ({ isSession }) => {
-  const { signIn, signOut } = useSession()
+  const { login, logOut } = useSession()
 
   if (!isSession)
     return (
@@ -15,7 +15,7 @@ const ActionButtons: FC<{ isSession: boolean }> = ({ isSession }) => {
         colorScheme="teal"
         size="lg"
         onClick={() => {
-          signIn()
+          login()
         }}
       >
         Sign in
@@ -24,13 +24,7 @@ const ActionButtons: FC<{ isSession: boolean }> = ({ isSession }) => {
 
   return (
     <>
-      <Button
-        colorScheme="red"
-        size="sm"
-        onClick={() => {
-          signOut({ callbackUrl: '/' })
-        }}
-      >
+      <Button colorScheme="red" size="sm" onClick={logOut}>
         Sign out
       </Button>
 

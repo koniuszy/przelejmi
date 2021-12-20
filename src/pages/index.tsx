@@ -6,7 +6,7 @@ import Head from 'next/head'
 import { CalendarIcon, TimeIcon, UnlockIcon } from '@chakra-ui/icons'
 import { Center, List, ListIcon, ListItem, Spinner, Box, Flex } from '@chakra-ui/react'
 
-import useSession from 'src/hooks/useSession'
+import { useSession } from 'src/lib/auth'
 
 const AnimationSection = dynamic(() => import('src/components/Home/AnimationSection'))
 

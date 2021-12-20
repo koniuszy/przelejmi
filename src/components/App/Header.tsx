@@ -20,7 +20,7 @@ import {
   Box,
 } from '@chakra-ui/react'
 
-import useSession from 'src/hooks/useSession'
+import { useSession } from 'src/lib/auth'
 
 const Logo = () => {
   const { push } = useRouter()
@@ -53,7 +53,7 @@ const Logo = () => {
 
 const Header: FC = () => {
   const { pathname } = useRouter()
-  const { user, signOut } = useSession()
+  const { user, logOut } = useSession()
 
   return (
     <Box h="fit-content">
@@ -135,7 +135,7 @@ const Header: FC = () => {
                     <NextLink href="/preferences">
                       <MenuItem>Preferences</MenuItem>
                     </NextLink>
-                    <MenuItem color="red" _hover={{ color: 'white', bg: 'red' }} onClick={signOut}>
+                    <MenuItem color="red" _hover={{ color: 'white', bg: 'red' }} onClick={logOut}>
                       Sign out
                     </MenuItem>
                   </MenuList>

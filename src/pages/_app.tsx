@@ -9,6 +9,7 @@ import ErrorBoundary from 'src/components/App/ErrorBoundary'
 import Footer from 'src/components/App/Footer'
 import Header from 'src/components/App/Header'
 import { SessionProvider } from 'src/components/App/Session'
+import { getToken } from 'src/lib/auth'
 import { errorToastContent } from 'src/lib/toastContent'
 
 const extendedTheme = extendTheme({
@@ -30,6 +31,7 @@ const createApolloClient = (headers: HttpOptions['headers']) =>
       uri: 'https://przelejemi.hasura.app/v1/graphql',
       headers: {
         ...headers,
+        Authorization: `Bearer ${getToken()}`,
         'content-type': 'application/json',
       },
     }),
@@ -39,7 +41,7 @@ const createApolloClient = (headers: HttpOptions['headers']) =>
 const client = createApolloClient(
   process.env.NODE_ENV === 'development'
     ? { 'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_TOKEN }
-    : { Authorization: `Bearer ${null}` }
+    : {}
 )
 
 function MyApp({ Component, pageProps: { ...pageProps } }) {
@@ -54,19 +56,19 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
         height={3}
       />
 
-      <SessionProvider>
-        <ApolloProvider client={client}>
-          <ChakraProvider theme={extendedTheme}>
-            <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">
-              <Header />
-              <Box overflowY="scroll" overflowX="hidden" mb="auto" w="100%">
+      <ApolloProvider client={client}>
+        <ChakraProvider theme={extendedTheme}>
+          <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">
+            <Header />
+            <Box overflowY="scroll" overflowX="hidden" mb="auto" w="100%">
+              <SessionProvider>
                 <Component {...pageProps} />
-              </Box>
-              <Footer />
-            </Flex>
-          </ChakraProvider>
-        </ApolloProvider>
-      </SessionProvider>
+              </SessionProvider>
+            </Box>
+            <Footer />
+          </Flex>
+        </ChakraProvider>
+      </ApolloProvider>
     </ErrorBoundary>
   )
 }

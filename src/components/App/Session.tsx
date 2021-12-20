@@ -1,8 +1,14 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
-import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
+import { Center, Spinner } from '@chakra-ui/react'
+
+import { Auth0Provider } from '@auth0/auth0-react'
+import { motion } from 'framer-motion'
+
+import { AUTH } from 'src/constants'
+import { getToken, useSession } from 'src/lib/auth'
 
 export const SessionProvider: FC = ({ children }) => {
   if (!process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID)
@@ -10,10 +16,10 @@ export const SessionProvider: FC = ({ children }) => {
 
   return (
     <Auth0Provider
-      domain="dev-h4l3tn-y.us.auth0.com"
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
-      redirectUri={process.env.VERCEL_URL || 'http://localhost:3000'}
-      audience="https://dev-h4l3tn-y.us.auth0.com/api/v2/"
+      redirectUri={AUTH.redirectUri}
+      domain={AUTH.domain}
+      audience={AUTH.audience}
       scope="read:current_user update:current_user_metadata"
     >
       <OwnSessionProvider>{children}</OwnSessionProvider>
@@ -23,20 +29,34 @@ export const SessionProvider: FC = ({ children }) => {
 
 const OwnSessionProvider: FC = ({ children }) => {
   const router = useRouter()
-  const { isAuthenticated, isLoading, loginWithRedirect, user, getAccessTokenSilently } = useAuth0()
-
-  if (isAuthenticated) {
-    getAccessTokenSilently({ audience: 'https://dev-h4l3tn-y.us.auth0.com/api/v2/' }).then(
-      console.log
-    )
-    console.log(user)
-  }
+  const { isAuthenticated, isLoading, login, decodeToken } = useSession()
+  const [, setIsDecoding] = useState(false)
 
   useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      setIsDecoding(true)
+      decodeToken().then(() => setIsDecoding(false))
+    }
+
     if (isLoading || router.pathname === '/') return
-    if (!isAuthenticated) loginWithRedirect()
+    if (!isAuthenticated) login()
   }, [isAuthenticated, isLoading])
 
+  if (!getToken())
+    return (
+      <Center mt={10}>
+        <Spinner />
+      </Center>
+    )
+
   // eslint-disable-next-line react/jsx-no-useless-fragment
-  return <>{children}</>
+  return (
+    <motion.div
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 40, opacity: 0 }}
+    >
+      {children}
+    </motion.div>
+  )
 }
