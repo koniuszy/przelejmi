@@ -2,10 +2,20 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 import { AUTH } from 'src/constants'
 
-let tokenInMemory: string | null = null
+const TOKEN_STORAGE_KEY = 'hasura/token'
 
 export function getToken() {
-  return tokenInMemory
+  if (typeof sessionStorage === 'undefined') return null
+  return sessionStorage.getItem(TOKEN_STORAGE_KEY)
+}
+
+function setToken(token: string | null) {
+  if (!token) {
+    sessionStorage.removeItem(TOKEN_STORAGE_KEY)
+    return
+  }
+
+  sessionStorage.setItem(TOKEN_STORAGE_KEY, token)
 }
 
 export function useSession() {
@@ -16,14 +26,14 @@ export function useSession() {
     user,
     isLoading,
     isAuthenticated,
-    token: tokenInMemory,
+    token: getToken(),
     login: loginWithRedirect,
     async decodeToken() {
       const token = await getAccessTokenSilently()
-      tokenInMemory = token
+      setToken(token)
     },
     logOut() {
-      tokenInMemory = null
+      setToken(null)
       logout({ returnTo: AUTH.redirectUri })
     },
   }

@@ -43,7 +43,7 @@ const OwnSessionProvider: FC = ({ children }) => {
     if (isAuthenticated) handleDecodeToken()
   }, [isAuthenticated, router.pathname, isLoading])
 
-  if (!getToken() && router.pathname !== '/')
+  if ((!getToken() || !isAuthenticated) && router.pathname !== '/')
     return (
       <Center mt={10}>
         <Spinner />
