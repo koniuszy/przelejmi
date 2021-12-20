@@ -9,7 +9,7 @@ import ErrorBoundary from 'src/components/App/ErrorBoundary'
 import Footer from 'src/components/App/Footer'
 import Header from 'src/components/App/Header'
 import { SessionProvider } from 'src/components/App/Session'
-import { getToken } from 'src/lib/auth'
+import { getToken, useSession } from 'src/lib/auth'
 import { errorToastContent } from 'src/lib/toastContent'
 
 const extendedTheme = extendTheme({
@@ -24,12 +24,14 @@ const extendedTheme = extendTheme({
   },
 })
 
-const GqlProvider: FC = ({ children }) => {
+const HasuraGqlProvider: FC = ({ children }) => {
+  const { token } = useSession()
   const [client] = useState(() => {
     const adminHeaders =
       process.env.NODE_ENV === 'development'
         ? { 'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_TOKEN }
         : {}
+    if (!token && process.env.NODE_ENV === 'production') return null
 
     return new ApolloClient({
       defaultOptions: { query: { errorPolicy: 'all' } },
@@ -44,6 +46,9 @@ const GqlProvider: FC = ({ children }) => {
       cache: new InMemoryCache(),
     })
   })
+
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  if (!client) return <>{client}</>
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>
 }
@@ -65,9 +70,9 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
           <Header />
           <Box overflowY="scroll" overflowX="hidden" mb="auto" w="100%">
             <SessionProvider>
-              <GqlProvider>
+              <HasuraGqlProvider>
                 <Component {...pageProps} />
-              </GqlProvider>
+              </HasuraGqlProvider>
             </SessionProvider>
           </Box>
           <Footer />
