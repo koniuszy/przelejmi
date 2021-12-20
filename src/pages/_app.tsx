@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { FC, useState } from 'react'
 
 import { ChakraProvider, extendTheme, Box, Flex, useToast } from '@chakra-ui/react'
 
-import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, HttpOptions } from '@apollo/client'
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client'
 import NextProgressBar from 'nextjs-progressbar'
 
 import ErrorBoundary from 'src/components/App/ErrorBoundary'
@@ -24,25 +24,29 @@ const extendedTheme = extendTheme({
   },
 })
 
-const createApolloClient = (headers: HttpOptions['headers']) =>
-  new ApolloClient({
-    defaultOptions: { query: { errorPolicy: 'all' } },
-    link: new HttpLink({
-      uri: 'https://przelejemi.hasura.app/v1/graphql',
-      headers: {
-        ...headers,
-        Authorization: `Bearer ${getToken()}`,
-        'content-type': 'application/json',
-      },
-    }),
-    cache: new InMemoryCache(),
+const GqlProvider: FC = ({ children }) => {
+  const [client] = useState(() => {
+    const adminHeaders =
+      process.env.NODE_ENV === 'development'
+        ? { 'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_TOKEN }
+        : {}
+
+    return new ApolloClient({
+      defaultOptions: { query: { errorPolicy: 'all' } },
+      link: new HttpLink({
+        uri: 'https://przelejemi.hasura.app/v1/graphql',
+        headers: {
+          ...adminHeaders,
+          Authorization: `Bearer ${getToken()}`,
+          'content-type': 'application/json',
+        },
+      }),
+      cache: new InMemoryCache(),
+    })
   })
 
-const client = createApolloClient(
-  process.env.NODE_ENV === 'development'
-    ? { 'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_TOKEN }
-    : {}
-)
+  return <ApolloProvider client={client}>{children}</ApolloProvider>
+}
 
 function MyApp({ Component, pageProps: { ...pageProps } }) {
   const toast = useToast()
@@ -56,19 +60,19 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
         height={3}
       />
 
-      <ApolloProvider client={client}>
-        <ChakraProvider theme={extendedTheme}>
-          <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">
-            <Header />
-            <Box overflowY="scroll" overflowX="hidden" mb="auto" w="100%">
-              <SessionProvider>
+      <ChakraProvider theme={extendedTheme}>
+        <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">
+          <Header />
+          <Box overflowY="scroll" overflowX="hidden" mb="auto" w="100%">
+            <SessionProvider>
+              <GqlProvider>
                 <Component {...pageProps} />
-              </SessionProvider>
-            </Box>
-            <Footer />
-          </Flex>
-        </ChakraProvider>
-      </ApolloProvider>
+              </GqlProvider>
+            </SessionProvider>
+          </Box>
+          <Footer />
+        </Flex>
+      </ChakraProvider>
     </ErrorBoundary>
   )
 }

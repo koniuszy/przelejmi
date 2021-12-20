@@ -11,7 +11,7 @@ import { useSession } from 'src/lib/auth'
 const AnimationSection = dynamic(() => import('src/components/Home/AnimationSection'))
 
 const HomePage: NextPage = () => {
-  const { user, isLoading } = useSession()
+  const { token, isLoading } = useSession()
 
   return (
     <>
@@ -42,7 +42,7 @@ const HomePage: NextPage = () => {
                 <Spinner />
               </Center>
             ) : (
-              <AnimationSection isSession={Boolean(user)} />
+              <AnimationSection isLoggedIn={Boolean(token)} />
             )}
           </Box>
         </Flex>

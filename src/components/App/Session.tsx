@@ -33,13 +33,15 @@ const OwnSessionProvider: FC = ({ children }) => {
   const { isAuthenticated, isLoading, login, decodeToken } = useSession()
   const [, setIsDecoding] = useState(false)
 
-  useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      setIsDecoding(true)
-      decodeToken().then(() => setIsDecoding(false))
-    }
+  function handleDecodeToken() {
+    setIsDecoding(true)
+    decodeToken().then(() => setIsDecoding(false))
+  }
 
-    if (isLoading || router.pathname === '/') return
+  useEffect(() => {
+    if (isLoading) return
+
+    if (isAuthenticated) handleDecodeToken()
     if (!isAuthenticated) login()
   }, [isAuthenticated, isLoading])
 
