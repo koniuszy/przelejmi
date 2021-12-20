@@ -127,7 +127,7 @@ const Header: FC = () => {
           </Menu>
 
           <Center>
-            <Avatar mx={5} zIndex={20} size="sm" name={user?.name || ''} src={user?.image || ''}>
+            <Avatar mx={5} zIndex={20} size="sm" name={user?.name || ''} src={user?.picture || ''}>
               <AvatarBadge _hover={{ bg: 'gray.700' }} bg="black" cursor="pointer">
                 <Menu>
                   <MenuButton color="white" as={ChevronDownIcon} />
@@ -135,11 +135,7 @@ const Header: FC = () => {
                     <NextLink href="/preferences">
                       <MenuItem>Preferences</MenuItem>
                     </NextLink>
-                    <MenuItem
-                      color="red"
-                      _hover={{ color: 'white', bg: 'red' }}
-                      onClick={() => signOut({ callbackUrl: '/' })}
-                    >
+                    <MenuItem color="red" _hover={{ color: 'white', bg: 'red' }} onClick={signOut}>
                       Sign out
                     </MenuItem>
                   </MenuList>

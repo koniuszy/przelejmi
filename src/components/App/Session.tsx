@@ -1,46 +1,42 @@
-import { createContext, FC, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 
 import { useRouter } from 'next/router'
 
-import {
-  useSession,
-  SessionProvider as NextAuthProvider,
-  SessionContextValue,
-} from 'next-auth/react'
+import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
 
-export const sessionContext = createContext<SessionContextValue>({
-  status: 'loading',
-  data: null,
-})
+export const SessionProvider: FC = ({ children }) => {
+  if (!process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID)
+    throw new Error('missing process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID')
 
-export const SessionProvider: FC<{ session: any }> = (props) => (
-  <NextAuthProvider session={props.session}>
-    <OwnSessionProvider>{props.children}</OwnSessionProvider>
-  </NextAuthProvider>
-)
+  return (
+    <Auth0Provider
+      domain="dev-h4l3tn-y.us.auth0.com"
+      clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
+      redirectUri={process.env.VERCEL_URL || 'http://localhost:3000'}
+      audience="https://dev-h4l3tn-y.us.auth0.com/api/v2/"
+      scope="read:current_user update:current_user_metadata"
+    >
+      <OwnSessionProvider>{children}</OwnSessionProvider>
+    </Auth0Provider>
+  )
+}
 
-const OwnSessionProvider: FC = (props) => {
-  // const session = useSession({ required: false })
-  const session: SessionContextValue = {
-    status: 'authenticated' as const,
-    data: {
-      expires: 'never',
-      user: {
-        email: 'test@.com',
-        image:
-          'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/06/Itachi-Cropped.jpg?q=50&fit=crop&w=960&h=500&dpr=1.5',
-      },
-    },
-  }
+const OwnSessionProvider: FC = ({ children }) => {
   const router = useRouter()
+  const { isAuthenticated, isLoading, loginWithRedirect, user, getAccessTokenSilently } = useAuth0()
+
+  if (isAuthenticated) {
+    getAccessTokenSilently({ audience: 'https://dev-h4l3tn-y.us.auth0.com/api/v2/' }).then(
+      console.log
+    )
+    console.log(user)
+  }
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') return
+    if (isLoading || router.pathname === '/') return
+    if (!isAuthenticated) loginWithRedirect()
+  }, [isAuthenticated, isLoading])
 
-    // if (session.status === 'loading' || router.pathname === '/') return
-    // if (session.status === 'unauthenticated')
-    //   router.push({ pathname: '/api/auth/signin', query: { callbackUrl: window.location.href } })
-  }, [session.status, router.pathname])
-
-  return <sessionContext.Provider value={session}>{props.children}</sessionContext.Provider>
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <>{children}</>
 }

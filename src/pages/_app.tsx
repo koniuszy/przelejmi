@@ -42,7 +42,7 @@ const client = createApolloClient(
     : { Authorization: `Bearer ${null}` }
 )
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({ Component, pageProps: { ...pageProps } }) {
   const toast = useToast()
 
   return (
@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         height={3}
       />
 
-      <SessionProvider session={session}>
+      <SessionProvider>
         <ApolloProvider client={client}>
           <ChakraProvider theme={extendedTheme}>
             <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">
