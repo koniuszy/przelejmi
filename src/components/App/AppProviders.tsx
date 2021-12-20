@@ -12,7 +12,7 @@ import { getToken, useSession } from 'src/lib/auth'
 
 import FadeInAnimation from '../FadeInAnimation'
 
-export const SessionProvider: FC = ({ children }) => {
+const AppProviders: FC = ({ children }) => {
   if (!process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID)
     throw new Error('missing process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID')
 
@@ -85,3 +85,5 @@ const OwnSessionProvider: FC = ({ children }) => {
     </HasuraGqlProvider>
   )
 }
+
+export default AppProviders

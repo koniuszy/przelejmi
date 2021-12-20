@@ -2,10 +2,10 @@ import { ChakraProvider, extendTheme, Box, Flex, useToast } from '@chakra-ui/rea
 
 import NextProgressBar from 'nextjs-progressbar'
 
+import AppProviders from 'src/components/App/AppProviders'
 import ErrorBoundary from 'src/components/App/ErrorBoundary'
 import Footer from 'src/components/App/Footer'
 import Header from 'src/components/App/Header'
-import { SessionProvider } from 'src/components/App/Session'
 import { errorToastContent } from 'src/lib/toastContent'
 
 const extendedTheme = extendTheme({
@@ -36,9 +36,9 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
         <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">
           <Header />
           <Box overflowY="scroll" overflowX="hidden" mb="auto" w="100%">
-            <SessionProvider>
+            <AppProviders>
               <Component {...pageProps} />
-            </SessionProvider>
+            </AppProviders>
           </Box>
           <Footer />
         </Flex>
