@@ -37,7 +37,7 @@ const ScenarioList: FC = () => {
   const router = useRouter()
   const { data } = useScenarioListQuery({ fetchPolicy: 'cache-and-network' })
 
-  if (!data?.scenarioList)
+  if (!data?.scenarios)
     return (
       <SimpleGrid columns={3} gap={10}>
         {new Array(6).fill(null).map((i, index) => (
@@ -46,7 +46,7 @@ const ScenarioList: FC = () => {
       </SimpleGrid>
     )
 
-  if (data.scenarioList.length === 0) {
+  if (data.scenarios.length === 0) {
     return (
       <Center mt={10} display="flex" flexDirection="column">
         <Heading as="h2">No scenarios yet 🤫</Heading>
@@ -61,7 +61,7 @@ const ScenarioList: FC = () => {
 
   return (
     <SimpleGrid as="ul" columns={3} gap={10}>
-      {data.scenarioList.map((i, index) => (
+      {data.scenarios.map((i, index) => (
         <ImageBox key={index}>
           <Image
             transition="ease opacity 150ms"

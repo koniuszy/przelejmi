@@ -24,9 +24,11 @@ const ClientList: FC<{
   onPageChange: (p: number) => void
   onListQueryUpdate: (data: Partial<ClientListQuery>) => void
 }> = ({ listQuery, loading, currentPage, onListQueryUpdate, onPageChange }) => {
+  const totalCount = Number(listQuery.clients_aggregate.aggregate?.totalCount)
+
   const [isEditable, setIsEditable] = useState(true)
   const [columnList, setColumnList] = useState<ColumnListItem[]>([
-    `total: ${listQuery.clients_aggregate.aggregate?.totalCount}`,
+    `total: ${totalCount}`,
     { title: 'name', sort: null },
     'type',
     'vatId',
@@ -37,7 +39,6 @@ const ClientList: FC<{
     'actions',
   ])
 
-  const totalCount = Number(listQuery.clients_aggregate.aggregate?.totalCount)
   const clientList = listQuery.clients
 
   return (
@@ -81,7 +82,7 @@ const ClientList: FC<{
                   ...listQuery.clients_aggregate,
                   aggregate: {
                     ...listQuery.clients_aggregate.aggregate,
-                    totalCount: Number(listQuery.clients_aggregate.aggregate?.totalCount) - 1,
+                    totalCount: totalCount - 1,
                   },
                 },
                 clients: clientList.filter(({ id }) => id !== deletedClientId),

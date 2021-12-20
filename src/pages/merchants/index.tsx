@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react'
 
+import { NextPage } from 'next'
+
 import Head from 'next/head'
 
 import { Tr, Td, useToast } from '@chakra-ui/react'
@@ -7,29 +9,39 @@ import { Tr, Td, useToast } from '@chakra-ui/react'
 import ActionsColumn from 'merchants/list/ActionsColumn'
 import EditableColumns from 'merchants/list/EditableColumns'
 
-import { useMerchantListQuery } from 'src/generated/hasura'
+import {
+  MerchantListQueryVariables,
+  useMerchantListQuery,
+  MerchantListQuery,
+} from 'src/generated/hasura'
 
-import Table, { TablePlaceholder } from 'src/components/Table'
+import Table, { ColumnListItem, TablePlaceholder } from 'src/components/Table'
 import { errorToastContent } from 'src/lib/toastContent'
 
 const TITLE = 'Merchants'
 const PER_PAGE = 10
 
-const MerchantList: FC = () => {
+const MerchantList: FC<{
+  listQuery: MerchantListQuery
+  loading: boolean
+  currentPage: number
+  onPageChange: (p: number) => void
+  onListQueryUpdate: (data: Partial<MerchantListQuery>) => void
+}> = ({ listQuery, loading, currentPage, onListQueryUpdate, onPageChange }) => {
+  const totalCount = Number(listQuery.merchants_aggregate.aggregate?.totalCount)
+
   const [isEditable, setIsEditable] = useState(true)
-  const toast = useToast()
+  const [columnList, setColumnList] = useState<ColumnListItem[]>([
+    `total: ${totalCount}`,
+    { title: 'company', sort: null, sortKey: 'companyName' },
+    { title: 'issuer', sort: null, sortKey: 'issuerName' },
+    'email',
+    'bank',
+    'actions',
+  ])
 
-  const { data, refetch, variables, loading, updateQuery } = useMerchantListQuery({
-    variables: { offset: 0, limit: PER_PAGE },
-    onError(err) {
-      console.error(err)
-      toast({ ...errorToastContent, title: err.message })
-    },
-  })
-
-  if (!data) return <TablePlaceholder title={TITLE} />
-  const totalCount = Number(data.merchants_aggregate.aggregate?.totalCount)
-  const merchantList = data.merchants
+  if (!listQuery) return <TablePlaceholder title={TITLE} />
+  const merchantList = listQuery.merchants
 
   return (
     <Table
@@ -38,30 +50,18 @@ const MerchantList: FC = () => {
       perPage={PER_PAGE}
       totalRecordsCount={totalCount}
       list={merchantList}
-      filtersHeaderProps={{
-        isLoading: loading,
+      currentPage={currentPage}
+      filtersProps={{
+        isFilterButtonActive: true,
+        showSyncingSpinner: loading,
+        filters: [],
         title: TITLE,
-        isEditable,
-        filterOptions: {
-          // ...filters
-        },
+        isEditable: isEditable,
         onEditableToggle: setIsEditable,
-        async onDrawerChange(nullableFilters) {
-          const { bank, ...filters } = nullableFilters || {}
-          const where = { ...filters }
-          if (bank) where.bankName = bank
-
-          await refetch({ where })
-        },
+        async onSearch(search) {},
+        async onDrawerChange(newFilters) {},
       }}
-      headerList={[
-        `total: ${totalCount}`,
-        { title: 'company', sortableKey: 'companyName' },
-        { title: 'issuer', sortableKey: 'issuerName' },
-        'email',
-        'bank',
-        'actions',
-      ]}
+      columnList={columnList}
       rowRender={(item, index) => (
         <Tr key={item.id}>
           <Td>{index + 1}.</Td>
@@ -70,44 +70,74 @@ const MerchantList: FC = () => {
             merchant={item}
             isEditable={isEditable}
             onMerchantUpdate={(updatedMerchant) =>
-              updateQuery((prev) => ({
-                ...prev,
-                merchants: prev.merchants.map((item) =>
+              onListQueryUpdate({
+                merchants: listQuery.merchants.map((item) =>
                   item.id === updatedMerchant?.id ? updatedMerchant : item
                 ),
-              }))
+              })
             }
           />
 
           <ActionsColumn
             merchant={item}
             onMerchantDelete={(deletedMerchantId) =>
-              updateQuery((prev) => ({
-                ...prev,
+              onListQueryUpdate({
                 merchants_aggregate: {
-                  ...prev.merchants_aggregate,
+                  ...listQuery.merchants_aggregate,
                   aggregate: {
-                    ...prev.merchants_aggregate.aggregate,
-                    totalCount: Number(prev.merchants_aggregate.aggregate?.totalCount) - 1,
+                    ...listQuery.merchants_aggregate.aggregate,
+                    totalCount: totalCount - 1,
                   },
                 },
-                merchants: prev.merchants.filter(({ id }) => id !== deletedMerchantId),
-              }))
+                merchants: listQuery.merchants.filter(({ id }) => id !== deletedMerchantId),
+              })
             }
           />
         </Tr>
       )}
+      onPageChange={onPageChange}
+      onColumnListChange={setColumnList}
     />
   )
 }
 
-const MerchantListPage: FC = () => (
-  <main>
-    <Head>
-      <title>Merchants | przelejmi</title>
-    </Head>
-    <MerchantList />
-  </main>
-)
+const MerchantListPage: NextPage = () => {
+  const toast = useToast()
+
+  const [variables, setVariables] = useState<MerchantListQueryVariables>({
+    limit: PER_PAGE,
+    offset: 0,
+  })
+  const { data, loading, updateQuery } = useMerchantListQuery({
+    variables,
+    onError(err) {
+      console.error(err)
+      toast({ ...errorToastContent, title: err.message })
+    },
+  })
+
+  return (
+    <>
+      <Head>
+        <title>Merchants | przelejmi</title>
+      </Head>
+      <main>
+        {data ? (
+          <MerchantList
+            listQuery={data}
+            loading={loading}
+            currentPage={
+              variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
+            }
+            onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
+            onPageChange={(page) => setVariables((p) => ({ ...p, offset: PER_PAGE * (page - 1) }))}
+          />
+        ) : (
+          <TablePlaceholder title={TITLE} />
+        )}
+      </main>
+    </>
+  )
+}
 
 export default MerchantListPage

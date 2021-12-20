@@ -2,24 +2,27 @@ import React, { FC } from 'react'
 
 import { Td, useToast, Text } from '@chakra-ui/react'
 
-import { useUpdateInvoiceMutation } from 'src/generated/hasura'
+import {
+  InvoiceListQuery,
+  Invoices_Insert_Input,
+  useUpdateInvoiceMutation,
+} from 'src/generated/hasura'
 
 import Editable from 'src/components/Editable'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const Columns: FC<{
   isEditable: boolean
-  invoice: PaginatedInvoiceListQuery['invoiceList'][number]
-  onInvoiceUpdate: (
-    updatedInvoice: PaginatedInvoiceListQuery['invoiceList'][number] | null | undefined
-  ) => void
+  invoice: InvoiceListQuery['invoices'][number]
+  onInvoiceUpdate: (updatedInvoice: InvoiceListQuery['invoices'][number]) => void
 }> = ({ isEditable, invoice, onInvoiceUpdate }) => {
   const toast = useToast()
 
   const [updateInvoice] = useUpdateInvoiceMutation({
-    onCompleted({ updatedInvoice }) {
+    onCompleted({ update_invoices }) {
+      if (!update_invoices) throw new Error()
       toast({ ...successToastContent, title: 'Invoice updated' })
-      onInvoiceUpdate(updatedInvoice)
+      update_invoices.returning.map(onInvoiceUpdate)
     },
     onError() {
       toast(errorToastContent)
@@ -27,8 +30,8 @@ const Columns: FC<{
     },
   })
 
-  function handleUpdate(data: InvoiceUpdateInput, id: number) {
-    const [value] = Object.values(data)
+  function handleUpdate(set: Invoices_Insert_Input, id: number) {
+    const [value] = Object.values(set)
 
     if (value === '') {
       toast(errorToastContent)
@@ -36,7 +39,7 @@ const Columns: FC<{
       return
     }
 
-    updateInvoice({ variables: { data, id } })
+    updateInvoice({ variables: { _set: set, id: { _eq: id } } })
   }
 
   return (

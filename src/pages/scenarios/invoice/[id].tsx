@@ -12,7 +12,7 @@ import InvoiceForm from 'invoices/InvoiceForm'
 import { getBusinessHoursInCurrentMonth } from 'invoices/InvoiceForm/helpers'
 import PdfImageViewer from 'scenarios/PdfImageViewer'
 
-import { useCreateInvoiceMutation } from 'src/generated/hasura'
+import { Invoice_Items_Insert_Input, useCreateInvoiceMutation } from 'src/generated/hasura'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
@@ -22,7 +22,7 @@ const CreateInvoice: FC = () => {
   const scenarioId = Number(router.query.id)
 
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState('')
-  const [invoiceItems, setInvoiceItems] = useState<InvoiceItemCreateManyInvoiceInput[]>(() => {
+  const [invoiceItems, setInvoiceItems] = useState<Invoice_Items_Insert_Input[]>(() => {
     const initialArray = new Array(5)
       .fill(null)
       .map(() => ({ name: '', price: 0, quantity: 0, vat: 'Vat.Percent_23' }))
@@ -68,12 +68,12 @@ const CreateInvoice: FC = () => {
           onSubmit={(v) =>
             createInvoice({
               variables: {
-                data: {
+                object: {
                   ...v,
                   items: {
-                    createMany: { data: invoiceItems.filter((i) => i.quantity && i.price) },
+                    data: invoiceItems.filter((i) => i.quantity && i.price),
                   },
-                  scenario: { connect: { id: scenarioId } },
+                  scenario: { data: { id: scenarioId } },
                 },
               },
             })

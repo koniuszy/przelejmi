@@ -33,7 +33,7 @@ export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
 )
 
 type SimpleColumn = string
-type SortableColumn = { title: string; sort: SortDirection | null }
+type SortableColumn = { title: string; sortKey?: string; sort: SortDirection | null }
 
 export type ColumnListItem = SimpleColumn | SortableColumn
 

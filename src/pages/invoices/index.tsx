@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react'
 
+import { NextPage } from 'next'
+
 import Head from 'next/head'
 
 import { Tr, Td, useToast } from '@chakra-ui/react'
@@ -7,103 +9,133 @@ import { Tr, Td, useToast } from '@chakra-ui/react'
 import ActionsColumn from 'invoices/list/ActionsColumn'
 import Columns from 'invoices/list/Columns'
 
-import { useInvoiceListQuery } from 'src/generated/hasura'
+import {
+  InvoiceListQuery,
+  InvoiceListQueryVariables,
+  useInvoiceListQuery,
+} from 'src/generated/hasura'
 
-import Table, { TablePlaceholder } from 'src/components/Table'
+import Table, { TablePlaceholder, ColumnListItem } from 'src/components/Table'
 import { errorToastContent } from 'src/lib/toastContent'
 
 const TITLE = 'Invoices'
 const PER_PAGE = 10
 
-const MerchantList: FC = () => {
+const InvoiceList: FC<{
+  listQuery: InvoiceListQuery
+  loading: boolean
+  currentPage: number
+  onPageChange: (p: number) => void
+  onListQueryUpdate: (data: Partial<InvoiceListQuery>) => void
+}> = ({ listQuery, loading, currentPage, onListQueryUpdate, onPageChange }) => {
+  const totalCount = Number(listQuery.invoices_aggregate.aggregate?.totalCount)
+
   const [isEditable, setIsEditable] = useState(true)
+  const [columnList, setColumnList] = useState<ColumnListItem[]>([
+    `total: ${totalCount}`,
+    { title: 'Invoice number', sortKey: 'invoiceNumber', sort: null },
+    { title: 'Issue date', sortKey: 'issueDate', sort: null },
+    'subtotal',
+    'client',
+    'merchant',
+    'actions',
+  ])
+
+  const invoiceList = listQuery.invoices
+
+  return (
+    <Table
+      emptyListHeading="No invoices yet 🤫"
+      createHref="invoices/create"
+      perPage={PER_PAGE}
+      list={invoiceList}
+      columnList={columnList}
+      currentPage={currentPage}
+      totalRecordsCount={totalCount}
+      filtersProps={{
+        isFilterButtonActive: true,
+        showSyncingSpinner: loading,
+        filters: [],
+        title: TITLE,
+        isEditable: isEditable,
+        onEditableToggle: setIsEditable,
+        async onSearch(search) {},
+        async onDrawerChange(newFilters) {},
+      }}
+      rowRender={(item, index) => (
+        <Tr key={item.id}>
+          <Td>{index + 1}.</Td>
+          <Columns
+            invoice={item}
+            isEditable={isEditable}
+            onInvoiceUpdate={(updatedInvoice) =>
+              onListQueryUpdate({
+                invoices: invoiceList.map((item) =>
+                  item.id === updatedInvoice?.id ? updatedInvoice : item
+                ),
+              })
+            }
+          />
+          <ActionsColumn
+            invoice={item}
+            onInvoiceDelete={(deletedInvoiceId) =>
+              onListQueryUpdate({
+                invoices_aggregate: {
+                  ...listQuery.invoices_aggregate,
+                  aggregate: {
+                    ...listQuery.invoices_aggregate.aggregate,
+                    totalCount: totalCount - 1,
+                  },
+                },
+                invoices: invoiceList.filter(({ id }) => id !== deletedInvoiceId),
+              })
+            }
+          />
+        </Tr>
+      )}
+      onPageChange={onPageChange}
+      onColumnListChange={setColumnList}
+    />
+  )
+}
+
+const InvoiceListPage: NextPage = () => {
   const toast = useToast()
 
-  const { data, refetch, variables, loading, updateQuery } = useInvoiceListQuery({
-    variables: { skip: 0, take: PER_PAGE },
-    fetchPolicy: 'cache-and-network',
+  const [variables, setVariables] = useState<InvoiceListQueryVariables>({
+    limit: PER_PAGE,
+    offset: 0,
+  })
+  const { data, loading, updateQuery } = useInvoiceListQuery({
+    variables,
     onError(err) {
       console.error(err)
       toast({ ...errorToastContent, title: err.message })
     },
   })
 
-  if (!data?.invoiceList) return <TablePlaceholder title={TITLE} />
-
-  const { invoiceList, totalCount, filters } = data
-
   return (
-    <Table
-      emptyListHeading="No invoices yet 🤫"
-      createHref="merchants/create"
-      perPage={PER_PAGE}
-      totalRecordsCount={totalCount}
-      list={invoiceList}
-      variables={variables}
-      refetch={refetch}
-      filtersHeaderProps={{
-        isLoading: loading,
-        title: TITLE,
-        isEditable,
-        filterOptions: { scenario: filters.scenario.map((i) => i.name) },
-        onEditableToggle: setIsEditable,
-        async onDrawerChange(nullableFilters) {
-          const { bank, ...filters } = nullableFilters || {}
-          const where: MerchantWhereInput = { ...filters }
-          if (bank) where.bankName = bank
-
-          await refetch({ where })
-        },
-      }}
-      headerList={[
-        `total: ${totalCount}`,
-        { title: 'Invoice number', sortableKey: 'invoiceNumber' },
-        { title: 'Issue date', sortableKey: 'issueDate' },
-        'subtotal',
-        'client',
-        'merchant',
-        'actions',
-      ]}
-      rowRender={(item, index) => (
-        <Tr key={item.id}>
-          <Td>{index + 1}.</Td>
-
-          <Columns
-            invoice={item}
-            isEditable={isEditable}
-            onInvoiceUpdate={(updatedMerchant) =>
-              updateQuery((prev) => ({
-                ...prev,
-                merchantList: prev.invoiceList.map((item) =>
-                  item.id === updatedMerchant?.id ? updatedMerchant : item
-                ),
-              }))
+    <>
+      <Head>
+        <title>Invoices | przelejmi</title>
+      </Head>
+      <main>
+        {data ? (
+          <InvoiceList
+            listQuery={data}
+            loading={loading}
+            currentPage={
+              variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
             }
+            onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
+            onPageChange={(page) => setVariables((p) => ({ ...p, offset: PER_PAGE * (page - 1) }))}
           />
-
-          <ActionsColumn
-            invoice={item}
-            onInvoiceDelete={(deletedMerchantId) =>
-              updateQuery((prev) => ({
-                ...prev,
-                totalCount: prev.totalCount - 1,
-                merchantList: prev.invoiceList.filter(({ id }) => id !== deletedMerchantId),
-              }))
-            }
-          />
-        </Tr>
-      )}
-    />
+        ) : (
+          <TablePlaceholder title={TITLE} />
+        )}
+      </main>
+    </>
   )
 }
 
-const MerchantListPage: FC = () => (
-  <main>
-    <Head>
-      <title>Merchants | przelejmi</title>
-    </Head>
-    <MerchantList />
-  </main>
-)
-
-export default MerchantListPage
+export default InvoiceListPage

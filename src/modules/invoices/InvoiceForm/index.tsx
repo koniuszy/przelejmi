@@ -32,7 +32,7 @@ enum Currency {
   Eur,
 }
 
-import { useScenarioQuery } from 'src/generated/hasura'
+import { useScenarioQuery, Invoice_Items_Insert_Input, ScenarioQuery } from 'src/generated/hasura'
 
 import { FormField } from 'src/components/Form'
 import { errorToastContent } from 'src/lib/toastContent'
@@ -48,8 +48,8 @@ const InvoiceForm: FC<{
   issueDate: string
   invoiceNumber: string
   isValid: boolean
-  invoiceItems: InvoiceItemCreateManyInvoiceInput[]
-  onInvoiceItemsChange: (i: InvoiceItemCreateManyInvoiceInput[]) => void
+  invoiceItems: Invoice_Items_Insert_Input[]
+  onInvoiceItemsChange: (i: Invoice_Items_Insert_Input[]) => void
 }> = ({
   scenarioId,
   onPreviewPdfChange,
@@ -67,7 +67,7 @@ const InvoiceForm: FC<{
   async function handlePreviewInvoiceCreate({
     scenario,
   }: {
-    scenario: NonNullable<ScenarioQuery['scenario']>
+    scenario: NonNullable<ScenarioQuery['scenarios'][number]>
   }) {
     onLoadingPreview(true)
     const { pdf } = await easyinvoice.createInvoice({
@@ -98,9 +98,9 @@ const InvoiceForm: FC<{
         .filter((i) => i.quantity || i.price || i.name)
         .map((i) => ({
           quantity: String(i.quantity),
-          description: i.name,
+          description: i.name || '',
           tax: mapVatToNumber(i.vat),
-          price: i.price,
+          price: i.price || 0,
         })),
       sender: {
         address: scenario.merchant.address,
@@ -129,8 +129,10 @@ const InvoiceForm: FC<{
   }
 
   const { data } = useScenarioQuery({
-    variables: { where: { id: scenarioId } },
-    onCompleted({ scenario }) {
+    variables: { id: { _eq: scenarioId } },
+    onCompleted({ scenarios = [] }) {
+      const [scenario] = scenarios
+
       if (!scenario) {
         toast({ ...errorToastContent, title: 'could not find the scenario' })
         return
@@ -240,7 +242,7 @@ const InvoiceForm: FC<{
           mr={4}
           isLoading={isLoadingPreview}
           onClick={() => {
-            if (data?.scenario) handlePreviewInvoiceCreate({ scenario: data.scenario })
+            if (data?.scenarios[0]) handlePreviewInvoiceCreate({ scenario: data.scenarios[0] })
           }}
         >
           Refresh

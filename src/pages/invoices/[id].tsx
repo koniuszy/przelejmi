@@ -9,11 +9,13 @@ import { Formik } from 'formik'
 import InvoiceForm from 'invoices/InvoiceForm'
 import PdfImageViewer from 'scenarios/PdfImageViewer'
 
-import { useInvoiceQuery, useUpdateInvoiceMutation } from 'src/generated/hasura'
+import { InvoiceQuery, useInvoiceQuery, useUpdateInvoiceMutation } from 'src/generated/hasura'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
 
-const CreateInvoice: FC<{ invoice: NonNullable<InvoiceQuery['invoice']> }> = ({ invoice }) => {
+const CreateInvoice: FC<{ invoice: NonNullable<InvoiceQuery['invoices'][number]> }> = ({
+  invoice,
+}) => {
   const toast = useToast()
   const router = useRouter()
 
@@ -50,14 +52,15 @@ const CreateInvoice: FC<{ invoice: NonNullable<InvoiceQuery['invoice']> }> = ({ 
           onSubmit={(v) =>
             updateInvoice({
               variables: {
-                data: {
+                _set: {
+                  ...invoice,
                   ...v,
-                  items: {
-                    // @ts-ignore
-                    createMany: { data: invoiceItems.filter((i) => i.quantity && i.price) },
-                  },
+                  // items: {
+                  //   // @ts-ignore
+                  //   createMany: { data: invoiceItems.filter((i) => i.quantity && i.price) },
+                  // },
                   // @ts-ignore
-                  scenario: { connect: { id: scenarioId } },
+                  // scenarioId: { connect: { id: invoice. } },
                 },
               },
             })
@@ -93,7 +96,7 @@ const EditInvoiceFormPage: FC<SSGProps> = () => {
   const router = useRouter()
   const invoiceId = Number(router.query.id)
 
-  const { data } = useInvoiceQuery({ variables: { id: invoiceId } })
+  const { data } = useInvoiceQuery({ variables: { id: { _eq: invoiceId } } })
 
   return (
     <>
@@ -101,12 +104,12 @@ const EditInvoiceFormPage: FC<SSGProps> = () => {
         <title>Edit merchant | przelejmi</title>
       </Head>
       <main>
-        {!data?.invoice ? (
+        {!data?.invoices[0] ? (
           <Center>
             <Spinner />
           </Center>
         ) : (
-          <CreateInvoice invoice={data.invoice} />
+          <CreateInvoice invoice={data.invoices[0]} />
         )}
       </main>
     </>

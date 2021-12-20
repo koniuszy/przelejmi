@@ -65,15 +65,15 @@ const CreateScenarioForm: FC = () => {
 
     createScenario({
       variables: {
-        data: {
+        object: {
           currency,
           dueDateDays,
           paymentType,
           notes,
           imgUrl,
           name,
-          client: { connect: { id: clientId } },
-          merchant: { connect: { id: merchantId } },
+          client: { data: { id: clientId } },
+          merchant: { data: { id: merchantId } },
         },
       },
     })

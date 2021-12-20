@@ -16,13 +16,13 @@ import {
   UnorderedList,
 } from '@chakra-ui/react'
 
-import { useDeleteInvoiceMutation } from 'src/generated/hasura'
+import { useDeleteInvoiceMutation, InvoiceListQuery } from 'src/generated/hasura'
 
 import ConfirmationPopup from 'src/components/ConfirmationPopup'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 const ActionsColumn: FC<{
-  invoice: PaginatedInvoiceListQuery['invoiceList'][number]
+  invoice: InvoiceListQuery['invoices'][number]
   onInvoiceDelete: (id: number) => void
 }> = ({ invoice, onInvoiceDelete }) => {
   const toast = useToast()
@@ -81,7 +81,7 @@ const ActionsColumn: FC<{
         confirmText="Delete"
         isLoading={deleteInvoiceOptions.loading}
         isOpen={invoice.id === invoiceDeletionId}
-        onConfirm={() => deleteInvoice({ variables: { id: invoice.id } })}
+        onConfirm={() => deleteInvoice({ variables: { id: { _eq: invoice.id } } })}
         onClose={() => {
           setInvoiceDeletionId(null)
           setOpenActionsRowId(null)

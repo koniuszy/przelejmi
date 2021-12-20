@@ -6,6 +6,7 @@ fragment Invoice on invoices {
   items {
     price
     quantity
+    id
   }
   scenario {
     currency
