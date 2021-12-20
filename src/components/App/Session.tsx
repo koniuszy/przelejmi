@@ -39,7 +39,7 @@ const OwnSessionProvider: FC = ({ children }) => {
   }
 
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) login()
+    if (!isAuthenticated && !isLoading && router.pathname !== '/') login()
     if (isAuthenticated) handleDecodeToken()
   }, [isAuthenticated, router.pathname, isLoading])
 
