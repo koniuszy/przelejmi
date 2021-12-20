@@ -30,7 +30,7 @@ export const SessionProvider: FC = ({ children }) => {
 
 const OwnSessionProvider: FC = ({ children }) => {
   const router = useRouter()
-  const { isAuthenticated, isLoading, login, decodeToken } = useSession()
+  const { isAuthenticated, decodeToken } = useSession()
   const [, setIsDecoding] = useState(false)
 
   function handleDecodeToken() {
@@ -39,11 +39,9 @@ const OwnSessionProvider: FC = ({ children }) => {
   }
 
   useEffect(() => {
-    if (isLoading) return
-
+    if (!isAuthenticated) router.push('/')
     if (isAuthenticated) handleDecodeToken()
-    if (!isAuthenticated) login()
-  }, [isAuthenticated, isLoading])
+  }, [isAuthenticated])
 
   if (!getToken() && router.pathname !== '/')
     return (
