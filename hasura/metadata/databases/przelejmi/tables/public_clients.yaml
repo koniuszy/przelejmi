@@ -24,6 +24,7 @@ insert_permissions:
   role: user
 select_permissions:
 - permission:
+    allow_aggregations: true
     columns:
     - id
     - address
