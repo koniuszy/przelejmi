@@ -151,9 +151,7 @@ const CreateScenarioPage: NextPage = () => (
       <title>Create scenario | przelejmi</title>
     </Head>
 
-    <main>
-      <CreateScenarioForm />
-    </main>
+    <CreateScenarioForm />
   </>
 )
 

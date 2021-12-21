@@ -35,31 +35,29 @@ const CreateMerchantPage: FC = () => {
         <title>Create merchant | przelejmi</title>
       </Head>
 
-      <main>
-        <MerchantForm
-          isSubmitting={loading}
-          initialValues={{
-            companyName: '',
-            address: '',
-            postCode: '',
-            city: '',
-            country: '',
-            vatId: '',
-            bankAccountPln: '',
-            bankAccountEur: '',
-            bankName: '',
-            email: '',
-            issuerName: '',
-          }}
-          onSubmit={(object) =>
-            createMerchant({
-              variables: {
-                object,
-              },
-            })
-          }
-        />
-      </main>
+      <MerchantForm
+        isSubmitting={loading}
+        initialValues={{
+          companyName: '',
+          address: '',
+          postCode: '',
+          city: '',
+          country: '',
+          vatId: '',
+          bankAccountPln: '',
+          bankAccountEur: '',
+          bankName: '',
+          email: '',
+          issuerName: '',
+        }}
+        onSubmit={(object) =>
+          createMerchant({
+            variables: {
+              object,
+            },
+          })
+        }
+      />
     </>
   )
 }

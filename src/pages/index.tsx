@@ -6,12 +6,12 @@ import Head from 'next/head'
 import { CalendarIcon, TimeIcon, UnlockIcon } from '@chakra-ui/icons'
 import { Center, List, ListIcon, ListItem, Spinner, Box, Flex } from '@chakra-ui/react'
 
-import { useSession } from 'src/lib/auth'
+import { useAuth } from 'src/hooks/auth'
 
 const AnimationSection = dynamic(() => import('src/components/Home/AnimationSection'))
 
 const HomePage: NextPage = () => {
-  const { isAuthenticated, isLoading } = useSession()
+  const { isAuthenticated, isLoading } = useAuth()
 
   return (
     <>
@@ -19,34 +19,32 @@ const HomePage: NextPage = () => {
         <title>Home page | przelejmi</title>
       </Head>
 
-      <main>
-        <Flex flexDir="column" flexWrap="nowrap" alignContent="space-between">
-          <Box w="100%">
-            <List spacing={3}>
-              <ListItem>
-                <ListIcon as={UnlockIcon} color="teal.200" />
-                Sign in
-              </ListItem>
-              <ListItem>
-                <ListIcon as={CalendarIcon} color="teal.200" />
-                Customize your client base
-              </ListItem>
-              <ListItem>
-                <ListIcon as={TimeIcon} color="teal.200" />
-                Get your money
-              </ListItem>
-            </List>
+      <Flex flexDir="column" flexWrap="nowrap" alignContent="space-between">
+        <Box w="100%">
+          <List spacing={3}>
+            <ListItem>
+              <ListIcon as={UnlockIcon} color="teal.200" />
+              Sign in
+            </ListItem>
+            <ListItem>
+              <ListIcon as={CalendarIcon} color="teal.200" />
+              Customize your client base
+            </ListItem>
+            <ListItem>
+              <ListIcon as={TimeIcon} color="teal.200" />
+              Get your money
+            </ListItem>
+          </List>
 
-            {isLoading ? (
-              <Center>
-                <Spinner />
-              </Center>
-            ) : (
-              <AnimationSection isLoggedIn={isAuthenticated} />
-            )}
-          </Box>
-        </Flex>
-      </main>
+          {isLoading ? (
+            <Center>
+              <Spinner />
+            </Center>
+          ) : (
+            <AnimationSection isLoggedIn={isAuthenticated} />
+          )}
+        </Box>
+      </Flex>
     </>
   )
 }

@@ -76,9 +76,7 @@ const EditMerchantFormPage: NextPage = () => (
     <Head>
       <title>Edit merchant | przelejmi</title>
     </Head>
-    <main>
-      <EditMerchantForm />
-    </main>
+    <EditMerchantForm />
   </>
 )
 

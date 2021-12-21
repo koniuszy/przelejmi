@@ -121,21 +121,19 @@ const MerchantListPage: NextPage = () => {
       <Head>
         <title>Merchants | przelejmi</title>
       </Head>
-      <main>
-        {data ? (
-          <MerchantList
-            listQuery={data}
-            loading={loading}
-            currentPage={
-              variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
-            }
-            onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
-            onPageChange={(page) => setVariables((p) => ({ ...p, offset: PER_PAGE * (page - 1) }))}
-          />
-        ) : (
-          <TablePlaceholder title={TITLE} />
-        )}
-      </main>
+      {data ? (
+        <MerchantList
+          listQuery={data}
+          loading={loading}
+          currentPage={
+            variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
+          }
+          onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
+          onPageChange={(page) => setVariables((p) => ({ ...p, offset: PER_PAGE * (page - 1) }))}
+        />
+      ) : (
+        <TablePlaceholder title={TITLE} />
+      )}
     </>
   )
 }

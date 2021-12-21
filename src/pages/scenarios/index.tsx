@@ -1,5 +1,7 @@
 import React, { FC } from 'react'
 
+import { NextPage } from 'next'
+
 import Head from 'next/head'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -84,18 +86,14 @@ const ScenarioList: FC = () => {
   )
 }
 
-const App: FC = () => {
-  return (
-    <div>
-      <Head>
-        <title>Merchants | przelejmi</title>
-      </Head>
+const App: NextPage = () => (
+  <>
+    <Head>
+      <title>Merchants | przelejmi</title>
+    </Head>
 
-      <main>
-        <ScenarioList />
-      </main>
-    </div>
-  )
-}
+    <ScenarioList />
+  </>
+)
 
 export default App

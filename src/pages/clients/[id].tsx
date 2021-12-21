@@ -53,6 +53,7 @@ const EditClientFormPage: NextPage = () => {
       <Head>
         <title>Edit client | przelejmi</title>
       </Head>
+
       <ClientForm
         isLoading={loading}
         initialValues={{ ...initialValues, vatId: initialValues.vatId ?? '' } || {}}

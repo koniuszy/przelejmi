@@ -4,10 +4,10 @@ import NextLink from 'next/link'
 
 import { Button } from '@chakra-ui/react'
 
-import { useSession } from 'src/lib/auth'
+import { useAuth } from 'src/hooks/auth'
 
 const ActionButtons: FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
-  const { login, logOut } = useSession()
+  const { login, logOut } = useAuth()
 
   if (!isLoggedIn)
     return (

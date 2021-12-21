@@ -103,15 +103,13 @@ const EditInvoiceFormPage: FC<SSGProps> = () => {
       <Head>
         <title>Edit merchant | przelejmi</title>
       </Head>
-      <main>
-        {!data?.invoices[0] ? (
-          <Center>
-            <Spinner />
-          </Center>
-        ) : (
-          <CreateInvoice invoice={data.invoices[0]} />
-        )}
-      </main>
+      {!data?.invoices[0] ? (
+        <Center>
+          <Spinner />
+        </Center>
+      ) : (
+        <CreateInvoice invoice={data.invoices[0]} />
+      )}
     </>
   )
 }

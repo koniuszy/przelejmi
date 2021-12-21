@@ -1,5 +1,6 @@
 import { ChakraProvider, extendTheme, Box, Flex, useToast } from '@chakra-ui/react'
 
+import { UserProvider } from '@auth0/nextjs-auth0'
 import NextProgressBar from 'nextjs-progressbar'
 
 import AppProviders from 'src/components/App/AppProviders'
@@ -20,9 +21,8 @@ const extendedTheme = extendTheme({
   },
 })
 
-function MyApp({ Component, pageProps: { ...pageProps } }) {
+function MyApp({ Component, pageProps }) {
   const toast = useToast()
-
   return (
     <ErrorBoundary onError={(errorMessage) => toast({ ...errorToastContent, title: errorMessage })}>
       <NextProgressBar
@@ -32,17 +32,21 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
         height={3}
       />
 
-      <ChakraProvider theme={extendedTheme}>
-        <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">
-          <Header />
-          <Box overflowY="scroll" overflowX="hidden" mb="auto" w="100%">
-            <AppProviders>
-              <Component {...pageProps} />
-            </AppProviders>
-          </Box>
-          <Footer />
-        </Flex>
-      </ChakraProvider>
+      <UserProvider>
+        <ChakraProvider theme={extendedTheme}>
+          <Flex px={20} w="100vw" height="100vh" flexDir="column" justifyContent="space-between">
+            <Header />
+            <Box overflowY="scroll" overflowX="hidden" mb="auto" w="100%">
+              <AppProviders>
+                <main>
+                  <Component {...pageProps} />
+                </main>
+              </AppProviders>
+            </Box>
+            <Footer />
+          </Flex>
+        </ChakraProvider>
+      </UserProvider>
     </ErrorBoundary>
   )
 }

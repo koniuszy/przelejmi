@@ -20,7 +20,7 @@ import {
   Box,
 } from '@chakra-ui/react'
 
-import { useSession } from 'src/lib/auth'
+import { useAuth } from 'src/hooks/auth'
 
 const Logo = () => {
   const { push } = useRouter()
@@ -53,7 +53,7 @@ const Logo = () => {
 
 const Header: FC = () => {
   const { pathname } = useRouter()
-  const { user, logOut } = useSession()
+  const { isAuthenticated, logOut } = useAuth()
 
   return (
     <Box h="fit-content">
@@ -127,7 +127,16 @@ const Header: FC = () => {
           </Menu>
 
           <Center>
-            <Avatar mx={5} zIndex={20} size="sm" name={user?.name || ''} src={user?.picture || ''}>
+            <Avatar
+              mx={5}
+              zIndex={20}
+              size="sm"
+              src={
+                isAuthenticated
+                  ? 'https://static1.cbrimages.com/wordpress/wp-content/uploads/2020/06/Itachi-Cropped.jpg?q=50&fit=crop&w=960&h=500&dpr=1.5'
+                  : ''
+              }
+            >
               <AvatarBadge _hover={{ bg: 'gray.700' }} bg="black" cursor="pointer">
                 <Menu>
                   <MenuButton color="white" as={ChevronDownIcon} />

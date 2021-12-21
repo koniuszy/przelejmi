@@ -36,20 +36,18 @@ const CreateClientPage: NextPage = () => {
         <title>Create client | przelejmi</title>
       </Head>
 
-      <main>
-        <ClientForm
-          isLoading={loading}
-          initialValues={{ name: '', address: '', postCode: '', city: '', country: '', vatId: '' }}
-          onSubmit={(values) => {
-            const { vatId, clientType, ...data } = values
-            createClient({
-              variables: {
-                object: { ...data, vatId: clientType === ClientType.company ? vatId : null },
-              },
-            })
-          }}
-        />
-      </main>
+      <ClientForm
+        isLoading={loading}
+        initialValues={{ name: '', address: '', postCode: '', city: '', country: '', vatId: '' }}
+        onSubmit={(values) => {
+          const { vatId, clientType, ...data } = values
+          createClient({
+            variables: {
+              object: { ...data, vatId: clientType === ClientType.company ? vatId : null },
+            },
+          })
+        }}
+      />
     </>
   )
 }

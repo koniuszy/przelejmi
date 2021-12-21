@@ -10,15 +10,13 @@ const CreateInvoice: FC = () => {
 
 const CreateInvoicePage: NextPage = () => {
   return (
-    <div>
+    <>
       <Head>
         <title>Create invoice | przelejmi</title>
       </Head>
 
-      <main>
-        <CreateInvoice />
-      </main>
-    </div>
+      <CreateInvoice />
+    </>
   )
 }
 

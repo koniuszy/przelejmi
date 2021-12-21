@@ -117,21 +117,19 @@ const ClientListPage: NextPage = () => {
       <Head>
         <title>Clients | przelejmi</title>
       </Head>
-      <main>
-        {data ? (
-          <ClientList
-            listQuery={data}
-            loading={loading}
-            currentPage={
-              variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
-            }
-            onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
-            onPageChange={(page) => setVariables((p) => ({ ...p, offset: PER_PAGE * (page - 1) }))}
-          />
-        ) : (
-          <TablePlaceholder title={TITLE} />
-        )}
-      </main>
+      {data ? (
+        <ClientList
+          listQuery={data}
+          loading={loading}
+          currentPage={
+            variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
+          }
+          onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
+          onPageChange={(page) => setVariables((p) => ({ ...p, offset: PER_PAGE * (page - 1) }))}
+        />
+      ) : (
+        <TablePlaceholder title={TITLE} />
+      )}
     </>
   )
 }
