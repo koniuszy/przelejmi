@@ -1,4 +1,0 @@
-table:
-  name: currency_types
-  schema: public
-is_enum: true

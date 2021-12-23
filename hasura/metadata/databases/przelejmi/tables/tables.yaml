@@ -1,5 +1,4 @@
 - "!include public_clients.yaml"
-- "!include public_currency_types.yaml"
 - "!include public_invoice_items.yaml"
 - "!include public_invoices.yaml"
 - "!include public_merchants.yaml"
