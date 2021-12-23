@@ -10,16 +10,17 @@ import { useAuth } from 'src/hooks/auth'
 
 import FadeInAnimation from '../FadeInAnimation'
 
-const adminHeaders =
-  process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_HASURA_ADMIN_TOKEN
-    ? { 'x-hasura-admin-secret': process.env.NEXT_PUBLIC_HASURA_ADMIN_TOKEN }
-    : {}
+const adminHeaders = process.env.HASURA_ADMIN_TOKEN
+  ? { 'x-hasura-admin-secret': process.env.HASURA_ADMIN_TOKEN }
+  : {}
+
+const GQL_API_ENDPOINT = process.env.GQL_API_ENDPOINT || 'https://przelejemi.hasura.app/v1/graphql'
 
 function createApolloClient(token: string) {
   return new ApolloClient({
     defaultOptions: { query: { errorPolicy: 'all' } },
     link: new HttpLink({
-      uri: 'https://przelejemi.hasura.app/v1/graphql',
+      uri: GQL_API_ENDPOINT,
       headers: {
         ...adminHeaders,
         Authorization: `Bearer ${token}`,
