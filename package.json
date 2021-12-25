@@ -6,6 +6,7 @@
     "dev": "next dev",
     "start": "next start",
     "test": "NODE_ENV=test jest --runInBand",
+    "ci": "yarn test && yarn ts-check",
     "build": "yarn gen && next build",
     "gen": "yarn gen:gql",
     "gen:gql": "graphql-codegen --config codegen.yml",

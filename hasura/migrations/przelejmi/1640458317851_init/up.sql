@@ -1,4 +1,5 @@
 SET check_function_bodies = false;
+CREATE SCHEMA public;
 CREATE TYPE public."Currency" AS ENUM (
     'PLN',
     'EUR',
@@ -37,7 +38,6 @@ CREATE TABLE public.invoice_items (
     name text NOT NULL,
     quantity integer NOT NULL,
     price integer NOT NULL,
-    "scenarioId" integer NOT NULL,
     vat public."Vat" NOT NULL,
     "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "updatedAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -110,9 +110,6 @@ CREATE SEQUENCE public."Scenario_id_seq"
     NO MAXVALUE
     CACHE 1;
 ALTER SEQUENCE public."Scenario_id_seq" OWNED BY public.scenarios.id;
-CREATE TABLE public.currency_types (
-    value text NOT NULL
-);
 ALTER TABLE ONLY public.clients ALTER COLUMN id SET DEFAULT nextval('public."Client_id_seq"'::regclass);
 ALTER TABLE ONLY public.invoice_items ALTER COLUMN id SET DEFAULT nextval('public."InvoiceItem_id_seq"'::regclass);
 ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public."Invoice_id_seq"'::regclass);
@@ -122,8 +119,6 @@ ALTER TABLE ONLY public.clients
     ADD CONSTRAINT "Client_id_key" UNIQUE (id);
 ALTER TABLE ONLY public.clients
     ADD CONSTRAINT "Client_pkey" PRIMARY KEY (id);
-ALTER TABLE ONLY public.currency_types
-    ADD CONSTRAINT "CurrencyType_pkey" PRIMARY KEY (value);
 ALTER TABLE ONLY public.invoice_items
     ADD CONSTRAINT "InvoiceItem_pkey" PRIMARY KEY (id);
 ALTER TABLE ONLY public.invoices
@@ -143,4 +138,3 @@ ALTER TABLE ONLY public.scenarios
     ADD CONSTRAINT "Scenario_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES public.clients(id) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE ONLY public.scenarios
     ADD CONSTRAINT "Scenario_merchantId_fkey" FOREIGN KEY ("merchantId") REFERENCES public.merchants(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
