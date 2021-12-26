@@ -1,15 +1,15 @@
 fragment Scenario on scenarios {
   id
   name
-  paymentType
-  imgUrl
+  paymentType: payment_type
+  imgUrl: img_url
   currency
   notes
-  dueDateDays
-  createdAt
-  updatedAt
-  merchantId
-  clientId
+  dueDateDays: due_date_days
+  createdAt: created_at
+  updatedAt: updated_at
+  merchantId: merchant_id
+  clientId: client_id
 }
 
 mutation createScenario($object: scenarios_insert_input!) {
@@ -27,7 +27,7 @@ mutation createInvoice($object: invoices_insert_input!) {
 query scenarioList($limit: Int = 10, $offset: Int = 0) {
   scenarios(limit: $limit, offset: $offset) {
     id
-    imgUrl
+    imgUrl: img_url
     name
   }
 }

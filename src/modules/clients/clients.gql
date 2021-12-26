@@ -4,8 +4,8 @@ fragment Client on clients {
   country
   id
   name
-  postCode
-  vatId
+  postCode: post_code
+  vatId: vat_id
 }
 
 query client($id: Int_comparison_exp = {}) {

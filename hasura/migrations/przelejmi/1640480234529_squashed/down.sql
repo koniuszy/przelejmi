@@ -1,4 +1,7 @@
 
+alter table "public"."invoices" rename column "issue_date" to "issueDate";
+
+
 alter table "public"."scenarios" rename column "merchant_id" to "merchantId";
 
 alter table "public"."scenarios" rename column "client_id" to "clientId";

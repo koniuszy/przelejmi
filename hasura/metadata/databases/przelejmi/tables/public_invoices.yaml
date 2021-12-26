@@ -21,7 +21,7 @@ insert_permissions:
     - id
     - scenario_id
     - invoice_number
-    - issueDate
+    - issue_date
     - created_at
     - updated_at
   role: user
@@ -32,7 +32,7 @@ select_permissions:
     - id
     - scenario_id
     - invoice_number
-    - issueDate
+    - issue_date
     - created_at
     - updated_at
     filter: {}
@@ -44,7 +44,7 @@ update_permissions:
     - id
     - scenario_id
     - invoice_number
-    - issueDate
+    - issue_date
     - created_at
     - updated_at
     filter: {}

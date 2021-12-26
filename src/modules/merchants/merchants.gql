@@ -1,16 +1,16 @@
 fragment Merchant on merchants {
   address
-  bankAccountEur
-  bankName
-  bankAccountPln
+  bankName: bank_name
+  bankAccountPln: bank_account_pln
+  bankAccountEur: bank_account_eur
   city
-  companyName
+  companyName: company_name
   country
   email
   id
-  issuerName
-  postCode
-  vatId
+  issuerName: issuer_name
+  postCode: post_code
+  vatId: vat_id
 }
 
 query merchant($id: Int_comparison_exp!) {

@@ -1,8 +1,8 @@
 fragment Invoice on invoices {
   id
-  invoiceNumber
-  issueDate
-  updatedAt
+  invoiceNumber: invoice_number
+  issueDate: issue_date
+  updatedAt: updated_at
   items {
     price
     quantity
@@ -14,7 +14,7 @@ fragment Invoice on invoices {
       name
     }
     merchant {
-      companyName
+      companyName: company_name
     }
   }
 }
@@ -22,7 +22,7 @@ fragment Invoice on invoices {
 query invoice($id: Int_comparison_exp!) {
   invoices(where: { id: $id }) {
     issueDate
-    invoiceNumber
+    invoiceNumber: invoice_number
     items {
       name
       price

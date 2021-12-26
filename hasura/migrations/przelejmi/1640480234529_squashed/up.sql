@@ -1,4 +1,5 @@
 
+
 alter table "public"."clients" rename column "postCode" to "post_code";
 
 alter table "public"."clients" rename column "vatId" to "vat_id";
@@ -44,3 +45,5 @@ alter table "public"."scenarios" rename column "updatedAt" to "updated_at";
 alter table "public"."scenarios" rename column "clientId" to "client_id";
 
 alter table "public"."scenarios" rename column "merchantId" to "merchant_id";
+
+alter table "public"."invoices" rename column "issueDate" to "issue_date";
