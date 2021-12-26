@@ -16,6 +16,8 @@ const adminHeaders = process.env.HASURA_ADMIN_TOKEN
 
 const GQL_API_ENDPOINT = process.env.GQL_API_ENDPOINT || 'https://przelejemi.hasura.app/v1/graphql'
 
+const cache = new InMemoryCache()
+
 function createApolloClient(token: string) {
   return new ApolloClient({
     defaultOptions: { query: { errorPolicy: 'all' } },
@@ -27,7 +29,7 @@ function createApolloClient(token: string) {
         'content-type': 'application/json',
       },
     }),
-    cache: new InMemoryCache(),
+    cache,
   })
 }
 
