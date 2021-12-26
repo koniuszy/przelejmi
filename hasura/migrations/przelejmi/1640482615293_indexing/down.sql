@@ -1,12 +1,8 @@
 
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- CREATE INDEX ON invoice_items (invoice_id);
+DROP INDEX scenarios_client_id_idx;
 
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- CREATE INDEX ON scenarios (merchant_id);
+DROP INDEX scenarios_merchant_id_idx;
 
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- CREATE INDEX ON scenarios (client_id);
+DROP INDEX invoice_items_invoice_id_idx;
+
+DROP INDEX invoices_scenario_id_idx;
