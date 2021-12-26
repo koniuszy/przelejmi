@@ -10,8 +10,8 @@
     "build": "yarn gen && next build",
     "gen": "yarn gen:gql",
     "gen:gql": "graphql-codegen --config codegen.yml",
-    "download:local-schema": "yarn gq http://localhost:8080/v1/graphql --introspect > hasura/schema.graphql",
-    "download:prod-schema": "rover graph introspect https://przelejemi.hasura.app/v1/graphql > hasura/schema.graphql",
+    "download:schema": "yarn gq http://localhost:8080/v1/graphql --introspect > hasura/schema.graphql",
+    "download:schema-prod": "rover graph introspect https://przelejemi.hasura.app/v1/graphql > hasura/schema.graphql",
     "ts-check": "tsc -p tsconfig.json",
     "tidy": "eslint --fix --ext .ts,.tsx ."
   },

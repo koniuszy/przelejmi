@@ -1,7 +1,4 @@
-export enum ClientType {
-  company = 'Company',
-  person = 'Person',
-}
+export type ClientType = 'Company' | 'Person'
 
 export enum DBConditions {
   'includes' = 'in',

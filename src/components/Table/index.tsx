@@ -16,8 +16,10 @@ import {
   Box,
 } from '@chakra-ui/react'
 
+import { Order_By } from 'src/generated/hasura'
+
 import Pagination from './Pagination'
-import SortTh, { SortDirection } from './SortTh'
+import SortTh from './SortTh'
 import TableHeader, { TableHeaderPlaceholder, TableHeaderProps } from './TableHeader'
 
 export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
@@ -32,12 +34,7 @@ export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
   </>
 )
 
-type SimpleColumn = string
-type SortableColumn = { title: string; sortKey?: string; sort: SortDirection | null }
-
-export type ColumnListItem = SimpleColumn | SortableColumn
-
-function Table<Item>({
+function Table<Item, SortKey extends string>({
   filtersProps,
   list,
   createHref,
@@ -46,9 +43,10 @@ function Table<Item>({
   columnList,
   emptyListHeading,
   currentPage,
+  activeSorts,
   rowRender,
   onPageChange,
-  onColumnListChange,
+  onSortChange,
 }: {
   perPage: number
   createHref: string
@@ -56,9 +54,10 @@ function Table<Item>({
   emptyListHeading: string
   list: Item[]
   filtersProps: TableHeaderProps
-  columnList: ColumnListItem[]
+  columnList: { title: string; sortKey?: SortKey }[]
   currentPage: number
-  onColumnListChange: (l: ColumnListItem[]) => void
+  activeSorts: Partial<Record<SortKey, Order_By>>
+  onSortChange: (args: { sortBy: SortKey; sortDirection: Order_By }) => void
   rowRender: (item: Item, index: number) => ReactElement
   onPageChange: (page: number) => void
 }): ReactElement {
@@ -89,24 +88,16 @@ function Table<Item>({
           <Tr>
             {columnList.map((columnListItem, index) => (
               <React.Fragment key={index}>
-                {typeof columnListItem === 'string' ? (
-                  <Th whiteSpace="nowrap">{columnListItem}</Th>
-                ) : (
+                {columnListItem.sortKey ? (
                   <SortTh
                     title={columnListItem.title}
-                    sortOrder={columnListItem.sort}
-                    onChange={(sort) =>
-                      onColumnListChange(
-                        columnList.map((i) =>
-                          typeof i === 'string'
-                            ? i
-                            : i.title === columnListItem.title
-                            ? { title: columnListItem.title, sort }
-                            : i
-                        )
-                      )
+                    sortOrder={activeSorts[columnListItem.sortKey] || null}
+                    onChange={(sortDirection) =>
+                      onSortChange({ sortBy: columnListItem.sortKey as SortKey, sortDirection })
                     }
                   />
+                ) : (
+                  <Th whiteSpace="nowrap">{columnListItem.title}</Th>
                 )}
               </React.Fragment>
             ))}
