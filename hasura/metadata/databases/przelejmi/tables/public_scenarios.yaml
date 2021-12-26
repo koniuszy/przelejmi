@@ -4,15 +4,15 @@ table:
 object_relationships:
 - name: client
   using:
-    foreign_key_constraint_on: clientId
+    foreign_key_constraint_on: client_id
 - name: merchant
   using:
-    foreign_key_constraint_on: merchantId
+    foreign_key_constraint_on: merchant_id
 array_relationships:
 - name: invoices
   using:
     foreign_key_constraint_on:
-      column: scenarioId
+      column: scenario_id
       table:
         name: invoices
         schema: public
@@ -23,48 +23,48 @@ insert_permissions:
     columns:
     - id
     - name
-    - imgUrl
+    - img_url
     - notes
-    - dueDateDays
-    - paymentType
+    - due_date_days
+    - payment_type
     - currency
-    - createdAt
-    - updatedAt
-    - clientId
-    - merchantId
+    - created_at
+    - updated_at
+    - client_id
+    - merchant_id
   role: user
 select_permissions:
 - permission:
     allow_aggregations: true
     columns:
-    - clientId
-    - dueDateDays
+    - client_id
+    - due_date_days
     - id
-    - merchantId
-    - imgUrl
+    - merchant_id
+    - img_url
     - name
     - notes
-    - createdAt
-    - updatedAt
+    - created_at
+    - updated_at
     - currency
-    - paymentType
+    - payment_type
     filter: {}
   role: user
 update_permissions:
 - permission:
     check: {}
     columns:
-    - clientId
-    - dueDateDays
+    - client_id
+    - due_date_days
     - id
-    - merchantId
-    - imgUrl
+    - merchant_id
+    - img_url
     - name
     - notes
-    - createdAt
-    - updatedAt
+    - created_at
+    - updated_at
     - currency
-    - paymentType
+    - payment_type
     filter: {}
   role: user
 delete_permissions:

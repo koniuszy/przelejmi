@@ -4,19 +4,19 @@ table:
 object_relationships:
 - name: invoice
   using:
-    foreign_key_constraint_on: invoiceId
+    foreign_key_constraint_on: invoice_id
 insert_permissions:
 - permission:
     backend_only: false
     check: {}
     columns:
     - id
-    - invoiceId
+    - invoice_id
     - price
     - quantity
     - name
-    - createdAt
-    - updatedAt
+    - created_at
+    - updated_at
     - vat
   role: user
 select_permissions:
@@ -24,12 +24,12 @@ select_permissions:
     allow_aggregations: true
     columns:
     - id
-    - invoiceId
+    - invoice_id
     - price
     - quantity
     - name
-    - createdAt
-    - updatedAt
+    - created_at
+    - updated_at
     - vat
     filter: {}
   role: user
@@ -38,12 +38,12 @@ update_permissions:
     check: {}
     columns:
     - id
-    - invoiceId
+    - invoice_id
     - price
     - quantity
     - name
-    - createdAt
-    - updatedAt
+    - created_at
+    - updated_at
     - vat
     filter: {}
   role: user

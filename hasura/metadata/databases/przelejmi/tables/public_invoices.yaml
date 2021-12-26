@@ -4,12 +4,12 @@ table:
 object_relationships:
 - name: scenario
   using:
-    foreign_key_constraint_on: scenarioId
+    foreign_key_constraint_on: scenario_id
 array_relationships:
 - name: items
   using:
     foreign_key_constraint_on:
-      column: invoiceId
+      column: invoice_id
       table:
         name: invoice_items
         schema: public
@@ -19,22 +19,22 @@ insert_permissions:
     check: {}
     columns:
     - id
-    - scenarioId
-    - invoiceNumber
+    - scenario_id
+    - invoice_number
     - issueDate
-    - createdAt
-    - updatedAt
+    - created_at
+    - updated_at
   role: user
 select_permissions:
 - permission:
     allow_aggregations: true
     columns:
     - id
-    - scenarioId
-    - invoiceNumber
+    - scenario_id
+    - invoice_number
     - issueDate
-    - createdAt
-    - updatedAt
+    - created_at
+    - updated_at
     filter: {}
   role: user
 update_permissions:
@@ -42,11 +42,11 @@ update_permissions:
     check: {}
     columns:
     - id
-    - scenarioId
-    - invoiceNumber
+    - scenario_id
+    - invoice_number
     - issueDate
-    - createdAt
-    - updatedAt
+    - created_at
+    - updated_at
     filter: {}
   role: user
 delete_permissions:

@@ -5,7 +5,7 @@ array_relationships:
 - name: scenarios
   using:
     foreign_key_constraint_on:
-      column: clientId
+      column: client_id
       table:
         name: scenarios
         schema: public
@@ -19,8 +19,8 @@ insert_permissions:
     - city
     - country
     - name
-    - postCode
-    - vatId
+    - post_code
+    - vat_id
   role: user
 select_permissions:
 - permission:
@@ -31,8 +31,8 @@ select_permissions:
     - city
     - country
     - name
-    - postCode
-    - vatId
+    - post_code
+    - vat_id
     filter: {}
   role: user
 update_permissions:
@@ -44,8 +44,8 @@ update_permissions:
     - city
     - country
     - name
-    - postCode
-    - vatId
+    - post_code
+    - vat_id
     filter: {}
   role: user
 delete_permissions:

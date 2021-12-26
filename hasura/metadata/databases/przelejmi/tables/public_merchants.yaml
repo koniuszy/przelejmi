@@ -5,7 +5,7 @@ array_relationships:
 - name: scenarios
   using:
     foreign_key_constraint_on:
-      column: merchantId
+      column: merchant_id
       table:
         name: scenarios
         schema: public
@@ -15,17 +15,17 @@ insert_permissions:
     check: {}
     columns:
     - id
-    - issuerName
-    - companyName
+    - issuer_name
+    - company_name
     - address
-    - postCode
+    - post_code
     - city
     - country
     - email
-    - bankName
-    - bankAccountPln
-    - bankAccountEur
-    - vatId
+    - bank_name
+    - bank_account_pln
+    - bank_account_eur
+    - vat_id
   role: user
 select_permissions:
 - permission:
@@ -33,16 +33,16 @@ select_permissions:
     columns:
     - id
     - address
-    - bankAccountEur
-    - bankAccountPln
-    - bankName
+    - bank_account_eur
+    - bank_account_pln
+    - bank_name
     - city
-    - companyName
+    - company_name
     - country
     - email
-    - issuerName
-    - postCode
-    - vatId
+    - issuer_name
+    - post_code
+    - vat_id
     filter: {}
   role: user
 update_permissions:
@@ -51,16 +51,16 @@ update_permissions:
     columns:
     - id
     - address
-    - bankAccountEur
-    - bankAccountPln
-    - bankName
+    - bank_account_eur
+    - bank_account_pln
+    - bank_name
     - city
-    - companyName
+    - company_name
     - country
     - email
-    - issuerName
-    - postCode
-    - vatId
+    - issuer_name
+    - post_code
+    - vat_id
     filter: {}
   role: user
 delete_permissions:
