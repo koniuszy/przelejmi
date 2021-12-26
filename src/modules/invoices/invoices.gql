@@ -21,7 +21,7 @@ fragment Invoice on invoices {
 
 query invoice($id: Int_comparison_exp!) {
   invoices(where: { id: $id }) {
-    issueDate
+    issueDate: issue_date
     invoiceNumber: invoice_number
     items {
       name
