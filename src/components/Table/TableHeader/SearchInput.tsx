@@ -16,10 +16,8 @@ export const SearchInputPlaceholder: FC = () => (
 
 const SearchInput: FC<{
   onSearch: (search: string) => void
-}> = (props) => {
-  const [debouncedSearch] = useState(() =>
-    debounce((search: string) => props.onSearch(search), 300)
-  )
+}> = ({ onSearch }) => {
+  const [debouncedSearch] = useState(() => debounce(onSearch, 300))
 
   return (
     <InputGroup>

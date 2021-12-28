@@ -29,6 +29,7 @@ import {
   Clients_Set_Input,
   useUpdateClientMutation,
   useDeleteClientMutation,
+  ClientListDocument,
 } from 'src/generated/hasura'
 
 import Clipboard from 'src/components/Clipboard'
@@ -41,21 +42,20 @@ type Client = ClientListQuery['clients'][number]
 
 const ActionsColumn: FC<{
   client: Client
-  onClientDelete: (id: number) => void
-}> = ({ client, onClientDelete }) => {
+}> = ({ client }) => {
   const toast = useToast()
 
   const [clientIdToDelete, setClientIdToDelete] = useState<number | null>(null)
   const [openActionsRowId, setOpenActionsRowId] = useState<number | null>(null)
 
   const [deleteClient, deleteClientOptions] = useDeleteClientMutation({
+    refetchQueries: [ClientListDocument],
     onCompleted() {
       toast({
         ...successToastContent,
         title: 'Client deleted.',
       })
       setClientIdToDelete(null)
-      onClientDelete(client.id)
     },
     onError() {
       toast(errorToastContent)
@@ -253,6 +253,7 @@ const ClientList: FC<{
   onPageChange: (p: number) => void
   onListQueryUpdate: (data: Partial<ClientListQuery>) => void
   onSortChange: (args: { sortBy: keyof Clients_Order_By; sortDirection: Order_By }) => void
+  onSearch: (search: string) => void
 }> = ({
   listQuery,
   loading,
@@ -261,6 +262,7 @@ const ClientList: FC<{
   onListQueryUpdate,
   onPageChange,
   onSortChange,
+  onSearch,
 }) => {
   const [isMutating, setIsMutating] = useState(false)
   const [isEditable, setIsEditable] = useState(true)
@@ -296,9 +298,9 @@ const ClientList: FC<{
         showSyncingSpinner,
         filters: [],
         title: TITLE,
-        isEditable: isEditable,
+        isEditable,
         onEditableToggle: setIsEditable,
-        async onSearch(search) {},
+        onSearch,
         async onDrawerChange(newFilters) {},
       }}
       rowRender={(item, index) => (
@@ -319,21 +321,7 @@ const ClientList: FC<{
               })
             }}
           />
-          <ActionsColumn
-            client={item}
-            onClientDelete={(deletedClientId) =>
-              onListQueryUpdate({
-                clients_aggregate: {
-                  ...listQuery.clients_aggregate,
-                  aggregate: {
-                    ...listQuery.clients_aggregate.aggregate,
-                    totalCount: totalCount - 1,
-                  },
-                },
-                clients: clientList.filter(({ id }) => id !== deletedClientId),
-              })
-            }
-          />
+          <ActionsColumn client={item} />
         </Tr>
       )}
       onPageChange={onPageChange}
@@ -349,7 +337,7 @@ const ClientListPage: NextPage = () => {
     limit: PER_PAGE,
     offset: 0,
   })
-  const { data, loading, updateQuery } = useClientListQuery({
+  const { data, loading, updateQuery, previousData } = useClientListQuery({
     variables,
     onError(err) {
       console.error(err)
@@ -367,21 +355,48 @@ const ClientListPage: NextPage = () => {
     return activeSorts
   }
 
+  const listQuery = data || previousData
+
   return (
     <>
       <Head>
         <title>Clients | przelejmi</title>
       </Head>
-      {data ? (
+      {listQuery ? (
         <ClientList
-          listQuery={data}
+          listQuery={listQuery}
           loading={loading}
           currentPage={
             variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
           }
           activeSorts={getActiveSorts()}
+          onSearch={(search) =>
+            setVariables({
+              ...variables,
+              where: {
+                _or: [
+                  { name: { _ilike: `%${search}%` } },
+                  {
+                    address: { _ilike: `%${search}%` },
+                  },
+                  {
+                    country: { _ilike: `%${search}%` },
+                  },
+                  {
+                    vat_id: { _ilike: `%${search}%` },
+                  },
+                  {
+                    post_code: { _ilike: `%${search}%` },
+                  },
+                  {
+                    city: { _ilike: `%${search}%` },
+                  },
+                ],
+              },
+            })
+          }
           onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
-          onPageChange={(page) => setVariables((p) => ({ ...p, offset: PER_PAGE * (page - 1) }))}
+          onPageChange={(page) => setVariables({ ...variables, offset: PER_PAGE * (page - 1) })}
           onSortChange={({ sortBy, sortDirection }) =>
             setVariables({ ...variables, order_by: { [sortBy]: sortDirection } })
           }

@@ -16,5 +16,15 @@
   "search.exclude": {
     ".next": true
   },
-  "cSpell.words": ["chakra", "easyinvoice", "Formik", "Hasura", "next", "nextjs", "nprogress"]
+  "cSpell.words": [
+    "chakra",
+    "easyinvoice",
+    "Formik",
+    "Hasura",
+    "ilike",
+    "next",
+    "nextjs",
+    "nilike",
+    "nprogress"
+  ]
 }

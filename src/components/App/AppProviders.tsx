@@ -1,10 +1,11 @@
 import { FC, useEffect, useRef, useState } from 'react'
 
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 
 import { Center, Spinner } from '@chakra-ui/react'
 
-import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client'
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, from } from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
 
 import { useAuth } from 'src/hooks/auth'
 
@@ -19,16 +20,27 @@ const GQL_API_ENDPOINT = process.env.GQL_API_ENDPOINT || 'https://przelejemi.has
 const cache = new InMemoryCache()
 
 function createApolloClient(token: string) {
+  const httpLink = new HttpLink({
+    uri: GQL_API_ENDPOINT,
+    headers: {
+      ...adminHeaders,
+      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json',
+    },
+  })
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path, name, extensions }) => {
+        console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+        if (extensions?.code === 'invalid-jwt') Router.push('/api/auth/login')
+      })
+
+    if (networkError) console.error(networkError)
+  })
   return new ApolloClient({
     defaultOptions: { query: { errorPolicy: 'all' } },
-    link: new HttpLink({
-      uri: GQL_API_ENDPOINT,
-      headers: {
-        ...adminHeaders,
-        Authorization: `Bearer ${token}`,
-        'content-type': 'application/json',
-      },
-    }),
+    link: from([httpLink, errorLink]),
     cache,
   })
 }
