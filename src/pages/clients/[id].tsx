@@ -10,7 +10,6 @@ import ClientForm from 'clients/ClientForm'
 import { useClientQuery, useUpdateClientMutation } from 'src/generated/hasura'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
-import { ClientType } from 'src/types'
 
 const EditClientFormPage: NextPage = () => {
   const toast = useToast()
@@ -62,7 +61,7 @@ const EditClientFormPage: NextPage = () => {
           updateClient({
             variables: {
               where: { id: { _eq: id } },
-              _set: { ...data, vatId: clientType === ClientType.company ? vatId : null },
+              _set: { ...data, vat_id: clientType === 'Company' ? vatId : null },
             },
           })
         }}

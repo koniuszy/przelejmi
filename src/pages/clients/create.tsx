@@ -10,7 +10,6 @@ import ClientForm from 'clients/ClientForm'
 import { useCreateClientMutation } from 'src/generated/hasura'
 
 import { errorToastContent, successToastContent } from 'src/lib/toastContent'
-import { ClientType } from 'src/types'
 
 const CreateClientPage: NextPage = () => {
   const toast = useToast()
@@ -43,7 +42,7 @@ const CreateClientPage: NextPage = () => {
           const { vatId, clientType, ...data } = values
           createClient({
             variables: {
-              object: { ...data, vatId: clientType === ClientType.company ? vatId : null },
+              object: { ...data, vat_id: clientType === 'Company' ? vatId : null },
             },
           })
         }}
