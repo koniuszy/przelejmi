@@ -35,12 +35,14 @@ type Form = {
   vatId: string
 }
 
+const clientTypes: ClientType[] = ['Company', 'Person']
+
 const ClientForm: FC<{
   isLoading: boolean
   initialValues: Form
   onSubmit: (values: Form & { clientType: ClientType }) => void
 }> = ({ isLoading, onSubmit, initialValues }) => {
-  const [clientType, setClientType] = useState<ClientType>(ClientType.company)
+  const [clientType, setClientType] = useState<ClientType>('Company')
 
   return (
     <SimpleGrid my="10" columns={2} spacing={10}>
@@ -80,7 +82,7 @@ const ClientForm: FC<{
                     >
                       <Text fontWeight="500">Client type</Text>
                       <Stack pt="3" spacing={5} direction="row">
-                        {Object.values(ClientType).map((value) => (
+                        {clientTypes.map((value) => (
                           <Radio key={value} cursor="pointer" colorScheme="green" value={value}>
                             {value}
                           </Radio>
@@ -92,8 +94,8 @@ const ClientForm: FC<{
                       <FormField isRequired id="name" label="Name" placeholder="John Smith" />
                       <Spacer ml="7" />
                       <FormField
-                        isDisabled={clientType === ClientType.person}
-                        isRequired={clientType === ClientType.company}
+                        isDisabled={clientType === 'Person'}
+                        isRequired={clientType === 'Company'}
                         id="vatId"
                         label="VAT ID"
                         placeholder="12345678"
