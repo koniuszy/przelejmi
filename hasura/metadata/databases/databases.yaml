@@ -7,3 +7,4 @@
       isolation_level: read-committed
       use_prepared_statements: false
   tables: "!include przelejmi/tables/tables.yaml"
+  functions: "!include przelejmi/functions/functions.yaml"
