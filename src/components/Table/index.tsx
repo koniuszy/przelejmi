@@ -22,6 +22,8 @@ import Pagination from './Pagination'
 import SortTh from './SortTh'
 import TableHeader, { TableHeaderPlaceholder, TableHeaderProps } from './TableHeader'
 
+export type { Filters } from './TableHeader/DrawerFilters'
+
 export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
   <>
     <TableHeaderPlaceholder title={title} />

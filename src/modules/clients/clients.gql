@@ -35,12 +35,12 @@ query clientList(
 }
 
 query clientDistinct {
-  clients_distinct_on_city: clients_aggregate(distinct_on: city) {
+  cityDistinct: clients_aggregate(distinct_on: city) {
     nodes {
       city
     }
   }
-  clients_distinct_on_bank: clients_aggregate(distinct_on: country) {
+  countryDistinct: clients_aggregate(distinct_on: country) {
     nodes {
       country
     }

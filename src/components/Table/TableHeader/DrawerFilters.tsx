@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect } from 'react'
 
 import { Icon } from '@chakra-ui/icons'
 import {
@@ -17,10 +17,9 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Spinner,
   Stack,
 } from '@chakra-ui/react'
-
-import debounce from 'lodash.debounce'
 
 export const TriggerFiltersButton: FC<{ onOpen: () => void; isActive: boolean }> = ({
   onOpen,
@@ -43,22 +42,47 @@ export const TriggerFiltersButton: FC<{ onOpen: () => void; isActive: boolean }>
   </Button>
 )
 
-export type Filters = { name: string; options: { name: string; checked: boolean }[] }[]
+const DrawerLayout: FC<{ onReset?: () => void; onClose: () => void; isOpen: boolean }> = ({
+  children,
+  isOpen,
+  onClose,
+  onReset,
+}) => (
+  <Drawer placement="right" isOpen={isOpen} onClose={onClose}>
+    <DrawerOverlay>
+      <DrawerContent>
+        <DrawerCloseButton />
+        <DrawerHeader>Filters</DrawerHeader>
+        <DrawerBody>{children}</DrawerBody>
+        <DrawerFooter>
+          <Button disabled={Boolean(onReset)} variant="outline" mr={3} onClick={onReset}>
+            Reset
+          </Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </DrawerOverlay>
+  </Drawer>
+)
+
+export type Filters = { title: string; items: { title: string; checked: boolean }[] }[]
 
 const DrawerFilters: FC<{
   isOpen: boolean
-  filters: Filters
+  filters: Filters | undefined
+  onChange: (f: Filters) => void
   onClose: () => void
-  onChange: (where: Filters) => void
-}> = ({ filters, onClose, isOpen, onChange }) => {
-  const [filterList, setFilterList] = useState(filters)
+  onOpen: () => void
+}> = ({ onClose, isOpen, onChange, onOpen, filters }) => {
+  useEffect(() => {
+    onOpen()
+  }, [])
 
-  const [handleDebouncedFiltersChange] = useState(() => debounce(onChange, 200))
-
-  function handleOptionListChange(newFilterList: typeof filterList) {
-    setFilterList(newFilterList)
-    handleDebouncedFiltersChange(newFilterList)
-  }
+  if (!filters)
+    return (
+      <DrawerLayout isOpen={isOpen} onClose={onClose}>
+        <Spinner />
+      </DrawerLayout>
+    )
 
   return (
     <Drawer placement="right" isOpen={isOpen} onClose={onClose}>
@@ -69,11 +93,11 @@ const DrawerFilters: FC<{
 
           <DrawerBody>
             <Accordion allowMultiple defaultIndex={[0]}>
-              {filterList.map((i) => (
-                <AccordionItem key={i.name}>
+              {filters.map((i) => (
+                <AccordionItem key={i.title}>
                   <AccordionButton>
                     <Box flex="1" textAlign="left">
-                      {i.name.charAt(0).toUpperCase() + i.name.slice(1)}
+                      {i.title}
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -83,18 +107,18 @@ const DrawerFilters: FC<{
                       <Checkbox
                         size="sm"
                         colorScheme="green"
-                        isChecked={!i.options.find((item) => item.checked === false)}
+                        isChecked={!i.items.find((item) => item.checked === false)}
                         onChange={(e) =>
-                          handleOptionListChange(
-                            filterList.map((filterListItem) => ({
+                          onChange(
+                            filters.map((filterListItem) => ({
                               ...filterListItem,
                               options:
-                                filterListItem.name === i.name
-                                  ? filterListItem.options.map((optionListItem) => ({
+                                filterListItem.title === i.title
+                                  ? filterListItem.items.map((optionListItem) => ({
                                       ...optionListItem,
                                       checked: e.target.checked,
                                     }))
-                                  : filterListItem.options,
+                                  : filterListItem.items,
                             }))
                           )
                         }
@@ -102,31 +126,31 @@ const DrawerFilters: FC<{
                         Select all
                       </Checkbox>
 
-                      {i.options.map((optionListItem) => (
+                      {i.items.map((optionListItem) => (
                         <Checkbox
                           size="lg"
                           colorScheme="green"
-                          key={optionListItem.name}
+                          key={optionListItem.title}
                           isChecked={optionListItem.checked}
                           onChange={(e) =>
-                            handleOptionListChange(
-                              filterList.map((filterListItem) => ({
+                            onChange(
+                              filters.map((filterListItem) => ({
                                 ...filterListItem,
                                 options:
-                                  filterListItem.name === i.name
-                                    ? filterListItem.options.map((item) => ({
+                                  filterListItem.title === i.title
+                                    ? filterListItem.items.map((item) => ({
                                         ...item,
                                         checked:
-                                          item.name === optionListItem.name
+                                          item.title === optionListItem.title
                                             ? e.target.checked
                                             : item.checked,
                                       }))
-                                    : filterListItem.options,
+                                    : filterListItem.items,
                               }))
                             )
                           }
                         >
-                          {optionListItem.name}
+                          {optionListItem.title}
                         </Checkbox>
                       ))}
                     </Stack>
@@ -143,10 +167,9 @@ const DrawerFilters: FC<{
               onClick={() => {
                 const allChecked = filters.map((i) => ({
                   ...i,
-                  options: i.options.map((o) => ({ ...o, checked: true })),
+                  options: i.items.map((o) => ({ ...o, checked: true })),
                 }))
                 onChange(allChecked)
-                setFilterList(allChecked)
               }}
             >
               Reset

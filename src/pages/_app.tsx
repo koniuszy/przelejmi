@@ -3,10 +3,10 @@ import { ChakraProvider, extendTheme, Box, Flex, useToast } from '@chakra-ui/rea
 import { UserProvider } from '@auth0/nextjs-auth0'
 import NextProgressBar from 'nextjs-progressbar'
 
-import AppProviders from 'src/components/App/AppProviders'
-import ErrorBoundary from 'src/components/App/ErrorBoundary'
-import Footer from 'src/components/App/Footer'
-import Header from 'src/components/App/Header'
+import AppProviders from 'src/App/AppProviders'
+import ErrorBoundary from 'src/App/ErrorBoundary'
+import Footer from 'src/App/Footer'
+import Header from 'src/App/Header'
 import { errorToastContent } from 'src/lib/toastContent'
 
 const extendedTheme = extendTheme({

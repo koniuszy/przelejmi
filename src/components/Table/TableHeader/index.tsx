@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
-import DrawerFilters, { TriggerFiltersButton, Filters } from './DrawerFilters'
+import DrawerFilters, { TriggerFiltersButton } from './DrawerFilters'
 import SearchInput, { SearchInputPlaceholder } from './SearchInput'
 
 export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (
@@ -43,23 +43,21 @@ export const TableHeaderPlaceholder: FC<{ title: string }> = ({ title }) => (
 export type TableHeaderProps = {
   title: string
   isEditable: boolean
-  filters: Filters
   showSyncingSpinner: boolean
   isFilterButtonActive: boolean
   onEditableToggle: (v: boolean) => void
-  onDrawerChange: (newFilters: Filters) => Promise<void>
   onSearch: (v: string) => void
+  drawerProps: Omit<Parameters<typeof DrawerFilters>[0], 'isOpen' | 'onClose' | 'children'>
 }
 
 const TableHeader: FC<TableHeaderProps> = ({
   title,
   isEditable,
-  filters,
   isFilterButtonActive,
   showSyncingSpinner,
   onEditableToggle,
-  onDrawerChange,
   onSearch,
+  drawerProps,
 }) => {
   const drawerOptions = useDisclosure()
 
@@ -98,10 +96,9 @@ const TableHeader: FC<TableHeaderProps> = ({
       </Flex>
 
       <DrawerFilters
-        filters={filters}
+        {...drawerProps}
         isOpen={drawerOptions.isOpen}
         onClose={drawerOptions.onClose}
-        onChange={onDrawerChange}
       />
     </Flex>
   )

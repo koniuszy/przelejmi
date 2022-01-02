@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 
 import { NextPage } from 'next'
 
@@ -20,6 +20,8 @@ import {
   ListItem,
 } from '@chakra-ui/react'
 
+import { useApolloClient } from '@apollo/client'
+
 import {
   ClientListQueryVariables,
   Clients_Order_By,
@@ -30,12 +32,15 @@ import {
   useUpdateClientMutation,
   useDeleteClientMutation,
   ClientListDocument,
+  ClientDistinctDocument,
+  ClientDistinctQueryResult,
+  useClientDistinctLazyQuery,
 } from 'src/generated/hasura'
 
 import Clipboard from 'src/components/Clipboard'
 import ConfirmationPopup from 'src/components/ConfirmationPopup'
 import Editable from 'src/components/Editable'
-import Table, { TablePlaceholder } from 'src/components/Table'
+import Table, { TablePlaceholder, Filters } from 'src/components/Table'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
 type Client = ClientListQuery['clients'][number]
@@ -250,6 +255,7 @@ const ClientList: FC<{
   loading: boolean
   currentPage: number
   activeSorts: ActiveSorts
+  isFilterButtonActive: boolean
   onPageChange: (p: number) => void
   onListQueryUpdate: (data: Partial<ClientListQuery>) => void
   onSortChange: (args: { sortBy: keyof Clients_Order_By; sortDirection: Order_By }) => void
@@ -259,6 +265,7 @@ const ClientList: FC<{
   loading,
   currentPage,
   activeSorts,
+  isFilterButtonActive,
   onListQueryUpdate,
   onPageChange,
   onSortChange,
@@ -266,6 +273,21 @@ const ClientList: FC<{
 }) => {
   const [isMutating, setIsMutating] = useState(false)
   const [isEditable, setIsEditable] = useState(true)
+
+  const apolloClient = useApolloClient()
+
+  const [fetchFilters] = useClientDistinctLazyQuery({
+    onCompleted(data) {
+      const countryDistinct = data?.countryDistinct.nodes.map((i) => i.country) || []
+      const cityDistinct = data?.cityDistinct.nodes.map((i) => i.city) || []
+
+      setFilters([
+        { title: 'Country', items: countryDistinct.map((i) => ({ title: i, checked: true })) },
+        { title: 'City', items: cityDistinct.map((i) => ({ title: i, checked: true })) },
+      ])
+    },
+  })
+  const [filters, setFilters] = useState<Filters | null>(null)
 
   const totalCount = Number(listQuery.clients_aggregate.aggregate?.totalCount)
   const columnList: { title: string; sortKey?: keyof Clients_Order_By }[] = [
@@ -294,13 +316,26 @@ const ClientList: FC<{
       totalRecordsCount={totalCount}
       activeSorts={activeSorts}
       filtersProps={{
-        isFilterButtonActive: true,
+        isFilterButtonActive,
         showSyncingSpinner,
-        filters: [],
         title: TITLE,
         isEditable,
-        onEditableToggle: setIsEditable,
         onSearch,
+        drawerProps: {
+          onOpen() {
+            fetchFilters()
+          },
+          filters,
+        },
+        onFetchFilters() {
+          return apolloClient
+            .query<ClientDistinctQueryResult>({ query: ClientDistinctDocument })
+            .then(({ data }) => {
+              const countryFit = data.data?.countryDistinct.nodes.map((i) => i.country) || []
+              const cityDistinct = data.data?.cityDistinct.nodes.map((i) => i.city) || []
+            })
+        },
+        onEditableToggle: setIsEditable,
         async onDrawerChange(newFilters) {},
       }}
       rowRender={(item, index) => (
@@ -355,7 +390,36 @@ const ClientListPage: NextPage = () => {
     return activeSorts
   }
 
+  function handleSearch(search: string) {
+    setVariables({
+      ...variables,
+      where: {
+        _or: [
+          { name: { _ilike: `%${search}%` } },
+          {
+            address: { _ilike: `%${search}%` },
+          },
+          {
+            country: { _ilike: `%${search}%` },
+          },
+          {
+            vat_id: { _ilike: `%${search}%` },
+          },
+          {
+            post_code: { _ilike: `%${search}%` },
+          },
+          {
+            city: { _ilike: `%${search}%` },
+          },
+        ],
+      },
+    })
+  }
+
   const listQuery = data || previousData
+  const isFilterButtonActive = Boolean(variables.where)
+
+  const filters = variables.where?._or?.map((i) => i)
 
   return (
     <>
@@ -364,37 +428,15 @@ const ClientListPage: NextPage = () => {
       </Head>
       {listQuery ? (
         <ClientList
+          filters={filters}
+          isFilterButtonActive={isFilterButtonActive}
           listQuery={listQuery}
           loading={loading}
           currentPage={
             variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
           }
           activeSorts={getActiveSorts()}
-          onSearch={(search) =>
-            setVariables({
-              ...variables,
-              where: {
-                _or: [
-                  { name: { _ilike: `%${search}%` } },
-                  {
-                    address: { _ilike: `%${search}%` },
-                  },
-                  {
-                    country: { _ilike: `%${search}%` },
-                  },
-                  {
-                    vat_id: { _ilike: `%${search}%` },
-                  },
-                  {
-                    post_code: { _ilike: `%${search}%` },
-                  },
-                  {
-                    city: { _ilike: `%${search}%` },
-                  },
-                ],
-              },
-            })
-          }
+          onSearch={handleSearch}
           onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
           onPageChange={(page) => setVariables({ ...variables, offset: PER_PAGE * (page - 1) })}
           onSortChange={({ sortBy, sortDirection }) =>

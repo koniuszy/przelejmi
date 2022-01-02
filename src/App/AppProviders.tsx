@@ -9,7 +9,7 @@ import { onError } from '@apollo/client/link/error'
 
 import { useAuth } from 'src/hooks/auth'
 
-import FadeInAnimation from '../FadeInAnimation'
+import FadeInAnimation from '../components/FadeInAnimation'
 
 const adminHeaders = process.env.HASURA_ADMIN_TOKEN
   ? { 'x-hasura-admin-secret': process.env.HASURA_ADMIN_TOKEN }
@@ -31,7 +31,7 @@ function createApolloClient(token: string) {
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
-      graphQLErrors.forEach(({ message, locations, path, name, extensions }) => {
+      graphQLErrors.forEach(({ message, locations, path, extensions }) => {
         console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
         if (extensions?.code === 'invalid-jwt') Router.push('/api/auth/login')
       })
