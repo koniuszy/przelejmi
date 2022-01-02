@@ -29,7 +29,7 @@ const configs = {
   },
   env: {
     HASURA_ADMIN_TOKEN: (!isProd && process.env.NEXT_PUBLIC_HASURA_ADMIN_TOKEN) || '',
-    GQL_API_ENDPOINT: process.env.GQL_API_ENDPOINT,
+    GQL_API_ENDPOINT: process.env.GQL_API_ENDPOINT || 'https://przelejemi.hasura.app/v1/graphql',
   },
 }
 

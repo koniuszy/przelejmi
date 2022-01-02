@@ -15,13 +15,11 @@ const adminHeaders = process.env.HASURA_ADMIN_TOKEN
   ? { 'x-hasura-admin-secret': process.env.HASURA_ADMIN_TOKEN }
   : {}
 
-const GQL_API_ENDPOINT = process.env.GQL_API_ENDPOINT || 'https://przelejemi.hasura.app/v1/graphql'
-
 const cache = new InMemoryCache()
 
 function createApolloClient(token: string) {
   const httpLink = new HttpLink({
-    uri: GQL_API_ENDPOINT,
+    uri: process.env.GQL_API_ENDPOINT,
     headers: {
       ...adminHeaders,
       Authorization: `Bearer ${token}`,
