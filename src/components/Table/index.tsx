@@ -36,7 +36,7 @@ export const TablePlaceholder: FC<{ title: string }> = ({ title }) => (
   </>
 )
 
-function Table<Item, SortKey extends string>({
+function Table<Item, SortKey>({
   filtersProps,
   list,
   createHref,
@@ -45,7 +45,7 @@ function Table<Item, SortKey extends string>({
   columnList,
   emptyListHeading,
   currentPage,
-  activeSorts,
+  sort,
   rowRender,
   onPageChange,
   onSortChange,
@@ -56,9 +56,9 @@ function Table<Item, SortKey extends string>({
   emptyListHeading: string
   list: Item[]
   filtersProps: TableHeaderProps
-  columnList: { title: string; sortKey?: SortKey }[]
+  columnList: readonly { title: string; sortKey?: SortKey }[]
   currentPage: number
-  activeSorts: Partial<Record<SortKey, Order_By>>
+  sort: { sortBy: SortKey; sortDirection: Order_By }
   onSortChange: (args: { sortBy: SortKey; sortDirection: Order_By }) => void
   rowRender: (item: Item, index: number) => ReactElement
   onPageChange: (page: number) => void
@@ -68,7 +68,7 @@ function Table<Item, SortKey extends string>({
       <TableHeader {...filtersProps} />
       <ChakraTable variant="simple">
         <TableCaption>
-          {list.length > 0 ? (
+          {list.length > 0 && totalRecordsCount && perPage ? (
             <Pagination
               totalPages={Math.ceil(totalRecordsCount / perPage)}
               currentPage={currentPage}
@@ -93,10 +93,11 @@ function Table<Item, SortKey extends string>({
                 {columnListItem.sortKey ? (
                   <SortTh
                     title={columnListItem.title}
-                    sortOrder={activeSorts[columnListItem.sortKey] || null}
-                    onChange={(sortDirection) =>
-                      onSortChange({ sortBy: columnListItem.sortKey as SortKey, sortDirection })
-                    }
+                    sortOrder={sort.sortBy === columnListItem.sortKey ? sort.sortDirection : null}
+                    onChange={(sortDirection) => {
+                      if (!columnListItem.sortKey) return
+                      onSortChange({ sortBy: columnListItem.sortKey, sortDirection })
+                    }}
                   />
                 ) : (
                   <Th whiteSpace="nowrap">{columnListItem.title}</Th>

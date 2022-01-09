@@ -2759,6 +2759,76 @@ type query_root {
   fetch data from the table: "scenarios" using primary key columns
   """
   scenarios_by_pk(id: Int!): scenarios
+
+  """
+  execute function "search_clients" which returns "clients"
+  """
+  search_clients(
+    """
+    input parameters for function "search_clients"
+    """
+    args: search_clients_args!
+
+    """
+    distinct select on columns
+    """
+    distinct_on: [clients_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [clients_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: clients_bool_exp
+  ): [clients!]!
+
+  """
+  execute function "search_clients" and query aggregates on result of table type "clients"
+  """
+  search_clients_aggregate(
+    """
+    input parameters for function "search_clients_aggregate"
+    """
+    args: search_clients_args!
+
+    """
+    distinct select on columns
+    """
+    distinct_on: [clients_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [clients_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: clients_bool_exp
+  ): clients_aggregate!
 }
 
 """
@@ -3384,6 +3454,10 @@ input scenarios_variance_order_by {
   merchant_id: order_by
 }
 
+input search_clients_args {
+  search: String
+}
+
 type subscription_root {
   """
   fetch data from the table: "clients"
@@ -3709,6 +3783,76 @@ type subscription_root {
   fetch data from the table: "scenarios" using primary key columns
   """
   scenarios_by_pk(id: Int!): scenarios
+
+  """
+  execute function "search_clients" which returns "clients"
+  """
+  search_clients(
+    """
+    input parameters for function "search_clients"
+    """
+    args: search_clients_args!
+
+    """
+    distinct select on columns
+    """
+    distinct_on: [clients_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [clients_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: clients_bool_exp
+  ): [clients!]!
+
+  """
+  execute function "search_clients" and query aggregates on result of table type "clients"
+  """
+  search_clients_aggregate(
+    """
+    input parameters for function "search_clients_aggregate"
+    """
+    args: search_clients_args!
+
+    """
+    distinct select on columns
+    """
+    distinct_on: [clients_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [clients_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: clients_bool_exp
+  ): clients_aggregate!
 }
 
 scalar timestamp

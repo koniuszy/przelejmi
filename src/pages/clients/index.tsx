@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react'
+import React, { FC, useState } from 'react'
 
 import { NextPage } from 'next'
 
@@ -20,10 +20,7 @@ import {
   ListItem,
 } from '@chakra-ui/react'
 
-import { useApolloClient } from '@apollo/client'
-
 import {
-  ClientListQueryVariables,
   Clients_Order_By,
   Order_By,
   useClientListQuery,
@@ -32,8 +29,6 @@ import {
   useUpdateClientMutation,
   useDeleteClientMutation,
   ClientListDocument,
-  ClientDistinctDocument,
-  ClientDistinctQueryResult,
   useClientDistinctLazyQuery,
 } from 'src/generated/hasura'
 
@@ -43,7 +38,7 @@ import Editable from 'src/components/Editable'
 import Table, { TablePlaceholder, Filters } from 'src/components/Table'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
-type Client = ClientListQuery['clients'][number]
+type Client = NonNullable<ClientListQuery['clients']>[number]
 
 const ActionsColumn: FC<{
   client: Client
@@ -55,6 +50,7 @@ const ActionsColumn: FC<{
 
   const [deleteClient, deleteClientOptions] = useDeleteClientMutation({
     refetchQueries: [ClientListDocument],
+    awaitRefetchQueries: true,
     onCompleted() {
       toast({
         ...successToastContent,
@@ -164,22 +160,9 @@ const ActionsColumn: FC<{
 const EditableColumns: FC<{
   client: Client
   isEditable: boolean
-  onClientUpdateStart: () => void
-  onClientUpdateSuccess: (client: Client) => void
-}> = ({ client, isEditable, onClientUpdateSuccess, onClientUpdateStart }) => {
+  onClientUpdate: (set: Clients_Set_Input) => void
+}> = ({ client, isEditable, onClientUpdate }) => {
   const toast = useToast()
-
-  const [updateClient] = useUpdateClientMutation({
-    onCompleted({ update_clients }) {
-      if (!update_clients) throw new Error()
-      toast({ ...successToastContent, title: 'Client updated' })
-      update_clients.returning.map((i) => onClientUpdateSuccess({ ...client, ...i }))
-    },
-    onError() {
-      toast(errorToastContent)
-      toast(warningToastContent)
-    },
-  })
 
   function handleUpdate(set: Clients_Set_Input) {
     const [[key, value]] = Object.entries(set)
@@ -192,8 +175,7 @@ const EditableColumns: FC<{
       return
     }
 
-    onClientUpdateStart()
-    updateClient({ variables: { where: { id: { _eq: client.id } }, _set: set } })
+    onClientUpdate(set)
   }
 
   return (
@@ -248,33 +230,30 @@ const EditableColumns: FC<{
 const TITLE = 'Clients'
 const PER_PAGE = 10
 
-type ActiveSorts = Partial<Record<keyof Clients_Order_By, Order_By>>
+const ClientListPage: NextPage = () => {
+  const toast = useToast()
 
-const ClientList: FC<{
-  listQuery: ClientListQuery
-  loading: boolean
-  currentPage: number
-  activeSorts: ActiveSorts
-  isFilterButtonActive: boolean
-  onPageChange: (p: number) => void
-  onListQueryUpdate: (data: Partial<ClientListQuery>) => void
-  onSortChange: (args: { sortBy: keyof Clients_Order_By; sortDirection: Order_By }) => void
-  onSearch: (search: string) => void
-}> = ({
-  listQuery,
-  loading,
-  currentPage,
-  activeSorts,
-  isFilterButtonActive,
-  onListQueryUpdate,
-  onPageChange,
-  onSortChange,
-  onSearch,
-}) => {
-  const [isMutating, setIsMutating] = useState(false)
   const [isEditable, setIsEditable] = useState(true)
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+  const [filters, setFilters] = useState<Filters>([])
+  const [sort, setSort] = useState({
+    sortBy: null as keyof Clients_Order_By | null,
+    sortDirection: Order_By.Asc,
+  })
 
-  const apolloClient = useApolloClient()
+  const { data, loading, updateQuery, previousData } = useClientListQuery({
+    variables: {
+      limit: PER_PAGE,
+      offset: (page - 1) * PER_PAGE,
+      isSearch: Boolean(search),
+      search,
+    },
+    onError(err) {
+      console.error(err)
+      toast({ ...errorToastContent, title: err.message })
+    },
+  })
 
   const [fetchFilters] = useClientDistinctLazyQuery({
     onCompleted(data) {
@@ -287,11 +266,32 @@ const ClientList: FC<{
       ])
     },
   })
-  const [filters, setFilters] = useState<Filters | null>(null)
 
-  const totalCount = Number(listQuery.clients_aggregate.aggregate?.totalCount)
-  const columnList: { title: string; sortKey?: keyof Clients_Order_By }[] = [
-    { title: `total: ${totalCount}` },
+  const [updateClient, { loading: isUpdating }] = useUpdateClientMutation({
+    onCompleted({ update_clients }) {
+      if (!update_clients) throw new Error()
+      toast({ ...successToastContent, title: 'Client updated' })
+      update_clients.returning.forEach((updatedClient) =>
+        updateQuery((v) => ({
+          ...v,
+          clients: v?.clients?.map((item) =>
+            item.id === updatedClient?.id ? { ...item, ...updatedClient } : item
+          ),
+          search_clients: v?.search_clients?.map((item) =>
+            item.id === updatedClient?.id ? { ...item, ...updatedClient } : item
+          ),
+        }))
+      )
+    },
+    onError() {
+      toast(errorToastContent)
+      toast(warningToastContent)
+    },
+  })
+
+  const totalCount = Number(data?.clients_aggregate.aggregate?.totalCount)
+  const columnList = [
+    { title: `total: ${data?.clients_aggregate.aggregate?.totalCount}` },
     { title: 'name', sortKey: 'name' },
     { title: 'type' },
     { title: 'vatId' },
@@ -300,152 +300,66 @@ const ClientList: FC<{
     { title: 'city' },
     { title: 'country' },
     { title: 'actions' },
-  ]
+  ] as const
 
-  const clientList = listQuery.clients
-  const showSyncingSpinner = loading || isMutating
+  const list = search
+    ? data?.search_clients || previousData?.search_clients
+    : data?.clients || previousData?.clients
 
-  return (
-    <Table
-      emptyListHeading="No clients yet 🤫"
-      createHref="clients/create"
-      perPage={PER_PAGE}
-      list={clientList}
-      columnList={columnList}
-      currentPage={currentPage}
-      totalRecordsCount={totalCount}
-      activeSorts={activeSorts}
-      filtersProps={{
-        isFilterButtonActive,
-        showSyncingSpinner,
-        title: TITLE,
-        isEditable,
-        onSearch,
-        drawerProps: {
-          onOpen() {
-            fetchFilters()
-          },
-          filters,
-        },
-        onFetchFilters() {
-          return apolloClient
-            .query<ClientDistinctQueryResult>({ query: ClientDistinctDocument })
-            .then(({ data }) => {
-              const countryFit = data.data?.countryDistinct.nodes.map((i) => i.country) || []
-              const cityDistinct = data.data?.cityDistinct.nodes.map((i) => i.city) || []
-            })
-        },
-        onEditableToggle: setIsEditable,
-        async onDrawerChange(newFilters) {},
-      }}
-      rowRender={(item, index) => (
-        <Tr key={item.id}>
-          <Td>{index + 1}.</Td>
-          <EditableColumns
-            client={item}
-            isEditable={isEditable}
-            onClientUpdateStart={() => {
-              setIsMutating(true)
-            }}
-            onClientUpdateSuccess={(updatedClient) => {
-              setIsMutating(false)
-              onListQueryUpdate({
-                clients: clientList.map((item) =>
-                  item.id === updatedClient?.id ? updatedClient : item
-                ),
-              })
-            }}
-          />
-          <ActionsColumn client={item} />
-        </Tr>
-      )}
-      onPageChange={onPageChange}
-      onSortChange={({ sortDirection, sortBy }) => onSortChange({ sortBy, sortDirection })}
-    />
-  )
-}
-
-const ClientListPage: NextPage = () => {
-  const toast = useToast()
-
-  const [variables, setVariables] = useState<ClientListQueryVariables>({
-    limit: PER_PAGE,
-    offset: 0,
-  })
-  const { data, loading, updateQuery, previousData } = useClientListQuery({
-    variables,
-    onError(err) {
-      console.error(err)
-      toast({ ...errorToastContent, title: err.message })
-    },
-  })
-
-  function getActiveSorts() {
-    const activeSorts: ActiveSorts = {}
-
-    if (variables.order_by && !Array.isArray(variables.order_by) && variables.order_by.name) {
-      activeSorts.name = variables.order_by.name
-    }
-
-    return activeSorts
-  }
-
-  function handleSearch(search: string) {
-    setVariables({
-      ...variables,
-      where: {
-        _or: [
-          { name: { _ilike: `%${search}%` } },
-          {
-            address: { _ilike: `%${search}%` },
-          },
-          {
-            country: { _ilike: `%${search}%` },
-          },
-          {
-            vat_id: { _ilike: `%${search}%` },
-          },
-          {
-            post_code: { _ilike: `%${search}%` },
-          },
-          {
-            city: { _ilike: `%${search}%` },
-          },
-        ],
-      },
-    })
-  }
-
-  const listQuery = data || previousData
-  const isFilterButtonActive = Boolean(variables.where)
-
-  const filters = variables.where?._or?.map((i) => i)
+  if (!list)
+    return (
+      <>
+        <Head>
+          <title>Clients | przelejmi</title>
+        </Head>
+        <TablePlaceholder title={TITLE} />
+      </>
+    )
 
   return (
     <>
       <Head>
         <title>Clients | przelejmi</title>
       </Head>
-      {listQuery ? (
-        <ClientList
-          filters={filters}
-          isFilterButtonActive={isFilterButtonActive}
-          listQuery={listQuery}
-          loading={loading}
-          currentPage={
-            variables?.offset && variables.limit ? variables.offset / variables.limit + 1 : 1
-          }
-          activeSorts={getActiveSorts()}
-          onSearch={handleSearch}
-          onListQueryUpdate={(data) => updateQuery((i) => ({ ...i, ...data }))}
-          onPageChange={(page) => setVariables({ ...variables, offset: PER_PAGE * (page - 1) })}
-          onSortChange={({ sortBy, sortDirection }) =>
-            setVariables({ ...variables, order_by: { [sortBy]: sortDirection } })
-          }
-        />
-      ) : (
-        <TablePlaceholder title={TITLE} />
-      )}
+
+      <Table
+        emptyListHeading="No clients yet 🤫"
+        createHref="clients/create"
+        perPage={PER_PAGE}
+        list={list}
+        columnList={columnList}
+        currentPage={page}
+        totalRecordsCount={totalCount}
+        filtersProps={{
+          isFilterButtonActive: Boolean(filters.length),
+          showSyncingSpinner: loading || isUpdating,
+          title: TITLE,
+          isEditable,
+          onSearch: setSearch,
+          onEditableToggle: setIsEditable,
+          drawerProps: {
+            onOpen: fetchFilters,
+            onChange: setFilters,
+            filters,
+          },
+        }}
+        rowRender={(item, index) => (
+          <Tr key={item.id}>
+            <Td>{index + 1}.</Td>
+            <EditableColumns
+              client={item}
+              isEditable={isEditable}
+              onClientUpdate={(_set) =>
+                updateClient({ variables: { _set, where: { id: { _eq: item.id } } } })
+              }
+            />
+            <ActionsColumn client={item} />
+          </Tr>
+        )}
+        sort={sort}
+        onPageChange={setPage}
+        onSortChange={setSort}
+      />
     </>
   )
 }

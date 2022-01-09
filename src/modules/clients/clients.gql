@@ -19,8 +19,24 @@ query clientList(
   $offset: Int = 0
   $order_by: [clients_order_by!] = {}
   $where: clients_bool_exp = {}
+  $search: String!
+  $isSearch: Boolean!
 ) {
-  clients(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
+  search_clients(
+    limit: $limit
+    offset: $offset
+    order_by: $order_by
+    where: $where
+    args: { search: $search }
+  ) @include(if: $isSearch) {
+    ...Client
+    scenarios {
+      id
+      name
+    }
+  }
+
+  clients(limit: $limit, offset: $offset, order_by: $order_by, where: $where) @skip(if: $isSearch) {
     ...Client
     scenarios {
       id
