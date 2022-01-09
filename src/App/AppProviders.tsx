@@ -15,9 +15,8 @@ const adminHeaders = process.env.HASURA_ADMIN_TOKEN
   ? { 'x-hasura-admin-secret': process.env.HASURA_ADMIN_TOKEN }
   : {}
 
-const cache = new InMemoryCache()
-
 function createApolloClient(token: string) {
+  const cache = new InMemoryCache()
   const httpLink = new HttpLink({
     uri: process.env.GQL_API_ENDPOINT,
     headers: {
@@ -36,6 +35,7 @@ function createApolloClient(token: string) {
 
     if (networkError) console.error(networkError)
   })
+
   return new ApolloClient({
     defaultOptions: { query: { errorPolicy: 'all' } },
     link: from([httpLink, errorLink]),

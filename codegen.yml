@@ -8,4 +8,9 @@ generates:
     schema: './hasura/schema.graphql'
     documents: 'src/**/*.gql'
     config:
+      avoidOptionals:
+        field: true
+        inputValue: false
+        object: true
+        defaultValue: true
       withHooks: true

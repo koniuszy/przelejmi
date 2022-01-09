@@ -24,12 +24,12 @@ import {
   Clients_Order_By,
   Order_By,
   useClientListQuery,
-  ClientListQuery,
   Clients_Set_Input,
   useUpdateClientMutation,
   useDeleteClientMutation,
   ClientListDocument,
   useClientDistinctLazyQuery,
+  ClientListItemFragment,
 } from 'src/generated/hasura'
 
 import Clipboard from 'src/components/Clipboard'
@@ -38,10 +38,8 @@ import Editable from 'src/components/Editable'
 import Table, { TablePlaceholder, Filters } from 'src/components/Table'
 import { errorToastContent, successToastContent, warningToastContent } from 'src/lib/toastContent'
 
-type Client = NonNullable<ClientListQuery['clients']>[number]
-
 const ActionsColumn: FC<{
-  client: Client
+  client: ClientListItemFragment
 }> = ({ client }) => {
   const toast = useToast()
 
@@ -158,7 +156,7 @@ const ActionsColumn: FC<{
 }
 
 const EditableColumns: FC<{
-  client: Client
+  client: ClientListItemFragment
   isEditable: boolean
   onClientUpdate: (set: Clients_Set_Input) => void
 }> = ({ client, isEditable, onClientUpdate }) => {
