@@ -46,7 +46,8 @@ export type TableHeaderProps = {
   showSyncingSpinner: boolean
   isFilterButtonActive: boolean
   onEditableToggle: (v: boolean) => void
-  onSearch: (v: string) => void
+  onSearchChange: (v: string) => void
+  search: string
   drawerProps: Omit<Parameters<typeof DrawerFilters>[0], 'isOpen' | 'onClose' | 'children'>
 }
 
@@ -56,8 +57,9 @@ const TableHeader: FC<TableHeaderProps> = ({
   isFilterButtonActive,
   showSyncingSpinner,
   onEditableToggle,
-  onSearch,
+  onSearchChange,
   drawerProps,
+  search,
 }) => {
   const drawerOptions = useDisclosure()
 
@@ -74,7 +76,7 @@ const TableHeader: FC<TableHeaderProps> = ({
           </Center>
         )}
         <Center pr="5">
-          <SearchInput onSearch={onSearch} />
+          <SearchInput search={search} onSearchChange={onSearchChange} />
         </Center>
 
         <Center pr="5">

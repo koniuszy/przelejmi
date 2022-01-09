@@ -335,12 +335,13 @@ const ClientListPage: NextPage = () => {
           showSyncingSpinner: loading || isUpdating,
           title: TITLE,
           isEditable,
-          onSearch: setSearch,
+          search,
+          onSearchChange: setSearch,
           onEditableToggle: setIsEditable,
           drawerProps: {
+            filters,
             onOpen: fetchFilters,
             onChange: setFilters,
-            filters,
           },
         }}
         rowRender={(item, index) => (
